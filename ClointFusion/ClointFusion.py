@@ -68,7 +68,6 @@ import tkinter as tk
 from PIL import ImageGrab
 from pathlib import Path
 from pandas.core.common import flatten
-from slack_webhook import Slack
 import webbrowser 
 import logging
 import tempfile
@@ -103,8 +102,6 @@ temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 chrome_service = ""
 browser_driver = ""
-slack_webhook_url = "https://hooks.slack.com/services/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"
-slack = Slack(url=slack_webhook_url)
 
 cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
 cf_logo_file_path = Path(os.path.join(current_working_dir,"Cloint-LOGO.PNG"))
@@ -254,13 +251,7 @@ def _welcome_to_clointfusion():
     """
     welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart")
     print(welcome_msg)
-
-    hostname = socket.gethostname()
-    public_ip = get_public_ip()
-    my_ip = "Hostname : {}".format(hostname) + ", IP Address: " + str(socket.gethostbyname(hostname)) + " / " + str(public_ip)
-    msg_status = str(my_ip) + ", BOT Name: " + bot_name + ", started at {}".format(time.strftime("%H:%M:%S on %Y-%m-%d"))
-    slack.post(text=msg_status)
-
+    
 def _set_bot_name(strBotName=""):
     """
     Internal function
@@ -659,13 +650,13 @@ def excel_get_all_sheet_names(excelFilePath=""):
     except Exception as ex:
         print("Error in excel_get_all_sheet_names="+str(ex))
     
-def message_counter_down_timer(start_value=5):
+def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds)",start_value=5):
     """
     Function to show count-down timer. Default is 5 seconds.
     Ex: message_counter_down_timer()
     """
     CONTINUE = True
-    layout = [[sg.Text('Calling ClointFusion Function in (seconds)',justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
+    layout = [[sg.Text(strMsg,justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
             [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
 
     window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_file_path)
@@ -2167,7 +2158,7 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",X=pg.size()[0]
         if not folderPathToSaveTheNotepad:
             folderPathToSaveTheNotepad = gui_get_folder_path_from_user('folder to save notepad contents')
 
-        message_counter_down_timer(3)
+        message_counter_down_timer("Screen scraping in (seconds)",3)
         time.sleep(1)
         
         pg.click(X,Y)
@@ -3400,7 +3391,7 @@ def capture_snip_now():
     """
     app = ""
     try:
-        if message_counter_down_timer(3):
+        if message_counter_down_timer("Capturing snip in (seconds)",3):
             app = QtWidgets.QApplication(sys.argv)
             window = CaptureSnip()
             window.activateWindow()
@@ -3650,7 +3641,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 time.sleep(2)
                 pg.hotkey('alt','w')
             
-            message_counter_down_timer(3)
+            message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
             
             print('Keyboard operations tested successfully '+show_emoji())
             print("____________________________________________________________")
@@ -3663,7 +3654,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             except:
                 pg.hotkey('alt','f4')
 
-        message_counter_down_timer(3)
+        message_counter_down_timer("Starting Excel Operations in (seconds)",3)
     
         try:
             print()
@@ -3731,13 +3722,13 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print("Error while testing Excel Operations="+str(ex))
             logging.info("Error while testing Excel Operations="+str(ex))
             
-        message_counter_down_timer(3)
+        message_counter_down_timer("Starting Screen Scraping Operations in (seconds)",3)
 
         try:
             print()
             print("Testing screen-scraping functions")
             webbrowser.open('https://sites.google.com/view/clointfusion-hackathon') 
-            message_counter_down_timer(5)
+            message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
             pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_3),conf=0.5,wait=5)
             print(pos)
@@ -3769,7 +3760,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             
             mouse_drag_from_to(600,510,1150,680)
 
-            message_counter_down_timer(3)
+            message_counter_down_timer("Testing Mouse Operations in (seconds)",3)
             
             search_highlight_tab_enter_open("chat.whatsapp")
 
@@ -3793,7 +3784,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             logging.info('Error in mouse operations='+str(ex))
             key_press('ctrl+w')
         
-        message_counter_down_timer(3)
+        message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
             print()
@@ -3816,7 +3807,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             logging.info("Error while Testing Browser Helium functions="+str(ex))
             key_press('ctrl+w') #to close any open browser
 
-        message_counter_down_timer(3)
+        message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
         
         try:
             print("____________________________________________________________")
@@ -3851,11 +3842,11 @@ def clointfusion_self_test():
 
         layout = [ [sg.Text("ClointFusion's First Run Setup",justification='c',font='Courier 18',text_color='orange')],
                 [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='blue')],
-                [sg.T("Please enter your email ID",text_color='white'),sg.In(key='-EMAIL-',text_color='blue')],
-                [sg.T("I am ",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(35,30), key='-ROLE-',text_color='blue')],
+                [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='blue')],
+                [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='blue')],
                 [sg.Text("We will be collecting & using ClointFusion's Self Test Report, to improve ClointFusion",justification='c',text_color='green',font='Courier 12')],
-                [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',justification='c',text_color='red',font='Courier 12')],
-                [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything using keyboard.',justification='c',text_color='red',font='Courier 12')],
+                [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
+                [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
                 [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14')]  ]
 
@@ -3880,6 +3871,9 @@ def clointfusion_self_test():
                 
                     window['Start'].update(disabled=True)
                     window['Close'].update(disabled=True)
+                    window['-NAME-'].update(disabled=True)
+                    window['-EMAIL-'].update(disabled=True)
+                    window['-ROLE-'].update(disabled=True)
                     _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
                     print("Starting ClointFusion's Automated Self Testing Module")
@@ -3908,13 +3902,13 @@ def clointfusion_self_test():
                     from datetime import timedelta
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
-                    my_ip = "Hostname : {}".format(socket.gethostname()) + ", IP Address: " + str(socket.gethostbyname(socket.gethostname())) + " / " + str(get_public_ip())
+                    my_ip = "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                     my_id = values['-NAME-'] + ";" + strEmail + ";" + values['-ROLE-']
                     os_name = str(os_name) + ";" +  str(my_ip) + ";" +  str(my_id)
 
                     URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.705740227={}&submit=Submit'.format(os_name + ";" + str(time_taken),file_contents)
                     webbrowser.open(URL)
-                    message_counter_down_timer(10)
+                    message_counter_down_timer("Closing browser (in seconds)",10)
                     
                     #Ensure to close all browser if left open by this self test
                     time.sleep(2)
@@ -3946,8 +3940,6 @@ EXECUTE_SELF_TEST_NOW,last_updated_date_file = is_execution_required_today('cloi
 
 if EXECUTE_SELF_TEST_NOW :
     try:
-        my_id = "Hostname : {}".format(socket.gethostname()) + ", IP Address: " + str(socket.gethostbyname(socket.gethostname())) + " / " + str(get_public_ip())
-        slack.post(text='Automated Self Test Initiated on {}'.format(my_id))
         clointfusion_self_test()
     except Exception as ex:
         print("Error in Self Test="+str(ex))

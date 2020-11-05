@@ -33,7 +33,6 @@ pathlib == 1.0.1
 PyQt5 == 5.15.1
 email-validator == 1.1.1
 testresources == 2.0.1
-slack-webhook == 1.0.3
 scikit-image == 0.17.2
 pif == 0.8.2
 jupyterlab
