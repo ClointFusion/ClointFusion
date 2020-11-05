@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.8.5"
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+script:
+  - python ClointFusion.py
