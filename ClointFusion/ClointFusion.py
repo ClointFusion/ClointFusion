@@ -165,7 +165,7 @@ def _download_cloint_ico_png():
     except Exception as ex:
         print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
-def show_emoji(strInput=""):
+def show_emoji(strInput="thumbsup"):
     """
     Function which prints Emojis
 
@@ -174,10 +174,7 @@ def show_emoji(strInput=""):
     print("OK",show_emoji('thumbsup'))
     Default: thumbsup
     """
-    if not strInput:
-        return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
-    else:
-        return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
+    return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
 
 def _load_missing_python_packages_windows():
     """
