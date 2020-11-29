@@ -92,7 +92,6 @@ config_folder_path = ""
 log_path = ""
 img_folder_path = ""
 batch_file_path = ""
-config_folder_path = ""
 output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
@@ -378,7 +377,7 @@ def _ask_user_semi_automatic_mode():
     bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
     bot_config_path = Path(bot_config_path)
 
-    if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference[0]).lower() == 'false':
+    if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
 
         layout = [[sg.Text('Do you want me to store GUI responses & use them next time when you run this BOT ?',text_color='orange',font='Courier 13')],
                 [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
@@ -564,15 +563,15 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
         if show_gui:
             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                 [sg.Text('Please choose '),sg.Text(text=oldKey + " (ending with .{})".format(str(Extension_Without_Dot).lower()),font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FILE-', enable_events=True), sg.FileBrowse(file_types=((".{} File".format(Extension_Without_Dot), "*.{}".format(Extension_Without_Dot)),))],
-                [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True, finalize=True,icon=cf_icon_file_path)
 
             while True:
                     event, values = window.read()
-                    if event == sg.WIN_CLOSED or event == 'Close':
+                    if event == sg.WIN_CLOSED or event == 'Cancel':
                         break
-                    if event == 'Done':
+                    if event == 'OK':
                         if values['-FILE-']:
                             break
                         else:
@@ -580,7 +579,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
                             # print("Please enter the values")
             window.close()
 
-            if values and event == 'Done':
+            if values and event == 'OK':
                 values['-KEY-'] = msgForUser
 
                 if str(values['-KEY-']) and str(values['-FILE-']):
@@ -760,12 +759,12 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
                 if multi_select:
                     layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16', text_color='orange')],
                             [sg.Text('Please choose the item(s) from '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Listbox(dropdown_list,size=(30, 5),key='-EXCELCOL-',default_values=oldValue,select_mode=sg.LISTBOX_SELECT_MODE_MULTIPLE,enable_events=True,change_submits=True)],#oldExcelCols
-                            [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                            [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
                 else:
                     layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16', text_color='orange')],
                             [sg.Text('Please choose an item from '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Listbox(dropdown_list,size=(30, 5),key='-EXCELCOL-',default_values=oldValue,select_mode=sg.LISTBOX_SELECT_MODE_SINGLE,enable_events=True,change_submits=True)],#oldExcelCols
-                            [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                            [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
                 window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True, finalize=True,icon=cf_icon_file_path)
 
@@ -776,7 +775,7 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
                         values = []
                         break
 
-                    if event == 'Done':
+                    if event == 'OK':
                         if values and values['-EXCELCOL-']:
                             break
                         else:
@@ -784,7 +783,7 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
 
                 window.close()
 
-                if values and event == 'Done':
+                if values and event == 'OK':
                     values['-KEY-'] = msgForUser
                     
                     if str(values['-KEY-']) and str(values['-EXCELCOL-']):
@@ -831,7 +830,7 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
                     [sg.Text('Sheet Name'), sg.Combo(sheet_namesLst,default_value=oldSheet,size=(20, 0),key="-SHEET-",enable_events=True)], 
                     [sg.Text('Choose the header row'),sg.Spin(values=('0', '1', '2', '3', '4', '5'),initial_value=int(oldHeader),key="-HEADER-",enable_events=True,change_submits=True)],
                     # [sg.Checkbox('Use this excel file for all the excel related operations of this BOT',enable_events=True, key='-USE_THIS_EXCEL-',default=old_Use_This_excel, text_color='yellow')],
-                    [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                    [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
         
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True, finalize=True,icon=cf_icon_file_path)
 
@@ -846,7 +845,7 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
                     values = []
                     break
 
-                if event == 'Done':
+                if event == 'OK':
                     if values and values['-FILEPATH-'] and values['-SHEET-']:
                         break
                     else:
@@ -904,16 +903,16 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
         if show_gui:
             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                 [sg.Text('Please choose '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
-                [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
 
             while True:
                 event, values = window.read()
 
-                if event == sg.WIN_CLOSED or event == 'Close':
+                if event == sg.WIN_CLOSED or event == 'Cancel':
                     break
-                if event == 'Done':
+                if event == 'OK':
                     if values and values['-FOLDER-']:
                         break
                     else:
@@ -921,7 +920,7 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
             
             window.close()
 
-            if values and event == 'Done':
+            if values and event == 'OK':
                 values['-KEY-'] = msgForUser
 
                 if str(values['-KEY-']) and str(values['-FOLDER-']):
@@ -937,6 +936,74 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
 
     except Exception as ex:
         print("Error in gui_get_folder_path_from_user="+str(ex))
+
+def gui_get_workspace_path_from_user():    
+    """
+    Function to accept Workspace folder path from user using GUI. Returns the folderpath value in string format.
+
+    """
+    values = []
+    try:
+        oldValue = ""
+        oldKey = "Please Choose Workspace Folder"
+        show_gui = False
+        existing_value = read_semi_automatic_log(oldKey)
+
+        if existing_value is None:
+            show_gui = True
+
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+            show_gui = True
+            oldValue = existing_value
+            
+        if show_gui:
+            layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
+                [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
+                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=False, text_color='yellow',enable_events=True)],
+                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(os.path.join(config_folder_path, 'Workspace_Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')],
+                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
+
+            window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
+
+            while True:
+                event, values = window.read()
+                if event == '-DONT_ASK_AGAIN-':
+                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                    file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
+                    file_path = Path(file_path)
+                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+                
+                if values and values['-DONT_ASK_AGAIN-']:
+                    window.Element('-DND-').Update(visible=True)
+                elif values and not values['-DONT_ASK_AGAIN-']:
+                    window.Element('-DND-').Update(visible=False)
+                
+                if event == sg.WIN_CLOSED or event == 'Cancel':
+                    break
+                if event == 'OK':
+                    if values and values['-FOLDER-']:
+                        break
+                    else:
+                        message_pop_up("Please enter the required values")
+            
+            window.close()
+
+            if values and event == 'OK':
+                values['-KEY-'] = oldKey
+
+                if str(values['-KEY-']) and str(values['-FOLDER-']):
+                    update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
+            
+                if values is not None:
+                    return str(values['-FOLDER-']).strip()
+            else:
+                return None
+
+        else:
+            return str(existing_value)
+
+    except Exception as ex:
+        print("Error in gui_get_workspace_path_from_user="+str(ex))
 
 def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandatory_field=True):    
     """
@@ -968,18 +1035,18 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
                 layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                     [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue,key='-VALUE-', justification='c',password_char='*')],
                     [sg.Text('This field is mandatory',text_color='red')],
-                    [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                    [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             elif not password and mandatory_field:
                 layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                     [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue,key='-VALUE-', justification='c')],
                     [sg.Text('This field is mandatory',text_color='red')],
-                    [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                    [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             elif not password and not mandatory_field:
                 layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                     [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue,key='-VALUE-', justification='c')],
-                    [sg.Submit('Done',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Close',button_color=('white','firebrick'))]]
+                    [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=True,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
 
@@ -987,7 +1054,7 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
                 
                 event, values = window.read()
 
-                if event == sg.WIN_CLOSED or event == 'Close':
+                if event == sg.WIN_CLOSED or event == 'Cancel':
                     
                     if oldValue or (values and values['-VALUE-']):
                         break
@@ -1001,7 +1068,7 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
                             print("Mandatory field is missing, continuing with None/Empty value")
                             break
                 
-                if event == 'Done':
+                if event == 'OK':
                     if values['-VALUE-']:
                         break
                     else:
@@ -1012,7 +1079,7 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
             
             window.close()
 
-            if values and event == 'Done':
+            if values and event == 'OK':
                 values['-KEY-'] = msgForUser
             
             if values is not None and str(values['-KEY-']) and str(values['-VALUE-']):
@@ -3848,7 +3915,7 @@ def clointfusion_self_test():
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
-                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14')]  ]
+                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.Button('Cancel',button_color=('white','firebrick'),font='Courier 14')]  ]
 
         if os_name == 'windows':
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
@@ -3911,7 +3978,7 @@ def clointfusion_self_test():
                     message_counter_down_timer("Closing browser (in seconds)",10)
                     
                     #Ensure to close all browser if left open by this self test
-                    time.sleep(2)
+                    time.sleep(5)
                     
                     try:
                         key_press('alt+f4')
@@ -3946,7 +4013,15 @@ if EXECUTE_SELF_TEST_NOW :
         _rerun_clointfusion_first_run(str(ex))
         
 else:
-    base_dir = gui_get_folder_path_from_user('Workspace Folder')
+    file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')   
+    file_path = Path(file_path)
+    stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
+
+    if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
+        base_dir = gui_get_workspace_path_from_user()
+
+    else:
+        base_dir = read_semi_automatic_log("Please Choose Workspace Folder")
 
     if base_dir:
         base_dir = os.path.join(base_dir,"ClointFusion_BOT")
@@ -3973,6 +4048,7 @@ else:
 
         update_log_excel_file(bot_name +'- BOT initiated')
         _ask_user_semi_automatic_mode()
+
     else:
         pg.alert('Please re-run & select the Workspace Folder')
         sys.exit(0)
