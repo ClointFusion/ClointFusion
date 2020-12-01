@@ -21,7 +21,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.0.84',
+    version='0.0.85',
     description="Pythonic RPA (Automation) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",

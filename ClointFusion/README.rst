@@ -1,12 +1,17 @@
+============
 ClointFusion
 ============
-
+<img src="https://1.bp.blogspot.com/-bsjlUEdJ35M/X1Wqcpfu9lI/AAAAAAAAAQw/8VKgirD4Uvcgdse3UiAYM1Ci9HbKSGtvwCLcBGAsYHQ/s122/Splash.png">
+============
 Description:
 ============
 
 Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 
 Test Drive ClointFusion on Google Colabs
+========================================
+
+<a href='https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb' target="_blank"><img src='https://colab.research.google.com/assets/colab-badge.svg' alt="Open In Colab\"/></a>
 ========================================
 
 Installation on your local computer
@@ -24,13 +29,13 @@ ClointFusion is now supported in Windows / Ubuntu / macOS !
 3. Install ClointFusion by executing this package in command promt (with
    Admin rights):
 
-   pip install --upgrade ClointFusion
-   ----------------------------------
+pip install --upgrade ClointFusion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 4. Open a new file in your favorite Python IDE and type:
 
-   import ClointFusion as cf
-   -------------------------
+import ClointFusion as cf
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PS: Ubuntu users: May need to install some additional packages: 
 1) sudo apt-get install python3-tk python3-dev
@@ -40,10 +45,10 @@ PS: Ubuntu users: May need to install some additional packages:
 5) sudo apt-get install libgirepository1.0-dev
 
 Now access more than 100 functions (hit ctrl+space in your IDE)
----------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -  6 gui functions, to take any input from user:
-   ---------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.gui\_get\_any\_file\_from\_user() : Generic function to accept
    file path from user using GUI. Returns the filepath value in string
@@ -69,7 +74,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    string format.
 
 -  8 functions on Mouse operations:
-   --------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.mouse\_click() : Clicks at the given X Y Co-ordinates on the
    screen using ingle / double / tripple click(s). Optionally copies
@@ -98,7 +103,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    screen, highlights and clicks it
 
 -  5 functions on Window operations (works only in Windows OS):
-   ------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.window\_show\_desktop() : Minimizes all the applications and shows
    Desktop.
@@ -115,7 +120,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.window\_close\_windows() : Close the desired window.
 
 -  6 functions on Folder operations:
-   ---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.folder\_read\_text\_file() : Reads from a given text file and
    returns entire contents as a single list
@@ -136,7 +141,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    folder
 
 -  20 functions on Excel operations:
-   ---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.excel\_get\_all\_sheet\_names() : Gives you all names of the
    sheets in the given excel sheet.
@@ -200,7 +205,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    excel
 
 -  3 functions on Keyboard operations:
-   -----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.key\_hit\_enter() : Enter key will be pressed once.
 
@@ -210,7 +215,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    (by default) or tab key.
 
 -  2 functions on Screenscraping operations:
-   -----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.scrape\_save\_contents\_to\_notepad : Copy pastes all the
    available text on the screen to notepad and saves it.
@@ -221,7 +226,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    in Citrix applications
 
 -  12 functions on Browser operations:
-   -----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.browser\_get\_html\_text() : Function to get HTML text without
    tags using Beautiful soup
@@ -256,7 +261,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    Functions
 
 -  3 functions on Alert Messages:
-   ------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.message\_counter\_down\_timer() : Function to show count-down
    timer. Default is 5 seconds.
@@ -268,7 +273,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    duration of time with OK button.
 
 -  3 functions on String Operations:
-   ---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.string\_remove\_special\_characters() : Removes all the special
    character.
@@ -280,7 +285,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    input string
 
 -  Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
-   ----------------------------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.launch\_any\_exe\_bat\_application() : Launches any exe or batch
    file or excel file etc.
@@ -338,11 +343,7 @@ ClointFusion's function works in different modes:
    this is expert (Non-GUI) mode. This mode gives you more control over
    the function's parameters.
 
-2) If you do not pass any parameter, GUI would pop-up asking you the
-   required parameters. Next time, when you run the BOT, based upon your
-   configuration, which you get to choose at the beginning of BOT run:
-
-   ::
+2) If you do not pass any parameter, GUI would pop-up asking you the required parameters. Next time, when you run the BOT, based upon your configuration, which you get to choose at the beginning of BOT run:
 
        A) If Semi-Automatic mode is OFF, GUI would pop-up again, showing you the previous entries, allowing you to modify the parameters.
 

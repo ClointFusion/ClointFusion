@@ -3915,7 +3915,7 @@ def clointfusion_self_test():
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
-                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.Button('Cancel',button_color=('white','firebrick'),font='Courier 14')]  ]
+                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14')]  ]
 
         if os_name == 'windows':
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
@@ -3975,10 +3975,10 @@ def clointfusion_self_test():
 
                     URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.705740227={}&submit=Submit'.format(os_name + ";" + str(time_taken),file_contents)
                     webbrowser.open(URL)
-                    message_counter_down_timer("Closing browser (in seconds)",10)
+                    message_counter_down_timer("Closing browser (in seconds)",15)
                     
                     #Ensure to close all browser if left open by this self test
-                    time.sleep(5)
+                    time.sleep(2)
                     
                     try:
                         key_press('alt+f4')
