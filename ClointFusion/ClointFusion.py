@@ -3015,14 +3015,15 @@ def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless
         #options.add_argument("--window-size=1920,1080")
         try:
             start_chrome(url=URL,options=options,headless=headless)
+            _accept_cookies_h()
         except:
             try:
-                start_firefox(url=URL,options=options,headless=headless) #to be tested
+                browser_driver = start_firefox(url=URL) #to be tested
+                browser_driver.maximize_window()
             except Exception as ex: 
                 print('Either Chrome & Forefox is required='+str(ex))
-
         Config.implicit_wait_secs = 120
-        _accept_cookies_h()
+        
     except Exception as ex:
         print("Error in launch_website_h = "+str(ex))
         kill_browser()
@@ -3041,7 +3042,6 @@ def browser_navigate_h(url="",dp=False,dn=True,igc=True,smcp=True,i=False,headle
             launch_website_h(URL=url,dp=dp,dn=dn,igc=igc,smcp=smcp,i=i,headless=headless)
             return
         go_to(url.lower())
-        _accept_cookies_h()
     except Exception as ex:
         print("Error in browser_navigate_h = "+str(ex))
         helium_service_launched = False
