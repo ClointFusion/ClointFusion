@@ -35,5 +35,7 @@ email-validator == 1.1.1
 testresources == 2.0.1
 scikit-image == 0.17.2
 pif == 0.8.2
+pivottablejs == 0.9.0
+ipython == 7.19.0
 jupyterlab
 notebook

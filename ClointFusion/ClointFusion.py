@@ -76,6 +76,8 @@ import pyautogui as pg
 from email_validator import validate_email, EmailNotValidError
 from skimage.metrics import structural_similarity
 import warnings
+from pivottablejs import pivot_ui
+from IPython.display import HTML
 
 os_name = str(platform.system()).lower()
 
@@ -242,6 +244,11 @@ def is_execution_required_today(function_name,execution_type="D",save_todays_dat
     if last_updated_on_date != today_date_month:
         EXECUTE_NOW = True
 
+    try:
+        subprocess.check_call(["attrib","+H", last_updated_date_file]) #hide
+    except:
+        pass
+
     return EXECUTE_NOW,last_updated_date_file
 
 def _welcome_to_clointfusion():
@@ -370,9 +377,6 @@ def _ask_user_semi_automatic_mode():
     file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
     file_path = Path(file_path)
     enable_semi_automatic_mode = _folder_read_text_file(file_path)
-
-    if enable_semi_automatic_mode:
-        enable_semi_automatic_mode = enable_semi_automatic_mode[0]
     
     bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
     bot_config_path = Path(bot_config_path)
@@ -572,7 +576,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
                     if event == sg.WIN_CLOSED or event == 'Cancel':
                         break
                     if event == 'OK':
-                        if values['-FILE-']:
+                        if values and values['-FILE-']:
                             break
                         else:
                             message_pop_up("Please enter the required values")
@@ -864,14 +868,20 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
                     window['-SHEET-'].update(value=values['-SHEET-'])
 
             window.close()
-            values['-KEY-'] = msgForUser
-            
-            concatenated_value = values['-FILEPATH-'] + "," +  values ['-SHEET-'] + "," + values['-HEADER-']
-            
-            if str(values['-KEY-']) and concatenated_value:
-                update_semi_automatic_log(str(values['-KEY-']).strip(),str(concatenated_value))
 
-            return values['-FILEPATH-'] , values ['-SHEET-'] , int(values['-HEADER-'])
+            if values: 
+                values['-KEY-'] = msgForUser
+                
+                concatenated_value = values['-FILEPATH-'] + "," +  values ['-SHEET-'] + "," + values['-HEADER-']
+                
+                if str(values['-KEY-']) and concatenated_value:
+                    update_semi_automatic_log(str(values['-KEY-']).strip(),str(concatenated_value))
+
+                return values['-FILEPATH-'] , values ['-SHEET-'] , int(values['-HEADER-'])
+
+            else:    
+                oldFilePath, oldSheet , oldHeader = str(existing_value).split(",")
+                return oldFilePath, oldSheet , int(oldHeader)
         
         else:
             oldFilePath, oldSheet , oldHeader = str(existing_value).split(",")
@@ -1069,7 +1079,7 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
                             break
                 
                 if event == 'OK':
-                    if values['-VALUE-']:
+                    if values and values['-VALUE-']:
                         break
                     else:
                         if mandatory_field:
@@ -2609,6 +2619,34 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
     if isSearchToBeCleared:
         screen_clear_search()
 
+def excel_drag_drop_pivot_table(excel_path="",sheet_name='Sheet1', header=0,rows=[],cols=[]):
+    try:
+        if not excel_path:
+            excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for Pivot Table Generation')
+            
+        if not rows:
+            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
+            rows = gui_get_dropdownlist_values_from_user('row fields',col_lst,multi_select=True)
+
+        if not cols:
+            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
+            cols = gui_get_dropdownlist_values_from_user('column fields',col_lst,multi_select=True)
+
+        excel_path = Path(excel_path)
+
+        strFileName = excel_path.stem
+        output_file = os.path.join(output_folder_path,strFileName + ".html")
+        output_file = Path(output_file)
+        
+        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header)
+        pivot_ui(df, outfile_path=output_file,rows=rows, cols=cols)
+        
+        HTML(str(output_file))
+        print("Please find the output at {}".format(output_file))
+    
+    except Exception as ex:
+        print("Error in excel_drag_drop_pivot_table="+str(ex))
+
 def mouse_search_snip_return_coordinates_box(img="", conf=0.9, wait=180,region=(0,0,pg.size()[0],pg.size()[1])):
     """
     Searches the given image on the screen and returns the 4 bounds co-ordinates (x,y,w,h)
@@ -3946,7 +3984,7 @@ def clointfusion_self_test():
                     print("Starting ClointFusion's Automated Self Testing Module")
                     print('This may take several minutes to complete...')
                     print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
-                    print('Please sitback & relax till all the test-cases are run...')
+                    print('Please sitback & relax while all the test-cases are run...')
                     print()
 
                     _init_cf_quick_test_log_file(temp_current_working_dir)
