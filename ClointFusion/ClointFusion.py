@@ -3512,93 +3512,150 @@ def capture_snip_now():
             pass
 
 #Windows Objects Functions
-try:    
-    def OpenApp_w(title,program_path_with_name,file_path_with_name="",backend='uia'):    
-        if file_path_with_name:
-            app = Application(backend=backend).start(r'{} "{}"'.format(program_path_with_name, file_path_with_name))
-        else:
-            app = Application(backend=backend).start(program_path_with_name)
-            
-        if title.lower() == "calculator":
-            main_dlg = Desktop(backend=backend).Calculator
-        else:
-            main_dlg = app.window(title_re='.*?' + title + '.*?')
-        time.sleep(1)
-        return app, main_dlg
-except Exception as ex:
-    print("Exception in OpenApp_w : " + str(ex))
-        
-try:
-    def Spy(main_dlg,save=False,file_name_with_path=""):
-        if save and file_name_with_path:
-            main_dlg.print_control_identifiers(filename=file_name_with_path)
-            print("File Saved...")
-        else:
-            main_dlg.print_control_identifiers()
-except Exception as ex:
-    print("Exception in Spy : " + str(ex))
-        
-try:
-    def Mouse_Click_w(main_dlg,title="", auto_id="", control_type=""):
-        main_dlg.set_focus()
-        if title:
-            main_dlg.child_window(title=title).invoke()
-        elif auto_id and control_type:
-            main_dlg.child_window(auto_id=auto_id, control_type='Button').invoke()
-        elif auto_id:
-            main_dlg.child_window(auto_id=auto_id).invoke()
-        else:
-            print("Need \'title\' or \'auto_id\' Parameter for Mouse Click to work")
-            exit()
-except Exception as ex:
-    print("Exception in Mouse_Click_w : " + str(ex))
-        
-try:
-    def Keyboard_Write_w(main_dlg,write,title="", auto_id="", control_type=""):
-        main_dlg.set_focus()
-        if title:
-            main_dlg.child_window(title=title).type_keys(write, with_spaces=True)
-        elif auto_id and control_type:
-            main_dlg.child_window(auto_id=auto_id, control_type='Text').type_keys(write, with_spaces=True)
-        elif auto_id:
-            main_dlg.child_window(auto_id=auto_id).type_keys(write, with_spaces=True)
-        else:
-            main_dlg.type_keys(write, with_spaces=True)
-except Exception as ex:
-    print("Exception in Keyboard_Write_w : " + str(ex))
-        
-try:
-    def Get_Text_w(main_dlg,title="", auto_id="", control_type="", value = False):
-        main_dlg.set_focus()
-        if title:
-            if value:
-                read = main_dlg.child_window(title=title)
-                read = read.legacy_properties()['Value']
+    
+def OpenApp_w(title,program_path_with_name,file_path_with_name="",backend='uia'):  
+    """
+    Open any windows application
+    Parameters : 
+        Title - Title of the application window.
+        program_path_with_name - The full path of the application
+        file_path_with_name - The full path to the file (only if required ex: to open an already saved excel file)
+    """
+    if os_name == 'windows':
+        try:  
+            if file_path_with_name:
+                app = Application(backend=backend).start(r'{} "{}"'.format(program_path_with_name, file_path_with_name))
             else:
-                read = main_dlg.child_window(title=title).window_text()
-            return read
-        elif auto_id and control_type:
-            if value:
-                read = main_dlg.child_window(auto_id=auto_id, control_type='Text')
-                read = read.legacy_properties()['Value']
+                app = Application(backend=backend).start(program_path_with_name)
+                
+            if title.lower() == "calculator":
+                main_dlg = Desktop(backend=backend).Calculator
             else:
-                read = main_dlg.child_window(auto_id=auto_id, control_type='Text').window_text()
-            return read
-        elif auto_id:
-            if value:
-                read = main_dlg.child_window(auto_id=auto_id)
-                read = read.legacy_properties()['Value']
+                main_dlg = app.window(title_re='.*?' + title + '.*?')
+            time.sleep(1)
+            return app, main_dlg
+        except Exception as ex:
+            print("Exception in OpenApp_w : " + str(ex))
+    else:
+        print("Works only on windows OS")
+        
+def Spy(main_dlg,save=False,file_name_with_path=""):
+    """
+    Print or Save all the windows object elements of an application.
+    Parameters : 
+        main_dlg - Main Dialogue Handle returned from OpenApp_w() function.
+        save - True if you want to save.
+        file_name_with_path - new txt file name with path if you want to save)
+    """
+    if os_name == 'windows':
+        try:
+            if save and file_name_with_path:
+                main_dlg.print_control_identifiers(filename=file_name_with_path)
+                print("File Saved...")
             else:
-                read = main_dlg.child_window(auto_id=auto_id).window_text()
-            return read
-        else:
-            if value:
-                read = main_dlg.legacy_properties()['Value']
+                main_dlg.print_control_identifiers()
+        except Exception as ex:
+            print("Exception in Spy : " + str(ex))
+    else:
+        print("Works only on windows OS")
+        
+
+def Mouse_Click_w(main_dlg,title="", auto_id="", control_type=""):
+    """
+    Simulate high level mouse clicks on windows object elements.
+    Parameters : 
+        main_dlg - Main Dialogue Handle returned from OpenApp_w() function.
+        title - Title of the application window.
+        auto_id - Automation ID of the windows object element.
+        control_type - Control type of the windows object element.
+    """
+    if os_name == 'windows':
+        try:
+            main_dlg.set_focus()
+            if title:
+                main_dlg.child_window(title=title).invoke()
+            elif auto_id and control_type:
+                main_dlg.child_window(auto_id=auto_id, control_type='Button').invoke()
+            elif auto_id:
+                main_dlg.child_window(auto_id=auto_id).invoke()
             else:
-                read = main_dlg.window_text()
-            return read
-except Exception as ex:
-    print("Exception in Get_Text_w : " + str(ex))
+                print("Need \'title\' or \'auto_id\' Parameter for Mouse Click to work")
+                exit()
+        except Exception as ex:
+            print("Exception in Mouse_Click_w : " + str(ex))
+    else:
+        print("Works only on windows OS")
+        
+def Keyboard_Write_w(main_dlg,write,title="", auto_id="", control_type=""):
+    """
+    Simulate high level Keypress on windows object elements.
+    Parameters : 
+        main_dlg - Main Dialogue Handle returned from OpenApp_w() function.
+        write - text to write.
+        title - Title of the application window.
+        auto_id - Automation ID of the windows object element.
+        control_type - Control type of the windows object element.
+    """
+    if os_name == 'windows':
+        try:
+            main_dlg.set_focus()
+            if title:
+                main_dlg.child_window(title=title).type_keys(write, with_spaces=True)
+            elif auto_id and control_type:
+                main_dlg.child_window(auto_id=auto_id, control_type='Text').type_keys(write, with_spaces=True)
+            elif auto_id:
+                main_dlg.child_window(auto_id=auto_id).type_keys(write, with_spaces=True)
+            else:
+                main_dlg.type_keys(write, with_spaces=True)
+        except Exception as ex:
+            print("Exception in Keyboard_Write_w : " + str(ex))
+    else:
+        print("Works only on windows OS")
+        
+def Get_Text_w(main_dlg,title="", auto_id="", control_type="", value = False):
+    """
+    Read text from windows object element.
+    Parameters : 
+        main_dlg - Main Dialogue Handle returned from OpenApp_w() function.
+        title - Title of the application window.
+        auto_id - Automation ID of the windows object element.
+        control_type - Control type of the windows object element.
+        Value - True to read  a set of text and false to read another set of text for the same windows object element.
+    """
+    if os_name == 'windows':
+        try:
+            main_dlg.set_focus()
+            if title:
+                if value:
+                    read = main_dlg.child_window(title=title)
+                    read = read.legacy_properties()['Value']
+                else:
+                    read = main_dlg.child_window(title=title).window_text()
+                return read
+            elif auto_id and control_type:
+                if value:
+                    read = main_dlg.child_window(auto_id=auto_id, control_type='Text')
+                    read = read.legacy_properties()['Value']
+                else:
+                    read = main_dlg.child_window(auto_id=auto_id, control_type='Text').window_text()
+                return read
+            elif auto_id:
+                if value:
+                    read = main_dlg.child_window(auto_id=auto_id)
+                    read = read.legacy_properties()['Value']
+                else:
+                    read = main_dlg.child_window(auto_id=auto_id).window_text()
+                return read
+            else:
+                if value:
+                    read = main_dlg.legacy_properties()['Value']
+                else:
+                    read = main_dlg.window_text()
+                return read
+        except Exception as ex:
+            print("Exception in Get_Text_w : " + str(ex))
+    else:
+        print("Works only on windows OS")
 
 
 def ON_semi_automatic_mode():
