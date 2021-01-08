@@ -84,6 +84,18 @@ First time, when you import ClointFusion, you would be prompted to run ClointFus
 
     cf.window_close_windows() :  Close the desired window.
 
+* ## 5 functions on Window Objects (works only in Windows OS):
+
+    cf.win_obj_open_app() : Open any windows application.
+
+    cf.win_obj_get_all_objects() : Print or Save all the windows object elements of an application.
+
+    cf.win_obj_mouse_click() : Simulate high level mouse clicks on windows object elements.
+
+    cf.win_obj_key_press() : Simulate high level Keypress on windows object elements.
+
+    cf.win_obj_get_text() : Read text from windows object element.
+
 * ## 6 functions on Folder operations:
 
     cf.folder_read_text_file() : Reads from a given text file and returns entire contents as a single list
@@ -98,7 +110,7 @@ First time, when you import ClointFusion, you would be prompted to run ClointFus
 
     cf.folder_delete_all_files() : Deletes all the files of the given folder
 
-* ## 20 functions on Excel operations:
+* ## 21 functions on Excel operations:
 
     cf.excel_get_all_sheet_names() : Gives you all names of the sheets in the given excel sheet.
 
@@ -139,6 +151,8 @@ First time, when you import ClointFusion, you would be prompted to run ClointFus
     cf.excel_clean_data() : Cleans our data from lowercase / remove_digits / remove_diacritics / remove_stopwords / remove_whitespace
 
     cf.excel_describe_data() :  Describe statistical data for the given excel
+
+    cf.excel_drag_drop_pivot_table() : Interactive Drag and Drop Pivot Table Generation
 
 
 * ## 3 functions on Keyboard operations:

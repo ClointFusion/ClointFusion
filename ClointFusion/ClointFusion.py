@@ -78,14 +78,9 @@ from skimage.metrics import structural_similarity
 import warnings
 from pivottablejs import pivot_ui
 from IPython.display import HTML
-from pywinauto import Desktop, Application
 
 os_name = str(platform.system()).lower()
-
-#Windows OS specific packages
-if os_name == "windows":
-    from unicodedata import name
-    import pygetwindow as gw    
+    
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
 # 2. All global variables
@@ -117,6 +112,38 @@ ai_processes = []
 helium_service_launched=False
 
 # 3. All function definitions
+
+def _load_missing_python_packages_windows():
+    """
+    Installs Windows OS specific python packages
+    """       
+    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes"] 
+    try:
+        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
+        installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
+        missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
+        if missing_packages:
+            print("{} package(s) are missing".format(missing_packages)) 
+            
+            if "comtypes" in missing_packages:
+                os.system("{} -m pip install comtypes==1.1.7".format(sys.executable))
+            else:
+                os.system("{} -m pip install --upgrade pip".format(sys.executable))
+            
+            cmd = "pip install --upgrade {}".format(missing_packages)
+            print(cmd)
+            os.system(cmd) 
+
+    except Exception as ex:
+        print("Error in _load_missing_python_packages_windows="+str(ex))
+
+#Windows OS specific packages
+if os_name == 'windows':
+    _load_missing_python_packages_windows()
+
+    from unicodedata import name
+    import pygetwindow as gw  
+    from pywinauto import Desktop, Application
 
 #decorator to push a function to background using asyncio
 def background(f):
@@ -180,28 +207,6 @@ def show_emoji(strInput=""):
         return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
     else:
         return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
-
-def _load_missing_python_packages_windows():
-    """
-    Installs Windows OS specific python packages
-    """       
-    list_of_required_packages = ["pywin32","PyGetWindow"]
-
-    try:
-        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
-        installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
-        missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
-        if missing_packages:
-            print("{} package(s) are missing".format(missing_packages)) 
-            
-            os.system("{} -m pip install --upgrade pip".format(sys.executable))
-            
-            cmd = "pip install --upgrade {}".format(missing_packages)
-            print(cmd)
-            os.system(cmd) 
-
-    except Exception as ex:
-        print("Error in _load_missing_python_packages_windows="+str(ex))
 
 def is_execution_required_today(function_name,execution_type="D",save_todays_date_month=False):
     """
@@ -3513,7 +3518,7 @@ def capture_snip_now():
 
 #Windows Objects Functions
     
-def OpenApp_w(title,program_path_with_name,file_path_with_name="",backend='uia'):  
+def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend='uia'):  
     """
     Open any windows application
     Parameters : 
@@ -3535,11 +3540,11 @@ def OpenApp_w(title,program_path_with_name,file_path_with_name="",backend='uia')
             time.sleep(1)
             return app, main_dlg
         except Exception as ex:
-            print("Exception in OpenApp_w : " + str(ex))
+            print("Exception in win_obj_open_app : " + str(ex))
     else:
         print("Works only on windows OS")
         
-def Spy(main_dlg,save=False,file_name_with_path=""):
+def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
     """
     Print or Save all the windows object elements of an application.
     Parameters : 
@@ -3555,12 +3560,12 @@ def Spy(main_dlg,save=False,file_name_with_path=""):
             else:
                 main_dlg.print_control_identifiers()
         except Exception as ex:
-            print("Exception in Spy : " + str(ex))
+            print("Exception in win_obj_get_all_objects : " + str(ex))
     else:
         print("Works only on windows OS")
         
 
-def Mouse_Click_w(main_dlg,title="", auto_id="", control_type=""):
+def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
     """
     Simulate high level mouse clicks on windows object elements.
     Parameters : 
@@ -3582,11 +3587,11 @@ def Mouse_Click_w(main_dlg,title="", auto_id="", control_type=""):
                 print("Need \'title\' or \'auto_id\' Parameter for Mouse Click to work")
                 exit()
         except Exception as ex:
-            print("Exception in Mouse_Click_w : " + str(ex))
+            print("Exception in win_obj_mouse_click : " + str(ex))
     else:
         print("Works only on windows OS")
         
-def Keyboard_Write_w(main_dlg,write,title="", auto_id="", control_type=""):
+def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
     """
     Simulate high level Keypress on windows object elements.
     Parameters : 
@@ -3608,11 +3613,11 @@ def Keyboard_Write_w(main_dlg,write,title="", auto_id="", control_type=""):
             else:
                 main_dlg.type_keys(write, with_spaces=True)
         except Exception as ex:
-            print("Exception in Keyboard_Write_w : " + str(ex))
+            print("Exception in win_obj_key_press : " + str(ex))
     else:
         print("Works only on windows OS")
         
-def Get_Text_w(main_dlg,title="", auto_id="", control_type="", value = False):
+def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = False):
     """
     Read text from windows object element.
     Parameters : 
@@ -3653,10 +3658,9 @@ def Get_Text_w(main_dlg,title="", auto_id="", control_type="", value = False):
                     read = main_dlg.window_text()
                 return read
         except Exception as ex:
-            print("Exception in Get_Text_w : " + str(ex))
+            print("Exception in win_obj_get_text : " + str(ex))
     else:
         print("Works only on windows OS")
-
 
 def ON_semi_automatic_mode():
     """
@@ -4094,9 +4098,9 @@ def clointfusion_self_test():
     try:
 
         layout = [ [sg.Text("ClointFusion's First Run Setup",justification='c',font='Courier 18',text_color='orange')],
-                [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='blue')],
-                [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='blue')],
-                [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='blue')],
+                [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='black')],
+                [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='black')],
+                [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='black')],
                 [sg.Text("We will be collecting & using ClointFusion's Self Test Report, to improve ClointFusion",justification='c',text_color='green',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
@@ -4238,9 +4242,6 @@ else:
     else:
         pg.alert('Please re-run & select the Workspace Folder')
         sys.exit(0)
-
-if os_name == 'windows':
-    _load_missing_python_packages_windows()
 
 # ########################
 

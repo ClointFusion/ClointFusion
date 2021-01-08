@@ -102,6 +102,19 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.mouse\_find\_highlight\_click() : Searches the given text on the
    screen, highlights and clicks it
 
+-  5 functions on Window Objects (works only in Windows OS):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    cf.win\_obj\_open\_app() : Open any windows application.
+
+    cf.win\_obj\_get\_all\_objects() : Print or Save all the windows object elements of an application.
+
+    cf.win\_obj\_mouse\_click() : Simulate high level mouse clicks on windows object elements.
+
+    cf.win\_obj\_key\_press() : Simulate high level Keypress on windows object elements.
+
+    cf.win\_obj\_get\_text() : Read text from windows object element.
+
 -  5 functions on Window operations (works only in Windows OS):
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -204,6 +217,8 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.excel\_describe\_data() : Describe statistical data for the given
    excel
 
+   cf.excel\_drag\_drop\_pivot\_table() : Interactive Drag and Drop Pivot Table Generation
+   
 -  3 functions on Keyboard operations:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
