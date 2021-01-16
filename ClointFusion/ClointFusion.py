@@ -17,14 +17,12 @@ import platform
 import urllib.request
 import emoji
 from pandas.core.algorithms import mode
-from xlrd.formula import colname
 from datetime import datetime
 import pyautogui as pg
 import time
 import pandas as pd
 import keyboard as kb
 import PySimpleGUI as sg
-import xlrd
 import numpy
 import openpyxl as op
 from openpyxl import Workbook
@@ -40,7 +38,6 @@ import base64
 import imutils
 import clipboard
 import re
-from openpyxl import load_workbook
 from openpyxl.styles import Font
 from matplotlib.pyplot import axis
 import plotly.express as px
@@ -102,8 +99,8 @@ browser_driver = ""
 
 cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
 cf_logo_file_path = Path(os.path.join(current_working_dir,"Cloint-LOGO.PNG"))
-ss_path_b = Path(os.path.join(config_folder_path,"my_screen_shot_before.png")) #before search
-ss_path_a = Path(os.path.join(config_folder_path,"my_screen_shot_after.png")) #after search
+ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
+ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
 
 enable_semi_automatic_mode = False
 Browser_Service_Started = False
@@ -131,7 +128,7 @@ def _load_missing_python_packages_windows():
                 os.system("{} -m pip install --upgrade pip".format(sys.executable))
             
             cmd = "pip install --upgrade {}".format(missing_packages)
-            print(cmd)
+            # print(cmd)
             os.system(cmd) 
 
     except Exception as ex:
@@ -142,9 +139,8 @@ if os_name == 'windows':
     _load_missing_python_packages_windows()
 
     from unicodedata import name
-    import pygetwindow as gw  
-    from pywinauto import Desktop, Application
-
+    import pygetwindow as gw 
+    
 #decorator to push a function to background using asyncio
 def background(f):
     """
@@ -461,7 +457,7 @@ def read_semi_automatic_log(key):
     """
     try:
         if config_folder_path:
-            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
+            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsxx")
             bot_config_path = Path(bot_config_path)
         else:
             bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
@@ -473,7 +469,7 @@ def read_semi_automatic_log(key):
                 df.to_excel(writer, sheet_name='Sheet1', index=False)
                 writer.save()
 
-        df = pd.read_excel(bot_config_path)
+        df = pd.read_excel(bot_config_path,engine='openpyxl')
         value = df[df['KEY'] == key]['VALUE'].to_list()
         value = str(value[0])
         return value
@@ -488,9 +484,9 @@ def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols=""
     try:
         
         if usecols:
-            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header, usecols=usecols)
+            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header, usecols=usecols,engine='openpyxl')
         else:
-            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header)
+            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header,engine='openpyxl')
         
         if value in df.values:
             df = ''
@@ -500,7 +496,8 @@ def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols=""
             return False
 
     except Exception as ex:
-        print("Error in _excel_if_value_exists="+str(ex))
+        # print("Error in _excel_if_value_exists="+str(ex))
+        return False
 
 def message_pop_up(strMsg="",delay=3):
     """
@@ -529,19 +526,19 @@ def update_semi_automatic_log(key, value):
             bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
         
         bot_config_path = Path(bot_config_path)
-
+        
         if _excel_if_value_exists(bot_config_path,usecols=['KEY'],value=key):
-            df = pd.read_excel(bot_config_path)
+            df = pd.read_excel(bot_config_path,engine='openpyxl')
             row_index = df.index[df['KEY'] == key].tolist()[0]
             
             df.loc[row_index,'VALUE'] = value
             df.to_excel(bot_config_path,index=False)
         else:
-            reader = pd.read_excel(bot_config_path)
+            reader = pd.read_excel(bot_config_path,engine='openpyxl')
             
             df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
-            writer = pd.ExcelWriter(bot_config_path, engine='openpyxl')
-            writer.book = load_workbook(bot_config_path)
+            writer = pd.ExcelWriter(bot_config_path)
+            writer.book = load_workbook(str(bot_config_path),data_only=True)
             writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
         
             df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
@@ -654,8 +651,8 @@ def excel_get_all_sheet_names(excelFilePath=""):
         if not excelFilePath:
             excelFilePath = gui_get_any_file_from_user("xlsx")
 
-        xls = xlrd.open_workbook(excelFilePath, on_demand=True)
-        return xls.sheet_names()
+        wb = load_workbook(excelFilePath)
+        return wb.sheetnames
     except Exception as ex:
         print("Error in excel_get_all_sheet_names="+str(ex))
     
@@ -836,7 +833,7 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
             oldFilePath, oldSheet , oldHeader = str(oldValue).split(",")
     
             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16', text_color='orange')],
-                    [sg.Text('Please choose the excel '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldFilePath,key="-FILEPATH-",enable_events=True,change_submits=True), sg.FileBrowse(file_types=(("Excel File", "*.xls"),("Excel File", "*.xlsx")))], 
+                    [sg.Text('Please choose the excel '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldFilePath,key="-FILEPATH-",enable_events=True,change_submits=True), sg.FileBrowse(file_types=(("Excel File", "*.xlsx"),("Excel File", "*.xlsx")))], 
                     [sg.Text('Sheet Name'), sg.Combo(sheet_namesLst,default_value=oldSheet,size=(20, 0),key="-SHEET-",enable_events=True)], 
                     [sg.Text('Choose the header row'),sg.Spin(values=('0', '1', '2', '3', '4', '5'),initial_value=int(oldHeader),key="-HEADER-",enable_events=True,change_submits=True)],
                     # [sg.Checkbox('Use this excel file for all the excel related operations of this BOT',enable_events=True, key='-USE_THIS_EXCEL-',default=old_Use_This_excel, text_color='yellow')],
@@ -959,40 +956,41 @@ def gui_get_workspace_path_from_user():
 
     """
     values = []
+    ret_value = ""
     try:
         oldValue = ""
         oldKey = "Please Choose Workspace Folder"
         show_gui = False
         existing_value = read_semi_automatic_log(oldKey)
-
         if existing_value is None:
             show_gui = True
 
         if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
             show_gui = True
             oldValue = existing_value
-            
+
         if show_gui:
             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                 [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
                 [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=False, text_color='yellow',enable_events=True)],
-                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(os.path.join(config_folder_path, 'Workspace_Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')],
+                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(current_working_dir) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
                 [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
-
+            
             while True:
                 event, values = window.read()
+
                 if event == '-DONT_ASK_AGAIN-':
                     stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
                     file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
                     file_path = Path(file_path)
                     _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
                 
-                if values and values['-DONT_ASK_AGAIN-']:
-                    window.Element('-DND-').Update(visible=True)
-                elif values and not values['-DONT_ASK_AGAIN-']:
-                    window.Element('-DND-').Update(visible=False)
+                    if values and values['-DONT_ASK_AGAIN-']:
+                        window['-DND-'](visible=True)
+                    elif values and not values['-DONT_ASK_AGAIN-']:
+                        window['-DND-'](visible=False)
                 
                 if event == sg.WIN_CLOSED or event == 'Cancel':
                     break
@@ -1003,7 +1001,7 @@ def gui_get_workspace_path_from_user():
                         message_pop_up("Please enter the required values")
             
             window.close()
-
+            
             if values and event == 'OK':
                 values['-KEY-'] = oldKey
 
@@ -1011,13 +1009,14 @@ def gui_get_workspace_path_from_user():
                     update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
             
                 if values is not None:
-                    return str(values['-FOLDER-']).strip()
+                    ret_value = str(values['-FOLDER-']).strip()
+            
             else:
-                return None
-
+                ret_value = None
         else:
-            return str(existing_value)
-
+            ret_value = str(existing_value)
+            
+        return ret_value
     except Exception as ex:
         print("Error in gui_get_workspace_path_from_user="+str(ex))
 
@@ -1121,7 +1120,7 @@ def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
         if not excel_path:
             excel_path,sheet_name,header = gui_get_excel_sheet_header_from_user('to all header columns as a list')
 
-        col_lst = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,nrows=1,dtype=str).columns.tolist()
+        col_lst = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,nrows=1,dtype=str,engine='openpyxl').columns.tolist()
         return col_lst
     except Exception as ex:
         print("Error in excel_get_all_header_columns="+str(ex))
@@ -1134,8 +1133,7 @@ def _extract_filename_from_filepath(strFilePath=""):
         try:
             strFileName = Path(strFilePath).name
             strFileName = str(strFileName).split(".")[0]
-            # strFileName = strFilePath[strFilePath.rindex("\\") + 1 : ]
-            # strFileName = strFileName.split(".")[0]
+
             return strFileName
         except Exception as ex:
             print("Error in _extract_filename_from_filepath="+str(ex))
@@ -1246,9 +1244,9 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
             value = gui_get_any_input_from_user('VALUE to be searched')
         
         if usecols:
-            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header, usecols=usecols)
+            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header, usecols=usecols,engine='openpyxl')
         else:
-            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header)
+            df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header,engine='openpyxl')
         
         if value in df.values:
             df = ''
@@ -1664,11 +1662,11 @@ def update_log_excel_file(message=""):
             message = gui_get_any_input_from_user("message to Update Log file")
 
         df = pd.DataFrame({'Timestamp': [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")], 'Status':[message]})
+
         writer = pd.ExcelWriter(status_log_excel_filepath, engine='openpyxl')
-        writer.book = load_workbook(status_log_excel_filepath)
+        writer.book = load_workbook(status_log_excel_filepath,data_only=True,keep_links=False)
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-    
-        reader = pd.read_excel(status_log_excel_filepath)
+        reader = pd.read_excel(status_log_excel_filepath,engine='openpyxl')        
         df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
         writer.save()
 
@@ -1757,7 +1755,7 @@ def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user("to get row/column count")
             
-        df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header)
+        df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header,engine='openpyxl')
         row, col = df.shape
         row = row + 1
         return row, col
@@ -1914,7 +1912,7 @@ def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=
             col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
             columnName = gui_get_dropdownlist_values_from_user('this list of Columns (to split)',col_lst)
 
-        data_df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,dtype=str)
+        data_df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,dtype=str,engine='openpyxl')
         
         grouped_df = data_df.groupby(columnName)
         
@@ -1995,7 +1993,7 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
             file_path = os.path.join(input_folder_path,file1)
             file_path = Path(file_path)
             
-            all_excel_file = pd.read_excel(file_path,dtype=str)
+            all_excel_file = pd.read_excel(file_path,dtype=str,engine='openpyxl')
             all_excel_file_lst.append(all_excel_file)
 
         appended_df = pd.concat(all_excel_file_lst)
@@ -2020,7 +2018,7 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
             col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
             columnsToBeDropped = gui_get_dropdownlist_values_from_user('columns list to drop',col_lst) 
 
-        df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header) 
+        df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header,engine='openpyxl') 
 
         if isinstance(columnsToBeDropped, list):
             df.drop(columnsToBeDropped, axis = 1, inplace = True) 
@@ -2054,7 +2052,7 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
                 firstColumnToBeSorted , secondColumnToBeSorted = usecols
             elif len(usecols) == 1:
                 firstColumnToBeSorted = usecols[0]
-        df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header)
+        df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header,engine='openpyxl')
         if thirdColumnToBeSorted is not None and secondColumnToBeSorted is not None and firstColumnToBeSorted is not None:
             df=df.sort_values([firstColumnToBeSorted,secondColumnToBeSorted,thirdColumnToBeSorted],ascending=[firstColumnSortType,secondColumnSortType,thirdColumnSortType])
         
@@ -2085,7 +2083,7 @@ def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('to clear the sheet')
 
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header) 
+        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl') 
         df = df.head(0)
 
         with pd.ExcelWriter(excel_path) as writer:
@@ -2109,7 +2107,7 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
         if not setText:
             setText = gui_get_any_input_from_user("text value to set the cell")
 
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header)
+        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
         
         writer = pd.ExcelWriter(excel_path, engine='openpyxl')
         writer.book = load_workbook(excel_path)
@@ -2139,7 +2137,7 @@ def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName
         if not isinstance(columnName, list):
             columnName = [columnName]       
 
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={columnName[0]})
+        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={columnName[0]},engine='openpyxl')
         cellValue = df.at[cellNumber,columnName[0]]
         return cellValue
     except Exception as ex:
@@ -2157,7 +2155,7 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
             col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
             columnName = gui_get_dropdownlist_values_from_user('list of columns to remove duplicates',col_lst)  
     
-        df = pd.read_excel(excel_path, sheet_name=sheet_name,header=header) 
+        df = pd.read_excel(excel_path, sheet_name=sheet_name,header=header,engine='openpyxl') 
 
         count = 0 
         if saveResultsInSameExcel:
@@ -2192,8 +2190,8 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
             col_lst = excel_get_all_header_columns(filepath_1, sheet_name_1, header_1)
             match_column_name = gui_get_dropdownlist_values_from_user('Vlookup column name to be matched',col_lst,multi_select=False) 
             match_column_name = match_column_name[0]
-        df1 = pd.read_excel(filepath_1, sheet_name = sheet_name_1, header = header_1)
-        df2 = pd.read_excel(filepath_2, sheet_name = sheet_name_2, header = header_2)
+        df1 = pd.read_excel(filepath_1, sheet_name = sheet_name_1, header = header_1,engine='openpyxl')
+        df2 = pd.read_excel(filepath_2, sheet_name = sheet_name_2, header = header_2,engine='openpyxl')
 
         df = pd.merge(df1, df2, on= match_column_name, how = how)
 
@@ -2644,7 +2642,7 @@ def excel_drag_drop_pivot_table(excel_path="",sheet_name='Sheet1', header=0,rows
         output_file = os.path.join(output_folder_path,strFileName + ".html")
         output_file = Path(output_file)
         
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header)
+        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
         pivot_ui(df, outfile_path=output_file,rows=rows, cols=cols)
         
         HTML(str(output_file))
@@ -2869,9 +2867,9 @@ def excel_draw_charts(excel_path="",sheet_name='Sheet1', header=0, x_col="", y_c
 
         if x_col and y_col:
             if color:
-                df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={x_col,y_col,color})
+                df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={x_col,y_col,color},engine='openpyxl')
             else:
-                df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={x_col,y_col})
+                df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={x_col,y_col},engine='openpyxl')
 
             fig = go.Figure()
 
@@ -2995,7 +2993,7 @@ def excel_geotag_using_zipcodes(excel_path="",sheet_name='Sheet1',header=0,zoom_
         if color_boolean_column:
             use_cols.append(color_boolean_column)
 
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols=use_cols)
+        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols=use_cols,engine='openpyxl')
         
         for _, row in df.iterrows():
             if not pd.isna(row[zip_code_column]) and str(row[zip_code_column]).isnumeric():
@@ -3251,7 +3249,7 @@ def excel_clean_data(excel_path="",sheet_name='Sheet1',header=0,column_to_be_cle
             column_to_be_cleaned = column_to_be_cleaned[0]
 
         if column_to_be_cleaned:
-            df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header)
+            df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
 
             new_column_name = "Clean_" + column_to_be_cleaned
 
@@ -3322,7 +3320,7 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user("to Statistically Describe excel data")
             
-        df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header)
+        df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header,engine='openpyxl')
 
         #user_option_lst = ['Numerical','String','Both']
 
@@ -3430,7 +3428,7 @@ def convert_csv_to_excel(csv_path="",sep=""):
         excel_file_path = Path(excel_file_path)
         writer = pd.ExcelWriter(excel_file_path)
 
-        df=pd.read_csv(csv_path,sep=sep)
+        df=pd.read_csv(csv_path,sep=sep,engine='openpyxl')
         df.to_excel(writer, sheet_name='Sheet1', index=False)
 
         writer.save()
@@ -3519,6 +3517,8 @@ def capture_snip_now():
 #Windows Objects Functions
     
 def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend='uia'):  
+    from pywinauto import Desktop, Application
+
     """
     Open any windows application
     Parameters : 
@@ -3545,6 +3545,8 @@ def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend
         print("Works only on windows OS")
         
 def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
+    from pywinauto import Desktop, Application
+
     """
     Print or Save all the windows object elements of an application.
     Parameters : 
@@ -3566,6 +3568,8 @@ def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
         
 
 def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
+    from pywinauto import Desktop, Application
+
     """
     Simulate high level mouse clicks on windows object elements.
     Parameters : 
@@ -3592,6 +3596,8 @@ def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
         print("Works only on windows OS")
         
 def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
+    from pywinauto import Desktop, Application
+
     """
     Simulate high level Keypress on windows object elements.
     Parameters : 
@@ -3618,6 +3624,8 @@ def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
         print("Works only on windows OS")
         
 def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = False):
+    from pywinauto import Desktop, Application
+
     """
     Read text from windows object element.
     Parameters : 
@@ -4098,9 +4106,9 @@ def clointfusion_self_test():
     try:
 
         layout = [ [sg.Text("ClointFusion's First Run Setup",justification='c',font='Courier 18',text_color='orange')],
-                [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='black')],
-                [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='black')],
-                [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='black')],
+                [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='orange')],
+                [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
+                [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
                 [sg.Text("We will be collecting & using ClointFusion's Self Test Report, to improve ClointFusion",justification='c',text_color='green',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
@@ -4206,7 +4214,7 @@ else:
     file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')   
     file_path = Path(file_path)
     stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
-
+    
     if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
         base_dir = gui_get_workspace_path_from_user()
 

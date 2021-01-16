@@ -12,7 +12,7 @@ Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 
 # ClointFusion is now supported in Windows / Ubuntu / macOS !
 
-1. Please install Python 3.8.5 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.8.5 64 Bit</a>
+1. Please install Python 3.9.1 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.1 64 Bit</a>
 
 2. It is recommended to run ClointFusion in a Virtual Environment.
 Please refer these steps to create one, as per your OS: <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment" target="_blank">Creating a virtual environment in Windows / Mac / Ubuntu</a>

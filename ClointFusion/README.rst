@@ -20,7 +20,7 @@ Installation on your local computer
 ClointFusion is now supported in Windows / Ubuntu / macOS !
 ===========================================================
 
-1. Please install Python 3.8.5 with 64 bit: Python 3.8.5 64 Bit
+1. Please install Python 3.9.1 with 64 bit
 
 2. It is recommended to run ClointFusion in a Virtual Environment.
    Please refer these steps to create one, as per your OS: Creating a
