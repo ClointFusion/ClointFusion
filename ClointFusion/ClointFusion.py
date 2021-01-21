@@ -10,6 +10,7 @@
 
 # 1. All imports
 
+
 import subprocess
 import os
 import sys
@@ -457,19 +458,20 @@ def read_semi_automatic_log(key):
     """
     try:
         if config_folder_path:
-            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsxx")
+            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
             bot_config_path = Path(bot_config_path)
         else:
             bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
             bot_config_path = Path(bot_config_path)
-
+            
             if not os.path.exists(bot_config_path):
                 df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
                 writer = pd.ExcelWriter(bot_config_path)
                 df.to_excel(writer, sheet_name='Sheet1', index=False)
                 writer.save()
-
+        
         df = pd.read_excel(bot_config_path,engine='openpyxl')
+        
         value = df[df['KEY'] == key]['VALUE'].to_list()
         value = str(value[0])
         return value
@@ -560,10 +562,10 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
 
-        if existing_value is None:
-            show_gui = True
+        # if existing_value is None:
+        #     show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -663,6 +665,7 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
     """
     CONTINUE = True
     layout = [[sg.Text(strMsg,justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
+            [sg.Image(filename = cf_logo_file_path,size=(60,60))],
             [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
 
     window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_file_path)
@@ -701,10 +704,10 @@ def gui_get_consent_from_user(msgForUser="Continue ?"):
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
 
-        if existing_value is None:
-            show_gui = True
+        # if existing_value is None:
+        #     show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' :# and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -755,10 +758,10 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
             show_gui = False
             existing_value = read_semi_automatic_log(msgForUser)
             
-            if existing_value is None:
-                show_gui = True
+            # if existing_value is None:
+            #     show_gui = True
 
-            if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+            if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
                 show_gui = True
                 oldValue = existing_value
                 
@@ -822,10 +825,10 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
         
-        if existing_value is None:
-            show_gui = True
+        # if existing_value is None:
+        #     show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -906,10 +909,10 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
 
-        if existing_value is None:
-            show_gui = True
+        # if existing_value is None:
+        #     show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' :# and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -962,10 +965,11 @@ def gui_get_workspace_path_from_user():
         oldKey = "Please Choose Workspace Folder"
         show_gui = False
         existing_value = read_semi_automatic_log(oldKey)
-        if existing_value is None:
-            show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+        # if existing_value is None:
+        #     show_gui = True
+
+        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
             show_gui = True
             oldValue = existing_value
 
@@ -1020,7 +1024,8 @@ def gui_get_workspace_path_from_user():
     except Exception as ex:
         print("Error in gui_get_workspace_path_from_user="+str(ex))
 
-def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandatory_field=True):    
+def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_line=False,mandatory_field=True):   
+    import cryptocode 
     """
     Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.
     Please use unique message (key) for each value.
@@ -1033,35 +1038,49 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
         oldKey = msgForUser
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
-
+        
         if existing_value == "nan":
             existing_value = None
             
-        if existing_value is None:
-            show_gui = True
-
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+        # if existing_value is None:
+        #     show_gui = True
+        
+        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
             show_gui = True
             oldValue = existing_value
-            
+        
         layout = ""
         if show_gui:
             if password:
                 layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
-                    [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue,key='-VALUE-', justification='c',password_char='*')],
+                    [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=str(cryptocode.decrypt(oldValue, "ClointFusion")).strip(),key='-VALUE-', justification='c',password_char='*')],
                     [sg.Text('This field is mandatory',text_color='red')],
                     [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
-            elif not password and mandatory_field:
+            elif not password and mandatory_field and multi_line:
+                layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
+                    [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.MLine(default_text=oldValue,key='-VALUE-', size=(40,8),justification='l')],
+                    [sg.Text('This field is mandatory',text_color='red')],
+                    [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
+
+            elif not password and mandatory_field and not multi_line:
                 layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                     [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue,key='-VALUE-', justification='c')],
                     [sg.Text('This field is mandatory',text_color='red')],
                     [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
-            elif not password and not mandatory_field:
+            elif not password and not mandatory_field and multi_line:
+                layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
+                    [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.MLine(default_text=oldValue,key='-VALUE-',size=(40,8), justification='l')],
+                    [sg.Text('You may leave this field empty',text_color='orange')],
+                    [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
+
+            elif not password and not mandatory_field and not multi_line:
                 layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                     [sg.Text('Please enter '),sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue,key='-VALUE-', justification='c')],
+                    [sg.Text('You may leave this field empty',text_color='orange')],
                     [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
+
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=True,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
 
@@ -1098,7 +1117,10 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,mandato
                 values['-KEY-'] = msgForUser
             
             if values is not None and str(values['-KEY-']) and str(values['-VALUE-']):
-                update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-VALUE-']).strip())
+                if password:
+                    update_semi_automatic_log(str(values['-KEY-']).strip(),cryptocode.encrypt(str(values['-VALUE-']).strip(),"ClointFusion"))
+                else:
+                    update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-VALUE-']).strip())
 
             if values is not None and str(values['-VALUE-']):
                 return str(values['-VALUE-']).strip()
@@ -3029,6 +3051,7 @@ def _accept_cookies_h():
         print("Error in _accept_cookies_h="+str(ex))
     
 def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
+    status = False
     try:
         """
         Internal function to launch browser.
@@ -3058,18 +3081,24 @@ def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless
         try:
             start_chrome(url=URL,options=options,headless=headless)
             _accept_cookies_h()
+            status = True
         except:
             try:
                 browser_driver = start_firefox(url=URL) #to be tested
                 browser_driver.maximize_window()
+                status = True
             except Exception as ex: 
-                print('Either Chrome & Forefox is required='+str(ex))
+                print('Cannot continue. Compatible Chrome or Forefox is missing. '+ str(ex))
+
         Config.implicit_wait_secs = 120
         
     except Exception as ex:
         print("Error in launch_website_h = "+str(ex))
         kill_browser()
         helium_service_launched = False
+
+    finally:
+        return status
     
 def browser_navigate_h(url="",dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
     try:
