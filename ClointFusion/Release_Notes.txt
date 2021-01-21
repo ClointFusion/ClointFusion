@@ -1,7 +1,0 @@
-1) ClointFusion version 0.0.89 released. 
-Notes:
-    1) GUI's password is now encrypted & stored. Decrypted when required to use.
-    2) GUI can now accept Multi-line/Paragraph text as input
-    3) Countdown timer shows mini ClointFusion Logo
-    4) launch_website returns status as True/False
-    5) Bug related Semi-Automatic mode is fixed now

@@ -76,6 +76,7 @@ from skimage.metrics import structural_similarity
 import warnings
 from pivottablejs import pivot_ui
 from IPython.display import HTML
+import imagehash
 
 os_name = str(platform.system()).lower()
     
@@ -313,7 +314,7 @@ def _create_status_log_file(xtLogFilePath):
     try:
         if not os.path.exists(xtLogFilePath):
             df = pd.DataFrame({'Timestamp': [], 'Status':[]})
-            writer = pd.ExcelWriter(xtLogFilePath)
+            writer = pd.ExcelWriter(xtLogFilePath) # pylint: disable=abstract-class-instantiated
             df.to_excel(writer, sheet_name='Sheet1', index=False)
             writer.save()
     except Exception as ex:
@@ -421,7 +422,7 @@ def _ask_user_semi_automatic_mode():
 
         if not os.path.exists(bot_config_path):
             df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-            writer = pd.ExcelWriter(bot_config_path)
+            writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
             df.to_excel(writer, sheet_name='Sheet1', index=False)
             writer.save()
             
@@ -466,7 +467,7 @@ def read_semi_automatic_log(key):
             
             if not os.path.exists(bot_config_path):
                 df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-                writer = pd.ExcelWriter(bot_config_path)
+                writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
                 df.to_excel(writer, sheet_name='Sheet1', index=False)
                 writer.save()
         
@@ -497,7 +498,7 @@ def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols=""
             df = ''
             return False
 
-    except Exception as ex:
+    except Exception:
         # print("Error in _excel_if_value_exists="+str(ex))
         return False
 
@@ -539,7 +540,7 @@ def update_semi_automatic_log(key, value):
             reader = pd.read_excel(bot_config_path,engine='openpyxl')
             
             df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
-            writer = pd.ExcelWriter(bot_config_path)
+            writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
             writer.book = load_workbook(str(bot_config_path),data_only=True)
             writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
         
@@ -673,7 +674,7 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
     current_value = start_value + 1
 
     while True:
-        event, values = window.read(timeout=2)
+        event, _ = window.read(timeout=2)
         current_value = current_value - 1
         time.sleep(1)
             
@@ -1685,7 +1686,7 @@ def update_log_excel_file(message=""):
 
         df = pd.DataFrame({'Timestamp': [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")], 'Status':[message]})
 
-        writer = pd.ExcelWriter(status_log_excel_filepath, engine='openpyxl')
+        writer = pd.ExcelWriter(status_log_excel_filepath, engine='openpyxl') # pylint: disable=abstract-class-instantiated
         writer.book = load_workbook(status_log_excel_filepath,data_only=True,keep_links=False)
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
         reader = pd.read_excel(status_log_excel_filepath,engine='openpyxl')        
@@ -1800,7 +1801,7 @@ def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, 
     """
     try:
         if not excel_path:
-            excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('to copy range from')
+            excel_path, sheet_name, _ = gui_get_excel_sheet_header_from_user('to copy range from')
             
         if startCol == 0 and startRow ==0 and endCol == 0 and endRow == 0:
             sRow_sCol_eRow_Col = gui_get_any_input_from_user('startRow , startCol, endRow, endCol (comma separated, index from 1)')    
@@ -1845,7 +1846,7 @@ def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', sta
                 copiedData = excel_copy_range_from_sheet()
 
             if not excel_path:
-                excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('to paste range into')
+                excel_path, sheet_name, _ = gui_get_excel_sheet_header_from_user('to paste range into')
                 
             if startCol == 0 and startRow ==0 and endCol == 0 and endRow == 0:
                 sRow_sCol_eRow_Col = gui_get_any_input_from_user('startRow , startCol, endRow, endCol (comma separated, index from 1)')    
@@ -2049,7 +2050,7 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
 
 
             
-        with pd.ExcelWriter(excel_path) as writer:
+        with pd.ExcelWriter(excel_path) as writer: # pylint: disable=abstract-class-instantiated
             df.to_excel(writer, sheet_name=sheet_name,index=False) 
 
     except Exception as ex:
@@ -2084,7 +2085,7 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
         elif firstColumnToBeSorted is not None:
             df=df.sort_values([firstColumnToBeSorted],ascending=[firstColumnSortType])
 
-        writer = pd.ExcelWriter(excel_path, engine='openpyxl')
+        writer = pd.ExcelWriter(excel_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
         writer.book = load_workbook(excel_path)
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
     
@@ -2108,7 +2109,7 @@ def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
         df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl') 
         df = df.head(0)
 
-        with pd.ExcelWriter(excel_path) as writer:
+        with pd.ExcelWriter(excel_path) as writer: # pylint: disable=abstract-class-instantiated
             df.to_excel(writer,sheet_name=sheet_name, index=False)
 
     except Exception as ex:
@@ -2131,7 +2132,7 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
 
         df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
         
-        writer = pd.ExcelWriter(excel_path, engine='openpyxl')
+        writer = pd.ExcelWriter(excel_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
         writer.book = load_workbook(excel_path)
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
         
@@ -2182,14 +2183,14 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
         count = 0 
         if saveResultsInSameExcel:
             df.drop_duplicates(subset=columnName, keep=which_one_to_keep, inplace=True)
-            with pd.ExcelWriter(excel_path) as writer:
+            with pd.ExcelWriter(excel_path) as writer: # pylint: disable=abstract-class-instantiated
                 df.to_excel(writer,sheet_name=sheet_name,index=False)
 
             count = df.shape[0]
         else:
             df1 = df.drop_duplicates(subset=columnName, keep=which_one_to_keep, inplace=False)
             excel_path = str(excel_path).replace(".","_DupDropped.")
-            with pd.ExcelWriter(excel_path) as writer:
+            with pd.ExcelWriter(excel_path) as writer: # pylint: disable=abstract-class-instantiated
                 df1.to_excel(writer,sheet_name=sheet_name,index=False)
             count = df1.shape[0]
 
@@ -2231,7 +2232,7 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
             output_file_path = filepath_1
 
         output_file_path = Path(output_file_path)
-        with pd.ExcelWriter(output_file_path) as writer:
+        with pd.ExcelWriter(output_file_path) as writer: # pylint: disable=abstract-class-instantiated
             df.to_excel(writer, index=False)
 
         return True
@@ -2837,7 +2838,7 @@ def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,dro
 
                     table = table.reset_index(drop=True) #Avoid multi index error in our dataframes
 
-                    with pd.ExcelWriter(strFileName) as writer:
+                    with pd.ExcelWriter(strFileName) as writer: # pylint: disable=abstract-class-instantiated
                         table.to_excel(writer, sheet_name=str(i)) #index=False
             else:
                 table = all_tables[table_index] #get required table_index
@@ -3288,7 +3289,7 @@ def excel_clean_data(excel_path="",sheet_name='Sheet1',header=0,column_to_be_cle
                 custom_pipeline = [preprocessing.fillna, preprocessing.lowercase]
                 df[new_column_name] = df[column_to_be_cleaned].pipe(hero.clean,custom_pipeline)    
 
-            with pd.ExcelWriter(path=excel_path) as writer:
+            with pd.ExcelWriter(path=excel_path) as writer: # pylint: disable=abstract-class-instantiated
                 df.to_excel(writer,index=False)
 
             print("Data Cleaned. Please see the output in {}".format(new_column_name))
@@ -3389,7 +3390,7 @@ def camera_capture_image(user_name=""):
 
             while True: 
 
-                ret, img = cap.read() 
+                _, img = cap.read() 
                 cv2.imshow(window_name, img) 
                 prev = time.time() 
 
@@ -3401,7 +3402,7 @@ def camera_capture_image(user_name=""):
                 textY = int((img.shape[0] + textsize[1]) / 2)
 
                 while TIMER >= 0: 
-                    ret, img = cap.read() 
+                    _, img = cap.read() 
 
                     cv2.putText(img, "Saving image in {} second(s)".format(str(TIMER)),  
                                 (textX, textY ), font, 
@@ -3455,7 +3456,7 @@ def convert_csv_to_excel(csv_path="",sep=""):
 
         excel_file_path = os.path.join(output_folder_path,excel_file_name)
         excel_file_path = Path(excel_file_path)
-        writer = pd.ExcelWriter(excel_file_path)
+        writer = pd.ExcelWriter(excel_file_path) # pylint: disable=abstract-class-instantiated
 
         df=pd.read_csv(csv_path,sep=sep,engine='openpyxl')
         df.to_excel(writer, sheet_name='Sheet1', index=False)
@@ -3730,6 +3731,29 @@ def OFF_semi_automatic_mode():
         print("Semi Automatic Mode is DISABLED "+ show_emoji())
     except Exception as ex:
         print("Error in OFF_semi_automatic_mode="+str(ex))        
+
+def image_diff_hash(img_1,img_2,hash_type='p'):
+    """
+    Image Hashing function to know if two images look nearly identical
+    """
+    hash_1 = hash_2 = 0
+    if hash_type == 'p': #Perceptual hashing
+        hash_1 = imagehash.phash(Image.open(img_1))
+        hash_2 = imagehash.phash(Image.open(img_2))
+    elif hash_type == 'a': #Average hashing 
+        hash_1 = imagehash.average_hash(Image.open(img_1))
+        hash_2 = imagehash.average_hash(Image.open(img_2))
+    elif hash_type == 'd': #Difference hashing (dHashref)
+        hash_1 = imagehash.dhash(Image.open(img_1))
+        hash_2 = imagehash.dhash(Image.open(img_2))
+    elif hash_type == 'w': #Wavelet hashing
+        hash_1 = imagehash.whash(Image.open(img_1))
+        hash_2 = imagehash.whash(Image.open(img_2))
+    elif hash_type == 'c': #HSV color hashing 
+        hash_1 = imagehash.colorhash(Image.open(img_1))
+        hash_2 = imagehash.colorhash(Image.open(img_2))
+    
+    print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
 
 def _init_cf_quick_test_log_file(log_path_arg):
     """

@@ -1,0 +1,13 @@
+1) ClointFusion version 0.0.89 released on 21-01-2021 7:10 AM
+Notes:
+    1) GUI's password is now encrypted & stored. Decrypted when required to use.
+    2) GUI can now accept Multi-line/Paragraph text as input
+    3) Countdown timer shows mini ClointFusion Logo
+    4) launch_website returns status as True/False
+    5) Bug related Semi-Automatic mode is fixed now
+
+2) ClointFusion version 0.0.90 released on 21-01-2021 5:15 PM
+Notes:
+    1) New function added - image_diff_hash 
+    2) Bug in setup.py fixed
+    3) Few minor warnings resolved

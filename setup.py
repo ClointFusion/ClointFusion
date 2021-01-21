@@ -13,7 +13,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.0.89',
+    version='0.0.90',
     description="Pythonic RPA (Automation) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -59,7 +59,8 @@ setup(
           "scikit-image == 0.18.1",
           "pivottablejs == 0.9.0",
           "ipython == 7.19.0",
-          "cryptocode == 0.1"
+          "cryptocode == 0.1",
+          "ImageHash == 4.2.0",
           "jupyterlab",
           "notebook"
       ],
