@@ -11,3 +11,7 @@ Notes:
     1) New function added - image_diff_hash 
     2) Bug in setup.py fixed
     3) Few minor warnings resolved
+
+3) ClointFusion version 0.0.91 released on 02-02-2021 15:20 PM
+    1) Added conditional validation for ClointFusion Self Test pass/failure
+    2) Minor Bug Fixes

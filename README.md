@@ -14,6 +14,8 @@ Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 
 1. Please install Python 3.9.1 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.1 64 Bit</a>
 
+    Windows users: <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools" target="_blank">Please install Visual CPP Build Tools</a>
+
 2. It is recommended to run ClointFusion in a Virtual Environment.
 Please refer these steps to create one, as per your OS: <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment" target="_blank">Creating a virtual environment in Windows / Mac / Ubuntu</a>
 

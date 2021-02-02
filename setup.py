@@ -13,14 +13,14 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.0.90',
+    version='0.0.91',
     description="Pythonic RPA (Automation) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author='Cloint India Pvt. Ltd',
     author_email='automation@cloint.com',
     url='https://github.com/ClointFusion/ClointFusion',
-    setup_requires=['numpy',"setuptools","wheel"],
+    setup_requires=["wheel",'numpy',"setuptools"],
         
     keywords=['ClointFusion','RPA','Python','Automation','BOT','Software BOT','ROBOT'],
 

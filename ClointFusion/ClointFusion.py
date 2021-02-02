@@ -1348,6 +1348,9 @@ def create_batch_file(application_exe_pyw_file_path=""):
         print("Batch file saved in " + str(batch_file_path))
     except Exception as ex:
         print("Error in create_batch_file="+str(ex))
+
+    finally:
+        return batch_file_path
     
 def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
     try:
@@ -3808,6 +3811,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
     Main function for Self Test, which is called by GUI
     """
     global os_name
+
+    TEST_CASES_PASSED = True
+
     chrome_close_PNG_1 = temp_current_working_dir / "Chrome-Close_1.PNG"
     chrome_close_PNG_2 = temp_current_working_dir / "Chrome-Close_2.PNG"
     chrome_close_PNG_3 = temp_current_working_dir / "Chrome-Close_3.PNG"
@@ -3871,6 +3877,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             except Exception as ex:
                 print('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex))
                 logging.info('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot')
+                TEST_CASES_PASSED = False
 
             print()
             print('ClointFusion Self Testing Initiated '+show_emoji())
@@ -3895,6 +3902,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             except Exception as ex:
                 print('Unable to delete files in test folder='+str(ex))
                 logging.info('Unable to delete files in test folder='+str(ex))
+                TEST_CASES_PASSED = False
 
             folder_create(Path(test_folder_path / 'Split_Merge'))
             print(folder_get_all_filenames_as_list(test_folder_path))
@@ -3925,6 +3933,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         else:
             print('Skipping window operations as it is Windows OS specific')
             logging.info('Skipping window operations as it is Windows OS specific')
+            TEST_CASES_PASSED = False
 
         try:
             print()
@@ -3939,6 +3948,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print('Error while testing string operations='+str(ex))
             logging.info('Error while testing string operations='+str(ex))
+            TEST_CASES_PASSED = False
         
         try:
             print()
@@ -4039,6 +4049,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print("Error while testing Excel Operations="+str(ex))
             logging.info("Error while testing Excel Operations="+str(ex))
+            TEST_CASES_PASSED = False
             
         message_counter_down_timer("Starting Screen Scraping Operations in (seconds)",3)
 
@@ -4067,6 +4078,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print('Error while testing screenscraping functions='+str(ex))
             logging.info('Error while testing screenscraping functions='+str(ex))
+            TEST_CASES_PASSED = False
 
         try:
             print()
@@ -4101,56 +4113,71 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
             key_press('ctrl+w')
+            TEST_CASES_PASSED = False
         
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
             print()
             print("Testing Browser's Helium functions")
-            launch_website_h("https://pypi.org")
-            browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
-            browser_hit_enter_h()
-            browser_mouse_click_h("ClointFusion 0.")
+            
+            if launch_website_h("https://pypi.org"):
+                browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
+                browser_hit_enter_h()
+                browser_mouse_click_h("ClointFusion 0.")
 
-            browser_mouse_double_click_h("RPA")
-            
-            browser_mouse_click_h("Open in Colab")
-            
-            browser_quit_h()
-            print("Tested Browser's Helium functions successfully " + show_emoji())
-            print("____________________________________________________________")
-            logging.info("Tested Browser's Helium functions successfully")
+                browser_mouse_double_click_h("RPA")
+                
+                browser_mouse_click_h("Open in Colab")
+                
+                browser_quit_h()
+                print("Tested Browser's Helium functions successfully " + show_emoji())
+                print("____________________________________________________________")
+                logging.info("Tested Browser's Helium functions successfully")
+
+            else:
+                TEST_CASES_PASSED = False
+
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
             key_press('ctrl+w') #to close any open browser
+            TEST_CASES_PASSED = False
 
         message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
         
         try:
             print("____________________________________________________________")
             print()
-            print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
-            message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
+            print("Testing flash message")
+            message_pop_up("Testing flash message")
             
             logging.info("Flash message tested successfully")
         except Exception as ex:
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
-
+            TEST_CASES_PASSED = False
 
     except Exception as ex:
         print("ClointFusion Automated Testing Failed "+str(ex))
         logging.info("ClointFusion Automated Testing Failed "+str(ex))
+        TEST_CASES_PASSED = False
         
     finally:
         _folder_write_text_file(Path(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt')),str(False))
         print("____________________________________________________________")
         print("____________________________________________________________")
         print()
-        print("ClointFusion Self Testing Completed")
-        logging.info("ClointFusion Self Testing Completed")
-        return True
+        if TEST_CASES_PASSED:
+            print("ClointFusion Self Testing Completed")
+            logging.info("ClointFusion Self Testing Completed")
+            print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
+            message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
+            return True
+        else:
+            print("ClointFusion Self Testing has Failed for few Functions")
+            logging.info("ClointFusion Self Testing has Failed for few Functions")
+            return False
 
 def clointfusion_self_test():
     global os_name
