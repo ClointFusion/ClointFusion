@@ -36,5 +36,6 @@ ipython == 7.19.0
 comtypes == 1.1.7
 cryptocode == 0.1
 ImageHash == 4.2.0
+get-mac == 0.8.2
 jupyterlab
 notebook

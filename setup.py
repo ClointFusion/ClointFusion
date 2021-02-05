@@ -13,7 +13,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.0.91',
+    version='0.0.92',
     description="Pythonic RPA (Automation) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -61,6 +61,7 @@ setup(
           "ipython == 7.19.0",
           "cryptocode == 0.1",
           "ImageHash == 4.2.0",
+          "get-mac == 0.8.2",
           "jupyterlab",
           "notebook"
       ],

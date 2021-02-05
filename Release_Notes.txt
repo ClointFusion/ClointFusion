@@ -15,3 +15,7 @@ Notes:
 3) ClointFusion version 0.0.91 released on 02-02-2021 15:20 PM
     1) Added conditional validation for ClointFusion Self Test pass/failure
     2) Minor Bug Fixes
+
+4) ClointFusion version 0.0.92 released on 02-02-2021 09:20 AM
+    1) Permission Error Resolved
+    2) Minor Bug Fixes wrt Helium Package

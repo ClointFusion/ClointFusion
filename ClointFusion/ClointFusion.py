@@ -77,8 +77,10 @@ import warnings
 from pivottablejs import pivot_ui
 from IPython.display import HTML
 import imagehash
+import getmac
 
 os_name = str(platform.system()).lower()
+mac_addr = getmac.get_mac_address()
     
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
@@ -109,6 +111,9 @@ Browser_Service_Started = False
 ai_screenshot = ""
 ai_processes = []
 helium_service_launched=False
+
+verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
+update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
 
 # 3. All function definitions
 
@@ -3187,8 +3192,8 @@ def browser_locate_element_h(element="",get_text=False):
         if not element:
             element = gui_get_any_input_from_user('browser element to locate (Helium)')
         if get_text:
-            return S(element).web_element.text
-        return S(element).web_element
+            return S(element).text
+        return S(element)
     except Exception as ex:
         print("Error in browser_locate_element_h = "+str(ex))
     
@@ -3200,8 +3205,8 @@ def browser_locate_elements_h(element="",get_text=False):
         if not element:
             element = gui_get_any_input_from_user('browser ElementS to locate (Helium)')
         if get_text:
-            return find_all(S(element).web_element.text)
-        return find_all(S(element).web_element)
+            return find_all(S(element).text)
+        return find_all(S(element))
     except Exception as ex:
         print("Error in browser_locate_elements_h = "+str(ex))
     
@@ -3800,11 +3805,11 @@ def _download_cloint_quick_test_png():
         print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
 def _rerun_clointfusion_first_run(ex):
-    pg.alert("Please Re-run..."+str(ex))
-    _,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=False)
-    with open(last_updated_date_file, 'w',encoding="utf-8") as f:
-        last_updated_on_date = int(datetime.date.today().strftime('%m')) - 1
-        f.write(str(last_updated_on_date))
+    pg.alert("Please Re-run..." + str(ex))
+    # _,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=False)
+    # with open(last_updated_date_file, 'w',encoding="utf-8") as f:
+    #     last_updated_on_date = int(datetime.date.today().strftime('%m')) - 1
+    #     f.write(str(last_updated_on_date))
 
 def clointfusion_self_test_cases(user_chosen_test_folder):
     """
@@ -4188,7 +4193,7 @@ def clointfusion_self_test():
     start_time = time.monotonic()
     try:
 
-        layout = [ [sg.Text("ClointFusion's First Run Setup",justification='c',font='Courier 18',text_color='orange')],
+        layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
                 [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='orange')],
                 [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
                 [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
@@ -4212,35 +4217,35 @@ def clointfusion_self_test():
                         valid = validate_email(str(values['-EMAIL-']))
                         strEmail = valid.email
 
-                except EmailNotValidError as e:
-                    pg.alert("Sorry, "+str(e))
+                    if strEmail and values['-NAME-'] and values['-ROLE-']:
                     
-                if strEmail and values['-NAME-'] and values['-ROLE-']:
-                
-                    window['Start'].update(disabled=True)
-                    window['Close'].update(disabled=True)
-                    window['-NAME-'].update(disabled=True)
-                    window['-EMAIL-'].update(disabled=True)
-                    window['-ROLE-'].update(disabled=True)
-                    _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
+                        window['Start'].update(disabled=True)
+                        window['Close'].update(disabled=True)
+                        window['-NAME-'].update(disabled=True)
+                        window['-EMAIL-'].update(disabled=True)
+                        window['-ROLE-'].update(disabled=True)
+                        _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
-                    print("Starting ClointFusion's Automated Self Testing Module")
-                    print('This may take several minutes to complete...')
-                    print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
-                    print('Please sitback & relax while all the test-cases are run...')
-                    print()
+                        print("Starting ClointFusion's Automated Self Testing Module")
+                        print('This may take several minutes to complete...')
+                        print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
+                        print('Please sitback & relax while all the test-cases are run...')
+                        print()
 
-                    _init_cf_quick_test_log_file(temp_current_working_dir)
+                        _init_cf_quick_test_log_file(temp_current_working_dir)
 
-                    status_msg = clointfusion_self_test_cases(temp_current_working_dir)
+                        status_msg = clointfusion_self_test_cases(temp_current_working_dir)
 
-                    if status_msg == "":
-                        window['Close'].update(disabled=False)
+                        if status_msg == "":
+                            window['Close'].update(disabled=False)
+                        else:
+                            pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
+                            sys.exit(0)
                     else:
-                        pg.alert("Please resolve the errors and try again\n\n" + status_msg)
-                        sys.exit(0)
-                else:
-                    pg.alert("Please enter all the values")
+                        pg.alert("Please enter all the values")
+
+                except EmailNotValidError as e:
+                    pg.alert("Sorry, " + str(e))
 
             if event in (sg.WIN_CLOSED, 'Close'):
                 
@@ -4271,7 +4276,14 @@ def clointfusion_self_test():
                     except:
                         pg.hotkey('alt','f4')
                     time.sleep(2)
-                    is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
+                    # is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
+                    today_date_month = str(datetime.date.today().strftime('%m'))
+                    try:
+                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'user_email':strEmail,'mac_addr':mac_addr})
+                        # print(resp.text)
+                    except:
+                        pass
+                    
                 break        
                     
     except Exception as ex:
@@ -4289,7 +4301,14 @@ def clointfusion_self_test():
 
 _welcome_to_clointfusion()
 
-EXECUTE_SELF_TEST_NOW,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M")
+resp = requests.post(verify_self_test_url, data={'mac_addr':mac_addr})
+last_updated_on_month = dict(eval(resp.text))["self_test_month"]
+today_date_month = datetime.date.today().strftime('%m')
+
+if int(last_updated_on_month) != int(today_date_month):
+    EXECUTE_SELF_TEST_NOW = True
+else:
+    EXECUTE_SELF_TEST_NOW = False
 
 if EXECUTE_SELF_TEST_NOW :
     try:
