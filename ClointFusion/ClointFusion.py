@@ -4178,6 +4178,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
+            print("____________________________________________________________")
+            print("Please click red 'Close' button now")
         
         else:
             print("ClointFusion Self Testing has Failed for few Functions")
@@ -4302,7 +4304,11 @@ def clointfusion_self_test():
 _welcome_to_clointfusion()
 
 resp = requests.post(verify_self_test_url, data={'mac_addr':mac_addr})
-last_updated_on_month = dict(eval(resp.text))["self_test_month"]
+try:
+    last_updated_on_month = dict(eval(resp.text))["self_test_month"]
+except:
+    last_updated_on_month = 0
+    
 today_date_month = datetime.date.today().strftime('%m')
 
 if int(last_updated_on_month) != int(today_date_month):
