@@ -22,7 +22,7 @@ ClointFusion is now supported in Windows / Ubuntu / macOS !
 
 1. Please install Python 3.9.1 with 64 bit.<a href="https://www.python.org/downloads" target="_blank"> Python 3.9.1 64 Bit</a>
    
-   Windows users: <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools" target="_blank">Please install Visual CPP Build Tools</a> 
+   Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
 2. It is recommended to run ClointFusion in a Virtual Environment.
    
@@ -117,6 +117,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
 
     cf.win\_obj\_get\_text() : Read text from windows object element.
 
+
 -  5 functions on Window operations (works only in Windows OS):
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -155,7 +156,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.folder\_delete\_all\_files() : Deletes all the files of the given
    folder
 
--  20 functions on Excel operations:
+-  21 functions on Excel operations:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.excel\_get\_all\_sheet\_names() : Gives you all names of the
@@ -220,7 +221,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    excel
 
    cf.excel\_drag\_drop\_pivot\_table() : Interactive Drag and Drop Pivot Table Generation
-   
+
 -  3 functions on Keyboard operations:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

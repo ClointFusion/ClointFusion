@@ -475,7 +475,7 @@ def read_semi_automatic_log(key):
                 writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
                 df.to_excel(writer, sheet_name='Sheet1', index=False)
                 writer.save()
-        
+
         df = pd.read_excel(bot_config_path,engine='openpyxl')
         
         value = df[df['KEY'] == key]['VALUE'].to_list()
@@ -568,10 +568,10 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
 
-        # if existing_value is None:
-        #     show_gui = True
+        if existing_value is None:
+            show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -831,10 +831,10 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
         
-        # if existing_value is None:
-        #     show_gui = True
+        if existing_value is None:
+            show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -915,10 +915,10 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
         show_gui = False
         existing_value = read_semi_automatic_log(msgForUser)
 
-        # if existing_value is None:
-        #     show_gui = True
+        if existing_value is None:
+            show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' :# and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
             show_gui = True
             oldValue = existing_value
             
@@ -972,10 +972,10 @@ def gui_get_workspace_path_from_user():
         show_gui = False
         existing_value = read_semi_automatic_log(oldKey)
 
-        # if existing_value is None:
-        #     show_gui = True
+        if existing_value is None:
+            show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
             show_gui = True
             oldValue = existing_value
 
@@ -1048,10 +1048,10 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_l
         if existing_value == "nan":
             existing_value = None
             
-        # if existing_value is None:
-        #     show_gui = True
+        if existing_value is None:
+            show_gui = True
         
-        if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
             show_gui = True
             oldValue = existing_value
         

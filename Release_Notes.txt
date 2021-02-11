@@ -22,3 +22,7 @@ Notes:
 
 5) ClointFusion version 0.0.93 released on 05-02-2021 13:50 PM
     1) Bug Fixed wrt Permission Error
+
+6) ClointFusion version 0.0.94 released on 11-02-2021 09:45 AM
+    1) Bug Fixed wrt GUI functions
+    2) Added ReadMe link for detailed installation

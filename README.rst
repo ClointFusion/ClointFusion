@@ -22,7 +22,7 @@ ClointFusion is now supported in Windows / Ubuntu / macOS !
 
 1. Please install Python 3.9.1 with 64 bit.<a href="https://www.python.org/downloads" target="_blank"> Python 3.9.1 64 Bit</a>
    
-   Windows users: <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools" target="_blank">Please install Visual CPP Build Tools</a> 
+   Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
 2. It is recommended to run ClointFusion in a Virtual Environment.
    
