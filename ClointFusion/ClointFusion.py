@@ -188,12 +188,13 @@ def _download_cloint_ico_png():
     """
     Internal function to download ClointFusion ICON from GitHub
     """
+    global cf_logo_file_path, cf_icon_file_path
     try:
-        if not os.path.exists(cf_icon_file_path):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',cf_icon_file_path)
+        if not os.path.exists(str(cf_icon_file_path)):
+            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',str(cf_icon_file_path))
 
-        if not os.path.exists(cf_logo_file_path):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',cf_logo_file_path)
+        if not os.path.exists(str(cf_logo_file_path)):
+            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',str(cf_logo_file_path))
     except Exception as ex:
         print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
@@ -671,7 +672,7 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
     """
     CONTINUE = True
     layout = [[sg.Text(strMsg,justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
-            [sg.Image(filename = cf_logo_file_path,size=(60,60))],
+            [sg.Image(filename = str(cf_logo_file_path),size=(60,60))],
             [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
 
     window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_file_path)
@@ -3097,7 +3098,7 @@ def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless
                 browser_driver.maximize_window()
                 status = True
             except Exception as ex: 
-                print("Cannot continue. Helium package's Compatible Chrome or Forefox is missing "+ str(ex))
+                print("Cannot continue. Helium package's Compatible Chrome or Firefox is missing "+ str(ex))
 
         Config.implicit_wait_secs = 120
         
@@ -4141,7 +4142,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 logging.info("Tested Browser's Helium functions successfully")
 
             else:
-                TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome or Forefox is missing"
+                TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome or Firefox is missing"
 
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
@@ -4302,8 +4303,10 @@ def clointfusion_self_test():
 # ClointFusion's DEFAULT SERVICES
 
 _welcome_to_clointfusion()
+_download_cloint_ico_png()
 
 resp = requests.post(verify_self_test_url, data={'mac_addr':mac_addr})
+
 try:
     last_updated_on_month = dict(eval(resp.text))["self_test_month"]
 except:
@@ -4338,7 +4341,6 @@ else:
         base_dir = os.path.join(base_dir,"ClointFusion_BOT")
         base_dir = Path(base_dir)
         _set_bot_name()
-        _download_cloint_ico_png()
         folder_create(base_dir) 
 
         log_path = Path(os.path.join(base_dir, "Logs"))

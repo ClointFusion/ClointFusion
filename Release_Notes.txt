@@ -26,3 +26,7 @@ Notes:
 6) ClointFusion version 0.0.94 released on 11-02-2021 09:45 AM
     1) Bug Fixed wrt GUI functions
     2) Added ReadMe link for detailed installation
+
+7) ClointFusion version 0.0.95 released on 11-02-2021 19:15 PM
+    1) Bug Fixed wrt LOGO missing 
+    2) Self-Testing getting repeated (Server-side fixes)
