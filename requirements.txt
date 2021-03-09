@@ -37,5 +37,8 @@ comtypes == 1.1.7
 cryptocode == 0.1
 ImageHash == 4.2.0
 get-mac == 0.8.2
+xlsx2html == 0.2.2 
+simplegmail == 3.1.5
+xlwings == 0.22.3
 jupyterlab
 notebook

@@ -13,7 +13,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.0.95',
+    version='0.0.96',
     description="Pythonic RPA (Automation) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -62,6 +62,9 @@ setup(
           "cryptocode == 0.1",
           "ImageHash == 4.2.0",
           "get-mac == 0.8.2",
+          "xlsx2html == 0.2.2", 
+          "simplegmail == 3.1.5",
+          "xlwings == 0.22.3",
           "jupyterlab",
           "notebook"
       ],

@@ -8,6 +8,8 @@ Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 # Test Drive ClointFusion on Google Colabs
 <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
 
+## Click here for <a href="https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt" target="_blank"> Release Notes</a>
+
 # Installation on your local computer
 
 # ClointFusion is now supported in Windows / Ubuntu / macOS !

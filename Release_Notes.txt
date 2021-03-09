@@ -1,32 +1,39 @@
-1) ClointFusion version 0.0.89 released on 21-01-2021 7:10 AM
-Notes:
-    1) GUI's password is now encrypted & stored. Decrypted when required to use.
-    2) GUI can now accept Multi-line/Paragraph text as input
-    3) Countdown timer shows mini ClointFusion Logo
-    4) launch_website returns status as True/False
-    5) Bug related Semi-Automatic mode is fixed now
+8) ClointFusion version 0.0.96 released on 09-03-2021 13:05 PM
+    New Functions Added:
+    1) excel_to_colored_html
+    2) download_this_file
+    3) email_send_gmail_via_api
+    4) email_send_via_desktop_outlook
+    5) excel_sub_routines
+    6) isnan
 
-2) ClointFusion version 0.0.90 released on 21-01-2021 5:15 PM
-Notes:
-    1) New function added - image_diff_hash 
-    2) Bug in setup.py fixed
-    3) Few minor warnings resolved
-
-3) ClointFusion version 0.0.91 released on 02-02-2021 15:20 PM
-    1) Added conditional validation for ClointFusion Self Test pass/failure
-    2) Minor Bug Fixes
-
-4) ClointFusion version 0.0.92 released on 05-02-2021 09:20 AM
-    1) Permission Error Resolved
-    2) Minor Bug Fixes wrt Helium Package
-
-5) ClointFusion version 0.0.93 released on 05-02-2021 13:50 PM
-    1) Bug Fixed wrt Permission Error
+7) ClointFusion version 0.0.95 released on 11-02-2021 19:15 PM
+    1) Bug Fixed wrt LOGO missing 
+    2) Self-Testing getting repeated (Server-side fixes)
 
 6) ClointFusion version 0.0.94 released on 11-02-2021 09:45 AM
     1) Bug Fixed wrt GUI functions
     2) Added ReadMe link for detailed installation
 
-7) ClointFusion version 0.0.95 released on 11-02-2021 19:15 PM
-    1) Bug Fixed wrt LOGO missing 
-    2) Self-Testing getting repeated (Server-side fixes)
+5) ClointFusion version 0.0.93 released on 05-02-2021 13:50 PM
+    1) Bug Fixed wrt Permission Error
+
+4) ClointFusion version 0.0.92 released on 05-02-2021 09:20 AM
+    1) Permission Error Resolved
+    2) Minor Bug Fixes wrt Helium Package
+
+3) ClointFusion version 0.0.91 released on 02-02-2021 15:20 PM
+    1) Added conditional validation for ClointFusion Self Test pass/failure
+    2) Minor Bug Fixes
+
+2) ClointFusion version 0.0.90 released on 21-01-2021 5:15 PM
+    1) New function added - image_diff_hash 
+    2) Bug in setup.py fixed
+    3) Few minor warnings resolved
+
+1) ClointFusion version 0.0.89 released on 21-01-2021 7:10 AM
+    1) GUI's password is now encrypted & stored. Decrypted when required to use.
+    2) GUI can now accept Multi-line/Paragraph text as input
+    3) Countdown timer shows mini ClointFusion Logo
+    4) launch_website returns status as True/False
+    5) Bug related Semi-Automatic mode is fixed now

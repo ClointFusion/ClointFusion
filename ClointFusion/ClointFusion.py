@@ -29,7 +29,6 @@ import openpyxl as op
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import datetime
-import subprocess
 from functools import lru_cache
 import threading
 from threading import Timer
@@ -48,7 +47,7 @@ import zipcodes
 import folium
 from json import (load as jsonload, dump as jsondump)
 from helium import *
-from os import link
+from os import link, remove
 from selenium.webdriver import ChromeOptions
 import dis
 import texthero as hero
@@ -78,6 +77,10 @@ from pivottablejs import pivot_ui
 from IPython.display import HTML
 import imagehash
 import getmac
+from xlsx2html import xlsx2html
+from simplegmail import Gmail
+import xlwings as xw
+import shutil
 
 os_name = str(platform.system()).lower()
 mac_addr = getmac.get_mac_address()
@@ -546,10 +549,9 @@ def update_semi_automatic_log(key, value):
             reader = pd.read_excel(bot_config_path,engine='openpyxl')
             
             df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
-            writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
+            writer = pd.ExcelWriter(bot_config_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
             writer.book = load_workbook(str(bot_config_path),data_only=True)
             writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        
             df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
             writer.save()
 
@@ -1385,6 +1387,44 @@ def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
     except Exception as ex:
         print("Error in excel_create_file="+str(ex))
     
+
+def excel_to_colored_html(formatted_excel_path=""):
+    """
+    Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
+    """
+    try:
+        if not formatted_excel_path:
+            formatted_excel_path = gui_get_any_file_from_user('Excel file to convert to HTML','xlsx')        
+
+        formatted_html_path = str(formatted_excel_path).replace(".xlsx",".html")
+        xlsx2html(formatted_excel_path, formatted_html_path)
+        return formatted_html_path
+    except Exception as ex:
+        print("Error in excel_to_colored_html="+str(ex))
+
+def download_this_file(url=""):
+    """
+    Downloads a given url to output folder
+    """
+    try:
+        if not url:
+            url = gui_get_any_input_from_user('URL to Download')
+
+        if "export" in url:
+            webbrowser.open_new(url)
+
+        else:
+            extension = str(url).rsplit("." ,1)[1]
+            r = requests.get(url) 
+            download_file_path = output_folder_path / "downloaded_cf.{}".format(extension)
+
+            with open(download_file_path,'wb') as f: 
+                f.write(r.content) 
+            return download_file_path
+
+    except Exception as ex:
+        print("Error in download_this_file="+str(ex))
+
 def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
     """
     Get all the files of the given folder in a list.
@@ -3323,7 +3363,7 @@ def browser_get_html_text(url=""):
     """
     try:
         if not url:
-            url = gui_get_any_input_from_user("website URL to get HTML Text (without tags). Ex: https://www.cloint.com")
+            url = gui_get_any_input_from_user("website URL to get HTML Text (without tags). Ex: https://www.clointfusion.com")
 
         html_text = requests.get(url) 
         soup = BeautifulSoup(html_text.content, 'lxml')
@@ -3725,6 +3765,81 @@ def ON_semi_automatic_mode():
     except Exception as ex:
         print("Error in ON_semi_automatic_mode="+str(ex))
 
+def email_send_gmail_via_api(secret_key_path='',api_key_linked_gmail_address="", toAddress="",ccAddress="",subject="",htmlBody="",attachmentFilePath=""):
+    """
+    Sends gmail using API. User needs to supply his client_secret.json as parameter
+    """
+    try:
+        if secret_key_path:
+            gmail = Gmail(secret_key_path)
+
+            if api_key_linked_gmail_address and toAddress and subject and htmlBody and attachmentFilePath:
+                params = {
+            "to": toAddress,
+            "sender": api_key_linked_gmail_address,
+            "cc" : [ccAddress],
+            "subject": subject,
+            "msg_html": htmlBody,
+            "attachments": [str(attachmentFilePath)],
+            "signature": True
+        }
+
+            elif api_key_linked_gmail_address and toAddress and subject and htmlBody:
+                params = {
+            "to": toAddress,
+            "cc" : [ccAddress],
+            "sender": api_key_linked_gmail_address,
+            "subject": subject,
+            "msg_html": htmlBody,
+            "signature": True
+        }
+
+            message = gmail.send_message(**params)
+            print(message)  
+        else:
+            print("Please create Secret Keys as per the steps mentioned here: https://github.com/jeremyephron/simplegmail")
+
+    except Exception as ex:
+        print("Error in email_send_gmail_via_api="+str(ex))            
+
+def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody="",embedImgPath="",attachmentFilePath=""):
+    """
+    Send email using Outlook from first email acccount
+    """
+    try:
+        if os_name == "windows":
+            if toAddress and subject and htmlBody:
+                import win32com.client 
+                outlook = win32com.client.Dispatch('outlook.application')
+                mail = outlook.CreateItem(0)
+
+                if type(toAddress) is list:
+                    for m in toAddress:
+                        mail.Recipients.Add(m)
+                else:        
+                    mail.To = toAddress
+
+                mail.CC = ccAddress
+
+                mail.Subject = subject
+
+                if embedImgPath:
+                    attachment = mail.Attachments.Add(embedImgPath)
+                    attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "MyId1")
+                    mail.HTMLBody = f"<body><html> {htmlBody} <br> <img src="" cid:MyId1""> </body></html>"
+
+                if attachmentFilePath:
+                    mail.Attachments.Add(attachmentFilePath)
+
+                mail.Send()
+
+                print(f"Mail sent to {toAddress}")
+        else:
+            print("This feature is available only on Windows OS")
+
+    except Exception as ex:
+        print("Error in email_send_via_desktop_outlook="+str(ex))
+
 def OFF_semi_automatic_mode():
     """
     This function sets semi_automatic_mode as False => OFF
@@ -3764,6 +3879,142 @@ def image_diff_hash(img_1,img_2,hash_type='p'):
     
     print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
 
+def excel_sub_routines():
+    """
+    List of Excel Macros
+    """
+    try:
+        if os_name == "windows":
+            cf_excel_rountine_file_path = os.path.join(current_working_dir,"CF_Excel_Routines.xlsb")
+
+            import win32com.client
+            excel = win32com.client.Dispatch("Excel.Application")
+            excel.Visible = False
+            excel.DisplayAlerts = False
+            
+            user_choice = gui_get_dropdownlist_values_from_user("list of Macros", ['Greet Me','Get Row/Col Count','List all Sheets','Save Worksheets as PDF','Send Outlook Email'],multi_select=False)[0]
+            
+            if user_choice == 'Greet Me':
+                excel.Workbooks.Open(Filename=cf_excel_rountine_file_path, ReadOnly=1)
+                user_data = gui_get_any_input_from_user('your name')
+                excel.Application.Run("'CF_Excel_Routines.xlsb'!btnHello_World_Click", user_data)
+
+            else:
+                user_excel_path, _, _ = gui_get_excel_sheet_header_from_user('to {}'.format(user_choice))    
+
+                user_excel_path_with_sr = str(user_excel_path).replace(".xlsx",".xlsb")
+
+                try:
+                    os.remove(user_excel_path_with_sr)
+                except:
+                    pass
+
+                shutil.copy2(cf_excel_rountine_file_path,user_excel_path_with_sr)
+
+                
+                wb1 = xw.Book(user_excel_path)
+                wb2 = xw.Book(user_excel_path_with_sr)
+
+                ws1 = wb1.sheets(1)
+
+                ws1.api.Copy(Before=wb2.sheets(1).api)
+                try:
+                    wb2.save(user_excel_path_with_sr)
+                except:
+                    pass
+
+                wb1.close()
+                wb2.close()
+
+                try:
+                    wb1.app.quit()
+                    wb2.app.quit()
+                except:
+                    pass
+
+                excel.Workbooks.Open(Filename=user_excel_path_with_sr, ReadOnly=1)
+                file_name = str(Path(user_excel_path_with_sr).stem) + ".xlsb"
+
+                if user_choice == 'Get Row/Col Count':
+                    excel.Application.Run("'{}'!getRowColCount".format(file_name))
+
+                elif user_choice == "List all Sheets":
+                    excel.Application.Run("'{}'!getAllSheetsAsList".format(file_name))
+
+                elif user_choice == "Save Worksheets as PDF":
+                    excel.Application.Run("'{}'!SaveWorksheetAsPDF".format(file_name),str(output_folder_path))
+
+                elif user_choice == "Send Outlook Email":
+                    
+                    toAddress = gui_get_any_input_from_user("To Email Address")
+                    subject = gui_get_any_input_from_user("Email Subject")
+                    EmailBody = gui_get_any_input_from_user("Email Body", multi_line=True)
+
+                    excel.Application.Run("'{}'!Send_Mail_Outlook".format(file_name),toAddress,subject,EmailBody)
+
+            excel.Workbooks.Close()
+            excel.Application.Quit() 
+            del excel
+
+            try:
+                ew = gw.getWindowsWithTitle('Excel')[0]
+                ew.close()
+            except:
+                pass
+        else:
+            print("This feature is available only on Windows OS")
+
+    except Exception as ex:
+        print("Error in excel_sub_routines="+str(ex))
+
+def isnan(value):
+    """
+    Returns if a given value is NaN (True or False)
+    """
+    try:
+        import math
+        return math.isnan(float(value))
+    except:
+        return False
+
+def excel_convert_to_image(excel_file_path=""):
+    """
+    Returns an Image (PNG) of given Excel
+    """
+    try:
+        if os_name == "windows":
+            import win32com.client 
+            excel = win32com.client.gencache.EnsureDispatch('Excel.Application')
+
+            image_path = str(excel_file_path).replace(".xlsx",".PNG")
+            wb = excel.Workbooks.Open(str(excel_file_path))
+            
+            wb.Windows(1).Visible = False
+            ws = wb.Worksheets(1)
+                        
+            df_row_cnt = pd.read_excel(excel_file_path,engine="openpyxl")
+            row_cnt,col_cnt = df_row_cnt.shape
+            df_row_cnt = ''
+            
+            win32c = win32com.client.constants
+            ws.Range("A1:E{}".format(row_cnt+1)).CopyPicture(Format=win32c.xlBitmap)
+
+            img = ImageGrab.grabclipboard()
+            image_path = ''.join(e for e in image_path if e.isalnum())
+            image_path = img_folder_path / "Excel_Image_{}.PNG".format(image_path)
+            img.save(image_path)
+
+            wb.Close(True)
+            excel.Quit()
+            del excel
+            del excel_file_path
+
+            return image_path
+        else:
+            print("This feature is available only on Windows OS")
+    except Exception as ex:
+        print("Error in excel_convert_to_image="+str(ex))
+
 def _init_cf_quick_test_log_file(log_path_arg):
     """
     Internal function to generates the log and saves it to the file in the given base directory. 
@@ -3791,19 +4042,6 @@ def _init_cf_quick_test_log_file(log_path_arg):
         host_ip = socket.gethostbyname(socket.gethostname()) 
         logging.info("{} ClointFusion Self Testing initiated".format(os_name))
         logging.info("{}/{}".format(host_ip,str(get_public_ip())))
-
-def _download_cloint_quick_test_png():    
-    """
-    Internal function to download ClointFusion ICON from GitHub
-    """
-    try:
-        if not os.path.exists(cf_icon_file_path):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',cf_icon_file_path)
-
-        if not os.path.exists(cf_logo_file_path):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',cf_logo_file_path)
-    except Exception as ex:
-        print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
 def _rerun_clointfusion_first_run(ex):
     pg.alert("Please Re-run..." + str(ex))
@@ -4284,8 +4522,8 @@ def clointfusion_self_test():
                     try:
                         resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'user_email':strEmail,'mac_addr':mac_addr})
                         # print(resp.text)
-                    except:
-                        pass
+                    except Exception as ex:
+                        message_pop_up("Active internet connection is required ! {}".format(ex))
                     
                 break        
                     
@@ -4305,7 +4543,10 @@ def clointfusion_self_test():
 _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
-resp = requests.post(verify_self_test_url, data={'mac_addr':mac_addr})
+try:
+    resp = requests.post(verify_self_test_url, data={'mac_addr':mac_addr})
+except Exception as ex:
+    message_pop_up("Active internet connection is required ! {}".format(ex))
 
 try:
     last_updated_on_month = dict(eval(resp.text))["self_test_month"]
