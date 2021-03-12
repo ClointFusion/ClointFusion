@@ -41,7 +41,7 @@ First time, when you import ClointFusion, you would be prompted to run ClointFus
 
 ---
 
-## Now access more than 100 functions (hit ctrl+space in your IDE)
+## Now access more than 120 functions (hit ctrl+space in your IDE)
 
 * ## 6 gui functions, to take any input from user:
 
@@ -254,6 +254,18 @@ First time, when you import ClointFusion, you would be prompted to run ClointFus
 
     cf.word_cloud_from_url() : Function to create word cloud from a given website
 
+    cf.isNaN() : Returns TRUE if a given value is NaN False otherwise
+
+    cf.excel_sub_routines() : Excel VBA Macros called from ClointFusion
+
+    cf.email_send_via_desktop_outlook() : Send email using Outlook from Desktop email application
+
+    cf.email_send_gmail_via_api() : Sends gmail using API. User needs to supply his client_secret.json as parameter
+
+    cf.download_this_file() : Downloads a given url file to BOT output folder or Browser's Download folder
+
+    cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
+    
 # ClointFusion's function works in different modes:
 1) If you pass all the required parameters, function works silently. So, this is expert (Non-GUI) mode. This mode gives you more control over the function's parameters.
 

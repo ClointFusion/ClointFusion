@@ -1404,7 +1404,7 @@ def excel_to_colored_html(formatted_excel_path=""):
 
 def download_this_file(url=""):
     """
-    Downloads a given url to output folder
+    Downloads a given url file to BOT output folder or Browser's Download folder
     """
     try:
         if not url:
@@ -3804,7 +3804,7 @@ def email_send_gmail_via_api(secret_key_path='',api_key_linked_gmail_address="",
 
 def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody="",embedImgPath="",attachmentFilePath=""):
     """
-    Send email using Outlook from first email acccount
+    Send email using Outlook from Desktop email application
     """
     try:
         if os_name == "windows":
@@ -3881,7 +3881,7 @@ def image_diff_hash(img_1,img_2,hash_type='p'):
 
 def excel_sub_routines():
     """
-    List of Excel Macros
+    Excel VBA Macros called from ClointFusion
     """
     try:
         if os_name == "windows":
@@ -3967,9 +3967,9 @@ def excel_sub_routines():
     except Exception as ex:
         print("Error in excel_sub_routines="+str(ex))
 
-def isnan(value):
+def isNaN(value):
     """
-    Returns if a given value is NaN (True or False)
+    Returns TRUE if a given value is NaN False otherwise
     """
     try:
         import math

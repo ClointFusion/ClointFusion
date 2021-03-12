@@ -2,7 +2,7 @@
 ClointFusion
 ============
 <img src="https://1.bp.blogspot.com/-bsjlUEdJ35M/X1Wqcpfu9lI/AAAAAAAAAQw/8VKgirD4Uvcgdse3UiAYM1Ci9HbKSGtvwCLcBGAsYHQ/s122/Splash.png">
-============
+=======================================================================================================================================
 Description:
 ============
 
@@ -12,7 +12,7 @@ Test Drive ClointFusion on Google Colabs
 ========================================
 
 <a href='https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb' target="_blank"><img src='https://colab.research.google.com/assets/colab-badge.svg' alt="Open In Colab\"/></a>
-========================================
+===============================================================================================================================================================================================================================
 
 Installation on your local computer
 ===================================
@@ -32,11 +32,13 @@ ClointFusion is now supported in Windows / Ubuntu / macOS !
    Admin rights):
 
 pip install --upgrade ClointFusion
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 4. Open a new file in your favorite Python IDE and type:
 
 import ClointFusion as cf
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PS: Ubuntu users: May need to install some additional packages: 
@@ -46,36 +48,38 @@ PS: Ubuntu users: May need to install some additional packages:
 4) sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
 5) sudo apt-get install libgirepository1.0-dev
 
-Now access more than 100 functions (hit ctrl+space in your IDE)
+Now access more than 120 functions (hit ctrl+space in your IDE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
--  6 gui functions, to take any input from user:
+- 6 gui functions, to take any input from user:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   cf.gui\_get\_any\_file\_from\_user() : Generic function to accept
-   file path from user using GUI. Returns the filepath value in string
-   format.Default allows all files.
+      cf.gui\_get\_any\_file\_from\_user() : Generic function to accept
+      file path from user using GUI. Returns the filepath value in string
+      format.Default allows all files.
 
-   cf.gui\_get\_consent\_from\_user() : Generic function to get consent
-   from user using GUI. Returns the string 'yes' or 'no'
+      cf.gui\_get\_consent\_from\_user() : Generic function to get consent
+      from user using GUI. Returns the string 'yes' or 'no'
 
-   cf.gui\_get\_dropdownlist\_values\_from\_user() : Generic function to
-   accept one of the drop-down value from user using GUI. Returns all
-   chosen values in list format.
+      cf.gui\_get\_dropdownlist\_values\_from\_user() : Generic function to
+      accept one of the drop-down value from user using GUI. Returns all
+      chosen values in list format.
 
-   cf.gui\_get\_excel\_sheet\_header\_from\_user() : Generic function to
-   accept excel path, sheet name and header from user using GUI. Returns
-   all these values in disctionary format.
+      cf.gui\_get\_excel\_sheet\_header\_from\_user() : Generic function to
+      accept excel path, sheet name and header from user using GUI. Returns
+      all these values in disctionary format.
 
-   cf.gui\_get\_folder\_path\_from\_user() : Generic function to accept
-   folder path from user using GUI. Returns the folderpath value in
-   string format.
+      cf.gui\_get\_folder\_path\_from\_user() : Generic function to accept
+      folder path from user using GUI. Returns the folderpath value in
+      string format.
 
-   cf.gui\_get\_any\_input\_from\_user() : Generic function to accept
-   any input (text / numeric) from user using GUI. Returns the value in
-   string format.
+      cf.gui\_get\_any\_input\_from\_user() : Generic function to accept
+      any input (text / numeric) from user using GUI. Returns the value in
+      string format.
 
 -  8 functions on Mouse operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.mouse\_click() : Clicks at the given X Y Co-ordinates on the
@@ -105,6 +109,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    screen, highlights and clicks it
 
 -  5 functions on Window Objects (works only in Windows OS):
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     cf.win\_obj\_open\_app() : Open any windows application.
@@ -119,6 +124,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
 
 
 -  5 functions on Window operations (works only in Windows OS):
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.window\_show\_desktop() : Minimizes all the applications and shows
@@ -136,6 +142,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.window\_close\_windows() : Close the desired window.
 
 -  6 functions on Folder operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.folder\_read\_text\_file() : Reads from a given text file and
@@ -157,6 +164,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    folder
 
 -  21 functions on Excel operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.excel\_get\_all\_sheet\_names() : Gives you all names of the
@@ -223,6 +231,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.excel\_drag\_drop\_pivot\_table() : Interactive Drag and Drop Pivot Table Generation
 
 -  3 functions on Keyboard operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.key\_hit\_enter() : Enter key will be pressed once.
@@ -233,6 +242,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    (by default) or tab key.
 
 -  2 functions on Screenscraping operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.scrape\_save\_contents\_to\_notepad : Copy pastes all the
@@ -244,6 +254,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    in Citrix applications
 
 -  12 functions on Browser operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.browser\_get\_html\_text() : Function to get HTML text without
@@ -279,6 +290,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    Functions
 
 -  3 functions on Alert Messages:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.message\_counter\_down\_timer() : Function to show count-down
@@ -291,6 +303,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    duration of time with OK button.
 
 -  3 functions on String Operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.string\_remove\_special\_characters() : Removes all the special
@@ -303,6 +316,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    input string
 
 -  Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.launch\_any\_exe\_bat\_application() : Launches any exe or batch
@@ -353,6 +367,19 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
 
    cf.word\_cloud\_from\_url() : Function to create word cloud from a
    given website
+
+   cf.isNaN() : Returns TRUE if a given value is NaN False otherwise
+
+   cf.excel\_sub\_routines() : Excel VBA Macros called from ClointFusion
+
+   cf.email\_send\_via\_desktop\_outlook() : Send email using Outlook from Desktop email application
+
+   cf.email\_send\_gmail\_via\_api() : Sends gmail using API. User needs to supply his client_secret.json as parameter
+
+   cf.download\_this\_file() : Downloads a given url file to BOT output folder or Browser's Download folder
+
+   cf.excel\_to\_colored\_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
+
 
 ClointFusion's function works in different modes:
 =================================================

@@ -113,4 +113,9 @@ from ClointFusion.ClointFusion import win_obj_get_all_objects
 from ClointFusion.ClointFusion import win_obj_mouse_click
 from ClointFusion.ClointFusion import win_obj_key_press
 from ClointFusion.ClointFusion import win_obj_get_text
-
+from ClointFusion.ClointFusion import excel_to_colored_html
+from ClointFusion.ClointFusion import download_this_file
+from ClointFusion.ClointFusion import email_send_gmail_via_api
+from ClointFusion.ClointFusion import email_send_via_desktop_outlook
+from ClointFusion.ClointFusion import excel_sub_routines
+from ClointFusion.ClointFusion import isNaN

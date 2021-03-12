@@ -1,3 +1,8 @@
+9) ClointFusion version 0.0.97 released on 12-03-2021 07:32 AM
+    1) Updated ReadMe files
+    2) Updated __init__.py
+    3) Updated Documentation
+    
 8) ClointFusion version 0.0.96 released on 09-03-2021 13:05 PM
     New Functions Added:
     1) excel_to_colored_html
