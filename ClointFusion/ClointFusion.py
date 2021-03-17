@@ -268,7 +268,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart")
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + " .Version: 0.0.98"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -1387,7 +1387,6 @@ def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
     except Exception as ex:
         print("Error in excel_create_file="+str(ex))
     
-
 def excel_to_colored_html(formatted_excel_path=""):
     """
     Converts given Excel to HTML preserving the Excel format and saves in same folder as .html

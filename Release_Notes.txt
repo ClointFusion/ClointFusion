@@ -1,3 +1,6 @@
+10) ClointFusion version 0.0.98 released on 17-03-2021 05:35 PM
+    1) Minor Enhancements wrt Package Versions
+
 9) ClointFusion version 0.0.97 released on 12-03-2021 07:32 AM
     1) Updated ReadMe files
     2) Updated __init__.py
