@@ -43,3 +43,4 @@ xlwings >= 0.22.3
 jupyterlab
 notebook
 pygments >= 2.7.4 
+pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
