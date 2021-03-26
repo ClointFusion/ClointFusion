@@ -1,3 +1,6 @@
+11) ClointFusion version 0.0.99 released on 26-03-2021 11:08 AM
+    1) Minor Enhancements wrt Package Versions
+
 10) ClointFusion version 0.0.98 released on 17-03-2021 05:35 PM
     1) Minor Enhancements wrt Package Versions
 

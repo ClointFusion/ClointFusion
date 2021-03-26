@@ -79,7 +79,7 @@ import imagehash
 import getmac
 from xlsx2html import xlsx2html
 from simplegmail import Gmail
-import xlwings as xw
+import traceback 
 import shutil
 
 os_name = str(platform.system()).lower()
@@ -124,7 +124,7 @@ def _load_missing_python_packages_windows():
     """
     Installs Windows OS specific python packages
     """       
-    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes"] 
+    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes","xlwings"] 
     try:
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
@@ -150,7 +150,7 @@ if os_name == 'windows':
 
     from unicodedata import name
     import pygetwindow as gw 
-    
+
 #decorator to push a function to background using asyncio
 def background(f):
     """
@@ -268,7 +268,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + " .Version: 0.0.98"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.0.99)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -1419,6 +1419,7 @@ def download_this_file(url=""):
 
             with open(download_file_path,'wb') as f: 
                 f.write(r.content) 
+                
             return download_file_path
 
     except Exception as ex:
@@ -3758,7 +3759,8 @@ def ON_semi_automatic_mode():
 
     try:    
         with open(semi_automatic_config_file_path, 'w') as f:
-            f.write('True')
+            f.write('True')    
+            
         enable_semi_automatic_mode = True
         print("Semi Automatic Mode is ENABLED "+ show_emoji())
     except Exception as ex:
@@ -3884,6 +3886,7 @@ def excel_sub_routines():
     """
     try:
         if os_name == "windows":
+            import xlwings as xw
             cf_excel_rountine_file_path = os.path.join(current_working_dir,"CF_Excel_Routines.xlsb")
 
             import win32com.client
