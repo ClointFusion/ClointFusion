@@ -1,3 +1,8 @@
+12) ClointFusion version 0.1.0 released on 06-04-2021 19:51 PM
+    1) Gmail Sign added to Self-Test GUI
+    2) User gets a report of self Test
+    3) Minor Enhancements related to Performance
+
 11) ClointFusion version 0.0.99 released on 26-03-2021 11:08 AM
     1) Minor Enhancements wrt Package Versions
 

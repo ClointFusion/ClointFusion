@@ -1,6 +1,6 @@
 # ClointFusion
 
-<img src="https://1.bp.blogspot.com/-bsjlUEdJ35M/X1Wqcpfu9lI/AAAAAAAAAQw/8VKgirD4Uvcgdse3UiAYM1Ci9HbKSGtvwCLcBGAsYHQ/s122/Splash.png">
+<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/6cc0c340d6e30001a600de5b3994eec81ea6ea48/Splash.png">
 
 # Description: 
 Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
@@ -14,7 +14,7 @@ Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 
 # ClointFusion is now supported in Windows / Ubuntu / macOS !
 
-1. Please install Python 3.9.1 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.1 64 Bit</a>
+1. Please install Python 3.9.1 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
 
     Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
@@ -37,7 +37,8 @@ PS: Ubuntu users: May need to install some additional packages:
 
 ---
 # ClointFusion First Run Setup: 
-First time, when you import ClointFusion, you would be prompted to run ClointFusions's Automated Selftest, to check whether all functions of ClointFusion are compatible with your computer settings & configurations. We highly recommend you to share this anonymous report with us, for improving ClointFusion.
+First time, when you import ClointFusion, you would be prompted to run ClointFusions's Automated Selftest, to check whether all functions of ClointFusion are compatible with your computer settings & configurations. 
+You would receive an email with self-test report.
 
 ---
 

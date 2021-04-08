@@ -1,7 +1,7 @@
 ============
 ClointFusion
 ============
-<img src="https://1.bp.blogspot.com/-bsjlUEdJ35M/X1Wqcpfu9lI/AAAAAAAAAQw/8VKgirD4Uvcgdse3UiAYM1Ci9HbKSGtvwCLcBGAsYHQ/s122/Splash.png">
+<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/6cc0c340d6e30001a600de5b3994eec81ea6ea48/Splash.png">
 =======================================================================================================================================
 Description:
 ============
@@ -20,7 +20,7 @@ Installation on your local computer
 ClointFusion is now supported in Windows / Ubuntu / macOS !
 ===========================================================
 
-1. Please install Python 3.9.1 with 64 bit.<a href="https://www.python.org/downloads" target="_blank"> Python 3.9.1 64 Bit</a>
+1. Please install Python 3.7 or higher with 64 bit.<a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
    
    Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
@@ -47,6 +47,13 @@ PS: Ubuntu users: May need to install some additional packages:
 3) sudo apt-get install scrot 
 4) sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
 5) sudo apt-get install libgirepository1.0-dev
+
+ClointFusion First Run Setup: 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First time, when you import ClointFusion, you would be prompted to run ClointFusions's Automated Selftest, to check whether all functions of ClointFusion are compatible with your computer settings & configurations. 
+You would receive an email with self-test report.
 
 Now access more than 120 functions (hit ctrl+space in your IDE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

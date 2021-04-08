@@ -13,8 +13,8 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.0.99',
-    description="Pythonic RPA (Automation) Platform",
+    version='0.1.0',
+    description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author='Cloint India Pvt. Ltd',
@@ -28,11 +28,11 @@ setup(
           "setuptools >= 51.1.2",
           "wheel >= 0.34.2",
           "watchdog >= 1.0.2",
-          "Pillow >= 7.2.0",
+          "Pillow >= 8.1.2",
           "pynput >= 1.7.1",
           "pif >= 0.8.2",
           "PyAutoGUI >= 0.9.52",
-          "PySimpleGUI >= 4.29.0",
+          "PySimpleGUI >= 4.33.0",
           "bs4 >= 0.0.1",
           "clipboard >= 0.0.4",
           "emoji >= 0.6.0",
@@ -49,7 +49,7 @@ setup(
           "plotly >= 4.11.0",
           "requests >= 2.24.0",
           "selenium >= 3.141.0",
-          "texthero >= 1.0.9",
+          "texthero == 1.0.5",
           "wordcloud >= 1.8.0",
           "zipcodes >= 1.1.2",
           "pathlib3x >= 1.3.9",
@@ -66,10 +66,9 @@ setup(
           "get-mac >= 0.8.2",
           "xlsx2html >= 0.2.2 ",
           "simplegmail >= 3.1.5",
-          "xlwings >= 0.22.3",
           "jupyterlab >= 3.0.0",    
           "notebook",
-          "pygments >= 2.7.4",
+          "pygments>=2.7.4",
           ],
   classifiers=[
     'Development Status :: 4 - Beta',
@@ -93,3 +92,4 @@ setup(
 # python setup.py build sdist bdist_wheel
 
 # twine upload dist/*
+# import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

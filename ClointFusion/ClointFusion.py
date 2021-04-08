@@ -10,7 +10,6 @@
 
 # 1. All imports
 
-
 import subprocess
 import os
 import sys
@@ -32,31 +31,14 @@ import datetime
 from functools import lru_cache
 import threading
 from threading import Timer
-import socket
-from cv2 import cv2
-import base64
-import imutils
 import clipboard
 import re
-from openpyxl.styles import Font
 from matplotlib.pyplot import axis
-import plotly.express as px
-from kaleido.scopes.plotly import PlotlyScope
-import plotly.graph_objects as go
-import zipcodes
-import folium
 from json import (load as jsonload, dump as jsondump)
 from helium import *
-from os import link, remove
-from selenium.webdriver import ChromeOptions
-import dis
-import texthero as hero
-from texthero import preprocessing
+from os import link
 from urllib.request import urlopen 
-from hashlib import sha256
 from PIL import Image
-from wordcloud import WordCloud
-from bs4 import BeautifulSoup
 import requests
 import watchdog.events
 import watchdog.observers
@@ -64,27 +46,16 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 import tkinter as tk
 from PIL import ImageGrab
 from pathlib import Path
-from pandas.core.common import flatten
 import webbrowser 
 import logging
 import tempfile
-from pif.utils import get_public_ip 
 import pyautogui as pg
-from email_validator import validate_email, EmailNotValidError
-from skimage.metrics import structural_similarity
 import warnings
-from pivottablejs import pivot_ui
-from IPython.display import HTML
-import imagehash
-import getmac
-from xlsx2html import xlsx2html
-from simplegmail import Gmail
 import traceback 
 import shutil
+import socket
 
 os_name = str(platform.system()).lower()
-mac_addr = getmac.get_mac_address()
-    
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
 # 2. All global variables
@@ -117,6 +88,11 @@ helium_service_launched=False
 
 verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
 update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
+
+if os_name == 'windows':
+    uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
+else:
+    uuid = str(subprocess.check_output('hal-get-property --udi /org/freedesktop/Hal/devices/computer --key system.hardware.uuid'),'utf-8').split('\n')[1].strip()
 
 # 3. All function definitions
 
@@ -177,9 +153,10 @@ def get_image_from_base64(imgFileName,imgBase64Str):
     Parameters:
         imgFileName  (str) : Image file name with png extension
         imgBase64Str (str) : Base64 string for conversion.
-    """
+    """    
     if not os.path.exists(imgFileName) :
         try:
+            import base64
             img_binary = base64.decodebytes(imgBase64Str)
             with open(imgFileName,"wb") as f:
                 f.write(img_binary)
@@ -268,7 +245,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.0.99)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.0)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -522,7 +499,7 @@ def message_pop_up(strMsg="",delay=3):
     try:
         # if not strMsg:
         #     strMsg = gui_get_any_input_from_user("pop-up message")
-        sg.popup_no_wait(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
+        sg.popup(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
     except Exception as ex:
         print("Error in message_pop_up="+str(ex))
 
@@ -1392,6 +1369,8 @@ def excel_to_colored_html(formatted_excel_path=""):
     Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
     """
     try:
+        from xlsx2html import xlsx2html
+
         if not formatted_excel_path:
             formatted_excel_path = gui_get_any_file_from_user('Excel file to convert to HTML','xlsx')        
 
@@ -1766,25 +1745,29 @@ def string_extract_only_numbers(inputString=""):
 
     outputStr = ''.join(e for e in inputString if e.isnumeric())
     return outputStr       
+
 @lru_cache(None)
 def call_otsu_threshold(img_title, is_reduce_noise=False):
     """
     OpenCV internal function for OCR
     """
-    
-    image = cv2.imread(img_title, 0)
+    try:
+        from cv2 import cv2
+        image = cv2.imread(img_title, 0)
 
-    
-    if is_reduce_noise:
-        image = cv2.GaussianBlur(image, (5, 5), 0)
+        
+        if is_reduce_noise:
+            image = cv2.GaussianBlur(image, (5, 5), 0)
 
-    
-    _ , image_result = cv2.threshold(
-        image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU,
-    )
-    
-    cv2.imwrite(img_title, image_result)
-    cv2.destroyAllWindows()
+        
+        _ , image_result = cv2.threshold(
+            image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU,
+        )
+        
+        cv2.imwrite(img_title, image_result)
+        cv2.destroyAllWindows()
+    except Exception as ex:
+        print("Error in call_otsu_threshold="+str(ex))
 
 @lru_cache(None)
 def read_image_cv2(img_path):
@@ -1799,6 +1782,7 @@ def read_image_cv2(img_path):
     """
     if img_path and os.path.exists(img_path):
         try:
+            from cv2 import cv2
             image = cv2.imread(img_path)
             return image
         except Exception as ex:
@@ -1807,10 +1791,6 @@ def read_image_cv2(img_path):
     else:
         print("File not found="+str(img_path))
 
-
-    
-
-    
 def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
     """
     Gets the row and coloumn count of the provided excel sheet.
@@ -2697,6 +2677,9 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
 
 def excel_drag_drop_pivot_table(excel_path="",sheet_name='Sheet1', header=0,rows=[],cols=[]):
     try:
+        from IPython.display import HTML
+        from pivottablejs import pivot_ui
+
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for Pivot Table Generation')
             
@@ -2750,9 +2733,12 @@ def mouse_find_highlight_click(searchText="",delay=0.1,occurance=1,left_right="l
     Searches the given text on the screen, highlights and clicks it.
     """  
     try:
+        from cv2 import cv2
+        import imutils
+        from skimage.metrics import structural_similarity
+
         if not searchText:
             searchText = gui_get_any_input_from_user("search text to Highlight & Click")
-
 
         time.sleep(0.2)
 
@@ -2926,6 +2912,10 @@ def excel_draw_charts(excel_path="",sheet_name='Sheet1', header=0, x_col="", y_c
     Usage: excel_charts(<excel path>,x_col='Name',y_col='Age', chart_type='bar',show_chart=True)
     """
     try:
+        from kaleido.scopes.plotly import PlotlyScope
+        import plotly.graph_objects as go
+        import plotly.express as px
+        
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for data visualization')
             
@@ -3019,6 +3009,8 @@ def get_long_lat(strZipCode=0):
     Function takes zip_code as input (int) and returns longitude, latitude, state, city, county. 
     """
     try:
+        import zipcodes
+
         if not strZipCode:
             strZipCode = str(gui_get_any_input_from_user("USA Zip Code ex: 77429"))
 
@@ -3044,6 +3036,8 @@ def excel_geotag_using_zipcodes(excel_path="",sheet_name='Sheet1',header=0,zoom_
     """
 
     try:
+        import folium
+
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for geo tagging (Note: As of now, works only for USA Zip codes)')
 
@@ -3101,11 +3095,12 @@ def _accept_cookies_h():
         print("Error in _accept_cookies_h="+str(ex))
     
 def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
+    """
+    Internal function to launch browser.
+    """
     status = False
     try:
-        """
-        Internal function to launch browser.
-        """
+        from selenium.webdriver import ChromeOptions
         if not URL:
             URL = gui_get_any_input_from_user("website URL to Launch Website using Helium functions. Ex https://www.google.com")
 
@@ -3302,6 +3297,8 @@ def dismantle_code(strFunctionName=""):
     Ex: dismantle_code(show_emoji)
     """
     try:
+        import dis
+
         if not strFunctionName:
             strFunctionName = gui_get_any_input_from_user('Exact function name to dis-assemble. Ex: show_emoji')
             print("Code dismantling {}".format(strFunctionName))
@@ -3319,6 +3316,9 @@ def excel_clean_data(excel_path="",sheet_name='Sheet1',header=0,column_to_be_cle
     remove_whitespace() Remove all white space between words.
     """
     try:
+        import texthero as hero
+        from texthero import preprocessing
+
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('to clean the data')
             
@@ -3350,6 +3350,8 @@ def compute_hash(inputData=""):
     Returns the hash of the inputData 
     """
     try:
+        from hashlib import sha256
+
         if not inputData:
             inputData = gui_get_any_input_from_user('input string to compute Hash')
 
@@ -3362,6 +3364,8 @@ def browser_get_html_text(url=""):
     Function to get HTML text without tags using Beautiful soup
     """
     try:
+        from bs4 import BeautifulSoup
+
         if not url:
             url = gui_get_any_input_from_user("website URL to get HTML Text (without tags). Ex: https://www.clointfusion.com")
 
@@ -3378,6 +3382,7 @@ def word_cloud_from_url(url=""):
     Function to create word cloud from a given website
     """
     try:
+        from wordcloud import WordCloud
         text = browser_get_html_text(url=url)
         
         wc = WordCloud(max_words=2000, width=800, height=600,background_color='white',max_font_size=40, random_state=None, relative_scaling=0)
@@ -3418,7 +3423,7 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
 
 def camera_capture_image(user_name=""):
     try:
-
+        from cv2 import cv2
         user_consent = gui_get_consent_from_user("turn ON camera & take photo ?")
 
         if user_consent == 'Yes':
@@ -3771,6 +3776,8 @@ def email_send_gmail_via_api(secret_key_path='',api_key_linked_gmail_address="",
     Sends gmail using API. User needs to supply his client_secret.json as parameter
     """
     try:
+        from simplegmail import Gmail
+
         if secret_key_path:
             gmail = Gmail(secret_key_path)
 
@@ -3784,6 +3791,8 @@ def email_send_gmail_via_api(secret_key_path='',api_key_linked_gmail_address="",
             "attachments": [str(attachmentFilePath)],
             "signature": True
         }
+                message = gmail.send_message(**params)
+                print(message)
 
             elif api_key_linked_gmail_address and toAddress and subject and htmlBody:
                 params = {
@@ -3794,9 +3803,9 @@ def email_send_gmail_via_api(secret_key_path='',api_key_linked_gmail_address="",
             "msg_html": htmlBody,
             "signature": True
         }
-
-            message = gmail.send_message(**params)
-            print(message)  
+                message = gmail.send_message(**params)
+                print(message)
+              
         else:
             print("Please create Secret Keys as per the steps mentioned here: https://github.com/jeremyephron/simplegmail")
 
@@ -3824,11 +3833,12 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 
                 mail.Subject = subject
 
+                mail.HTMLBody = f"<body><html> {htmlBody} <br> <img src="" cid:MyId1""> </body></html>"
+
                 if embedImgPath:
                     attachment = mail.Attachments.Add(embedImgPath)
                     attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "MyId1")
-                    mail.HTMLBody = f"<body><html> {htmlBody} <br> <img src="" cid:MyId1""> </body></html>"
-
+                    
                 if attachmentFilePath:
                     mail.Attachments.Add(attachmentFilePath)
 
@@ -3861,24 +3871,28 @@ def image_diff_hash(img_1,img_2,hash_type='p'):
     """
     Image Hashing function to know if two images look nearly identical
     """
-    hash_1 = hash_2 = 0
-    if hash_type == 'p': #Perceptual hashing
-        hash_1 = imagehash.phash(Image.open(img_1))
-        hash_2 = imagehash.phash(Image.open(img_2))
-    elif hash_type == 'a': #Average hashing 
-        hash_1 = imagehash.average_hash(Image.open(img_1))
-        hash_2 = imagehash.average_hash(Image.open(img_2))
-    elif hash_type == 'd': #Difference hashing (dHashref)
-        hash_1 = imagehash.dhash(Image.open(img_1))
-        hash_2 = imagehash.dhash(Image.open(img_2))
-    elif hash_type == 'w': #Wavelet hashing
-        hash_1 = imagehash.whash(Image.open(img_1))
-        hash_2 = imagehash.whash(Image.open(img_2))
-    elif hash_type == 'c': #HSV color hashing 
-        hash_1 = imagehash.colorhash(Image.open(img_1))
-        hash_2 = imagehash.colorhash(Image.open(img_2))
-    
-    print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
+    try:
+        import imagehash
+        hash_1 = hash_2 = 0
+        if hash_type == 'p': #Perceptual hashing
+            hash_1 = imagehash.phash(Image.open(img_1))
+            hash_2 = imagehash.phash(Image.open(img_2))
+        elif hash_type == 'a': #Average hashing 
+            hash_1 = imagehash.average_hash(Image.open(img_1))
+            hash_2 = imagehash.average_hash(Image.open(img_2))
+        elif hash_type == 'd': #Difference hashing (dHashref)
+            hash_1 = imagehash.dhash(Image.open(img_1))
+            hash_2 = imagehash.dhash(Image.open(img_2))
+        elif hash_type == 'w': #Wavelet hashing
+            hash_1 = imagehash.whash(Image.open(img_1))
+            hash_2 = imagehash.whash(Image.open(img_2))
+        elif hash_type == 'c': #HSV color hashing 
+            hash_1 = imagehash.colorhash(Image.open(img_1))
+            hash_2 = imagehash.colorhash(Image.open(img_2))
+        
+        print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
+    except Exception as ex:
+        print("Error in image_diff_hash="+str(ex))
 
 def excel_sub_routines():
     """
@@ -4026,6 +4040,7 @@ def _init_cf_quick_test_log_file(log_path_arg):
     from pif import get_public_ip
 
     try:
+        
         dt_tm= str(datetime.datetime.now())    
         dt_tm = dt_tm.replace(" ","_")
         dt_tm = dt_tm.replace(":","-")
@@ -4420,7 +4435,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
             print("____________________________________________________________")
-            print("Please click red 'Close' button now")
+            print("Please click red 'Close' button")
         
         else:
             print("ClointFusion Self Testing has Failed for few Functions")
@@ -4432,19 +4447,23 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
 def clointfusion_self_test():
     global os_name
-    strEmail = ""
+    
     start_time = time.monotonic()
     try:
+        from pif import get_public_ip
+        
+        google_sso_base64 = b'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'
 
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
-                [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='orange')],
-                [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
-                [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
-                [sg.Text("We will be collecting & using ClointFusion's Self Test Report, to improve ClointFusion",justification='c',text_color='green',font='Courier 12')],
+                # [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='orange')],
+                # [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
+                [sg.Button('', image_data=google_sso_base64, button_color=(sg.theme_background_color(),sg.theme_background_color()),border_width=0, key='SSO')],
+                # [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
+                [sg.Text("We will be collecting OS name, Host name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
-                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14')]  ]
+                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14')]  ]
 
         if os_name == 'windows':
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
@@ -4452,43 +4471,38 @@ def clointfusion_self_test():
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
         
         while True:             
-            event, values = window.read()
-
+            event, _ = window.read()
+            if event == 'SSO':
+                # os_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
+                webbrowser.open_new("https://api.clointfusion.com/cf/google/login_process?uuid={}".format(str(uuid)))
+                window['Start'].update(disabled=False)
+                window['SSO'].update(disabled=True)
+                
             if event == 'Start':
-                try:
-                    if values['-EMAIL-']:
-                        valid = validate_email(str(values['-EMAIL-']))
-                        strEmail = valid.email
+                # if values['-ROLE-']:
+                
+                window['Start'].update(disabled=True)
+                window['Close'].update(disabled=True)
+                # window['-NAME-'].update(disabled=True)
+                # window['-EMAIL-'].update(disabled=True)
+                # window['-ROLE-'].update(disabled=True)
+                _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
-                    if strEmail and values['-NAME-'] and values['-ROLE-']:
-                    
-                        window['Start'].update(disabled=True)
-                        window['Close'].update(disabled=True)
-                        window['-NAME-'].update(disabled=True)
-                        window['-EMAIL-'].update(disabled=True)
-                        window['-ROLE-'].update(disabled=True)
-                        _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
+                print("Starting ClointFusion's Automated Self Testing Module")
+                print('This may take several minutes to complete...')
+                print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
+                print('Please sitback & relax while all the test-cases are run...')
+                print()
 
-                        print("Starting ClointFusion's Automated Self Testing Module")
-                        print('This may take several minutes to complete...')
-                        print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
-                        print('Please sitback & relax while all the test-cases are run...')
-                        print()
+                _init_cf_quick_test_log_file(temp_current_working_dir)
 
-                        _init_cf_quick_test_log_file(temp_current_working_dir)
+                status_msg = clointfusion_self_test_cases(temp_current_working_dir)
 
-                        status_msg = clointfusion_self_test_cases(temp_current_working_dir)
-
-                        if status_msg == "":
-                            window['Close'].update(disabled=False)
-                        else:
-                            pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
-                            sys.exit(0)
-                    else:
-                        pg.alert("Please enter all the values")
-
-                except EmailNotValidError as e:
-                    pg.alert("Sorry, " + str(e))
+                if status_msg == "":
+                    window['Close'].update(disabled=False)
+                else:
+                    pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
+                    sys.exit(0)
 
             if event in (sg.WIN_CLOSED, 'Close'):
                 
@@ -4503,13 +4517,12 @@ def clointfusion_self_test():
                     from datetime import timedelta
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
-                    my_ip = "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-                    my_id = values['-NAME-'] + ";" + strEmail + ";" + values['-ROLE-']
-                    os_name = str(os_name) + ";" +  str(my_ip) + ";" +  str(my_id)
+                    os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
 
-                    URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.705740227={}&submit=Submit'.format(os_name + ";" + str(time_taken),file_contents)
+                    URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.2046783065={}&entry.705740227={}&submit=Submit'.format(str(uuid), os_hn_ip + ";" + str(time_taken),file_contents)
                     webbrowser.open(URL)
                     message_counter_down_timer("Closing browser (in seconds)",15)
+                    window['Close'].update(disabled=True)
                     
                     #Ensure to close all browser if left open by this self test
                     time.sleep(2)
@@ -4522,7 +4535,7 @@ def clointfusion_self_test():
                     # is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
                     today_date_month = str(datetime.date.today().strftime('%m'))
                     try:
-                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'user_email':strEmail,'mac_addr':mac_addr})
+                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'uuid':str(uuid)})
                         # print(resp.text)
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4546,12 +4559,12 @@ _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
 try:
-    resp = requests.post(verify_self_test_url, data={'mac_addr':mac_addr})
+    resp = requests.post(verify_self_test_url, data={'uuid':str(uuid)})
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
 
 try:
-    last_updated_on_month = dict(eval(resp.text))["self_test_month"]
+    last_updated_on_month = resp.text
 except:
     last_updated_on_month = 0
     
