@@ -245,7 +245,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.0)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.1)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -374,16 +374,12 @@ def _ask_user_semi_automatic_mode():
     if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
 
         layout = [[sg.Text('Do you want me to store GUI responses & use them next time when you run this BOT ?',text_color='orange',font='Courier 13')],
-                [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14'), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
-                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=False, text_color='yellow',enable_events=True)],
+                [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14', focus=True), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
+                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
                 [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Dont_Ask_Again.txt' to False. \n Please find path here: {}".format(Path(os.path.join(config_folder_path, 'Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')]]
 
         window = sg.Window('ClointFusion - Enable Semi Automatic Mode ?',layout,return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
         
-        file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-        file_path = Path(file_path)
-        _folder_write_text_file(file_path,str(False))
-
         while True:
             event, values = window.read()
             if event == '-DONT_ASK_AGAIN-':
@@ -396,7 +392,12 @@ def _ask_user_semi_automatic_mode():
                     window.Element('-DND-').Update(visible=True)
                 else:
                     window.Element('-DND-').Update(visible=False)
-                    
+
+            stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+            file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+            file_path = Path(file_path)
+            _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+
             if event in (sg.WIN_CLOSED, 'No'): #ask me every time
                 enable_semi_automatic_mode = False
                 break
@@ -962,9 +963,9 @@ def gui_get_workspace_path_from_user():
         if show_gui:
             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
                 [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
-                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=False, text_color='yellow',enable_events=True)],
+                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
                 [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(current_working_dir) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
-                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
+                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
             
@@ -973,8 +974,10 @@ def gui_get_workspace_path_from_user():
 
                 if event == '-DONT_ASK_AGAIN-':
                     stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                    
                     file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
                     file_path = Path(file_path)
+                    
                     _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
                 
                     if values and values['-DONT_ASK_AGAIN-']:
@@ -993,6 +996,13 @@ def gui_get_workspace_path_from_user():
             window.close()
             
             if values and event == 'OK':
+                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                
+                file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
+                file_path = Path(file_path)
+                
+                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+
                 values['-KEY-'] = oldKey
 
                 if str(values['-KEY-']) and str(values['-FOLDER-']):
@@ -4593,7 +4603,19 @@ else:
     else:
         base_dir = read_semi_automatic_log("Please Choose Workspace Folder")
 
-    if base_dir:
+    if not base_dir and stored_do_not_ask_user_preference == False:
+        yes_no = pg.confirm(text='Do you want to enable Workspace selection option ?', title='Workspace is not set properly', buttons=['Yes', 'No'])
+
+        if yes_no == 'Yes':
+            file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
+            file_path = Path(file_path)
+            _folder_write_text_file(file_path,str(True))
+            pg.alert('Please re-run & select the Workspace Folder')
+
+    elif not base_dir:
+        base_dir = gui_get_workspace_path_from_user()
+
+    else:
         base_dir = os.path.join(base_dir,"ClointFusion_BOT")
         base_dir = Path(base_dir)
         _set_bot_name()
@@ -4617,10 +4639,6 @@ else:
 
         update_log_excel_file(bot_name +'- BOT initiated')
         _ask_user_semi_automatic_mode()
-
-    else:
-        pg.alert('Please re-run & select the Workspace Folder')
-        sys.exit(0)
 
 # ########################
 

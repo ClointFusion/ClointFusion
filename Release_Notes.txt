@@ -1,3 +1,6 @@
+13) ClointFusion version 0.1.1 released on 09-04-2021 10:50 AM
+    1) Enhancements wrt Workspace folder selection & Semi-Automatic Mode
+    
 12) ClointFusion version 0.1.0 released on 06-04-2021 19:51 PM
     1) Gmail Sign added to Self-Test GUI
     2) User gets a report of self Test
