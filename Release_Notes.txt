@@ -1,3 +1,8 @@
+14) ClointFusion version 0.1.2 released on 13-04-2021 10:00 PM
+    1) Removed unnecessary Packages
+    2) Fixed file not a zipped file error
+    3) Minor Enhancements
+
 13) ClointFusion version 0.1.1 released on 09-04-2021 10:50 AM
     1) Enhancements wrt Workspace folder selection & Semi-Automatic Mode
     

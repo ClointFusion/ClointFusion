@@ -13,7 +13,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.1',
+    version='0.1.2',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -28,8 +28,6 @@ setup(
           "setuptools >= 51.1.2",
           "wheel >= 0.34.2",
           "watchdog >= 1.0.2",
-          "Pillow >= 8.1.2",
-          "pynput >= 1.7.1",
           "pif >= 0.8.2",
           "PyAutoGUI >= 0.9.52",
           "PySimpleGUI >= 4.33.0",
@@ -52,10 +50,8 @@ setup(
           "texthero == 1.0.5",
           "wordcloud >= 1.8.0",
           "zipcodes >= 1.1.2",
-          "pathlib3x >= 1.3.9",
           "pathlib >= 1.0.1",
           "PyQt5 >= 5.15.2",
-          "email-validator >= 1.1.1",
           "testresources >= 2.0.1",
           "scikit-image >= 0.17.2",
           "pivottablejs >= 0.9.0",
@@ -63,7 +59,6 @@ setup(
           "comtypes >= 1.1.7",
           "cryptocode >= 0.1",
           "ImageHash >= 4.2.0",
-          "get-mac >= 0.8.2",
           "xlsx2html >= 0.2.2 ",
           "simplegmail >= 3.1.5",
           "jupyterlab >= 3.0.0",    
@@ -83,9 +78,13 @@ setup(
   python_requires='>=3.7, <4',
 
   project_urls={  # Optional
+      'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
+      'ClointFusion WhatsApp Community': 'https://chat.whatsapp.com/DkY9QKmQkTZIv1CsOVrgWW',
+      'Hackathon Website': 'https://tinyurl.com/ClointFusion',
+      'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
       'Discussion Forum': 'https://github.com/ClointFusion/ClointFusion/discussions',
-      'Source': 'https://github.com/ClointFusion/ClointFusion/',
+      'Source Code': 'https://github.com/ClointFusion/ClointFusion/'
   },
 )
 

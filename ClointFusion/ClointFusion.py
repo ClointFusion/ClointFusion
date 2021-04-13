@@ -15,7 +15,6 @@ import os
 import sys
 import platform
 import urllib.request
-import emoji
 from pandas.core.algorithms import mode
 from datetime import datetime
 import pyautogui as pg
@@ -49,7 +48,6 @@ from pathlib import Path
 import webbrowser 
 import logging
 import tempfile
-import pyautogui as pg
 import warnings
 import traceback 
 import shutil
@@ -187,6 +185,8 @@ def show_emoji(strInput=""):
     print("OK",show_emoji('thumbsup'))
     Default: thumbsup
     """
+    import emoji
+    
     if not strInput:
         return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
     else:
@@ -245,7 +245,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.1)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.2)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -353,6 +353,80 @@ def _folder_write_text_file(txt_file_path="",contents=""):
     except Exception as ex:
         print("Error in folder_write_text_file="+str(ex))
 
+def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startcol=None,
+    truncate_sheet=False, resizeColumns=True, na_rep = 'NA', **to_excel_kwargs):
+    
+    from string import ascii_uppercase
+    from openpyxl.utils import get_column_letter
+    
+    # ignore [engine] parameter if it was passed
+    if 'engine' in to_excel_kwargs:
+        to_excel_kwargs.pop('engine')
+
+    try:
+        f = open(filename)
+        # Do something with the file
+    except IOError:
+        # print("File not accessible")
+        wb = Workbook()
+        ws = wb.active
+        ws.title = sheet_name
+        wb.save(filename)
+
+    writer = pd.ExcelWriter(filename, engine='openpyxl', mode='a')
+
+    try:
+        # try to open an existing workbook
+        writer.book = load_workbook(filename)
+
+        # get the last row in the existing Excel sheet
+        # if it was not specified explicitly
+        if startrow is None and sheet_name in writer.book.sheetnames:
+            startrow = writer.book[sheet_name].max_row
+
+        # truncate sheet
+        if truncate_sheet and sheet_name in writer.book.sheetnames:
+            # index of [sheet_name] sheet
+            idx = writer.book.sheetnames.index(sheet_name)
+            # remove [sheet_name]
+            writer.book.remove(writer.book.worksheets[idx])
+            # create an empty sheet [sheet_name] using old index
+            writer.book.create_sheet(sheet_name, idx)
+
+        # copy existing sheets
+        writer.sheets = {ws.title:ws for ws in writer.book.worksheets}
+    except FileNotFoundError:
+        # file does not exist yet, we will create it
+        pass
+
+    if startrow is None:
+        # startrow = -1
+        startrow = 0
+
+    if startcol is None:
+        startcol = 0
+
+    # write out the new sheet
+    df.to_excel(writer, sheet_name, startrow=startrow, startcol=startcol, na_rep=na_rep, **to_excel_kwargs)
+
+    if resizeColumns:
+
+        ws = writer.book[sheet_name]
+
+        def auto_format_cell_width(ws):
+            for letter in range(1,ws.max_column):
+                maximum_value = 0
+                for cell in ws[get_column_letter(letter)]:
+                    val_to_check = len(str(cell.value))
+                    if val_to_check > maximum_value:
+                        maximum_value = val_to_check
+                ws.column_dimensions[get_column_letter(letter)].width = maximum_value + 2
+
+        auto_format_cell_width(ws)
+
+    # save the workbook
+    writer.save()
+
 def _ask_user_semi_automatic_mode():
     """
     Ask user to 'Enable Semi Automatic Mode'
@@ -393,7 +467,6 @@ def _ask_user_semi_automatic_mode():
                 else:
                     window.Element('-DND-').Update(visible=False)
 
-            stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
             file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
             file_path = Path(file_path)
             _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
@@ -403,15 +476,17 @@ def _ask_user_semi_automatic_mode():
                 break
             elif event == 'Yes': #do not ask me again
                 enable_semi_automatic_mode = True
+                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+                file_path = Path(file_path)
+                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
                 break
     
         window.close()
 
         if not os.path.exists(bot_config_path):
             df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-            writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
-            df.to_excel(writer, sheet_name='Sheet1', index=False)
-            writer.save()
+            append_df_to_excel(bot_config_path, df, index=False, startrow=0)
             
         if enable_semi_automatic_mode:
             print("Semi Automatic Mode is ENABLED "+ show_emoji())
@@ -454,9 +529,7 @@ def read_semi_automatic_log(key):
             
             if not os.path.exists(bot_config_path):
                 df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-                writer = pd.ExcelWriter(bot_config_path) # pylint: disable=abstract-class-instantiated
-                df.to_excel(writer, sheet_name='Sheet1', index=False)
-                writer.save()
+                append_df_to_excel(bot_config_path, df, index=False, startrow=0)
 
         df = pd.read_excel(bot_config_path,engine='openpyxl')
         
@@ -527,11 +600,7 @@ def update_semi_automatic_log(key, value):
             reader = pd.read_excel(bot_config_path,engine='openpyxl')
             
             df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
-            writer = pd.ExcelWriter(bot_config_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
-            writer.book = load_workbook(str(bot_config_path),data_only=True)
-            writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-            df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
-            writer.save()
+            append_df_to_excel(bot_config_path, df, index=False,startrow=None,header=None)
 
     except Exception as ex:
         print("Error in update_semi_automatic_log="+str(ex))
@@ -1724,12 +1793,14 @@ def update_log_excel_file(message=""):
 
         df = pd.DataFrame({'Timestamp': [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")], 'Status':[message]})
 
-        writer = pd.ExcelWriter(status_log_excel_filepath, engine='openpyxl') # pylint: disable=abstract-class-instantiated
-        writer.book = load_workbook(status_log_excel_filepath,data_only=True,keep_links=False)
-        writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        reader = pd.read_excel(status_log_excel_filepath,engine='openpyxl')        
-        df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
-        writer.save()
+        # writer = pd.ExcelWriter(status_log_excel_filepath, engine='openpyxl') # pylint: disable=abstract-class-instantiated
+        # writer.book = load_workbook(status_log_excel_filepath,data_only=True,keep_links=False)
+        # writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
+        # reader = pd.read_excel(status_log_excel_filepath,engine='openpyxl')        
+        # df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
+        # writer.save()
+
+        append_df_to_excel(status_log_excel_filepath, df, index=False,startrow=None,header=None)
 
         return True
     except Exception as ex:
@@ -2171,13 +2242,8 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
 
         df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
         
-        writer = pd.ExcelWriter(excel_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
-        writer.book = load_workbook(excel_path)
-        writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        
         df.at[cellNumber,columnName] = setText
-        df.to_excel(writer, sheet_name=sheet_name ,index=False)    
-        writer.save()
+        append_df_to_excel(excel_path, df, index=False,startrow=0)
         
         return True
 
