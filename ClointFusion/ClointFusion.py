@@ -2195,8 +2195,9 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
         elif firstColumnToBeSorted is not None:
             df=df.sort_values([firstColumnToBeSorted],ascending=[firstColumnSortType])
 
+        book = load_workbook(excel_path)
         writer = pd.ExcelWriter(excel_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
-        writer.book = load_workbook(excel_path)
+        writer.book = book
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
     
         df.to_excel(writer,sheet_name=sheet_name,index=False)
