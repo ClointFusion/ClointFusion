@@ -3,7 +3,12 @@
 <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/6cc0c340d6e30001a600de5b3994eec81ea6ea48/Splash.png">
 
 # Description: 
-Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
+Cloint India Pvt. Ltd - Python functions for Automation (RPA)
+
+# What is ClointFusion ?
+ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man’s RPA using AI. 
+
+## Welcome to ClointFusion, Made in India with &#10084;&#65039;
 
 # Test Drive ClointFusion on Google Colabs
 <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
@@ -14,7 +19,7 @@ Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 
 # ClointFusion is now supported in Windows / Ubuntu / macOS !
 
-1. Please install Python 3.7 or higher with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
+1. Please install Python 3.9.1 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
 
     Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
@@ -34,6 +39,8 @@ PS: Ubuntu users: May need to install some additional packages:
 3) sudo apt-get install scrot
 4) sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
 5) sudo apt-get install libgirepository1.0-dev
+6) sudo apt-get install python3-apt
+7) sudo apt-get install  python3-xlib
 
 ---
 # ClointFusion First Run Setup: 

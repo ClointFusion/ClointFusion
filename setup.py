@@ -13,7 +13,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.2',
+    version='0.1.3',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -60,6 +60,7 @@ setup(
           "cryptocode >= 0.1",
           "ImageHash >= 4.2.0",
           "xlsx2html >= 0.2.2 ",
+          "python-dateutil >= 2.8.1",
           "simplegmail >= 3.1.5",
           "jupyterlab >= 3.0.0",    
           "notebook",
@@ -79,7 +80,7 @@ setup(
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
-      'ClointFusion WhatsApp Community': 'https://chat.whatsapp.com/DkY9QKmQkTZIv1CsOVrgWW',
+      'WhatsApp Community': 'https://chat.whatsapp.com/DkY9QKmQkTZIv1CsOVrgWW',
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
       'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',

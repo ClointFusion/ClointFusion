@@ -43,7 +43,6 @@ import watchdog.events
 import watchdog.observers
 from PyQt5 import QtWidgets, QtCore, QtGui
 import tkinter as tk
-from PIL import ImageGrab
 from pathlib import Path
 import webbrowser 
 import logging
@@ -67,7 +66,7 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = ""
-current_working_dir = os.path.dirname(os.path.realpath(__file__)) #get cwd
+current_working_dir = os.getcwd() #get cwd
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 chrome_service = ""
@@ -90,7 +89,7 @@ update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
 if os_name == 'windows':
     uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
 else:
-    uuid = str(subprocess.check_output('hal-get-property --udi /org/freedesktop/Hal/devices/computer --key system.hardware.uuid'),'utf-8').split('\n')[1].strip()
+    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
 
 # 3. All function definitions
 
@@ -245,7 +244,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.2)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.3)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -2186,6 +2185,7 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
             elif len(usecols) == 1:
                 firstColumnToBeSorted = usecols[0]
         df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header,engine='openpyxl')
+
         if thirdColumnToBeSorted is not None and secondColumnToBeSorted is not None and firstColumnToBeSorted is not None:
             df=df.sort_values([firstColumnToBeSorted,secondColumnToBeSorted,thirdColumnToBeSorted],ascending=[firstColumnSortType,secondColumnSortType,thirdColumnSortType])
         
@@ -2196,7 +2196,8 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
             df=df.sort_values([firstColumnToBeSorted],ascending=[firstColumnSortType])
 
         writer = pd.ExcelWriter(excel_path, engine='openpyxl') # pylint: disable=abstract-class-instantiated
-        writer.book = load_workbook(excel_path)
+        book = load_workbook(excel_path)
+        writer.book = book
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
     
         df.to_excel(writer,sheet_name=sheet_name,index=False)
@@ -3583,7 +3584,6 @@ def convert_csv_to_excel(csv_path="",sep=""):
         csv_file_name = _extract_filename_from_filepath(csv_path)
         excel_file_name = csv_file_name + ".xlsx"        
 
-
         excel_file_path = os.path.join(output_folder_path,excel_file_name)
         excel_file_path = Path(excel_file_path)
         writer = pd.ExcelWriter(excel_file_path) # pylint: disable=abstract-class-instantiated
@@ -3597,10 +3597,6 @@ def convert_csv_to_excel(csv_path="",sep=""):
 
     except Exception as ex:
         print("Error in convert_csv_to_excel="+str(ex))
-
-
-
-
 
 # Class related to capture_snip_now
 class CaptureSnip(QtWidgets.QWidget):
@@ -3660,12 +3656,16 @@ def capture_snip_now():
     """
     app = ""
     try:
-        if message_counter_down_timer("Capturing snip in (seconds)",3):
-            app = QtWidgets.QApplication(sys.argv)
-            window = CaptureSnip()
-            window.activateWindow()
-            app.aboutToQuit.connect(app.deleteLater)
-            sys.exit(app.exec_())
+        if os_name == 'windows':
+            from PIL import ImageGrab
+            if message_counter_down_timer("Capturing snip in (seconds)",3):
+                app = QtWidgets.QApplication(sys.argv)
+                window = CaptureSnip()
+                window.activateWindow()
+                app.aboutToQuit.connect(app.deleteLater)
+                sys.exit(app.exec_())
+        else:
+            print("This function is available on Windows Only")
             
     except Exception as ex:
         print("Error in capture_snip_now="+str(ex))        
@@ -4075,6 +4075,8 @@ def excel_convert_to_image(excel_file_path=""):
     """
     try:
         if os_name == "windows":
+            from PIL import ImageGrab
+
             import win32com.client 
             excel = win32com.client.gencache.EnsureDispatch('Excel.Application')
 
@@ -4270,7 +4272,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         else:
             print('Skipping window operations as it is Windows OS specific')
             logging.info('Skipping window operations as it is Windows OS specific')
-            TEST_CASES_STATUS_MESSAGE = 'Skipping window operations as it is Windows OS specific'
+            # TEST_CASES_STATUS_MESSAGE = 'Skipping window operations as it is Windows OS specific'
+            TEST_CASES_STATUS_MESSAGE = ''
 
         try:
             print()
@@ -4301,10 +4304,13 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 key_press('alt+f4,n')
             else:
                 pg.write("Performing ClointFusion Self Test for Text Editor / GEDIT")
+                time.sleep(2)
                 pg.press('enter')
+                time.sleep(2)
                 pg.hotkey('alt','f4')
                 time.sleep(2)
                 pg.hotkey('alt','w')
+                time.sleep(2)
             
             message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
             

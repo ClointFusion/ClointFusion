@@ -33,6 +33,7 @@ comtypes >= 1.1.7
 cryptocode >= 0.1
 ImageHash >= 4.2.0
 xlsx2html >= 0.2.2 
+python-dateutil>=2.8.1
 simplegmail >= 3.1.5
 jupyterlab
 notebook
