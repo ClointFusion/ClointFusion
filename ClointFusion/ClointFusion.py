@@ -4626,6 +4626,10 @@ def clointfusion_self_test():
                     
     except Exception as ex:
         pg.alert('Error in Clointfusion Self Test = '+str(ex))
+
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        print(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
+
         _rerun_clointfusion_first_run(str(ex))
     finally:
         print('Thank you !')
