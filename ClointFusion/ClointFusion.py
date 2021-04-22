@@ -4725,5 +4725,3 @@ else:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-message_counter_down_timer("HK")
