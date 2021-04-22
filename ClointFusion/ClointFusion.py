@@ -73,6 +73,7 @@ chrome_service = ""
 browser_driver = ""
 
 cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
+cf_icon_cdt_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON-CDT.ico"))
 cf_logo_file_path = Path(os.path.join(current_working_dir,"Cloint-LOGO.PNG"))
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
@@ -169,6 +170,9 @@ def _download_cloint_ico_png():
     try:
         if not os.path.exists(str(cf_icon_file_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',str(cf_icon_file_path))
+
+        if not os.path.exists(str(cf_icon_cdt_file_path)):
+            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON-CDT.ico',str(cf_icon_cdt_file_path))
 
         if not os.path.exists(str(cf_logo_file_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',str(cf_logo_file_path))
@@ -723,7 +727,7 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
             [sg.Image(filename = str(cf_logo_file_path),size=(60,60))],
             [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
 
-    window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_file_path)
+    window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_cdt_file_path)
 
     current_value = start_value + 1
 
@@ -4721,3 +4725,5 @@ else:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+message_counter_down_timer("HK")
