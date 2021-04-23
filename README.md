@@ -6,7 +6,7 @@
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
 
 # What is ClointFusion ?
-ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man’s RPA using AI. 
+ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI. 
 
 ## Welcome to ClointFusion, Made in India with &#10084;&#65039; 
 
