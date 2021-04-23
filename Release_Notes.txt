@@ -1,4 +1,4 @@
-16) ClointFusion version 0.1.4 released on 23-04-2021 15:30 PM
+16) ClointFusion version 0.1.4 released on 23-04-2021 16:00 PM
     1) comtypes package removed from requirements.txt
     2) ReadMe MD & RST file updated
     3) Added ChromeDriver Binary package
