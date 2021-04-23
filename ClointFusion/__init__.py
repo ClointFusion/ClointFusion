@@ -15,6 +15,12 @@ from ClointFusion.ClointFusion import re
 from ClointFusion.ClointFusion import op
 from ClointFusion.ClointFusion import kb
 from ClointFusion.ClointFusion import os
+from ClointFusion.ClointFusion import time
+from ClointFusion.ClointFusion import shutil
+from ClointFusion.ClointFusion import sys
+from ClointFusion.ClointFusion import datetime
+from ClointFusion.ClointFusion import subprocess
+from ClointFusion.ClointFusion import traceback
 from ClointFusion.ClointFusion import os_name
 from ClointFusion.ClointFusion import show_emoji
 from ClointFusion.ClointFusion import folder_read_text_file

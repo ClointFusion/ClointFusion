@@ -29,7 +29,6 @@ testresources >= 2.0.1
 scikit-image >= 0.17.2
 pivottablejs >= 0.9.0
 ipython >= 7.19.0
-comtypes >= 1.1.7
 cryptocode >= 0.1
 ImageHash >= 4.2.0
 xlsx2html >= 0.2.2 
@@ -38,3 +37,4 @@ simplegmail >= 3.1.5
 jupyterlab
 notebook
 pygments>=2.7.4 
+chromedriver-binary

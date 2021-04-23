@@ -51,6 +51,8 @@ import warnings
 import traceback 
 import shutil
 import socket
+from selenium import webdriver
+import chromedriver_binary
 
 os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -248,7 +250,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.3)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.4)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
