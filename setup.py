@@ -13,7 +13,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.4',
+    version='0.1.5',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -65,9 +65,11 @@ setup(
           "notebook",
           "pygments>=2.7.4",
           "chromedriver-binary",
+          "pyinspect>=0.0.8",
           ],
   classifiers=[
     'Development Status :: 4 - Beta',
+    'Environment :: Console',
     'Intended Audience :: Developers',      
     'Topic :: Software Development :: Build Tools',
     'License :: OSI Approved :: BSD License',
@@ -89,7 +91,7 @@ setup(
   },
 )
 
-# python setup.py build sdist bdist_wheel
+# python setup.py build sdist bdist_wheel bdist_wininst rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
 
 # twine upload dist/*
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

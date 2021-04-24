@@ -1,3 +1,8 @@
+17) ClointFusion version 0.1.5 released on 24-04-2021 10:20 AM
+    1) Added new function find() to find and inspect ClointFusion's functions
+    2) ReadMe MD, RST file updated
+    3) Helium function now connects to user's browser session
+    
 16) ClointFusion version 0.1.4 released on 23-04-2021 16:00 PM
     1) comtypes package removed from requirements.txt
     2) ReadMe MD & RST file updated

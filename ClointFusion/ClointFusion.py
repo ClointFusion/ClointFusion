@@ -53,6 +53,7 @@ import shutil
 import socket
 from selenium import webdriver
 import chromedriver_binary
+import pyinspect as pi
 
 os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -250,7 +251,7 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.4)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.5)"
     print(welcome_msg)
     
 def _set_bot_name(strBotName=""):
@@ -3177,7 +3178,7 @@ def _accept_cookies_h():
     except Exception as ex:
         print("Error in _accept_cookies_h="+str(ex))
     
-def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
+def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
     """
     Internal function to launch browser.
     """
@@ -3198,9 +3199,12 @@ def launch_website_h(URL="",dp=False,dn=True,igc=True,smcp=True,i=False,headless
             options.add_argument("--ignore-certificate-errors")             
         if smcp:
             options.add_argument("--suppress-message-center-popups")       
-        if i:
+            
+        if dummy_browser == False:
+            options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+        else:
             options.add_argument("--incognito")                             
-        
+
         options.add_argument("--disable-translate")
         options.add_argument("--start-maximized")                          
         options.add_argument("--ignore-autocomplete-off-autofill")          
@@ -3238,7 +3242,7 @@ def browser_navigate_h(url="",dp=False,dn=True,igc=True,smcp=True,i=False,headle
 
         global helium_service_launched
         if not helium_service_launched:
-            launch_website_h(URL=url,dp=dp,dn=dn,igc=igc,smcp=smcp,i=i,headless=headless)
+            launch_website_h(URL=url,dummy_browser=True,dp=dp,dn=dn,igc=igc,smcp=smcp,i=i,headless=headless)
             return
         go_to(url.lower())
     except Exception as ex:
@@ -4640,6 +4644,17 @@ def clointfusion_self_test():
     finally:
         print('Thank you !')
         sys.exit(0)
+
+def find(function_partial_name=""):
+    # Find and inspect python functions
+    try:
+        if function_partial_name:
+            import ClointFusion as cf
+            return pi.search(cf, name=function_partial_name)
+        else:
+            print("Please pass partial name of the function. Ex: sort")
+    except Exception as ex:
+        print("Error in find="+str(ex))
 
 # 4. All default services
 

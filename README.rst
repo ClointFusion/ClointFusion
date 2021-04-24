@@ -8,6 +8,18 @@ Description:
 
 Cloint India Pvt. Ltd - Python3 functions for RPA (Automation)
 
+What is ClointFusion ?
+======================
+
+ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI. 
+
+Welcome to ClointFusion, Made in India with &#10084;&#65039; 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status) ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
+
+![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) ![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
+
 Test Drive ClointFusion on Google Colabs
 ========================================
 
@@ -20,7 +32,7 @@ Installation on your local computer
 ClointFusion is now supported in Windows / Ubuntu / macOS !
 ===========================================================
 
-1. Please install Python 3.7 or higher with 64 bit.<a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
+1. Please install Python 3.9.4 or higher with 64 bit.<a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
    
    Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
@@ -417,6 +429,11 @@ here for more details: https://tinyurl.com/ClointFusion
 
 Please visit our GitHub repository:
 https://github.com/ClointFusion/ClointFusion
+
+Date ❤️  with ClointFusion 
+===========================
+
+This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
 
 Contact us:
 ===========

@@ -380,6 +380,11 @@ here for more details: https://tinyurl.com/ClointFusion
 Please visit our GitHub repository:
 https://github.com/ClointFusion/ClointFusion
 
+Date ❤️  with ClointFusion 
+===========================
+
+This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
+
 Contact us:
 ===========
 

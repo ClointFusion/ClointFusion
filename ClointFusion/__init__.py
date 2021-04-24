@@ -22,6 +22,7 @@ from ClointFusion.ClointFusion import datetime
 from ClointFusion.ClointFusion import subprocess
 from ClointFusion.ClointFusion import traceback
 from ClointFusion.ClointFusion import os_name
+from ClointFusion.ClointFusion import find
 from ClointFusion.ClointFusion import show_emoji
 from ClointFusion.ClointFusion import folder_read_text_file
 from ClointFusion.ClointFusion import folder_write_text_file
