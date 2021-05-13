@@ -39,3 +39,4 @@ notebook
 pygments>=2.7.4 
 chromedriver-binary
 pyinspect>=0.0.8
+pillow>=8.2.0 # not directly required, pinned by Snyk to avoid a vulnerability
