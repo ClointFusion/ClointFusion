@@ -54,6 +54,7 @@ import socket
 from selenium import webdriver
 import chromedriver_binary
 import pyinspect as pi
+import psutil
 
 os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -4780,6 +4781,36 @@ def get_recent_filename(file_list: list = [], **mode):
         print("ERROR in get_recent_filename() = " + str(e))
 
 
+
+
+def close_any_exe(exe: str):
+    """
+    Kill any give exe process
+    No Need to pass .exe extension it is optional.
+    Examples : excel.exe
+    :param exe: Name of exe process with or with out .exe extension
+    :return:
+    """
+    try:
+        # Check ".exe" is there or not
+        if not exe[-4:].lower() == ".exe":
+            exe = exe.lower() + ".exe"
+        else:
+            exe = exe.lower()
+        # Find Exe Process and Kill Process
+        process_dict = psutil.process_iter(attrs=["name"])
+        for proc in process_dict:
+            temp = proc.info
+            # Find Exe Process
+            if temp["name"].lower() == exe:
+                proc.kill()
+                print(f"{proc.info} Process Killed..")
+            # print(process.info)
+        time.sleep(0.5)
+        return True
+    except Exception as e:
+        print("ERROR From close_exe() = " + str(e))
+        return False
 
 # 4. All default services
 
