@@ -4676,25 +4676,28 @@ def ProgressBar(sleep_sec: int = 1, status: str = '') -> None:
     :param status: str print besides Progress Bar
     :return: None
     """
-    # Total No. of Fixed Lines
-    bar_len = 60
-    # Loop through sleep_sec:
-    count = 0
-    while count <= sleep_sec:
-        # Calculate Filled Lines
-        filled_len = int(round(bar_len * count / float(sleep_sec)))
-        # Calculate Percentage
-        percents = round(100.0 * count / float(sleep_sec), 1)
-        # Progress To be Print
-        bar = u'▌' * filled_len + '-' * (bar_len - filled_len)
-        # Print Progress
-        sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
-        sys.stdout.flush()
-        # Add '\n' After Progress Completes
-        if count == sleep_sec:
-            sys.stdout.write('[%s] %s%s ...%s\n' % (bar, percents, '%', status))
-        time.sleep(1)
-        count += 1
+    try:
+        # Total No. of Fixed Lines
+        bar_len = 60
+        # Loop through sleep_sec:
+        count = 0
+        while count <= sleep_sec:
+            # Calculate Filled Lines
+            filled_len = int(round(bar_len * count / float(sleep_sec)))
+            # Calculate Percentage
+            percents = round(100.0 * count / float(sleep_sec), 1)
+            # Progress To be Print
+            bar = u'▌' * filled_len + '-' * (bar_len - filled_len)
+            # Print Progress
+            sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+            sys.stdout.flush()
+            # Add '\n' After Progress Completes
+            if count == sleep_sec:
+                sys.stdout.write('[%s] %s%s ...%s\n' % (bar, percents, '%', status))
+            time.sleep(1)
+            count += 1
+    except Exception as e:
+        print("ERROR in ProgressBar() = ", str(e))
 
 
 def BinarySearch(ls: [list, tuple, set], ele: [str, int]) -> int:
@@ -4706,28 +4709,76 @@ def BinarySearch(ls: [list, tuple, set], ele: [str, int]) -> int:
     :param ele: Name of Search item.
     :return: index from which item is first found
     """
-    ls_temp = sorted(ls)
-    flag = False
-    print(f"Sorted List : {ls_temp}")
-    low = 0
-    high = len(ls_temp) - 1
+    try:
+        ls_temp = sorted(ls)
+        flag = False
+        print(f"Sorted List : {ls_temp}")
+        low = 0
+        high = len(ls_temp) - 1
 
-    while low <= high:
-        mid = (low + high) // 2
-        if ele < ls_temp[mid]:  # If True and Less -> Than Left Part
-            high = mid - 1
-        else:
-            if ele > ls_temp[mid]:  # Greater -> Than Right part
-                low = mid + 1
+        while low <= high:
+            mid = (low + high) // 2
+            if ele < ls_temp[mid]:  # If True and Less -> Than Left Part
+                high = mid - 1
             else:
-                if ele == ls_temp[mid]:  # Element Found
-                    flag = True
-                    print(f"Index of sorted..'{ele}' found at {mid}.")
-                    print(f"Index of origin..'{ele}' found at {ls.index(ele)}.")
-                    return ls.index(ele)
-    if not flag:
-        print(f"{ele} not found.")
-        return False
+                if ele > ls_temp[mid]:  # Greater -> Than Right part
+                    low = mid + 1
+                else:
+                    if ele == ls_temp[mid]:  # Element Found
+                        flag = True
+                        print(f"Index of sorted..'{ele}' found at {mid}.")
+                        print(f"Index of origin..'{ele}' found at {ls.index(ele)}.")
+                        return ls.index(ele)
+        if not flag:
+            print(f"{ele} not found.")
+            return False
+    except Exception as e:
+        print("ERROR in BinarySearch() = "+str(e))
+
+
+def get_recent_filename(file_list: list = [], **mode):
+    """
+    Find Latest Last Modified File from the given file list.
+    If you pass create=True it will return Recent Created File.
+    If you pass access=True it will return Recent Accessed File.
+    Default is It will return Recent Last Modified File.
+    Only one mode is Allowed.
+    :param file_list: list-like object for list of files
+    :param mode: create=True OR access=True
+    :return: Recent File
+    """
+    try:
+        if not file_list:
+            raise Exception("List is Empty. List must not be Empty.")
+        else:
+            # print("**kwargs : ", mode)
+            file_lastdate = []      # To store Last Modified Date
+            if 'create' in mode and 'access' in mode:
+                raise Exception("Only One Mode is Allowed.")
+            if 'create' in mode:
+                if mode['create'] == True:
+                    for file in file_list:
+                        stat = datetime.fromtimestamp(os.stat(file).st_ctime)  # Convert st_mtime float to Date & Time
+                        file_lastdate.append(stat)
+            elif 'access' in mode:
+                if mode['access'] == True:
+                    for file in file_list:
+                        stat = datetime.fromtimestamp(os.stat(file).st_atime)  # Convert st_mtime float to Date & Time
+                        file_lastdate.append(stat)
+            else:
+                for file in file_list:
+                    stat = datetime.fromtimestamp(os.stat(file).st_mtime)           # Convert st_mtime float to Date & Time
+                    file_lastdate.append(stat)
+
+            # Logic To get Recent File
+            # "file_lastdate.index(max(file_lastdate))" will return index of Max of lastDate
+            filename = file_list[file_lastdate.index(max(file_lastdate))]
+            # filedate = file_lastdate[file_lastdate.index(max(file_lastdate))]
+            # print("Last Modified Date of File \"{}\" = {}".format(str(filename).split("\\")[-1], filedate))
+            return filename
+    except Exception as e:
+        print("ERROR in get_recent_filename() = " + str(e))
+
 
 
 # 4. All default services
