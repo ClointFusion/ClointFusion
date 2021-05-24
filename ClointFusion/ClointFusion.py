@@ -3367,7 +3367,16 @@ def browser_hit_enter_h():
         press(ENTER)
     except Exception as ex:
         print("Error in browser_hit_enter_h="+str(ex))
-
+        
+def browser_key_press_h(text):
+    """
+    Type text using Browser Helium Functions
+    """
+    try:
+        press(text)
+    except Exception as ex:
+        print("Error in browser_hit_enter_h="+str(ex))
+        
 def browser_quit_h():
     """
     Close the Helium browser.
