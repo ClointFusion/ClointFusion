@@ -3937,6 +3937,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
     except Exception as ex:
         print("Error in email_send_via_desktop_outlook="+str(ex))
 
+
 def OFF_semi_automatic_mode():
     """
     This function sets semi_automatic_mode as False => OFF
@@ -3952,6 +3953,7 @@ def OFF_semi_automatic_mode():
         print("Semi Automatic Mode is DISABLED "+ show_emoji())
     except Exception as ex:
         print("Error in OFF_semi_automatic_mode="+str(ex))        
+
 
 def image_diff_hash(img_1,img_2,hash_type='p'):
     """
@@ -3979,6 +3981,7 @@ def image_diff_hash(img_1,img_2,hash_type='p'):
         print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
     except Exception as ex:
         print("Error in image_diff_hash="+str(ex))
+
 
 def excel_sub_routines():
     """
@@ -4069,6 +4072,7 @@ def excel_sub_routines():
     except Exception as ex:
         print("Error in excel_sub_routines="+str(ex))
 
+
 def isNaN(value):
     """
     Returns TRUE if a given value is NaN False otherwise
@@ -4078,6 +4082,7 @@ def isNaN(value):
         return math.isnan(float(value))
     except:
         return False
+
 
 def excel_convert_to_image(excel_file_path=""):
     """
@@ -4119,6 +4124,7 @@ def excel_convert_to_image(excel_file_path=""):
     except Exception as ex:
         print("Error in excel_convert_to_image="+str(ex))
 
+
 def _init_cf_quick_test_log_file(log_path_arg):
     """
     Internal function to generates the log and saves it to the file in the given base directory. 
@@ -4148,12 +4154,14 @@ def _init_cf_quick_test_log_file(log_path_arg):
         logging.info("{} ClointFusion Self Testing initiated".format(os_name))
         logging.info("{}/{}".format(host_ip,str(get_public_ip())))
 
+
 def _rerun_clointfusion_first_run(ex):
     pg.alert("Please Re-run..." + str(ex))
     # _,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=False)
     # with open(last_updated_date_file, 'w',encoding="utf-8") as f:
     #     last_updated_on_date = int(datetime.date.today().strftime('%m')) - 1
     #     f.write(str(last_updated_on_date))
+
 
 def clointfusion_self_test_cases(user_chosen_test_folder):
     """
@@ -4537,6 +4545,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         
         return TEST_CASES_STATUS_MESSAGE
 
+
 def clointfusion_self_test():
     global os_name
     
@@ -4645,6 +4654,7 @@ def clointfusion_self_test():
         print('Thank you !')
         sys.exit(0)
 
+
 def find(function_partial_name=""):
     # Find and inspect python functions
     try:
@@ -4655,6 +4665,37 @@ def find(function_partial_name=""):
             print("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
         print("Error in find="+str(ex))
+
+
+def ProgressBar(sleep_sec: int = 1, status: str = '') -> None:
+    """
+    Function to Show Progress of any Long time taken Activity.
+    It will put delay of given seconds.
+    Minimum delay is 1 Second
+    :param sleep_sec: Delay Seconds in integer
+    :param status: str print besides Progress Bar
+    :return: None
+    """
+    # Total No. of Fixed Lines
+    bar_len = 60
+    # Loop through sleep_sec:
+    count = 0
+    while count <= sleep_sec:
+        # Calculate Filled Lines
+        filled_len = int(round(bar_len * count / float(sleep_sec)))
+        # Calculate Percentage
+        percents = round(100.0 * count / float(sleep_sec), 1)
+        # Progress To be Print
+        bar = u'▌' * filled_len + '-' * (bar_len - filled_len)
+        # Print Progress
+        sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+        sys.stdout.flush()
+        # Add '\n' After Progress Completes
+        if count == sleep_sec:
+            sys.stdout.write('[%s] %s%s ...%s\n' % (bar, percents, '%', status))
+        time.sleep(1)
+        count += 1
+
 
 # 4. All default services
 
