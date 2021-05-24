@@ -39,3 +39,4 @@ notebook
 pygments>=2.7.4 
 chromedriver-binary
 pyinspect>=0.0.8
+psutil>=5.8.0
