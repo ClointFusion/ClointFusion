@@ -4697,6 +4697,39 @@ def ProgressBar(sleep_sec: int = 1, status: str = '') -> None:
         count += 1
 
 
+def BinarySearch(ls: [list, tuple, set], ele: [str, int]) -> int:
+    """
+    This is Binary Search Algorithm to search any item from the list very efficiently.
+    It will return int index of found item.
+
+    :param ls: any list-like object for data from which item to be searched.
+    :param ele: Name of Search item.
+    :return: index from which item is first found
+    """
+    ls_temp = sorted(ls)
+    flag = False
+    print(f"Sorted List : {ls_temp}")
+    low = 0
+    high = len(ls_temp) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        if ele < ls_temp[mid]:  # If True and Less -> Than Left Part
+            high = mid - 1
+        else:
+            if ele > ls_temp[mid]:  # Greater -> Than Right part
+                low = mid + 1
+            else:
+                if ele == ls_temp[mid]:  # Element Found
+                    flag = True
+                    print(f"Index of sorted..'{ele}' found at {mid}.")
+                    print(f"Index of origin..'{ele}' found at {ls.index(ele)}.")
+                    return ls.index(ele)
+    if not flag:
+        print(f"{ele} not found.")
+        return False
+
+
 # 4. All default services
 
 # All new functions to be added before this line
