@@ -4806,6 +4806,26 @@ def close_any_exe(exe: str):
         print("ERROR From close_exe() = " + str(e))
         return False
 
+
+bot_start_time = 0
+def calculate_bot_time(start_bot: bool = True):
+    """
+    This will calculate Total time Taken By Bot.
+    Just Call the function at start of bot without Parameters.
+    Call the function second time with start_bot=False at the end of bot.
+    :param start_bot: True for Start Bot Time and False To Stop Bot Time
+    :return: Prints Time Taken By the bot.
+    """
+    global bot_start_time
+    if start_bot:
+        bot_start_time = time.time()
+    else:
+        bot_end_time = str(round(((time.time() - bot_start_time) / float(60)), 2)) + ' minutes' if (time.time() - bot_start_time > 60.0) else str(round(time.time() - bot_start_time,2)) + ' seconds'
+        # print(time.time() - start_time)
+        msg = f"Time Taken By BOT = {bot_end_time}"
+        print(msg)
+
+
 # 4. All default services
 
 # All new functions to be added before this line
