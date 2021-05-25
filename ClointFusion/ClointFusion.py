@@ -3580,35 +3580,30 @@ def camera_capture_image(user_name=""):
 
           
 
-def convert_csv_to_excel(csv_path="",sep=""):
+def convert_csv_to_excel(csv_path="", output_path=output_folder_path, sep=",", sheet_name="Sheet1"):
     """
-    Function to convert CSV to Excel 
+    Function to convert CSV to Excel
 
     Ex: convert_csv_to_excel()
     """
     try:
-        if not csv_path:
-            csv_path = gui_get_any_file_from_user("CSV to convert to EXCEL","csv")
-
-        if not sep:
-            sep = gui_get_any_input_from_user("Delimeter Ex: |")
-
         csv_file_name = _extract_filename_from_filepath(csv_path)
-        excel_file_name = csv_file_name + ".xlsx"        
+        excel_file_name = csv_file_name + ".xlsx"
 
-        excel_file_path = os.path.join(output_folder_path,excel_file_name)
+        excel_file_path = os.path.join(output_path, excel_file_name)
         excel_file_path = Path(excel_file_path)
-        writer = pd.ExcelWriter(excel_file_path) # pylint: disable=abstract-class-instantiated
+        writer = pd.ExcelWriter(excel_file_path)  # pylint: disable=abstract-class-instantiated
 
-        df=pd.read_csv(csv_path,sep=sep,engine='openpyxl')
-        df.to_excel(writer, sheet_name='Sheet1', index=False)
+        df = pd.read_csv(csv_path, sep=sep, engine='openpyxl')
+        df.to_excel(writer, sheet_name=sheet_name, index=False)
 
         writer.save()
-        
-        print("Excel file saved : "+str(excel_file_path))
+
+        print("Excel file saved : " + str(excel_file_path))
 
     except Exception as ex:
-        print("Error in convert_csv_to_excel="+str(ex))
+        print("Error in convert_csv_to_excel=" + str(ex))
+
 
 # Class related to capture_snip_now
 class CaptureSnip(QtWidgets.QWidget):
@@ -4780,8 +4775,6 @@ def get_recent_filename(file_list: list = [], **mode):
             return filename
     except Exception as e:
         print("ERROR in get_recent_filename() = " + str(e))
-
-
 
 
 def close_any_exe(exe: str):
