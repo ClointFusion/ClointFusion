@@ -2354,6 +2354,136 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
     except Exception as ex:
         print("Error in excel_vlook_up="+str(ex))
     
+def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name=''): 
+    '''
+        sub-module-4: Converting downloaded corrupt file to normal file and then converting it to xlsx.
+        status : Done.
+    '''
+    try :
+        # Used to save the file as excel workbook
+        # Need to install this library
+        from xlwt import Workbook
+        import io
+        from xls2xlsx import XLS2XLSX
+        # Opening the file 
+        file1 = io.open(xls_file, "r")
+        data = file1.readlines()
+
+        # Creating a workbook object
+        xldoc = Workbook()
+        # Adding a sheet to the workbook object
+        sheet = xldoc.add_sheet(xls_sheet_name, cell_overwrite_ok=True)
+        # Iterating and saving the data to sheet
+        for i, row in enumerate(data):
+            # Two things are done here
+            # Removing the '\n' which comes while reading the file using io.open
+            # Getting the values after splitting using '\t'
+            for j, val in enumerate(row.replace('\n', '').split('\t')):
+                sheet.write(i, j, val)
+
+        # Saving the file as a normal xls excel file
+        xldoc.save(xls_file)
+
+        # checking the downloaded file is present or not 
+        if os.path.exists(xls_file):
+            # converting xls to xlsx
+            x2x = XLS2XLSX(xls_file)
+            x2x.to_xlsx(xlsx_file)
+        return True   
+    except Exception as e:
+        exception_msg = f"Error in converting file to xlsx format : {str(e)}"
+        return exception_msg
+
+def excel_format_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
+    try:
+        # Checking the path and then converting it to xlsx file
+        from xls2xlsx import XLS2XLSX
+        if os.path.exists(xls_file_path):
+            # converting xls to xlsx
+            x2x = XLS2XLSX(xls_file_path)
+            x2x.to_xlsx(xlsx_file_path)
+        return True
+    except Exception as e:
+        errMsg = f"Error in converting file to xlsx format : {str(e)}"
+        return errMsg
+
+
+def excel_apply_template_format_save_to_new(excel_rawdata_file_path='',excel_newfile_path='',rawexcel_sheet_name='Sheet1', usecols='',template_file_path='',template_sheet_name="Sheet1"):
+
+    '''
+        This function uses pandas and just write the required columns to new excel.
+        if you don't know columns just pass the excel file which have the columns you want it automatically makes 
+        own list and remove other columns.
+    '''
+    try:
+        if type(usecols) == str:
+            usecols = [usecols]
+        if template_file_path:
+            usecols = excel_get_all_header_columns(excel_path=template_file_path,sheet_name=template_sheet_name)
+        elif not template_file_path :
+            df = pd.read_excel(excel_rawdata_file_path, sheet_name=rawexcel_sheet_name,usecols=usecols)
+        if excel_newfile_path:
+            df.to_excel(excel_newfile_path,index=False)
+        else :
+            df.to_excel(excel_rawdata_file_path,index=False)
+        return True
+    except Exception as e:
+        exception_msg = f"Error in converting given excel to template excel : {str(e)}"
+        return exception_msg
+
+def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21",sheet_name='Sheet1'): # range : "A1:AA"
+    '''
+        Just it takes an path and converts it to table here you can change the table style below.
+        if you want to change the table style just change the styles by refering excel
+    '''
+    import win32com.client 
+    excel_instance = win32com.client.gencache.EnsureDispatch("Excel.Application")
+    excel_instance.Visible = False
+    excel_instance.DisplayAlerts = False
+    
+    exc_workbook = excel_instance.Workbooks.Open(Filename=excel_file_path.replace("/", "\\")) # .Sheets.Item[sheet_name]
+    try :
+        exc_workbook.Worksheets(sheet_name).Select()
+        excel_instance.ActiveSheet.UsedRange.Select()
+        excel_instance.Selection.Columns.AutoFit()
+        excel_instance.ActiveSheet.ListObjects.Add().TableStyle = table_style
+        exc_workbook.Close(SaveChanges=1)
+        excel_instance.Quit()
+    except:
+        exc_workbook.Close()
+        excel_instance.Quit()
+        raise Exception("Given Excel already has a table")
+
+def excel_split_based_on_row_conditions_unique(excel_file_path,sheet_name='Sheet1',column_name='',condition_strings=None,output_dir=''):
+    '''
+        Just give the column name and row condition which you want split your  excel.
+        Give one string or if more conditions the  pass as list it will split the excel based on those conditions and save  them 
+        in the given output directory.
+        Here if output dir is not there it will create output dir in current directory and save all excels there. 
+        If you want unique rows data in different excel files simply don't pass any thing in condition strings
+    '''
+    try:
+        if not os.path.exists(output_dir):
+            folder_create(output_dir)
+        df = pd.read_excel(excel_file_path,sheet_name=sheet_name)
+        if condition_strings == None:
+            print("here in con if")
+            condition_strings = df[column_name].unique()
+            for condition_str in condition_strings:
+                df_new = df.loc[df[column_name] == condition_str]
+                excel_newfile_path = output_dir + "\\" + column_name + '-'+condition_str   + '.xlsx'
+                df_new.to_excel(excel_newfile_path, index=False)
+        else:  
+            if type(condition_strings) == str:
+                condition_strings = [condition_strings]
+            for condition_str in condition_strings:
+                df_new = df.loc[df[column_name] == condition_str]
+                excel_newfile_path = output_dir + "\\" + column_name + '-'+condition_str   + '.xlsx'
+                df_new.to_excel(excel_newfile_path, index=False)
+    except Exception as ex:
+        errMsg = f"Error while splliting excel file based on column: {str(ex)}"
+        return errMsg
+
 def screen_clear_search(delay=0.2):
     """
     Clears previously found text (crtl+f highlight)
