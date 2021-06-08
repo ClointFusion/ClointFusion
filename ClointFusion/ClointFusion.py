@@ -3620,7 +3620,7 @@ def browser_get_dropdown_options_h(label=''):
 
 def browser_select_dropdown_option_h(by_label='',by_xpath='',set_value=''):
     '''
-    Sets the Dropdown option with the given value.
+    Sets the Dropdown option either by label or by xpath with the given value.
     '''
     try:
         if not by_label and not by_xpath:
