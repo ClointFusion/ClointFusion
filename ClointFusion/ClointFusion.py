@@ -701,6 +701,31 @@ def folder_write_text_file(txt_file_path="",contents=""):
     except Exception as ex:
         print("Error in folder_write_text_file="+str(ex))
 
+def file_get_json_details(path_of_json_file='',section=''):
+    '''
+    Returns all the details of the given section in a dictionary 
+    '''
+    try:
+        if not path_of_json_file:
+            path_of_json_file = gui_get_any_input_from_user('Pass the complete path of JSON file')
+        
+        if not section:
+            section = gui_get_any_input_from_user('Pass the section to get all the details in it')
+        
+        import json
+
+        with open(path_of_json_file,'r') as fp:
+            data = json.load(fp)
+        fp.close()
+
+        if section in list(data.keys()):
+            return data.get(section)
+        else:
+            raise Exception('Section can\'t be find in given json file.')
+
+    except Exception as ex:
+        print(f'Error in file_get_json_details = {ex}')
+
 def excel_get_all_sheet_names(excelFilePath=""):
     """
     Gives you all names of the sheets in the given excel sheet.
@@ -1512,6 +1537,40 @@ def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
         return allFilesOfaFolderAsLst
     except Exception as ex:
         print("Error in folder_get_all_filenames_as_list="+str(ex))
+
+def rename_file(path_of_file='',new_file_name='',ext=False):
+    '''
+    Renames the given file name to new file name with extension of previous file.
+    '''
+    try:
+        if not path_of_file:
+            path_of_file = gui_get_any_input_from_user('Pass the complete file path to be renamed')
+        
+        if not new_file_name:
+            if ext:
+                new_file_name = gui_get_any_input_from_user('New file name without extension')
+            else:
+                new_file_name = gui_get_any_input_from_user('New file name with extension') 
+
+        if os.path.exists(path_of_file):
+            if new_file_name:
+                if ext:
+                    path_of_new_file = os.path.join('\\'.join(path_of_file.split('\\')[:-1]), new_file_name)
+                
+                else:
+                    ext = path_of_file.split('\\')[-1].split('.')[-1]
+                    path_of_new_file = os.path.join('\\'.join(path_of_file.split('\\')[:-1]) , '.'.join([new_file_name,ext]))
+            
+                os.rename(src=Path(path_of_file),dst=Path(path_of_new_file))
+                print(path_of_new_file)
+            else:
+                raise Exception('new_file_name can\'t be empty.')
+        else:
+            raise Exception('path_of_file is invalid. Please pass a valid path.')
+     
+    except Exception as e:
+        print('Error in rename_file = ',str(e))
+
     
 def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="all"):  
     """
@@ -3309,7 +3368,7 @@ def _accept_cookies_h():
     except Exception as ex:
         print("Error in _accept_cookies_h="+str(ex))
     
-def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
+def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=True,i=False,headless=False,files_download_path=''):
     """
     Internal function to launch browser.
     """
@@ -3334,7 +3393,16 @@ def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=Tr
         if dummy_browser == False:
             options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
         else:
-            options.add_argument("--incognito")                             
+            options.add_argument("--incognito")                    
+
+        #  Set the download path
+        if files_download_path != '':
+            prefs = {
+                'profile.default_content_settings.popus' : 0,
+                'download.default_directory': files_download_path,
+                'directory_upgrade' : True
+            }
+            options.add_experimental_option('prefs',prefs)
 
         options.add_argument("--disable-translate")
         options.add_argument("--start-maximized")                          
@@ -3342,7 +3410,8 @@ def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=Tr
         options.add_argument("--no-first-run")                             
         #options.add_argument("--window-size=1920,1080")
         try:
-            start_chrome(url=URL,options=options,headless=headless)
+            global browser_driver
+            browser_driver = start_chrome(url=URL,options=options,headless=headless)
             _accept_cookies_h()
             status = True
         except:
@@ -3362,7 +3431,24 @@ def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=Tr
 
     finally:
         return status
+
+def browser_get_title_h():
+    """
+    Returns the Browser Window Title
+    """
+    try:
+        if helium_service_launched:
+            if browser_driver is not None:
+                return browser_driver.title
+            
+            else:
+                raise Exception("Browser isn't initialized. Call browser_launch_h() to initialize the browser")
+        else:
+            raise Exception('No Helium Service Launched.')
     
+    except Exception as ex:
+        print(f'Error in browser_get_title_h() = {ex}')
+
 def browser_navigate_h(url="",dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
     try:
         """
@@ -3400,7 +3486,7 @@ def browser_write_h(Value="",User_Visible_Text_Element="",alert=False):
     except Exception as ex:
         print("Error in browser_write_h = "+str(ex))
     
-def browser_mouse_click_h(User_Visible_Text_Element="",element="d"):
+def browser_mouse_click_h(User_Visible_Text_Element="",element="d",below='',to_right_of='',above='',to_left_of=''):
     """
     click on the given element.
     """
@@ -3409,19 +3495,19 @@ def browser_mouse_click_h(User_Visible_Text_Element="",element="d"):
             User_Visible_Text_Element = gui_get_any_input_from_user("visible text element (button/link/checkbox/radio etc) to Click")
 
         if User_Visible_Text_Element and element.lower()=="d":      #default
-            click(User_Visible_Text_Element)
+            click(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of)
         elif User_Visible_Text_Element and element.lower()=="l":    #link
-            click(link(User_Visible_Text_Element))
+            click(link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="b":    #button
-            click(Button(User_Visible_Text_Element))
+            click(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="t":    #textfield
-            click(TextField(User_Visible_Text_Element))
+            click(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
-            click(CheckBox(User_Visible_Text_Element))
+            click(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
-            click(RadioButton(User_Visible_Text_Element))
+            click(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
-            click(Image(alt=User_Visible_Text_Element))
+            click(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
     except Exception as ex:
         print("Error in browser_mouse_click_h = "+str(ex))
     
@@ -3446,7 +3532,7 @@ def browser_locate_element_h(element="",get_text=False):
         if not element:
             element = gui_get_any_input_from_user('browser element to locate (Helium)')
         if get_text:
-            return S(element).text
+            return S(element).web_element.text
         return S(element)
     except Exception as ex:
         print("Error in browser_locate_element_h = "+str(ex))
@@ -3459,7 +3545,7 @@ def browser_locate_elements_h(element="",get_text=False):
         if not element:
             element = gui_get_any_input_from_user('browser ElementS to locate (Helium)')
         if get_text:
-            return find_all(S(element).text)
+            return find_all(S(element).web_element.text)
         return find_all(S(element))
     except Exception as ex:
         print("Error in browser_locate_elements_h = "+str(ex))
@@ -3478,7 +3564,6 @@ def browser_wait_until_h(text="",element="t"):
             wait_until(Button(text).exists,10)      #button
     except Exception as ex:
         print("Error in browser_wait_until_h = "+str(ex))
-
     
 def browser_refresh_page_h():
     """
@@ -3506,7 +3591,63 @@ def browser_key_press_h(text):
         press(text)
     except Exception as ex:
         print("Error in browser_hit_enter_h="+str(ex))
+
+def browser_mouse_hover_h(User_Visible_Text_Element=''):
+    '''
+    Performs a Mouse Hover over the Given User Visible Text Element 
+    '''
+    try:
+        if not User_Visible_Text_Element:
+            User_Visible_Text_Element = gui_get_any_input_from_user('Visible Text/element to perform mouse hover on it ')
+
+        hover(User_Visible_Text_Element)
+        return True
+    
+    except Exception as e:
+        print('Error in browser_mouse_hover_h = ',str(e))
+
+def browser_get_dropdown_options_h(label=''):
+    '''
+    Returns the available options in the given labelled dropdown.
+    '''
+    try:
+        if not label:
+            label = gui_get_any_input_from_user('Enter the Visible dropdown label to get the options')
+
+        return ComboBox(label=label).options
+    except Exception as e:
+        print('Error in browser_get_dropdown_options_h = ',str(e))
+
+def browser_select_dropdown_option_h(by_label='',by_xpath='',set_value=''):
+    '''
+    Sets the Dropdown option with the given value.
+    '''
+    try:
+        if not by_label and not by_xpath:
+            elem = gui_get_dropdownlist_values_from_user('Select either a label or xpath of the dropdown element',dropdown_list=['by_label','by_xpath'],multi_select=False)
+            if elem == 'by_label':
+                by_label = gui_get_any_input_from_user('Pass the label name to locate the dropdown element')
+            else:
+                by_xpath = gui_get_any_input_from_user('Pass the xpath of the dropdown element')
+
+        if not set_value:
+            set_value = gui_get_any_input_from_user('The Value to set in the dropdown ')
         
+        if set_value != '':
+            if by_label != '':
+                select(ComboBox(label=by_label),value=set_value)
+            
+            elif by_xpath != '':
+                select(S(selector=by_xpath).web_element,value=set_value)
+            
+            else:
+                raise Exception("Either 'by_label' or 'by_xpath' should be passed.")
+        else:
+            raise Exception("Missing important parameter 'set_value'.")
+    
+    except Exception as e:
+        print('Error in browser_select_dropdown_option_h = ',str(e))
+      
 def browser_quit_h():
     """
     Close the Helium browser.
