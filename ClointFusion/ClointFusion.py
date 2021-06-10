@@ -54,6 +54,7 @@ import socket
 from selenium import webdriver
 import chromedriver_binary
 import pyinspect as pi
+from pandasgui import show
 
 os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -81,7 +82,7 @@ cf_logo_file_path = Path(os.path.join(current_working_dir,"Cloint-LOGO.PNG"))
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
 
-enable_semi_automatic_mode = False
+enable_semi_automatic_mode = False # Default is to GUI Mode
 Browser_Service_Started = False
 ai_screenshot = ""
 ai_processes = []
@@ -251,8 +252,11 @@ def _welcome_to_clointfusion():
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.5)"
+    from pyfiglet import Figlet
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.6)"
     print(welcome_msg)
+    f = Figlet(font='small', width=150)
+    print(f.renderText("ClointFusion Community Edition"))
     
 def _set_bot_name(strBotName=""):
     """
@@ -1538,13 +1542,13 @@ def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
     except Exception as ex:
         print("Error in folder_get_all_filenames_as_list="+str(ex))
 
-def rename_file(path_of_file='',new_file_name='',ext=False):
+def file_rename(old_file_path='',new_file_name='',ext=False):
     '''
-    Renames the given file name to new file name with extension of previous file.
+    Renames the given file name to new file name with same extension
     '''
     try:
-        if not path_of_file:
-            path_of_file = gui_get_any_input_from_user('Pass the complete file path to be renamed')
+        if not old_file_path:
+            old_file_path = gui_get_any_input_from_user('Pass the complete file path to be renamed')
         
         if not new_file_name:
             if ext:
@@ -1552,24 +1556,24 @@ def rename_file(path_of_file='',new_file_name='',ext=False):
             else:
                 new_file_name = gui_get_any_input_from_user('New file name with extension') 
 
-        if os.path.exists(path_of_file):
+        if os.path.exists(old_file_path):
             if new_file_name:
                 if ext:
-                    path_of_new_file = os.path.join('\\'.join(path_of_file.split('\\')[:-1]), new_file_name)
+                    path_of_new_file = os.path.join('\\'.join(old_file_path.split('\\')[:-1]), new_file_name)
                 
                 else:
-                    ext = path_of_file.split('\\')[-1].split('.')[-1]
-                    path_of_new_file = os.path.join('\\'.join(path_of_file.split('\\')[:-1]) , '.'.join([new_file_name,ext]))
+                    ext = old_file_path.split('\\')[-1].split('.')[-1]
+                    path_of_new_file = os.path.join('\\'.join(old_file_path.split('\\')[:-1]) , '.'.join([new_file_name,ext]))
             
-                os.rename(src=Path(path_of_file),dst=Path(path_of_new_file))
+                os.rename(src=Path(old_file_path),dst=Path(path_of_new_file))
                 print(path_of_new_file)
             else:
                 raise Exception('new_file_name can\'t be empty.')
         else:
-            raise Exception('path_of_file is invalid. Please pass a valid path.')
+            raise Exception('Old_file_path is invalid. Please pass a valid path.')
      
     except Exception as e:
-        print('Error in rename_file = ',str(e))
+        print('Error in file_rename = ',str(e))
 
     
 def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="all"):  
@@ -2252,6 +2256,9 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
                 firstColumnToBeSorted = usecols[0]
         df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header,engine='openpyxl')
 
+        if enable_semi_automatic_mode == False:
+            show(df)
+
         if thirdColumnToBeSorted is not None and secondColumnToBeSorted is not None and firstColumnToBeSorted is not None:
             df=df.sort_values([firstColumnToBeSorted,secondColumnToBeSorted,thirdColumnToBeSorted],ascending=[firstColumnSortType,secondColumnSortType,thirdColumnSortType])
         
@@ -2391,6 +2398,9 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
 
         df = pd.merge(df1, df2, on= match_column_name, how = how)
 
+        if enable_semi_automatic_mode == False:
+            show(df)
+
         output_file_path = ""
         if str(OutputExcelFileName).endswith(".*"):
             OutputExcelFileName = OutputExcelFileName.split(".")[0]
@@ -2415,7 +2425,7 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
     
 def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name=''): 
     '''
-        sub-module-4: Converting downloaded corrupt file to normal file and then converting it to xlsx.
+        Repair corrupt file to regular file and then convert it to xlsx.
         status : Done.
     '''
     try :
@@ -2450,10 +2460,13 @@ def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name
             x2x.to_xlsx(xlsx_file)
         return True   
     except Exception as e:
-        exception_msg = f"Error in converting file to xlsx format : {str(e)}"
+        exception_msg = f"Error in excel_change_corrupt_xls_to_xlsx : {str(e)}"
         return exception_msg
 
-def excel_format_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
+def excel_convert_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
+    """
+    Converts given XLS file to XLSX
+    """
     try:
         # Checking the path and then converting it to xlsx file
         from xls2xlsx import XLS2XLSX
@@ -2470,8 +2483,9 @@ def excel_format_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
 def excel_apply_template_format_save_to_new(excel_rawdata_file_path='',excel_newfile_path='',rawexcel_sheet_name='Sheet1', usecols='',template_file_path='',template_sheet_name="Sheet1"):
 
     '''
+        Converts given excel to Template Excel
         This function uses pandas and just write the required columns to new excel.
-        if you don't know columns just pass the excel file which have the columns you want it automatically makes 
+        if you don't know columns, just pass the excel file which have the columns you want it automatically makes 
         own list and remove other columns.
     '''
     try:
@@ -2485,6 +2499,9 @@ def excel_apply_template_format_save_to_new(excel_rawdata_file_path='',excel_new
             df.to_excel(excel_newfile_path,index=False)
         else :
             df.to_excel(excel_rawdata_file_path,index=False)
+        if enable_semi_automatic_mode == False:
+            show(df)
+
         return True
     except Exception as e:
         exception_msg = f"Error in converting given excel to template excel : {str(e)}"
@@ -2492,6 +2509,7 @@ def excel_apply_template_format_save_to_new(excel_rawdata_file_path='',excel_new
 
 def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21",sheet_name='Sheet1'): # range : "A1:AA"
     '''
+        Applies table format to the used range of the given excel.
         Just it takes an path and converts it to table here you can change the table style below.
         if you want to change the table style just change the styles by refering excel
     '''
@@ -2513,8 +2531,9 @@ def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21"
         excel_instance.Quit()
         raise Exception("Given Excel already has a table")
 
-def excel_split_based_on_row_conditions_unique(excel_file_path,sheet_name='Sheet1',column_name='',condition_strings=None,output_dir=''):
+def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',column_name='',condition_strings=None,output_dir=''):
     '''
+        Splits the excel based on user defined row/column conditions
         Just give the column name and row condition which you want split your  excel.
         Give one string or if more conditions the  pass as list it will split the excel based on those conditions and save  them 
         in the given output directory.
@@ -2525,8 +2544,12 @@ def excel_split_based_on_row_conditions_unique(excel_file_path,sheet_name='Sheet
         if not os.path.exists(output_dir):
             folder_create(output_dir)
         df = pd.read_excel(excel_file_path,sheet_name=sheet_name)
+
+        if enable_semi_automatic_mode == False:
+            show(df)
+
         if condition_strings == None:
-            print("here in con if")
+            
             condition_strings = df[column_name].unique()
             for condition_str in condition_strings:
                 df_new = df.loc[df[column_name] == condition_str]
@@ -2540,7 +2563,7 @@ def excel_split_based_on_row_conditions_unique(excel_file_path,sheet_name='Sheet
                 excel_newfile_path = output_dir + "\\" + column_name + '-'+condition_str   + '.xlsx'
                 df_new.to_excel(excel_newfile_path, index=False)
     except Exception as ex:
-        errMsg = f"Error while splliting excel file based on column: {str(ex)}"
+        errMsg = f"Error in excel_split_on_user_defined_conditions: {str(ex)}"
         return errMsg
 
 def screen_clear_search(delay=0.2):
@@ -2976,7 +2999,10 @@ def excel_drag_drop_pivot_table(excel_path="",sheet_name='Sheet1', header=0,rows
         
         HTML(str(output_file))
         print("Please find the output at {}".format(output_file))
-    
+
+        if enable_semi_automatic_mode == False:
+            show(df)
+
     except Exception as ex:
         print("Error in excel_drag_drop_pivot_table="+str(ex))
 
@@ -3710,6 +3736,10 @@ def excel_clean_data(excel_path="",sheet_name='Sheet1',header=0,column_to_be_cle
                 df.to_excel(writer,index=False)
 
             print("Data Cleaned. Please see the output in {}".format(new_column_name))
+            
+        if enable_semi_automatic_mode == False:
+            show(df)
+
     except Exception as ex:
         print("Error in excel_clean_data="+str(ex))
     
@@ -3774,6 +3804,8 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
             
         df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header,engine='openpyxl')
 
+        if enable_semi_automatic_mode == False:
+            show(df)
         #user_option_lst = ['Numerical','String','Both']
 
         #user_choice = gui_get_dropdownlist_values_from_user("list of datatypes",user_option_lst)
@@ -4832,7 +4864,7 @@ def clointfusion_self_test():
                 # [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
                 [sg.Button('', image_data=google_sso_base64, button_color=(sg.theme_background_color(),sg.theme_background_color()),border_width=0, key='SSO')],
                 # [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
-                [sg.Text("We will be collecting OS name, Host name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
+                [sg.Text("We will be collecting OS name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],

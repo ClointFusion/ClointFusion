@@ -126,3 +126,14 @@ from ClointFusion.ClointFusion import email_send_gmail_via_api
 from ClointFusion.ClointFusion import email_send_via_desktop_outlook
 from ClointFusion.ClointFusion import excel_sub_routines
 from ClointFusion.ClointFusion import isNaN
+from ClointFusion.ClointFusion import browser_get_title_h
+from ClointFusion.ClointFusion import browser_mouse_hover_h
+from ClointFusion.ClointFusion import browser_get_dropdown_options_h
+from ClointFusion.ClointFusion import browser_select_dropdown_option_h
+from ClointFusion.ClointFusion import file_rename
+from ClointFusion.ClointFusion import file_get_json_details
+from ClointFusion.ClointFusion import excel_change_corrupt_xls_to_xlsx
+from ClointFusion.ClointFusion import excel_convert_xls_to_xlsx
+from ClointFusion.ClointFusion import excel_apply_template_format_save_to_new
+from ClointFusion.ClointFusion import excel_apply_format_as_table
+from ClointFusion.ClointFusion import excel_split_based_on_row_conditions_unique

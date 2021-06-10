@@ -1,8 +1,9 @@
-============
-ClointFusion
-============
-<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/6cc0c340d6e30001a600de5b3994eec81ea6ea48/Splash.png">
-============
+Welcome to <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.png" height="30"> , Made in India with &#10084;&#65039;
+==============================================================================================================================================================
+
+<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/CCE.PNG">
+========================================================================================
+
 Description:
 ============
 
@@ -24,7 +25,7 @@ Test Drive ClointFusion on Google Colabs
 ========================================
 
 <a href='https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb' target="_blank"><img src='https://colab.research.google.com/assets/colab-badge.svg' alt="Open In Colab\"/></a>
-========================================
+================================================================================================================================================================================================================================
 
 Installation on your local computer
 ===================================
@@ -58,10 +59,11 @@ PS: Ubuntu users: May need to install some additional packages:
 6) sudo apt-get install python3-apt
 7) sudo apt-get install  python3-xlib
 
-Now access more than 100 functions (hit ctrl+space in your IDE)
+Now access more than 130 functions (hit ctrl+space in your IDE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -  6 gui functions, to take any input from user:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.gui\_get\_any\_file\_from\_user() : Generic function to accept
@@ -88,6 +90,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    string format.
 
 -  8 functions on Mouse operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.mouse\_click() : Clicks at the given X Y Co-ordinates on the
@@ -117,6 +120,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    screen, highlights and clicks it
 
 -  5 functions on Window operations (works only in Windows OS):
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.window\_show\_desktop() : Minimizes all the applications and shows
@@ -134,6 +138,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    cf.window\_close\_windows() : Close the desired window.
 
 -  6 functions on Folder operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.folder\_read\_text\_file() : Reads from a given text file and
@@ -155,6 +160,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    folder
 
 -  20 functions on Excel operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.excel\_get\_all\_sheet\_names() : Gives you all names of the
@@ -219,6 +225,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    excel
 
 -  3 functions on Keyboard operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.key\_hit\_enter() : Enter key will be pressed once.
@@ -229,6 +236,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    (by default) or tab key.
 
 -  2 functions on Screenscraping operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.scrape\_save\_contents\_to\_notepad : Copy pastes all the
@@ -240,6 +248,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    in Citrix applications
 
 -  12 functions on Browser operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.browser\_get\_html\_text() : Function to get HTML text without
@@ -275,6 +284,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    Functions
 
 -  3 functions on Alert Messages:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.message\_counter\_down\_timer() : Function to show count-down
@@ -287,6 +297,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    duration of time with OK button.
 
 -  3 functions on String Operations:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.string\_remove\_special\_characters() : Removes all the special
@@ -299,6 +310,7 @@ Now access more than 100 functions (hit ctrl+space in your IDE)
    input string
 
 -  Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    cf.launch\_any\_exe\_bat\_application() : Launches any exe or batch
@@ -375,7 +387,7 @@ Contribute by giving a star / writing article on ClointFusion / feedback
 many more ways as you please..
 
 Participate in our monthly online hackathons & weekly meetups. Click
-here for more details: https://tinyurl.com/ClointFusion
+here for more details: https://sites.google.com/view/clointfusion-hackathon
 
 Please visit our GitHub repository:
 https://github.com/ClointFusion/ClointFusion
@@ -383,4 +395,4 @@ https://github.com/ClointFusion/ClointFusion
 Contact us:
 ===========
 
-Drop a mail to ClointFusion@cloint.com, ClointFusion@gmail.com
+Drop a mail to ClointFusion@cloint.com

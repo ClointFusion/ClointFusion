@@ -1,3 +1,19 @@
+18) ClointFusion version 0.1.6 released on 10-06-2021 17:00 PM
+    1) 11 new functions contributed by interns !
+        a) browser_get_title_h
+        b) browser_mouse_hover_h
+        c)browser_get_dropdown_options_h
+        d) browser_select_dropdown_option_h
+        e) file_rename
+        f) file_get_json_details
+        g) excel_change_corrupt_xls_to_xlsx
+        h) excel_convert_xls_to_xlsx
+        i) excel_apply_template_format_save_to_new
+        j) excel_apply_format_as_table
+        k) excel_split_based_on_row_conditions_unique
+    2) Existing excel functions now make use of Pandas GUI to show Dataframe in GUI mode
+    3) ReadMe file updated
+
 17) ClointFusion version 0.1.5 released on 24-04-2021 10:20 AM
     1) Added new function find() to find and inspect ClointFusion's functions
     2) ReadMe MD, RST file updated

@@ -1,6 +1,8 @@
-# ClointFusion
+## Welcome to <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.png" height="30"> , Made in India with &#10084;&#65039; 
 
-<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/6cc0c340d6e30001a600de5b3994eec81ea6ea48/Splash.png">
+</br>
+
+<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/CCE.PNG">
 
 # Description: 
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
@@ -8,9 +10,7 @@ Cloint India Pvt. Ltd - Python functions for Automation (RPA)
 # What is ClointFusion ?
 ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI. 
 
-## Welcome to ClointFusion, Made in India with &#10084;&#65039; 
-
-![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status) ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
+![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status)             ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) ![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
 
@@ -23,7 +23,7 @@ ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion i
 
 # ClointFusion is now supported in Windows / Ubuntu / macOS !
 
-1. Please install Python 3.9.4 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.4 64 Bit</a>
+1. Please install Python 3.9.5 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.5 64 Bit</a>
 
     Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
@@ -53,7 +53,7 @@ You would receive an email with self-test report.
 
 ---
 
-## Now access more than 120 functions (hit ctrl+space in your IDE)
+## Now access more than 130 functions (hit ctrl+space in your IDE)
 
 * ## 6 gui functions, to take any input from user:
 
@@ -170,6 +170,7 @@ You would receive an email with self-test report.
 
     cf.excel_drag_drop_pivot_table() : Interactive Drag and Drop Pivot Table Generation
 
+    cf.excel_change_corrupt_xls_to_xlsx() : Repair corrupt excel file
 
 * ## 3 functions on Keyboard operations:
 
@@ -292,7 +293,7 @@ You would receive an email with self-test report.
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..
 
-Participate in our monthly online hackathons & weekly meetups. Click here for more details: https://tinyurl.com/ClointFusion
+Participate in our monthly online hackathons & weekly meetups. Click here for more details: https://sites.google.com/view/clointfusion-hackathon
 
 Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 
@@ -300,4 +301,4 @@ Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
 
 # Contact us: 
-Drop a mail to ClointFusion@cloint.com, ClointFusion@gmail.com
+Drop a mail to ClointFusion@cloint.com
