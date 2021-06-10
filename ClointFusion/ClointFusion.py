@@ -3495,9 +3495,9 @@ def browser_mouse_click_h(User_Visible_Text_Element="",element="d",below='',to_r
             User_Visible_Text_Element = gui_get_any_input_from_user("visible text element (button/link/checkbox/radio etc) to Click")
 
         if User_Visible_Text_Element and element.lower()=="d":      #default
-            click(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of)
+            click(User_Visible_Text_Element)
         elif User_Visible_Text_Element and element.lower()=="l":    #link
-            click(link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            click(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="b":    #button
             click(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="t":    #textfield
