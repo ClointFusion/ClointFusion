@@ -136,4 +136,4 @@ from ClointFusion.ClointFusion import excel_change_corrupt_xls_to_xlsx
 from ClointFusion.ClointFusion import excel_convert_xls_to_xlsx
 from ClointFusion.ClointFusion import excel_apply_template_format_save_to_new
 from ClointFusion.ClointFusion import excel_apply_format_as_table
-from ClointFusion.ClointFusion import excel_split_based_on_row_conditions_unique
+from ClointFusion.ClointFusion import excel_split_on_user_defined_conditions

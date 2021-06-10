@@ -32,7 +32,7 @@ Please refer these steps to create one, as per your OS: <a href="https://packagi
 
 3. Install ClointFusion by executing this package in command promt (with Admin rights): 
 
-    ## pip install --upgrade ClointFusion
+    ## pip install -U ClointFusion
 4. Open a new file in your favorite Python IDE and type: 
 
     ## import ClointFusion as cf

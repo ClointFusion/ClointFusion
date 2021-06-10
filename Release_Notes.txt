@@ -1,3 +1,7 @@
+19) ClointFusion version 0.1.6 released on 10-06-2021 17:30 PM
+    1) excel_split_based_on_row_conditions_unique renamed to excel_split_on_user_defined_conditions
+    2) index.rst added ClointFusion master
+
 18) ClointFusion version 0.1.6 released on 10-06-2021 17:00 PM
     1) 11 new functions contributed by interns !
         a) browser_get_title_h
@@ -10,7 +14,7 @@
         h) excel_convert_xls_to_xlsx
         i) excel_apply_template_format_save_to_new
         j) excel_apply_format_as_table
-        k) excel_split_based_on_row_conditions_unique
+        k) excel_split_on_user_defined_conditions
     2) Existing excel functions now make use of Pandas GUI to show Dataframe in GUI mode
     3) ReadMe file updated
 
