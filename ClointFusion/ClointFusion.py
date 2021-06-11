@@ -180,6 +180,7 @@ def _download_cloint_ico_png():
 
         if not os.path.exists(str(cf_logo_file_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',str(cf_logo_file_path))
+
     except Exception as ex:
         print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
@@ -253,7 +254,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.8)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.9)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -758,9 +759,9 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
     layout = [[sg.Text(strMsg,justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
             [sg.Image(filename = str(cf_logo_file_path),size=(60,60))],
             [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
-
+    
     window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_cdt_file_path)
-
+    
     current_value = start_value + 1
 
     while True:
@@ -4793,9 +4794,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 browser_hit_enter_h()
 
                 try:
-                    browser_mouse_click_h("ClointFusion")
+                    browser_mouse_click_h("ClointFusion 0.1.")
                 except:
-                    browser_mouse_click_h("ClointFusion 0.1.8")
+                    browser_mouse_click_h("ClointFusion 0")
 
                 browser_mouse_double_click_h("RPA")
                 
