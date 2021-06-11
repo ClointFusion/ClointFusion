@@ -253,7 +253,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.6)"
+    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.8)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -3147,7 +3147,7 @@ def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,dro
             Website_URL= gui_get_any_input_from_user("website URL to get HTML Tabular Data ex: https://www.google.com ")
 
         all_tables = _get_tabular_data_from_website(Website_URL)
-
+        
         if all_tables:
             
             # if no table_index is specified, then get all tables in output
@@ -3172,8 +3172,8 @@ def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,dro
                     table = all_tables[i] #lool thru table_index values
 
                     table = table.reset_index(drop=True) #Avoid multi index error in our dataframes
-
-                    with pd.ExcelWriter(strFileName) as writer: # pylint: disable=abstract-class-instantiated
+                    # pylint: disable=abstract-class-instantiated
+                    with pd.ExcelWriter(strFileName) as writer: 
                         table.to_excel(writer, sheet_name=str(i)) #index=False
             else:
                 table = all_tables[table_index] #get required table_index
@@ -3198,8 +3198,6 @@ def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,dro
 
     except Exception as ex:
         print("Error in browser_get_html_tabular_data_from_website="+str(ex))
-
-
 
 def excel_draw_charts(excel_path="",sheet_name='Sheet1', header=0, x_col="", y_col="", color="", chart_type='bar', title='ClointFusion', show_chart=False):
 
@@ -4473,6 +4471,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
     Main function for Self Test, which is called by GUI
     """
     global os_name
+    global enable_semi_automatic_mode
 
     TEST_CASES_STATUS_MESSAGE = ""
 
@@ -4507,6 +4506,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
     user_chosen_test_folder = Path(user_chosen_test_folder)
     test_folder_path = Path(test_folder_path)
     test_run_excel_path = Path(test_run_excel_path)
+
+    enable_semi_automatic_mode = True
 
     try:
         message_pop_up('Importing ClointFusion')
@@ -4790,7 +4791,11 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             if launch_website_h("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
-                browser_mouse_click_h("ClointFusion 0.")
+
+                try:
+                    browser_mouse_click_h("ClointFusion")
+                except:
+                    browser_mouse_click_h("ClointFusion 0.1.8")
 
                 browser_mouse_double_click_h("RPA")
                 
@@ -4830,6 +4835,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         TEST_CASES_STATUS_MESSAGE = "ClointFusion Automated Testing Failed "+str(ex)
         
     finally:
+        enable_semi_automatic_mode = False
         _folder_write_text_file(Path(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt')),str(False))
         print("____________________________________________________________")
         print("____________________________________________________________")

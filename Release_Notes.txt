@@ -1,4 +1,9 @@
-19) ClointFusion version 0.1.6 released on 10-06-2021 17:30 PM
+20) ClointFusion version 0.1.8 released on 11-06-2021 17:10 PM
+    1) Updated version number in messages
+    2) Updated Icon /Logo Files
+    3) Fixed minor bug in self-test
+
+19) ClointFusion version 0.1.7 released on 10-06-2021 17:30 PM
     1) excel_split_based_on_row_conditions_unique renamed to excel_split_on_user_defined_conditions
     2) index.rst added ClointFusion master
 

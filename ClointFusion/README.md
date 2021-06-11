@@ -2,7 +2,7 @@
 
 </br>
 
-<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/CCE.PNG">
+<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/CCEW.PNG">
 
 # Description: 
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
