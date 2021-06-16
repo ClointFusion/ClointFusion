@@ -20,6 +20,7 @@ from datetime import datetime
 import pyautogui as pg
 import time
 import pandas as pd
+import numpy as np
 import keyboard as kb
 import PySimpleGUI as sg
 import numpy
@@ -55,6 +56,8 @@ from selenium import webdriver
 import chromedriver_binary
 import pyinspect as pi
 from pandasgui import show
+import psutil
+import pdfplumber
 
 os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -90,6 +93,8 @@ helium_service_launched=False
 
 verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
 update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
+
+_bot_start_time = 0
 
 if os_name == 'windows':
     uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
@@ -1576,7 +1581,7 @@ def file_rename(old_file_path='',new_file_name='',ext=False):
     except Exception as e:
         print('Error in file_rename = ',str(e))
 
-    
+
 def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="all"):  
     """
     Deletes all the files of the given folder
@@ -4430,6 +4435,260 @@ def excel_convert_to_image(excel_file_path=""):
             print("This feature is available only on Windows OS")
     except Exception as ex:
         print("Error in excel_convert_to_image="+str(ex))
+
+def close_any_exe(exe=""):
+    """
+    Kill any given exe process
+    No Need to pass .exe extension it is optional.
+    Examples : excel.exe
+    :param exe: Name of exe process with or with out .exe extension
+    :return:
+    """
+    try:
+        if not exe:
+            exe = gui_get_any_input_from_user('Name of the exe process to be killed (ex. excel)')
+        # Check ".exe" is there or not
+        if not exe[-4:].lower() == ".exe":
+            exe = exe.lower() + ".exe"
+        else:
+            exe = exe.lower()
+        # Find Exe Process and Kill Process
+        process_dict = psutil.process_iter(attrs=["name"])
+        for proc in process_dict:
+            temp = proc.info
+            # Find Exe Process
+            if temp["name"].lower() == exe:
+                proc.kill()
+                print(f"{proc.info} Process Killed..")
+            # print(process.info)
+        time.sleep(0.5)
+        return True
+    except Exception as e:
+        print("ERROR From close_exe() = " + str(e))
+        return False
+
+def pdf_table_to_excel(pdf_file=""):
+    """
+    This Function will Convert PDF Tables to Excel File (.xlsx)
+    :param pdf_file:
+    :return: excel file in output_folder
+    Solution By: Karthik Sir
+    """
+    try:
+        if not pdf_file:
+            pdf_file = gui_get_any_file_from_user("PDF to convert to EXCEL", "pdf")
+
+        if "/" in pdf_file:
+            excel_file_name = pdf_file.split("/")[-1][:-3] + "xlsx"
+        else:
+            excel_file_name = pdf_file.split("\\")[-1][:-3] + "xlsx"
+
+        # print(excel_file_name)
+        excel_file = os.path.join(output_folder_path, excel_file_name)
+        # print(cf.output_folder_path)
+        df_table_list = []  # Empty List
+        df_empty = pd.DataFrame()  # Empty DataFrame
+
+        with pdfplumber.open(pdf_file) as pdf:
+            for page in pdf.pages:
+                table_list = page.extract_table()  # Extracting Table
+                df_local = pd.DataFrame(table_list, columns=table_list[0])  # Converting List to DataFrame and makinf first row as Header
+                df_local = df_local.drop(0)  # Droping the First Row
+                df_table_list.append(df_local)  # Appending the DataFrame to Empty List Variable
+
+        for dfs in df_table_list:  # Merging all the Tables of all pages to one single DataFrame
+            df_empty = df_empty.append(dfs)
+
+        df_empty.fillna(value=np.nan, inplace=True)  # Fill None with NaN
+        df_empty.fillna("", inplace=True)  # Fill NaN with Empty
+        df_empty.to_excel(excel_file, index=False)  # Saving DataFrame to Excel File
+        print(f"Excel File saved at : {excel_file}")
+    except Exception as e:
+        print("ERROR From pdf_table_to_excel() = " + str(e))
+
+def calculate_bot_time(start_bot: bool = True):
+    """
+    This will calculate Total time Taken By Bot.
+    Just Call the function at start of bot without Parameters.
+    Call the function second time with start_bot=False at the end of bot.
+    :param start_bot: True for Start Bot Time and False To Stop Bot Time
+    :return: Prints Time Taken By the bot.
+    """
+    try:
+        global _bot_start_time
+        if start_bot:
+            _bot_start_time = time.time()
+        else:
+            bot_end_time = str(round(((time.time() - _bot_start_time) / float(60)), 2)) + ' minutes' if (time.time() - _bot_start_time > 60.0) else str(round(time.time() - _bot_start_time, 2)) + ' seconds'
+            # print(time.time() - start_time)
+            msg = f"Time Taken By BOT = {bot_end_time}"
+            print(msg)
+    except Exception as e:
+        print("ERROR in calculate_bot_time() = " + str(e))
+
+def progressbar(sleep_sec: int = 0, status: str = '') -> None:
+    """
+    Function to Show Progress of any Long time taken Activity.
+    It will put delay of given seconds.
+    Minimum delay is 1 Second
+    :param sleep_sec: Delay Seconds in integer
+    :param status: str print besides Progress Bar
+    :return: None
+    """
+    try:
+        if not sleep_sec:
+            sleep_sec = int(gui_get_any_input_from_user("Sleep seconds in integer (ex. 1)"))
+        if not status:
+            status = gui_get_any_input_from_user("Status to be displayed in ProgressBar (ex. Sending Mail to Client)")
+        # Total No. of Fixed Lines
+        bar_len = 60
+        # Loop through sleep_sec:
+        count = 0
+        while count <= sleep_sec:
+            # Calculate Filled Lines
+            filled_len = int(round(bar_len * count / float(sleep_sec)))
+            # Calculate Percentage
+            percents = round(100.0 * count / float(sleep_sec), 1)
+            # Progress To be Print
+            bar = u'▌' * filled_len + '-' * (bar_len - filled_len)
+            # Print Progress
+            sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+            sys.stdout.flush()
+            # Add '\n' After Progress Completes
+            if count == sleep_sec:
+                sys.stdout.write('[%s] %s%s ...%s\n' % (bar, percents, '%', status))
+            time.sleep(1)
+            count += 1
+    except Exception as e:
+        print("ERROR in progressbar() = ", str(e))
+
+def file_get_recent_filename(file_list: list = [], remove=False, **mode):
+    """
+    Find Latest Last Modified File from the given file list.
+    If you pass create=True it will return Recent Created File.
+    If you pass access=True it will return Recent Accessed File.
+    Default is It will return Recent Last Modified File.
+    Only one mode is Allowed.
+    Avialable Modes : create & access | Values will be True or False
+    :param file_list: list-like object for list of files
+    :param mode: create=True OR access=True
+    :return: Recent File
+    """
+    try:
+        if not file_list:
+            raise Exception("List is Empty. List must not be Empty. Please Pass List of files")
+        else:
+            # print("**kwargs : ", mode)
+            file_lastdate = []      # To store Last Modified Date
+            if 'create' in mode and 'access' in mode:
+                raise Exception("Only One Mode is Allowed.")
+            if 'create' in mode:
+                if mode['create'] == True:
+                    for file in file_list:
+                        stat = datetime.datetime.fromtimestamp(os.stat(file).st_ctime)  # Convert st_mtime float to Date & Time
+                        file_lastdate.append(stat)
+            elif 'access' in mode:
+                if mode['access'] == True:
+                    for file in file_list:
+                        stat = datetime.datetime.fromtimestamp(os.stat(file).st_atime)  # Convert st_mtime float to Date & Time
+                        file_lastdate.append(stat)
+            else:
+                for file in file_list:
+                    stat = datetime.datetime.fromtimestamp(os.stat(file).st_mtime)           # Convert st_mtime float to Date & Time
+                    file_lastdate.append(stat)
+
+            # Logic To get Recent File
+            filename = file_list[file_lastdate.index(max(file_lastdate))]
+            # Remove old Files
+            if remove:
+                file_list.remove(filename)
+                for f in file_list:
+                    os.remove(f)
+            return filename
+    except Exception as e:
+        print("ERROR in file_get_recent_filename() = " + str(e))
+
+def binary_search(ls: [list, tuple, set], ele: [str, int]) -> int:
+    """
+    This is Binary Search Algorithm to search any item from the list very efficiently.
+    It will return int index of found item.
+
+    :param ls: any list-like object for data from which item to be searched.
+    :param ele: Name of Search item.
+    :return: index from which item is first found
+    """
+    try:
+        ls_temp = sorted(ls)
+        flag = False
+        # print(f"Sorted List : {ls_temp}")
+        low = 0
+        high = len(ls_temp) - 1
+
+        while low <= high:
+            mid = (low + high) // 2
+            if ele < ls_temp[mid]:  # If True and Less -> Than Left Part
+                high = mid - 1
+            else:
+                if ele > ls_temp[mid]:  # Greater -> Than Right part
+                    low = mid + 1
+                else:
+                    if ele == ls_temp[mid]:  # Element Found
+                        flag = True
+                        return ls.index(ele)
+        if not flag:
+            print(f"{ele} not found.")
+            return False
+    except Exception as e:
+        print("ERROR in binary_search() = "+str(e))
+
+def get_recent_day(day_index=0, us_format=True):
+    """
+    This Function will Return date of Last Recent Day.
+    Example : If I want Last Recent Monday then day_index=0 (Monday is 0 and Sunday is 6)
+    If today's date is 16-06-2021(Wed) then it will return in US or IN Format 14-06-2021(Mon) (IN Format)
+    If today is Monday then I will return Today's Date.
+    :param day_index: int index of Day (Monday is 0 and Sunday is 6)
+    :param us_format: Bool True to get date in US format | False to get date in IN Format
+    :return: Date as String
+    """
+    try:
+        # Process Input is Not Given
+        if not day_index and day_index != 0:
+            option_ls = ['0 Monday', '1 Tuesday', '2 Wednesday', '3 Thrusday', '4 Friday', '5 Saturday', '6 Sunday']
+            option = gui_get_dropdownlist_values_from_user(msgForUser="Select Day to get Recent Day ", dropdown_list=option_ls, multi_select=False)
+            if option == None:
+                raise Exception("Please pass parameter.")
+            if option[0] == '0 Monday':
+                day_index = 0
+            elif option[0] == '1 Tuesday':
+                day_index = 1
+            elif option[0] == '2 Wednesday':
+                day_index = 2
+            elif option[0] == '3 Thrusday':
+                day_index = 3
+            elif option[0] == '4 Friday':
+                day_index = 4
+            elif option[0] == '5 Saturday':
+                day_index = 5
+            elif option[0] == '6 Sunday':
+                day_index = 6
+            else:
+                raise Exception(f"Invalid Input '{option}'")
+
+        # Get Today's Date
+        today = datetime.date.today()
+        # Get Last Recent Day
+        day = today - datetime.timedelta(days=today.weekday()-day_index)
+        if us_format:
+            # Convert to US Format
+            day = datetime.datetime.strftime(day, "%m-%d-%Y")
+        else:
+            # Convert to INDIAN format
+            day = datetime.datetime.strftime(day, "%d-%m-%Y")
+
+        return day
+    except Exception as e:
+        print("ERROR in get_recent_day() = " + str(e))
 
 def _init_cf_quick_test_log_file(log_path_arg):
     """
