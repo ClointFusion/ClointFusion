@@ -52,7 +52,9 @@ import traceback
 import shutil
 import socket
 from selenium import webdriver
-import chromedriver_binary
+from selenium.common.exceptions import SessionNotCreatedException
+from selenium.webdriver.chrome.options import Options
+from chromedriver_py import binary_path
 import pyinspect as pi
 from pandasgui import show
 
@@ -3393,64 +3395,138 @@ def _accept_cookies_h():
     except Exception as ex:
         print("Error in _accept_cookies_h="+str(ex))
     
-def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=True,i=False,headless=False,files_download_path=''):
+def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, smcp=True, i=False, headless=False,
+                     files_download_path='', remote=False, port=9223):
     """
     Internal function to launch browser.
     """
     status = False
+    global browser_driver
+    if remote and dummy_browser:
+        logger.exception("Disable dummy_browser to access remote.")
+        exit(0)
     try:
-        from selenium.webdriver import ChromeOptions
+        # To clear previous instances of chrome
+        try:
+            subprocess.call('TASKKILL /IM chrome.exe',
+                            stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        except:
+            logger.exception("Can't close previous Chrome Instances")
+            print('here')
+            exit(0)
+
         if not URL:
-            URL = gui_get_any_input_from_user("website URL to Launch Website using Helium functions. Ex https://www.google.com")
+            URL = gui_get_any_input_from_user(
+                "website URL to Launch Website using Helium functions. Ex https://www.google.com")
 
         global helium_service_launched
-        helium_service_launched=True
-        options = ChromeOptions()
+        helium_service_launched = True
+        options = Options()
         if dp:
-            options.add_argument("--disable-popup-blocking")                
-        if dn:  
-            options.add_argument("--disable-notifications")                
+            options.add_argument("--disable-popup-blocking")
+        if dn:
+            options.add_argument("--disable-notifications")
         if igc:
-            options.add_argument("--ignore-certificate-errors")             
+            options.add_argument("--ignore-certificate-errors")
         if smcp:
-            options.add_argument("--suppress-message-center-popups")       
-            
-        if dummy_browser == False:
-            options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-        else:
-            options.add_argument("--incognito")                    
+            options.add_argument("--suppress-message-center-popups")
+        if i:
+            options.add_argument("--incognito")
+        if headless:
+            options.add_argument("--headless")
 
-        #  Set the download path
+        if not dummy_browser:
+            options.add_argument(
+                "user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+
+        if remote and not dummy_browser:
+            # (only available in chrome)
+            # Why remote,
+            # when helium is launched it store the chrome instance in program memory(memory reserved for program),
+            # when the task is heavy chrome doesn't respond momentarily because of overload.
+            # When the remote is used
+            # it creates chrome instance in system memory,
+            # so it can perform long operations without overload.
+            # this functions emulates a remote desktop
+            chrome_path = [r"C:\Program Files\Google\Chrome\Application",
+                           r"C:\Program Files (x86)\Google\Chrome\Application"]
+            for path in chrome_path:
+                if os.path.exists(path):
+                    print(path)
+                    chrome_path = path
+                    os.chdir(chrome_path)
+                    options.add_experimental_option(
+                        "debuggerAddress", f"127.0.0.1:{port}")
+
+            #  Set the download path
         if files_download_path != '':
             prefs = {
-                'profile.default_content_settings.popus' : 0,
                 'download.default_directory': files_download_path,
-                'directory_upgrade' : True
+                "download.prompt_for_download": False,
+                'download.directory_upgrade': True,
+                "safebrowsing.enabled": False
             }
-            options.add_experimental_option('prefs',prefs)
+            options.add_experimental_option('prefs', prefs)
+            logger.info(f"Files download path changed to {files_download_path}")
 
-        options.add_argument("--disable-translate")
-        options.add_argument("--start-maximized")                          
-        options.add_argument("--ignore-autocomplete-off-autofill")          
-        options.add_argument("--no-first-run")                             
-        #options.add_argument("--window-size=1920,1080")
+        if not remote:
+            options.add_argument("--disable-translate")
+            options.add_argument("--ignore-autocomplete-off-autofill")
+            options.add_argument("--no-first-run")
+        options.add_argument("--start-maximized")
+        # options.add_argument("--window-size=1920,1080")
+
         try:
-            global browser_driver
-            browser_driver = start_chrome(url=URL,options=options,headless=headless)
+            logger.info("Launching the Browser.")
+            if remote and not dummy_browser:
+                subprocess.Popen(
+                    f'chrome.exe --remote-debugging-port={port}', shell=True)
+                browser_driver = webdriver.Chrome(binary_path, options=options)
+            if not remote:
+                browser_driver = webdriver.Chrome(binary_path, options=options)
+            set_driver(browser_driver)
             _accept_cookies_h()
+            go_to(URL)
             status = True
+        except SessionNotCreatedException as ex:
+            try:
+                logger.info("Current Driver is incompatible.")
+                logger.info("Downloading Compatible Driver")
+                chrome_driver_version_list = ["90.0.4430.24", "91.0.4472.19", "92.0.4515.43"]
+                version = str(ex).split()[17].split(".")[0]
+                for i in chrome_driver_version_list:
+                    if version in i:
+                        version = i
+                        break
+                subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={version}'])
+                logger.success("Successfully downloaded compatible driver.")
+
+                logger.info("Launching the Browser.")
+
+                if remote and not dummy_browser:
+                    subprocess.Popen(
+                        f'chrome.exe --remote-debugging-port={port}', shell=True)
+                    browser_driver = webdriver.Chrome(binary_path, options=options)
+                if not remote:
+                    browser_driver = webdriver.Chrome(binary_path, options=options)
+                set_driver(browser_driver)
+                _accept_cookies_h()
+                go_to(URL)
+                status = True
+            except Exception as ex:
+                logger.exception(f"Error occurred while Downloading Compatible Driver: {ex}")
         except:
             try:
-                browser_driver = start_firefox(url=URL) #to be tested
+                browser_driver = start_firefox(url=URL)  # to be tested
                 browser_driver.maximize_window()
                 status = True
-            except Exception as ex: 
-                print("Cannot continue. Helium package's Compatible Chrome or Firefox is missing "+ str(ex))
+            except Exception as ex:
+                logger.exception("Cannot continue. Helium package's Compatible Chrome or Firefox is missing " + str(ex))
 
         Config.implicit_wait_secs = 120
-        
+
     except Exception as ex:
-        print("Error in launch_website_h = "+str(ex))
+        logger.exception("Error in launch_website_h = " + str(ex))
         kill_browser()
         helium_service_launched = False
 
