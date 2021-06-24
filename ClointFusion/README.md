@@ -164,8 +164,6 @@ You would receive an email with self-test report.
 
     cf.excel_draw_charts() : Interactive data visualization function, which accepts excel file, X & Y column. Chart types accepted are bar , scatter , pie , sun , histogram , box  , strip. You can pass color column as well, having a boolean value.
 
-    cf.excel_clean_data() : Cleans our data from lowercase / remove_digits / remove_diacritics / remove_stopwords / remove_whitespace
-
     cf.excel_describe_data() :  Describe statistical data for the given excel
 
     cf.excel_drag_drop_pivot_table() : Interactive Drag and Drop Pivot Table Generation
@@ -264,8 +262,6 @@ You would receive an email with self-test report.
     cf.take_error_screenshot() : Takes screenshot of an error popup parallely without waiting for the flow of the program. The screenshot will be saved in the log folder for reference.
 
     cf.find_text_on_screen() : Clears previous search and finds the provided text on screen.
-
-    cf.word_cloud_from_url() : Function to create word cloud from a given website
 
     cf.isNaN() : Returns TRUE if a given value is NaN False otherwise
 

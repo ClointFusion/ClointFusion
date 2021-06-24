@@ -217,10 +217,6 @@ Now access more than 130 functions (hit ctrl+space in your IDE)
    , scatter , pie , sun , histogram , box , strip. You can pass color
    column as well, having a boolean value.
 
-   cf.excel\_clean\_data() : Cleans our data from lowercase /
-   remove\_digits / remove\_diacritics / remove\_stopwords /
-   remove\_whitespace
-
    cf.excel\_describe\_data() : Describe statistical data for the given
    excel
 
@@ -358,9 +354,6 @@ Now access more than 130 functions (hit ctrl+space in your IDE)
 
    cf.find\_text\_on\_screen() : Clears previous search and finds the
    provided text on screen.
-
-   cf.word\_cloud\_from\_url() : Function to create word cloud from a
-   given website
 
 ClointFusion's function works in different modes:
 =================================================
