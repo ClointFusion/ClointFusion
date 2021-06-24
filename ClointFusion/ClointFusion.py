@@ -583,8 +583,12 @@ def website_open_url(website_url):
         print('Failed to open URL. Error: {}'.format(ex))
 
 def message_toast(message,website_url="", file_folder_path=""):
+    """
+    Function for displaying Windows 10 Toast Notifications.
+    Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
+    """
     
-    if os_name == "windows":
+    if os_name == "windows" and str(enable_semi_automatic_mode).lower() == 'false':
         from win10toast_click import ToastNotifier 
         toaster = ToastNotifier()
 
@@ -3463,16 +3467,12 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
     status = False
     global browser_driver
     if remote and dummy_browser:
-        logger.exception("Disable dummy_browser to access remote.")
         exit(0)
     try:
         # To clear previous instances of chrome
         try:
-            subprocess.call('TASKKILL /IM chrome.exe',
-                            stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            subprocess.call('TASKKILL /IM chrome.exe',stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         except:
-            logger.exception("Can't close previous Chrome Instances")
-            print('here')
             exit(0)
 
         if not URL:
@@ -3527,8 +3527,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                 "safebrowsing.enabled": False
             }
             options.add_experimental_option('prefs', prefs)
-            logger.info(f"Files download path changed to {files_download_path}")
-
+            
         if not remote:
             options.add_argument("--disable-translate")
             options.add_argument("--ignore-autocomplete-off-autofill")
@@ -3537,7 +3536,6 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
         # options.add_argument("--window-size=1920,1080")
 
         try:
-            logger.info("Launching the Browser.")
             if remote and not dummy_browser:
                 subprocess.Popen(
                     f'chrome.exe --remote-debugging-port={port}', shell=True)
@@ -3550,8 +3548,6 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
             status = True
         except SessionNotCreatedException as ex:
             try:
-                logger.info("Current Driver is incompatible.")
-                logger.info("Downloading Compatible Driver")
                 chrome_driver_version_list = ["90.0.4430.24", "91.0.4472.19", "92.0.4515.43"]
                 version = str(ex).split()[17].split(".")[0]
                 for i in chrome_driver_version_list:
@@ -3559,9 +3555,6 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                         version = i
                         break
                 subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={version}'])
-                logger.success("Successfully downloaded compatible driver.")
-
-                logger.info("Launching the Browser.")
 
                 if remote and not dummy_browser:
                     subprocess.Popen(
@@ -3574,19 +3567,19 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                 go_to(URL)
                 status = True
             except Exception as ex:
-                logger.exception(f"Error occurred while Downloading Compatible Driver: {ex}")
+                print("Error in launch_website_h {}".format(ex))
         except:
             try:
                 browser_driver = start_firefox(url=URL)  # to be tested
                 browser_driver.maximize_window()
                 status = True
             except Exception as ex:
-                logger.exception("Cannot continue. Helium package's Compatible Chrome or Firefox is missing " + str(ex))
+                print("Cannot continue. Helium package's Compatible Chrome or Firefox is missing " + str(ex))
 
         Config.implicit_wait_secs = 120
 
     except Exception as ex:
-        logger.exception("Error in launch_website_h = " + str(ex))
+        print("Error in launch_website_h = " + str(ex))
         kill_browser()
         helium_service_launched = False
 
@@ -5052,6 +5045,7 @@ def clointfusion_self_test(last_updated_on_month):
             if event == 'Start':
                 window['Start'].update(disabled=True)
                 window['Close'].update(disabled=True)
+                window['Skip for Now'].update(disabled=True)
                 _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
                 print("Starting ClointFusion's Automated Self Testing Module")
