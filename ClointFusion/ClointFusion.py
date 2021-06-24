@@ -3649,9 +3649,9 @@ def browser_mouse_click_h(User_Visible_Text_Element="",element="d",below='',to_r
             User_Visible_Text_Element = gui_get_any_input_from_user("visible text element (button/link/checkbox/radio etc) to Click")
 
         if User_Visible_Text_Element and element.lower()=="d":      #default
-            click(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of)
+            click(User_Visible_Text_Element)
         elif User_Visible_Text_Element and element.lower()=="l":    #link
-            click(link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            click(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="b":    #button
             click(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
         elif User_Visible_Text_Element and element.lower()=="t":    #textfield
@@ -3828,49 +3828,6 @@ def dismantle_code(strFunctionName=""):
     except Exception as ex:
        print("Error in dismantle_code="+str(ex)) 
 
-def excel_clean_data(excel_path="",sheet_name='Sheet1',header=0,column_to_be_cleaned="",cleaning_pipe_line="Default"):
-    """
-    fillna(s) Replace not assigned values with empty spaces.
-    lowercase(s) Lowercase all text.
-    remove_digits() Remove all blocks of digits.
-    remove_diacritics() Remove all accents from strings.
-    remove_stopwords() Remove all stop words.
-    remove_whitespace() Remove all white space between words.
-    """
-    try:
-        import texthero as hero
-        from texthero import preprocessing
-
-        if not excel_path:
-            excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('to clean the data')
-            
-        if not column_to_be_cleaned:
-            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)  
-            column_to_be_cleaned = gui_get_dropdownlist_values_from_user('column list to Clean (removes digits/puntuation/stop words etc)',col_lst,multi_select=False)   
-            column_to_be_cleaned = column_to_be_cleaned[0]
-
-        if column_to_be_cleaned:
-            df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
-
-            new_column_name = "Clean_" + column_to_be_cleaned
-
-            if 'Default' in cleaning_pipe_line:
-                df[new_column_name] = df[column_to_be_cleaned].pipe(hero.clean)
-            else:
-                custom_pipeline = [preprocessing.fillna, preprocessing.lowercase]
-                df[new_column_name] = df[column_to_be_cleaned].pipe(hero.clean,custom_pipeline)    
-
-            with pd.ExcelWriter(path=excel_path) as writer: # pylint: disable=abstract-class-instantiated
-                df.to_excel(writer,index=False)
-
-            print("Data Cleaned. Please see the output in {}".format(new_column_name))
-            
-        if enable_semi_automatic_mode == False:
-            show(df)
-
-    except Exception as ex:
-        print("Error in excel_clean_data="+str(ex))
-    
 def compute_hash(inputData=""):
     """
     Returns the hash of the inputData 
@@ -3902,25 +3859,6 @@ def browser_get_html_text(url=""):
         return text
     except Exception as ex:
         print("Error in browser_get_html_text="+str(ex))
-
-def word_cloud_from_url(url=""):
-    """
-    Function to create word cloud from a given website
-    """
-    try:
-        from wordcloud import WordCloud
-        text = browser_get_html_text(url=url)
-        
-        wc = WordCloud(max_words=2000, width=800, height=600,background_color='white',max_font_size=40, random_state=None, relative_scaling=0)
-        wc.generate(text)
-        file_path = os.path.join(output_folder_path,"URL_WordCloud.png")
-        file_path = Path(file_path)
-
-        wc.to_file(file_path)
-        print("URL WordCloud saved at {}".format(file_path))
-
-    except Exception as ex:
-        print("Error in word_cloud_from_url="+str(ex))
 
 def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
     """
