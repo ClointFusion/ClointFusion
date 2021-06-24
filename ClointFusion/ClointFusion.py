@@ -53,7 +53,9 @@ import traceback
 import shutil
 import socket
 from selenium import webdriver
-import chromedriver_binary
+from selenium.common.exceptions import SessionNotCreatedException
+from selenium.webdriver.chrome.options import Options
+from chromedriver_py import binary_path
 import pyinspect as pi
 from pandasgui import show
 import psutil
@@ -107,7 +109,7 @@ def _load_missing_python_packages_windows():
     """
     Installs Windows OS specific python packages
     """       
-    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes","xlwings"] 
+    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes","xlwings","win10toast-click"] 
     try:
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
@@ -259,7 +261,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.9)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.10)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -577,6 +579,55 @@ def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols=""
     except Exception:
         # print("Error in _excel_if_value_exists="+str(ex))
         return False
+
+def website_open_url(website_url):
+    try:
+        webbrowser.open_new(website_url)
+        time.sleep(5)
+    except Exception as ex:
+        print('Failed to open URL. Error: {}'.format(ex))
+
+def message_toast(message,website_url="", file_folder_path=""):
+    """
+    Function for displaying Windows 10 Toast Notifications.
+    Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
+    """
+    
+    if os_name == "windows" and str(enable_semi_automatic_mode).lower() == 'false':
+        from win10toast_click import ToastNotifier 
+        toaster = ToastNotifier()
+
+        if website_url:
+
+            toaster.show_toast(
+                "ClointFusion", 
+                "{}. Click to open URL".format(message), 
+                icon_path=cf_icon_cdt_file_path,
+                duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+                callback_on_click=lambda: webbrowser.open_new(website_url) # click notification to run function 
+            )
+
+        elif file_folder_path:
+            toaster.show_toast(
+                "ClointFusion", 
+                "{}. Click to open".format(message), 
+                icon_path=cf_icon_cdt_file_path,
+                duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+                callback_on_click=lambda: os.startfile(file_folder_path) # click notification to run function 
+            )
+
+        else:
+            toaster.show_toast(
+                "ClointFusion", # title
+                message, # message 
+                icon_path=cf_icon_cdt_file_path, # 'icon_path' 
+                duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+        )
+    else:
+        print("This function works only on Windows OS")
 
 def message_pop_up(strMsg="",delay=3):
     """
@@ -1519,6 +1570,7 @@ def download_this_file(url=""):
             with open(download_file_path,'wb') as f: 
                 f.write(r.content) 
                 
+            message_toast("File downloaded", file_folder_path=download_file_path)                
             return download_file_path
 
     except Exception as ex:
@@ -2128,6 +2180,8 @@ def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=
             file_path = os.path.join(output_folder_path,str(data[0]) + ".xlsx")
             file_path = Path(file_path)
             grouped_df.get_group(data[0]).to_excel(file_path, index=False)
+
+        message_toast("Excel splitting done", file_folder_path=file_path)
             
     except Exception as ex:
         print("Error in excel_split_by_column="+str(ex))
@@ -2209,6 +2263,8 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
         final_path = os.path.join(output_folder_path, "Final-" + time_stamp_now + ".xlsx")
         final_path= Path(final_path)
         appended_df.to_excel(final_path, index=False)
+
+        message_toast("Excel merging completed", file_folder_path=final_path)
         
         return True
     except Exception as ex:
@@ -3006,6 +3062,8 @@ def excel_drag_drop_pivot_table(excel_path="",sheet_name='Sheet1', header=0,rows
         HTML(str(output_file))
         print("Please find the output at {}".format(output_file))
 
+        message_toast("Pivot table is ready", file_folder_path=output_file)
+
         if enable_semi_automatic_mode == False:
             show(df)
 
@@ -3199,6 +3257,8 @@ def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,dro
 
             print("Table saved as Excel at {} ".format(strFileName))
 
+            message_toast("HTML table saved as excel", file_folder_path=strFileName)
+
         else:
             print("No tables found in given website " + str(Website_URL))
 
@@ -3302,6 +3362,9 @@ def excel_draw_charts(excel_path="",sheet_name='Sheet1', header=0, x_col="", y_c
             with open(strFileName, "wb") as f:
                 f.write(scope.transform(fig, format="png"))
             print("Chart saved at " + str(strFileName))
+
+            message_toast("{} chart is ready".format(chart_type), file_folder_path=strFileName)
+
         else:
             print("Please supply all the required values")
 
@@ -3383,7 +3446,10 @@ def excel_geotag_using_zipcodes(excel_path="",sheet_name='Sheet1',header=0,zoom_
         graphFileName = Path(graphFileName)
 
         print("GeoTagged Graph saved at "+ graphFileName)
+
         m.save(graphFileName)
+
+        message_toast("GeoTagged graph is ready", file_folder_path=graphFileName)
     
     except Exception as ex:
         print("Error in excel_geotag_using_zipcodes="+str(ex))
@@ -3398,64 +3464,127 @@ def _accept_cookies_h():
     except Exception as ex:
         print("Error in _accept_cookies_h="+str(ex))
     
-def launch_website_h(URL="",dummy_browser=True,dp=False,dn=True,igc=True,smcp=True,i=False,headless=False,files_download_path=''):
+def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, smcp=True, i=False, headless=False,
+                     files_download_path='', remote=False, port=9223):
     """
     Internal function to launch browser.
     """
     status = False
+    global browser_driver
+    if remote and dummy_browser:
+        exit(0)
     try:
-        from selenium.webdriver import ChromeOptions
+        # To clear previous instances of chrome
+        try:
+            subprocess.call('TASKKILL /IM chrome.exe',stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        except:
+            exit(0)
+
         if not URL:
-            URL = gui_get_any_input_from_user("website URL to Launch Website using Helium functions. Ex https://www.google.com")
+            URL = gui_get_any_input_from_user(
+                "website URL to Launch Website using Helium functions. Ex https://www.google.com")
 
         global helium_service_launched
-        helium_service_launched=True
-        options = ChromeOptions()
+        helium_service_launched = True
+        options = Options()
         if dp:
-            options.add_argument("--disable-popup-blocking")                
-        if dn:  
-            options.add_argument("--disable-notifications")                
+            options.add_argument("--disable-popup-blocking")
+        if dn:
+            options.add_argument("--disable-notifications")
         if igc:
-            options.add_argument("--ignore-certificate-errors")             
+            options.add_argument("--ignore-certificate-errors")
         if smcp:
-            options.add_argument("--suppress-message-center-popups")       
-            
-        if dummy_browser == False:
-            options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-        else:
-            options.add_argument("--incognito")                    
+            options.add_argument("--suppress-message-center-popups")
+        if i:
+            options.add_argument("--incognito")
+        if headless:
+            options.add_argument("--headless")
 
-        #  Set the download path
+        if not dummy_browser:
+            options.add_argument(
+                "user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+
+        if remote and not dummy_browser:
+            # (only available in chrome)
+            # Why remote,
+            # when helium is launched it store the chrome instance in program memory(memory reserved for program),
+            # when the task is heavy chrome doesn't respond momentarily because of overload.
+            # When the remote is used
+            # it creates chrome instance in system memory,
+            # so it can perform long operations without overload.
+            # this functions emulates a remote desktop
+            chrome_path = [r"C:\Program Files\Google\Chrome\Application",
+                           r"C:\Program Files (x86)\Google\Chrome\Application"]
+            for path in chrome_path:
+                if os.path.exists(path):
+                    print(path)
+                    chrome_path = path
+                    os.chdir(chrome_path)
+                    options.add_experimental_option(
+                        "debuggerAddress", f"127.0.0.1:{port}")
+
+            #  Set the download path
         if files_download_path != '':
             prefs = {
-                'profile.default_content_settings.popus' : 0,
                 'download.default_directory': files_download_path,
-                'directory_upgrade' : True
+                "download.prompt_for_download": False,
+                'download.directory_upgrade': True,
+                "safebrowsing.enabled": False
             }
-            options.add_experimental_option('prefs',prefs)
+            options.add_experimental_option('prefs', prefs)
+            
+        if not remote:
+            options.add_argument("--disable-translate")
+            options.add_argument("--ignore-autocomplete-off-autofill")
+            options.add_argument("--no-first-run")
+        options.add_argument("--start-maximized")
+        # options.add_argument("--window-size=1920,1080")
 
-        options.add_argument("--disable-translate")
-        options.add_argument("--start-maximized")                          
-        options.add_argument("--ignore-autocomplete-off-autofill")          
-        options.add_argument("--no-first-run")                             
-        #options.add_argument("--window-size=1920,1080")
         try:
-            global browser_driver
-            browser_driver = start_chrome(url=URL,options=options,headless=headless)
+            if remote and not dummy_browser:
+                subprocess.Popen(
+                    f'chrome.exe --remote-debugging-port={port}', shell=True)
+                browser_driver = webdriver.Chrome(binary_path, options=options)
+            if not remote:
+                browser_driver = webdriver.Chrome(binary_path, options=options)
+            set_driver(browser_driver)
             _accept_cookies_h()
+            go_to(URL)
             status = True
+        except SessionNotCreatedException as ex:
+            try:
+                chrome_driver_version_list = ["90.0.4430.24", "91.0.4472.19", "92.0.4515.43"]
+                version = str(ex).split()[17].split(".")[0]
+                for i in chrome_driver_version_list:
+                    if version in i:
+                        version = i
+                        break
+                subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={version}'])
+
+                if remote and not dummy_browser:
+                    subprocess.Popen(
+                        f'chrome.exe --remote-debugging-port={port}', shell=True)
+                    browser_driver = webdriver.Chrome(binary_path, options=options)
+                if not remote:
+                    browser_driver = webdriver.Chrome(binary_path, options=options)
+                set_driver(browser_driver)
+                _accept_cookies_h()
+                go_to(URL)
+                status = True
+            except Exception as ex:
+                print("Error in launch_website_h {}".format(ex))
         except:
             try:
-                browser_driver = start_firefox(url=URL) #to be tested
+                browser_driver = start_firefox(url=URL)  # to be tested
                 browser_driver.maximize_window()
                 status = True
-            except Exception as ex: 
-                print("Cannot continue. Helium package's Compatible Chrome or Firefox is missing "+ str(ex))
+            except Exception as ex:
+                print("Cannot continue. Helium package's Compatible Chrome or Firefox is missing " + str(ex))
 
         Config.implicit_wait_secs = 120
-        
+
     except Exception as ex:
-        print("Error in launch_website_h = "+str(ex))
+        print("Error in launch_website_h = " + str(ex))
         kill_browser()
         helium_service_launched = False
 
@@ -3883,8 +4012,12 @@ def camera_capture_image(user_name=""):
 
                 cv2.imwrite(file_path, img) 
                 print("Image saved at {}".format(file_path))
+
                 cap.release() 
                 cv2.destroyAllWindows()
+
+                message_toast("Captured image saved", file_folder_path=file_path)
+
                 break
 
         else:
@@ -3921,6 +4054,8 @@ def convert_csv_to_excel(csv_path="",sep=""):
         writer.save()
         
         print("Excel file saved : "+str(excel_file_path))
+
+        message_toast("CSV to excel conversion done", file_folder_path=excel_file_path)
 
     except Exception as ex:
         print("Error in convert_csv_to_excel="+str(ex))
@@ -4770,7 +4905,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
     enable_semi_automatic_mode = True
 
     try:
-        message_pop_up('Importing ClointFusion')
+        message_pop_up('Importing ClointFusion', delay=1)
         print('Importing ClointFusion')
         print()
 
@@ -5107,7 +5242,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
             print("____________________________________________________________")
             print("Please click red 'Close' button")
-        
+
+            message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
+
         else:
             print("ClointFusion Self Testing has Failed for few Functions")
             print(TEST_CASES_STATUS_MESSAGE)
@@ -5116,9 +5253,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         
         return TEST_CASES_STATUS_MESSAGE
 
-def clointfusion_self_test():
+def clointfusion_self_test(last_updated_on_month):
     global os_name
-    
     start_time = time.monotonic()
     try:
         from pif import get_public_ip
@@ -5128,13 +5264,14 @@ def clointfusion_self_test():
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
                 # [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='orange')],
                 # [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
-                [sg.Button('', image_data=google_sso_base64, button_color=(sg.theme_background_color(),sg.theme_background_color()),border_width=0, key='SSO')],
+                [sg.Button('', image_data=google_sso_base64, button_color=(sg.theme_background_color(),sg.theme_background_color()),border_width=0, key='SSO', tooltip='Sign-In with Gmail ID')],
                 # [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
                 [sg.Text("We will be collecting OS name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
-                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14')]  ]
+                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
+                [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False if int(last_updated_on_month) == -9 else True, tooltip=  'Click this button to skip Self-Test' if int(last_updated_on_month) == -9 else 'Sign-In with Gmail to enable this option')]]
 
         if os_name == 'windows':
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
@@ -5143,20 +5280,31 @@ def clointfusion_self_test():
         
         while True:             
             event, _ = window.read()
+
             if event == 'SSO':
                 # os_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                 webbrowser.open_new("https://api.clointfusion.com/cf/google/login_process?uuid={}".format(str(uuid)))
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
+                window['Skip for Now'].update(disabled=False)
                 
+            if event == 'Skip for Now':
+                pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
+
+                if int(last_updated_on_month) != -9:
+                    try:
+                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':-9,'uuid':str(uuid)})
+                        last_updated_on_month = -9
+                    except Exception as ex:
+                        message_pop_up("Active internet connection is required ! {}".format(ex))
+
+                message_toast("ClointFusion Self-Test is Skipped")
+                break
+
             if event == 'Start':
-                # if values['-ROLE-']:
-                
                 window['Start'].update(disabled=True)
                 window['Close'].update(disabled=True)
-                # window['-NAME-'].update(disabled=True)
-                # window['-EMAIL-'].update(disabled=True)
-                # window['-ROLE-'].update(disabled=True)
+                window['Skip for Now'].update(disabled=True)
                 _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
                 print("Starting ClointFusion's Automated Self Testing Module")
@@ -5222,7 +5370,11 @@ def clointfusion_self_test():
         _rerun_clointfusion_first_run(str(ex))
     finally:
         print('Thank you !')
-        sys.exit(0)
+
+        if int(last_updated_on_month) != -9 :
+            sys.exit(0)
+        else:
+            window.close()
 
 def find(function_partial_name=""):
     # Find and inspect python functions
@@ -5263,7 +5415,7 @@ else:
 
 if EXECUTE_SELF_TEST_NOW :
     try:
-        clointfusion_self_test()
+        clointfusion_self_test(last_updated_on_month)
     except Exception as ex:
         print("Error in Self Test="+str(ex))
         _rerun_clointfusion_first_run(str(ex))
