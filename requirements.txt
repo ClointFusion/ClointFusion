@@ -39,7 +39,7 @@ pyinspect>= 0.0.8
 pyfiglet
 pillow>= 8.2.0
 qtstylish>=0.1.0 
-pandasgui>= 0.2.10.1
+tabloo >= 0.0.15
 xls2xlsx >= 0.1.4
 xlwt >= 1.2.0
 psutil >= 5.8.0

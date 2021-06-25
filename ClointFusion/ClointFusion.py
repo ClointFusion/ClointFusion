@@ -56,7 +56,7 @@ from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import pyinspect as pi
-from pandasgui import show
+from tabloo import show
 
 os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
