@@ -3467,6 +3467,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
     status = False
     global browser_driver
     if remote and dummy_browser:
+        print("Disable either remote or dummy_browser")
         exit(0)
     try:
         # To clear previous instances of chrome
@@ -3495,7 +3496,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
         if headless:
             options.add_argument("--headless")
 
-        options.add_experimental_option('excludeSwitches', ['enable-logging']) #PR-20 handled
+        
 
         if not dummy_browser:
             options.add_argument(
@@ -3534,6 +3535,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
             options.add_argument("--disable-translate")
             options.add_argument("--ignore-autocomplete-off-autofill")
             options.add_argument("--no-first-run")
+            options.add_experimental_option('excludeSwitches', ['enable-logging']) #PR-20 handled
         options.add_argument("--start-maximized")
         # options.add_argument("--window-size=1920,1080")
 
@@ -3544,8 +3546,8 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                 browser_driver = webdriver.Chrome(binary_path, options=options)
             if not remote:
                 browser_driver = webdriver.Chrome(binary_path, options=options)
+                _accept_cookies_h()
             set_driver(browser_driver)
-            _accept_cookies_h()
             go_to(URL)
             status = True
         except SessionNotCreatedException as ex:
@@ -3564,8 +3566,8 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                     browser_driver = webdriver.Chrome(binary_path, options=options)
                 if not remote:
                     browser_driver = webdriver.Chrome(binary_path, options=options)
+                    _accept_cookies_h()
                 set_driver(browser_driver)
-                _accept_cookies_h()
                 go_to(URL)
                 status = True
             except Exception as ex:
