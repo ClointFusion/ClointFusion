@@ -256,7 +256,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.10)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.12)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -3494,6 +3494,8 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
             options.add_argument("--incognito")
         if headless:
             options.add_argument("--headless")
+
+        options.add_experimental_option('excludeSwitches', ['enable-logging']) #PR-20 handled
 
         if not dummy_browser:
             options.add_argument(

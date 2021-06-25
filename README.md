@@ -34,10 +34,10 @@ Please refer these steps to create one, as per your OS: <a href="https://packagi
 
 3. Install ClointFusion by executing this package in command promt (with Admin rights): 
 
-    ## pip install -U ClointFusion
+    # pip install -U ClointFusion
 4. Open a new file in your favorite Python IDE and type: 
 
-    ## import ClointFusion as cf
+    # import ClointFusion as cf
 
 PS: Ubuntu users: May need to install some additional packages:
 1) sudo apt-get install python3-tk python3-dev
