@@ -3812,7 +3812,7 @@ def browser_attach_file_h(path_of_file='',to_xpath=''):
         if not path_of_file:
             path_of_file = gui_get_any_input_from_user('Full path of file')
         if not to_xpath:
-            to_xpath = gui_get_any_input_from_user('Enter the xpath of attach button')
+            to_xpath = gui_get_any_input_from_user('Enter the xpath of attachment button/location')
         
         if os.path.exists(path_of_file):
             elem_xpath = S(to_xpath).web_element
