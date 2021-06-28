@@ -86,7 +86,6 @@ from ClointFusion.ClointFusion import mouse_search_snips_return_coordinates_x_y
 from ClointFusion.ClointFusion import find_text_on_screen
 from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_box
 from ClointFusion.ClointFusion import mouse_find_highlight_click
-from ClointFusion.ClointFusion import word_cloud_from_url
 from ClointFusion.ClointFusion import browser_get_html_text
 from ClointFusion.ClointFusion import schedule_create_task_windows
 from ClointFusion.ClointFusion import schedule_delete_task_windows
@@ -106,7 +105,6 @@ from ClointFusion.ClointFusion import compute_hash
 from ClointFusion.ClointFusion import browser_refresh_page_h
 from ClointFusion.ClointFusion import browser_quit_h
 from ClointFusion.ClointFusion import dismantle_code
-from ClointFusion.ClointFusion import excel_clean_data
 from ClointFusion.ClointFusion import excel_describe_data
 from ClointFusion.ClointFusion import camera_capture_image
 from ClointFusion.ClointFusion import convert_csv_to_excel
@@ -137,3 +135,4 @@ from ClointFusion.ClointFusion import excel_convert_xls_to_xlsx
 from ClointFusion.ClointFusion import excel_apply_template_format_save_to_new
 from ClointFusion.ClointFusion import excel_apply_format_as_table
 from ClointFusion.ClointFusion import excel_split_on_user_defined_conditions
+from ClointFusion.ClointFusion import logging

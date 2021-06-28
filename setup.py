@@ -10,15 +10,15 @@ with open(os.path.join(this_directory, "README.md"), "r") as fh:
 
 setup(
     name='ClointFusion',
+    author='Mayur Patil',
+    author_email = 'mayur@cloint.com',
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.9',
+    version='0.1.12',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author='Cloint India Pvt. Ltd',
-    author_email='clointfusion@cloint.com',
     url='https://github.com/ClointFusion/ClointFusion',
     setup_requires=["wheel",'numpy',"setuptools"],
         
