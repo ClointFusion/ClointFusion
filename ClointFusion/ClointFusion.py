@@ -3803,6 +3803,24 @@ def browser_select_dropdown_option_h(by_label='',by_xpath='',set_value=''):
     
     except Exception as e:
         print('Error in browser_select_dropdown_option_h = ',str(e))
+
+def browser_attach_file_h(path_of_file='',to_xpath=''):
+    '''
+    Upload the selected file to the respected xpath location
+    '''
+    try:
+        if not path_of_file:
+            path_of_file = gui_get_any_input_from_user('Full path of file')
+        if not to_xpath:
+            to_xpath = gui_get_any_input_from_user('Enter the xpath of attachment button/location')
+        
+        if os.path.exists(path_of_file):
+            elem_xpath = S(to_xpath).web_element
+            attach_file(file_path=path_of_file,to=elem_xpath)
+        else:
+            raise Exception('File can\'t be found.')
+    except Exception as e:
+        print('Error in browser_attach_file_h = ',str(e))
       
 def browser_quit_h():
     """
