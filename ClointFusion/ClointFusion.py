@@ -3467,6 +3467,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
     status = False
     global browser_driver
     if remote and dummy_browser:
+        print("Disable either remote or dummy_browser")
         exit(0)
     try:
         # To clear previous instances of chrome
@@ -3495,7 +3496,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
         if headless:
             options.add_argument("--headless")
 
-        options.add_experimental_option('excludeSwitches', ['enable-logging']) #PR-20 handled
+        
 
         if not dummy_browser:
             options.add_argument(
@@ -3534,6 +3535,7 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
             options.add_argument("--disable-translate")
             options.add_argument("--ignore-autocomplete-off-autofill")
             options.add_argument("--no-first-run")
+            options.add_experimental_option('excludeSwitches', ['enable-logging']) #PR-20 handled
         options.add_argument("--start-maximized")
         # options.add_argument("--window-size=1920,1080")
 
@@ -3542,10 +3544,12 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                 subprocess.Popen(
                     f'chrome.exe --remote-debugging-port={port}', shell=True)
                 browser_driver = webdriver.Chrome(binary_path, options=options)
+                set_driver(browser_driver)
             if not remote:
                 browser_driver = webdriver.Chrome(binary_path, options=options)
-            set_driver(browser_driver)
-            _accept_cookies_h()
+                set_driver(browser_driver)
+                _accept_cookies_h()
+            
             go_to(URL)
             status = True
         except SessionNotCreatedException as ex:
@@ -3562,10 +3566,11 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                     subprocess.Popen(
                         f'chrome.exe --remote-debugging-port={port}', shell=True)
                     browser_driver = webdriver.Chrome(binary_path, options=options)
+                    set_driver(browser_driver)
                 if not remote:
                     browser_driver = webdriver.Chrome(binary_path, options=options)
-                set_driver(browser_driver)
-                _accept_cookies_h()
+                    set_driver(browser_driver)
+                    _accept_cookies_h()
                 go_to(URL)
                 status = True
             except Exception as ex:
@@ -3642,43 +3647,67 @@ def browser_write_h(Value="",User_Visible_Text_Element="",alert=False):
     except Exception as ex:
         print("Error in browser_write_h = "+str(ex))
     
-def browser_mouse_click_h(User_Visible_Text_Element="",element="d",below='',to_right_of='',above='',to_left_of=''):
+def browser_mouse_click_h(User_Visible_Text_Element="",element="",below='',to_right_of='',above='',to_left_of='', double_click=False, right_click=False):
     """
     click on the given element.
     """
     try:
-        if not User_Visible_Text_Element:
+        if not User_Visible_Text_Element and not element:
             User_Visible_Text_Element = gui_get_any_input_from_user("visible text element (button/link/checkbox/radio etc) to Click")
-
-        if User_Visible_Text_Element and element.lower()=="d":      #default
-            click(User_Visible_Text_Element)
-        elif User_Visible_Text_Element and element.lower()=="l":    #link
-            click(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-        elif User_Visible_Text_Element and element.lower()=="b":    #button
-            click(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-        elif User_Visible_Text_Element and element.lower()=="t":    #textfield
-            click(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-        elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
-            click(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-        elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
-            click(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-        elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
-            click(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+        if not double_click and not right_click:
+            if not User_Visible_Text_Element and element:
+                click(element)
+            if User_Visible_Text_Element and element.lower()=="d":      #default
+                click(User_Visible_Text_Element)
+            elif User_Visible_Text_Element and element.lower()=="l":    #link
+                click(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="b":    #button
+                click(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="t":    #textfield
+                click(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
+                click(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
+                click(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
+                click(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+        if double_click and not right_click:
+            if not User_Visible_Text_Element and element:
+                doubleclick(element)
+            if User_Visible_Text_Element and element.lower()=="d":      #default
+                doubleclick(User_Visible_Text_Element)
+            elif User_Visible_Text_Element and element.lower()=="l":    #link
+                doubleclick(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="b":    #button
+                doubleclick(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="t":    #textfield
+                doubleclick(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
+                doubleclick(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
+                doubleclick(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
+                doubleclick(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+        if right_click:
+            if not User_Visible_Text_Element and element:
+                rightclick(element)
+            if User_Visible_Text_Element and element.lower()=="d":      #default
+                rightclick(User_Visible_Text_Element)
+            elif User_Visible_Text_Element and element.lower()=="l":    #link
+                rightclick(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="b":    #button
+                rightclick(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="t":    #textfield
+                rightclick(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
+                rightclick(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
+                rightclick(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+            elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
+                rightclick(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
     except Exception as ex:
         print("Error in browser_mouse_click_h = "+str(ex))
-    
-def browser_mouse_double_click_h(User_Visible_Text_Element=""):
-    """
-    Doubleclick on the given element.
-    """
-    try:
-        if not User_Visible_Text_Element:
-            User_Visible_Text_Element = gui_get_any_input_from_user("visible text element (button/link/checkbox/radio etc) to Double Click")
-
-        if User_Visible_Text_Element:
-            doubleclick(User_Visible_Text_Element)
-    except Exception as ex:
-        print("Error in browser_mouse_double_click_h = "+str(ex))
+  
     
 def browser_locate_element_h(element="",get_text=False):
     """
