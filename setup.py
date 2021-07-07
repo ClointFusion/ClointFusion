@@ -15,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.12',
+    version='0.1.13',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -49,7 +49,7 @@ setup(
   },
 )
 
-# python setup.py build sdist bdist_wheel bdist_wininst rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
+# python setup.py build bdist_wheel bdist_wininst bdist_msi rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
 
 # twine upload dist/*
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

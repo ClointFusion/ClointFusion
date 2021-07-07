@@ -256,7 +256,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.12)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.13)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -3104,17 +3104,17 @@ def mouse_find_highlight_click(searchText="",delay=0.1,occurance=1,left_right="l
         find_text_on_screen(searchText,delay=delay,occurance=occurance,isSearchToBeCleared = True) #clear the search
 
         img = pg.screenshot()
-        img.save(ss_path_b)
+        img.save(str(ss_path_b))
         time.sleep(0.2)
-        imageA = cv2.imread(ss_path_b)
+        imageA = cv2.imread(str(ss_path_b))
         time.sleep(0.2)
 
         find_text_on_screen(searchText,delay=delay,occurance=occurance,isSearchToBeCleared = False) #dont clear the searched text
 
         img = pg.screenshot()
-        img.save(ss_path_a)
+        img.save(str(ss_path_a))
         time.sleep(0.2)
-        imageB = cv2.imread(ss_path_a)
+        imageB = cv2.imread(str(ss_path_a))
         time.sleep(0.2)
 
         # convert both images to grayscale

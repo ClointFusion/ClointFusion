@@ -94,6 +94,9 @@ You would receive an email with self-test report.
 
     cf.mouse_find_highlight_click() : Searches the given text on the screen, highlights and clicks it
 
+    <video width="400" height="400" controls>
+    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/uploads/4ac5215eb5b47cc7bcf8ebaa32481f32/string_bot.mp4" type="video/mp4">
+
 * ## 5 functions on Window operations (works only in Windows OS):
 
     cf.window_show_desktop() : Minimizes all the applications and shows Desktop.
@@ -106,6 +109,10 @@ You would receive an email with self-test report.
 
     cf.window_close_windows() :  Close the desired window.
 
+    <video width="400" height="400" controls>
+    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/-/raw/308-gif-for-window-operations/Window%20Operations.gif" type="video/mp4">
+    </video>
+
 * ## 5 functions on Window Objects (works only in Windows OS):
 
     cf.win_obj_open_app() : Open any windows application.
@@ -117,6 +124,10 @@ You would receive an email with self-test report.
     cf.win_obj_key_press() : Simulate high level Keypress on windows object elements.
 
     cf.win_obj_get_text() : Read text from windows object element.
+
+    <video width="400" height="400" controls>
+    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/-/raw/309-gif-for-window-objects/Windows_Object_Bot_Main.mp4" type="video/mp4">
+    </video>
 
 * ## 6 functions on Folder operations:
 
@@ -175,6 +186,10 @@ You would receive an email with self-test report.
     cf.excel_drag_drop_pivot_table() : Interactive Drag and Drop Pivot Table Generation
 
     cf.excel_change_corrupt_xls_to_xlsx() : Repair corrupt excel file
+
+    <video width="400" height="400" controls>
+    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/-/raw/311-gif-for-excel-operations/Excel_Operations/clointfusion_excel_operations.mp4" type="video/mp4">
+    </video>
 
 * ## 3 functions on Keyboard operations:
 
@@ -236,7 +251,9 @@ You would receive an email with self-test report.
 
     cf.string_extract_only_numbers() : Returns only numbers from given input string
 
-
+    <video width="400" height="400" controls>
+    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/uploads/4ac5215eb5b47cc7bcf8ebaa32481f32/string_bot.mp4" type="video/mp4">
+    </video>
 * ## Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 
     cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
@@ -280,6 +297,10 @@ You would receive an email with self-test report.
     cf.download_this_file() : Downloads a given url file to BOT output folder or Browser's Download folder
 
     cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
+
+    <video width="400" height="400" controls>
+    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/uploads/97faaa1c4812b4929dcc7393926bdd4f/cf_misc.mp4" type="video/mp4">
+    </video>
     
 # ClointFusion's function works in different modes:
 1) If you pass all the required parameters, function works silently. So, this is expert (Non-GUI) mode. This mode gives you more control over the function's parameters.
