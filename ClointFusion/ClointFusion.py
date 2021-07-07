@@ -3544,10 +3544,12 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                 subprocess.Popen(
                     f'chrome.exe --remote-debugging-port={port}', shell=True)
                 browser_driver = webdriver.Chrome(binary_path, options=options)
+                set_driver(browser_driver)
             if not remote:
                 browser_driver = webdriver.Chrome(binary_path, options=options)
+                set_driver(browser_driver)
                 _accept_cookies_h()
-            set_driver(browser_driver)
+            
             go_to(URL)
             status = True
         except SessionNotCreatedException as ex:
@@ -3564,10 +3566,11 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                     subprocess.Popen(
                         f'chrome.exe --remote-debugging-port={port}', shell=True)
                     browser_driver = webdriver.Chrome(binary_path, options=options)
+                    set_driver(browser_driver)
                 if not remote:
                     browser_driver = webdriver.Chrome(binary_path, options=options)
+                    set_driver(browser_driver)
                     _accept_cookies_h()
-                set_driver(browser_driver)
                 go_to(URL)
                 status = True
             except Exception as ex:
