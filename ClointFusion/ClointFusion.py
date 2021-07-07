@@ -3983,7 +3983,7 @@ def convert_csv_to_excel(csv_path="",sep=""):
         excel_file_path = Path(excel_file_path)
         writer = pd.ExcelWriter(excel_file_path) # pylint: disable=abstract-class-instantiated
 
-        df=pd.read_csv(csv_path,sep=sep,engine='openpyxl')
+        df=pd.read_csv(csv_path,sep=sep)
         df.to_excel(writer, sheet_name='Sheet1', index=False)
 
         writer.save()
@@ -4030,6 +4030,7 @@ class CaptureSnip(QtWidgets.QWidget):
         self.update()
 
     def mouseReleaseEvent(self, event):
+        from PIL import ImageGrab
         self.close()
 
         x1 = min(self.begin.x(), self.end.x())
