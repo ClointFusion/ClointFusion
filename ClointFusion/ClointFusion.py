@@ -256,7 +256,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.13)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.14)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -1668,10 +1668,13 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
         print("Error in folder_delete_all_files="+str(ex)) 
         return -1
         
-def key_hit_enter():
+def key_hit_enter(write_to_window=""):
     """
     Enter key will be pressed once.
     """
+    if write_to_window:
+        window_activate_and_maximize_windows(write_to_window)
+
     time.sleep(0.5)
     kb.press_and_release('enter')
     time.sleep(0.5)
@@ -1767,10 +1770,15 @@ def window_activate_and_maximize_windows(windowName=""):
         item,window_found = _window_find_exact_name(windowName)
         if window_found:
             windw = gw.getWindowsWithTitle(item)[0]
-            windw.activate()
-            time.sleep(2)
-            windw.maximize()
-            time.sleep(2)
+
+            try:
+                windw.activate()
+            except:
+                windw.minimize()
+                time.sleep(1)
+                windw.maximize()
+            time.sleep(1)
+            
         else:
             print("No window OPEN by name="+str(windowName))
     except Exception as ex:
@@ -1840,7 +1848,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
  
         try:
             import win32gui, win32con
-            time.sleep(3) 
+            time.sleep(2) 
             hwnd = win32gui.GetForegroundWindow()
             win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
         except Exception as ex1:
@@ -2851,13 +2859,16 @@ def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='N
     except Exception as ex:
         print("Error in search_highlight_tab_enter_open="+str(ex))
     
-def key_press(strKeys=""):
+def key_press(write_to_window="",strKeys=""):
     """
     Emulates the given keystrokes.
     """
     try:
         if not strKeys:            
             strKeys = gui_get_any_input_from_user("keys combination using + as delimeter. Ex: ctrl+O")
+
+        if write_to_window:
+            window_activate_and_maximize_windows(write_to_window)
 
         strKeys = strKeys.lower()
         if "shift" in strKeys:
@@ -2869,7 +2880,7 @@ def key_press(strKeys=""):
     except Exception as ex:
         print("Error in key_press="+str(ex))
     
-def key_write_enter(strMsg="",delay=1,key="e"):
+def key_write_enter(write_to_window="",strMsg="",delay=1,key="e"):
     """
     Writes/Types the given text and press enter (by default) or tab key.
     """
@@ -2877,13 +2888,16 @@ def key_write_enter(strMsg="",delay=1,key="e"):
         if not strMsg:
             strMsg = gui_get_any_input_from_user("message / username / any text")
 
+        if write_to_window:
+            window_activate_and_maximize_windows(write_to_window)
+
         time.sleep(0.2)
         kb.write(strMsg)
         time.sleep(delay)
         if key.lower() == "e":
-            key_press('enter')
+            key_press(strKeys='enter')
         elif key.lower() == "t":
-            key_press('tab')
+            key_press(strKeys='tab')
         time.sleep(1)
     except Exception as ex:
         print("Error in key_write_enter="+str(ex))
@@ -4747,9 +4761,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 launch_any_exe_bat_application("gedit") #Ubuntu / macOS ?
 
             if os_name == 'windows':
-                key_write_enter("Performing ClointFusion Self Test for Notepad")
-                key_hit_enter()
-                key_press('alt+f4,n')
+                key_write_enter(write_to_window="notepad",strMsg="Performing ClointFusion Self Test for Notepad")
+                key_hit_enter(write_to_window="notepad")
+                key_press(write_to_window="notepad",strKeys='alt+f4,n')
             else:
                 pg.write("Performing ClointFusion Self Test for Text Editor / GEDIT")
                 time.sleep(2)
@@ -4769,7 +4783,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
             try:
-                key_press('alt+f4')
+                key_press(strKeys='alt+f4')
             except:
                 pg.hotkey('alt','f4')
 
@@ -4903,7 +4917,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
-            key_press('ctrl+w')
+            key_press(strKeys='ctrl+w')
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
@@ -4936,7 +4950,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
-            key_press('ctrl+w') #to close any open browser
+            key_press(strKeys='ctrl+w') #to close any open browser
             TEST_CASES_STATUS_MESSAGE = "Error while Testing Browser Helium functions="+str(ex)
 
         message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
@@ -5076,7 +5090,7 @@ def clointfusion_self_test(last_updated_on_month):
                     time.sleep(2)
                     
                     try:
-                        key_press('alt+f4')
+                        key_press(strKeys='alt+f4')
                     except:
                         pg.hotkey('alt','f4')
                     time.sleep(2)
@@ -5104,6 +5118,15 @@ def clointfusion_self_test(last_updated_on_month):
             sys.exit(0)
         else:
             window.close()
+
+def clear_screen():
+    """
+    Clears Terminal Window
+    """
+    try:
+        print(chr(27) + "[2J")
+    except:
+        pass
 
 def find(function_partial_name=""):
     # Find and inspect python functions

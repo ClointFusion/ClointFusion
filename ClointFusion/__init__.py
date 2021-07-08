@@ -136,3 +136,4 @@ from ClointFusion.ClointFusion import excel_apply_template_format_save_to_new
 from ClointFusion.ClointFusion import excel_apply_format_as_table
 from ClointFusion.ClointFusion import excel_split_on_user_defined_conditions
 from ClointFusion.ClointFusion import logging
+from ClointFusion.ClointFusion import clear_screen

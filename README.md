@@ -75,7 +75,8 @@ You would receive an email with self-test report.
 
     cf.gui_get_any_input_from_user() : Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.
 
-
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/e8e61825bb8fcc13d6549a1f4c9f8b04a6035fbc/GUI.gif?raw=true" height="400">
+    
 * ## 8 functions on Mouse operations:
 
     cf.mouse_click() : Clicks at the given X Y Co-ordinates on the screen using ingle / double / tripple click(s). Optionally copies selected data to clipboard (works for double / triple clicks)
@@ -94,8 +95,7 @@ You would receive an email with self-test report.
 
     cf.mouse_find_highlight_click() : Searches the given text on the screen, highlights and clicks it
 
-    <video width="400" height="400" controls>
-    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/uploads/4ac5215eb5b47cc7bcf8ebaa32481f32/string_bot.mp4" type="video/mp4">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true" height="400">
 
 * ## 5 functions on Window operations (works only in Windows OS):
 
@@ -109,10 +109,7 @@ You would receive an email with self-test report.
 
     cf.window_close_windows() :  Close the desired window.
 
-    <video width="400" height="400" controls>
-    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/-/raw/308-gif-for-window-operations/Window%20Operations.gif" type="video/mp4">
-    </video>
-
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/e8e61825bb8fcc13d6549a1f4c9f8b04a6035fbc/Window_Operations.gif?raw=true" height="400">
 * ## 5 functions on Window Objects (works only in Windows OS):
 
     cf.win_obj_open_app() : Open any windows application.
@@ -125,9 +122,7 @@ You would receive an email with self-test report.
 
     cf.win_obj_get_text() : Read text from windows object element.
 
-    <video width="400" height="400" controls>
-    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/-/raw/309-gif-for-window-objects/Windows_Object_Bot_Main.mp4" type="video/mp4">
-    </video>
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Windows_Object_Operation.gif?raw=true" height="400">
 
 * ## 6 functions on Folder operations:
 
@@ -187,9 +182,7 @@ You would receive an email with self-test report.
 
     cf.excel_change_corrupt_xls_to_xlsx() : Repair corrupt excel file
 
-    <video width="400" height="400" controls>
-    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/-/raw/311-gif-for-excel-operations/Excel_Operations/clointfusion_excel_operations.mp4" type="video/mp4">
-    </video>
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true" height="400">
 
 * ## 3 functions on Keyboard operations:
 
@@ -206,6 +199,7 @@ You would receive an email with self-test report.
 
     cf.scrape_get_contents_by_search_copy_paste : Gets the focus on the screen by searching given text using crtl+f and performs copy/paste of all data. Useful in Citrix applications. This is useful in Citrix applications
 
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true" height="400">
 
 * ## 12 functions on Browser operations:
 
@@ -233,6 +227,7 @@ You would receive an email with self-test report.
 
     cf.browser_hit_enter_h() : Hits enter KEY using Browser Helium Functions
 
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Browser_Functions.gif?raw=true" height="400">
 
 * ## 3 functions on Alert Messages:
 
@@ -251,9 +246,8 @@ You would receive an email with self-test report.
 
     cf.string_extract_only_numbers() : Returns only numbers from given input string
 
-    <video width="400" height="400" controls>
-    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/uploads/4ac5215eb5b47cc7bcf8ebaa32481f32/string_bot.mp4" type="video/mp4">
-    </video>
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true" height="400">
+
 * ## Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 
     cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
@@ -298,10 +292,8 @@ You would receive an email with self-test report.
 
     cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
 
-    <video width="400" height="400" controls>
-    <source src="https://gitlab.com/high-performance-team/common-mans-rpa/uploads/97faaa1c4812b4929dcc7393926bdd4f/cf_misc.mp4" type="video/mp4">
-    </video>
-    
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
+
 # ClointFusion's function works in different modes:
 1) If you pass all the required parameters, function works silently. So, this is expert (Non-GUI) mode. This mode gives you more control over the function's parameters.
 
@@ -312,6 +304,9 @@ You would receive an email with self-test report.
         B) If Semi-Automatic mode in ON, BOT works silently taking your previous GUI entries.
 
     GUI Mode is for beginners. Anytime, if you are not getting how to use the function, just call an empty function (without parameters) and GUI would pop-up asking you for required parameters.
+
+# Gmail BOT implemented using ClointFusion
+    <img src="" height="400">
 
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..
