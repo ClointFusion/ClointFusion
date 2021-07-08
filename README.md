@@ -130,9 +130,9 @@ You would receive an email with self-test report.
 
     cf.folder_write_text_file() :  Writes given contents to a text file
 
-    cf.folder_create() : while making leaf directory if any intermediate-level directory is missing, folder_create() method will create them all.
+    cf.folder_create() : When you are making leaf directory, if any intermediate-level directory is missing, folder_create() method creates them.
 
-    cf.folder_create_text_file() : Creates Text file in the given path.
+    cf.folder_create_text_file() : Creates text file in the given path.
 
     cf.folder_get_all_filenames_as_list() : Get all the files of the given folder in a list.
 
@@ -192,6 +192,7 @@ You would receive an email with self-test report.
 
     cf.key_write_enter() : Writes/Types the given text and press enter (by default) or tab key.
 
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true" height="400">
 
 * ## 2 functions on Screenscraping operations:
 
@@ -236,7 +237,6 @@ You would receive an email with self-test report.
     cf.message_pop_up() : Specified message will popup on the screen for a specified duration of time.
 
     cf.message_flash() : Specified msg will popup for a specified duration of time with OK button.
-
 
 * ## 3 functions on String Operations:
 
@@ -304,9 +304,12 @@ You would receive an email with self-test report.
         B) If Semi-Automatic mode in ON, BOT works silently taking your previous GUI entries.
 
     GUI Mode is for beginners. Anytime, if you are not getting how to use the function, just call an empty function (without parameters) and GUI would pop-up asking you for required parameters.
+    
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true" height="400">    
 
-# Gmail BOT implemented using ClointFusion
-    <img src="" height="400">
+# Outlook Email BOT implemented using ClointFusion
+
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Gmail%20and%20Outlook%20BOT.gif?raw=true" height="400">
 
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..

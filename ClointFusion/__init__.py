@@ -97,7 +97,6 @@ from ClointFusion.ClointFusion import launch_website_h
 from ClointFusion.ClointFusion import browser_navigate_h
 from ClointFusion.ClointFusion import browser_write_h
 from ClointFusion.ClointFusion import browser_mouse_click_h
-from ClointFusion.ClointFusion import browser_mouse_double_click_h
 from ClointFusion.ClointFusion import browser_locate_element_h
 from ClointFusion.ClointFusion import browser_locate_elements_h
 from ClointFusion.ClointFusion import browser_wait_until_h

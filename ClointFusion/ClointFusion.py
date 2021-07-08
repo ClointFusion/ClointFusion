@@ -1121,7 +1121,7 @@ def gui_get_workspace_path_from_user():
                 [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
                 [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
                 [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(current_working_dir) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
-                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Cancel',button_color=('white','firebrick'))]]
+                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Ask Me Later',button_color=('white','firebrick'))]]
 
             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
             
@@ -1141,7 +1141,7 @@ def gui_get_workspace_path_from_user():
                     elif values and not values['-DONT_ASK_AGAIN-']:
                         window['-DND-'](visible=False)
                 
-                if event == sg.WIN_CLOSED or event == 'Cancel':
+                if event == sg.WIN_CLOSED or event == 'Ask Me Later':
                     break
                 if event == 'OK':
                     if values and values['-FOLDER-']:
@@ -2762,7 +2762,7 @@ def mouse_get_color_by_position(pos=[]):
     
 def mouse_click(x="", y="", left_or_right="left", single_double_triple="single", copyToClipBoard_Yes_No="no"):
     """
-    Clicks at the given X Y Co-ordinates on the screen using ingle / double / tripple click(s).
+    Clicks at the given X Y Co-ordinates on the screen using single / double / tripple click(s).
     Optionally copies selected data to clipboard (works for double / triple clicks)
     """
     try:
@@ -4935,7 +4935,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 except:
                     browser_mouse_click_h("ClointFusion 0")
 
-                browser_mouse_double_click_h("RPA")
+                browser_mouse_click_h(element="RPA",double_click=True)
                 
                 browser_mouse_click_h("Open in Colab")
                 
@@ -5192,8 +5192,9 @@ else:
             _folder_write_text_file(file_path,str(True))
             pg.alert('Please re-run & select the Workspace Folder')
 
-    elif not base_dir:
-        base_dir = gui_get_workspace_path_from_user()
+    elif not base_dir or base_dir in None:
+        # base_dir = gui_get_workspace_path_from_user()
+        base_dir = temp_current_working_dir
 
     else:
         base_dir = os.path.join(base_dir,"ClointFusion_BOT")
