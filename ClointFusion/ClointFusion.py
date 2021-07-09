@@ -3643,19 +3643,21 @@ def browser_navigate_h(url="",dp=False,dn=True,igc=True,smcp=True,i=False,headle
     
 def browser_write_h(Value="",User_Visible_Text_Element="",alert=False):
     """
-    Write a string on the given element.
+    Write a string in browser, if User_Visible_Text_Element is given it writes on the given element.
     """
     try:
-        if not User_Visible_Text_Element:
-            User_Visible_Text_Element = gui_get_any_input_from_user('visible element (placeholder) to WRITE your value. Ex: Username')
-
         if not Value:
             Value= gui_get_any_input_from_user('Value to be Written')
 
         if not alert:
             if Value and User_Visible_Text_Element:
                 write(Value, into=User_Visible_Text_Element)
+            if Value and not User_Visible_Text_Element:
+                write(Value)
         if alert:
+            if not User_Visible_Text_Element and not Value:
+                User_Visible_Text_Element = gui_get_any_input_from_user('visible element (placeholder) to WRITE your value. Ex: Username')
+            
             if Value and User_Visible_Text_Element:
                 write(Value, into=Alert(User_Visible_Text_Element))
     except Exception as ex:
@@ -3784,10 +3786,16 @@ def browser_hit_enter_h():
         
 def browser_key_press_h(text):
     """
-    Type text using Browser Helium Functions
+    Type text using Browser Helium Functions and press hot keys.
     """
+    
+    hot_keys =["enter", "shift", "tab", "alt", "escape", "esc", "ctrl", "control"]
+    browser_keys = [ENTER, SHIFT, TAB, ALT, ESCAPE, ESCAPE, CONTROL, CONTROL]
     try:
-        press(text)
+        if text.lower() in hot_keys:
+            press(browser_keys[hot_keys.index(text.lower())])
+        else:
+            press(text)
     except Exception as ex:
         print("Error in browser_hit_enter_h="+str(ex))
 
@@ -5138,6 +5146,14 @@ def find(function_partial_name=""):
             print("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
         print("Error in find="+str(ex))
+        
+def time_sleep(seonds="5"):
+    # Stops the program for given seconds
+    try:
+        seconds = int(seconds)
+        time.sleep(seonds)
+    except Exception as ex:
+        print("Error in time_sleep="+str(ex))
 
 # 4. All default services
 
