@@ -136,3 +136,6 @@ from ClointFusion.ClointFusion import excel_apply_format_as_table
 from ClointFusion.ClointFusion import excel_split_on_user_defined_conditions
 from ClointFusion.ClointFusion import logging
 from ClointFusion.ClointFusion import clear_screen
+from ClointFusion.ClointFusion import browser_key_press_h
+from ClointFusion.ClointFusion import browser_attach_file_h
+from ClointFusion.ClointFusion import time_sleep
