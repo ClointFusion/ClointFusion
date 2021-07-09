@@ -75,7 +75,7 @@ You would receive an email with self-test report.
 
     cf.gui_get_any_input_from_user() : Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.
 
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/e8e61825bb8fcc13d6549a1f4c9f8b04a6035fbc/GUI.gif?raw=true" height="400">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/GUI_GIF.gif?raw=true" height="400">
     
 * ## 8 functions on Mouse operations:
 
@@ -109,7 +109,8 @@ You would receive an email with self-test report.
 
     cf.window_close_windows() :  Close the desired window.
 
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/e8e61825bb8fcc13d6549a1f4c9f8b04a6035fbc/Window_Operations.gif?raw=true" height="400">
+    <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/b7377643eb343be31b1f3c1ce8c5c80bec560993/Window_Operations.gif" height="400">
+    
 * ## 5 functions on Window Objects (works only in Windows OS):
 
     cf.win_obj_open_app() : Open any windows application.
@@ -137,6 +138,8 @@ You would receive an email with self-test report.
     cf.folder_get_all_filenames_as_list() : Get all the files of the given folder in a list.
 
     cf.folder_delete_all_files() : Deletes all the files of the given folder
+
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true" height="400">
 
 * ## 21 functions on Excel operations:
 
@@ -228,6 +231,10 @@ You would receive an email with self-test report.
 
     cf.browser_hit_enter_h() : Hits enter KEY using Browser Helium Functions
 
+    cf.browser_key_press_h() : Type text using Browser Helium Functions and press hot keys
+
+    cf.browser_attach_file_h() : Upload the selected file to the respected xpath location
+
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Browser_Functions.gif?raw=true" height="400">
 
 * ## 3 functions on Alert Messages:
@@ -292,6 +299,10 @@ You would receive an email with self-test report.
 
     cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
 
+    cf.time_sleep() : Stops the program for given seconds
+
+    cf.Clear_Screen() : Clears Python Interpreter Terminal Window Screen
+
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
 
 # ClointFusion's function works in different modes:
@@ -309,7 +320,7 @@ You would receive an email with self-test report.
 
 # Outlook Email BOT implemented using ClointFusion
 
-<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Gmail%20and%20Outlook%20BOT.gif?raw=true" height="400">
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Outlook%20BOT.gif?raw=true" height="400">
 
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..

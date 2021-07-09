@@ -256,7 +256,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.14)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.15)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -5129,7 +5129,7 @@ def clointfusion_self_test(last_updated_on_month):
 
 def clear_screen():
     """
-    Clears Terminal Window
+    Clears Python Interpreter Terminal Window Screen
     """
     try:
         print(chr(27) + "[2J")
@@ -5147,11 +5147,13 @@ def find(function_partial_name=""):
     except Exception as ex:
         print("Error in find="+str(ex))
         
-def time_sleep(seonds="5"):
-    # Stops the program for given seconds
+def time_sleep(seconds="5"):
+    """
+    Stops the program for given seconds
+    """
     try:
         seconds = int(seconds)
-        time.sleep(seonds)
+        time.sleep(seconds)
     except Exception as ex:
         print("Error in time_sleep="+str(ex))
 
@@ -5208,7 +5210,7 @@ else:
             _folder_write_text_file(file_path,str(True))
             pg.alert('Please re-run & select the Workspace Folder')
 
-    elif not base_dir or base_dir in None:
+    elif not base_dir:
         # base_dir = gui_get_workspace_path_from_user()
         base_dir = temp_current_working_dir
 

@@ -1,3 +1,8 @@
+23) ClointFusion version 0.1.13 to 0.1.15 released on 09-07-2021 08:30 AM
+    1) GIFs added to ReadMe.MD (Contribution by interns@ClointFusion)
+    2) Minor bug fixes in few functions
+    3) clear_screen, browser_key_press_h, browser_attach_file_h, time_sleep functions contributed
+
 22) ClointFusion version 0.1.12 released on 25-06-2021 11:00 AM
     1) PandasGUI replaced with tabloo PR #21
     2) Code CleanUp
