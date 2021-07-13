@@ -15,13 +15,12 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.15',
+    version='0.1.16',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/ClointFusion/ClointFusion',
     setup_requires=["wheel",'numpy',"setuptools"],
-        
     keywords='ClointFusion,RPA,Python,Automation,BOT,Software BOT,ROBOT',
     license="BSD",
     install_requires=open('requirements.txt').read().split('\n'),
@@ -49,7 +48,7 @@ setup(
   },
 )
 
-# python setup.py build bdist_wheel bdist_wininst bdist_msi rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
+# python setup.py build bdist_wheel rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
 
-# twine upload dist/*
+# twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

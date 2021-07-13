@@ -85,14 +85,9 @@ from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_x_y
 from ClointFusion.ClointFusion import mouse_search_snips_return_coordinates_x_y
 from ClointFusion.ClointFusion import find_text_on_screen
 from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_box
-from ClointFusion.ClointFusion import mouse_find_highlight_click
-from ClointFusion.ClointFusion import browser_get_html_text
 from ClointFusion.ClointFusion import schedule_create_task_windows
 from ClointFusion.ClointFusion import schedule_delete_task_windows
 from ClointFusion.ClointFusion import browser_get_html_tabular_data_from_website
-from ClointFusion.ClointFusion import excel_draw_charts
-from ClointFusion.ClointFusion import get_long_lat
-from ClointFusion.ClointFusion import excel_geotag_using_zipcodes
 from ClointFusion.ClointFusion import launch_website_h
 from ClointFusion.ClointFusion import browser_navigate_h
 from ClointFusion.ClointFusion import browser_write_h
@@ -104,10 +99,7 @@ from ClointFusion.ClointFusion import compute_hash
 from ClointFusion.ClointFusion import browser_refresh_page_h
 from ClointFusion.ClointFusion import browser_quit_h
 from ClointFusion.ClointFusion import dismantle_code
-from ClointFusion.ClointFusion import excel_describe_data
-from ClointFusion.ClointFusion import camera_capture_image
 from ClointFusion.ClointFusion import convert_csv_to_excel
-from ClointFusion.ClointFusion import capture_snip_now
 from ClointFusion.ClointFusion import browser_hit_enter_h
 from ClointFusion.ClointFusion import ON_semi_automatic_mode
 from ClointFusion.ClointFusion import OFF_semi_automatic_mode
@@ -119,7 +111,6 @@ from ClointFusion.ClointFusion import win_obj_key_press
 from ClointFusion.ClointFusion import win_obj_get_text
 from ClointFusion.ClointFusion import excel_to_colored_html
 from ClointFusion.ClointFusion import download_this_file
-from ClointFusion.ClointFusion import email_send_gmail_via_api
 from ClointFusion.ClointFusion import email_send_via_desktop_outlook
 from ClointFusion.ClointFusion import excel_sub_routines
 from ClointFusion.ClointFusion import isNaN

@@ -22,7 +22,6 @@ import time
 import pandas as pd
 import keyboard as kb
 import PySimpleGUI as sg
-import numpy
 import openpyxl as op
 from openpyxl import Workbook
 from openpyxl import load_workbook
@@ -32,17 +31,12 @@ import threading
 from threading import Timer
 import clipboard
 import re
-from matplotlib.pyplot import axis
 from json import (load as jsonload, dump as jsondump)
 from helium import *
 from os import link
 from urllib.request import urlopen 
 from PIL import Image
 import requests
-import watchdog.events
-import watchdog.observers
-from PyQt5 import QtWidgets, QtCore, QtGui
-import tkinter as tk
 from pathlib import Path
 import webbrowser 
 import logging
@@ -256,7 +250,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.15)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.16)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -588,39 +582,44 @@ def message_toast(message,website_url="", file_folder_path=""):
     Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
     """
     
-    if os_name == "windows" and str(enable_semi_automatic_mode).lower() == 'false':
-        from win10toast_click import ToastNotifier 
-        toaster = ToastNotifier()
+    if os_name == "windows":
 
-        if website_url:
+        if str(enable_semi_automatic_mode).lower() == 'false':
+            from win10toast_click import ToastNotifier 
+            toaster = ToastNotifier()
 
-            toaster.show_toast(
-                "ClointFusion", 
-                "{}. Click to open URL".format(message), 
-                icon_path=cf_icon_cdt_file_path,
-                duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
-                threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
-                callback_on_click=lambda: webbrowser.open_new(website_url) # click notification to run function 
+            if website_url:
+
+                toaster.show_toast(
+                    "ClointFusion", 
+                    "{}. Click to open URL".format(message), 
+                    icon_path=cf_icon_cdt_file_path,
+                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+                    callback_on_click=lambda: webbrowser.open_new(website_url) # click notification to run function 
+                )
+
+            elif file_folder_path:
+                toaster.show_toast(
+                    "ClointFusion", 
+                    "{}. Click to open".format(message), 
+                    icon_path=cf_icon_cdt_file_path,
+                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+                    callback_on_click=lambda: os.startfile(file_folder_path) # click notification to run function 
+                )
+
+            else:
+                toaster.show_toast(
+                    "ClointFusion", # title
+                    message, # message 
+                    icon_path=cf_icon_cdt_file_path, # 'icon_path' 
+                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
             )
-
-        elif file_folder_path:
-            toaster.show_toast(
-                "ClointFusion", 
-                "{}. Click to open".format(message), 
-                icon_path=cf_icon_cdt_file_path,
-                duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
-                threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
-                callback_on_click=lambda: os.startfile(file_folder_path) # click notification to run function 
-            )
-
         else:
-            toaster.show_toast(
-                "ClointFusion", # title
-                message, # message 
-                icon_path=cf_icon_cdt_file_path, # 'icon_path' 
-                duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
-                threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
-        )
+            print("This function works when semi-automatic mode is enabled")    
+
     else:
         print("This function works only on Windows OS")
 
@@ -1432,26 +1431,6 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
     except Exception as ex:
         print("Error in excel_if_value_exists="+str(ex))
         
-# WatchDog : Monitors the given folder for creation / modification / deletion 
-class FileMonitor_Handler(watchdog.events.PatternMatchingEventHandler):
-    file_path = ""
-    def __init__(self):
-        watchdog.events.PatternMatchingEventHandler.__init__(self, ignore_patterns = None,
-                                                     ignore_directories = False, case_sensitive = True)
-    
-    def on_created(self, event):
-        file_path = Path(str(event.src_path))
-
-        print("Created : {}".format(file_path))
-             
-    def on_deleted(self, event):
-        file_path = Path(str(event.src_path))
-        print("Deleted : {}".format(file_path))
-
-    def on_modified(self,event):
-        file_path = Path(str(event.src_path))
-        print("Modified : {}".format(file_path))
-
 def create_batch_file(application_exe_pyw_file_path=""):
     """
     Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler.
@@ -1957,51 +1936,6 @@ def string_extract_only_numbers(inputString=""):
     outputStr = ''.join(e for e in inputString if e.isnumeric())
     return outputStr       
 
-@lru_cache(None)
-def call_otsu_threshold(img_title, is_reduce_noise=False):
-    """
-    OpenCV internal function for OCR
-    """
-    try:
-        from cv2 import cv2
-        image = cv2.imread(img_title, 0)
-
-        
-        if is_reduce_noise:
-            image = cv2.GaussianBlur(image, (5, 5), 0)
-
-        
-        _ , image_result = cv2.threshold(
-            image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU,
-        )
-        
-        cv2.imwrite(img_title, image_result)
-        cv2.destroyAllWindows()
-    except Exception as ex:
-        print("Error in call_otsu_threshold="+str(ex))
-
-@lru_cache(None)
-def read_image_cv2(img_path):
-    """
-    Saves the image in cv2 format.
-
-    Parameters:
-        img_path  (str) : location of the image.
-    
-    returns:
-        image (cv2) : image in cv2 format will be returned.
-    """
-    if img_path and os.path.exists(img_path):
-        try:
-            from cv2 import cv2
-            image = cv2.imread(img_path)
-            return image
-        except Exception as ex:
-            print("read_image_cv2 = "+str(ex))
-        
-    else:
-        print("File not found="+str(img_path))
-
 def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
     """
     Gets the row and coloumn count of the provided excel sheet.
@@ -2277,6 +2211,8 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
     """
     Drops the desired column from the given excel file
     """
+    from matplotlib.pyplot import axis
+    
     try:
         if not excel_path:
             excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('input excel to Drop the columns from')
@@ -3043,42 +2979,6 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
     if isSearchToBeCleared:
         screen_clear_search()
 
-def excel_drag_drop_pivot_table(excel_path="",sheet_name='Sheet1', header=0,rows=[],cols=[]):
-    try:
-        from IPython.display import HTML
-        from pivottablejs import pivot_ui
-
-        if not excel_path:
-            excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for Pivot Table Generation')
-            
-        if not rows:
-            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
-            rows = gui_get_dropdownlist_values_from_user('row fields',col_lst,multi_select=True)
-
-        if not cols:
-            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
-            cols = gui_get_dropdownlist_values_from_user('column fields',col_lst,multi_select=True)
-
-        excel_path = Path(excel_path)
-
-        strFileName = excel_path.stem
-        output_file = os.path.join(output_folder_path,strFileName + ".html")
-        output_file = Path(output_file)
-        
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,engine='openpyxl')
-        pivot_ui(df, outfile_path=output_file,rows=rows, cols=cols)
-        
-        HTML(str(output_file))
-        print("Please find the output at {}".format(output_file))
-
-        message_toast("Pivot table is ready", file_folder_path=output_file)
-
-        if enable_semi_automatic_mode == False:
-            show(df)
-
-    except Exception as ex:
-        print("Error in excel_drag_drop_pivot_table="+str(ex))
-
 def mouse_search_snip_return_coordinates_box(img="", conf=0.9, wait=180,region=(0,0,pg.size()[0],pg.size()[1])):
     """
     Searches the given image on the screen and returns the 4 bounds co-ordinates (x,y,w,h)
@@ -3101,64 +3001,6 @@ def mouse_search_snip_return_coordinates_box(img="", conf=0.9, wait=180,region=(
     except Exception as ex:
         print("Error in mouse_search_snip_return_coordinates_box="+str(ex))
 
-def mouse_find_highlight_click(searchText="",delay=0.1,occurance=1,left_right="left",single_double_triple="single",copyToClipBoard_Yes_No="no"):
-    """
-    Searches the given text on the screen, highlights and clicks it.
-    """  
-    try:
-        from cv2 import cv2
-        import imutils
-        from skimage.metrics import structural_similarity
-
-        if not searchText:
-            searchText = gui_get_any_input_from_user("search text to Highlight & Click")
-
-        time.sleep(0.2)
-
-        find_text_on_screen(searchText,delay=delay,occurance=occurance,isSearchToBeCleared = True) #clear the search
-
-        img = pg.screenshot()
-        img.save(str(ss_path_b))
-        time.sleep(0.2)
-        imageA = cv2.imread(str(ss_path_b))
-        time.sleep(0.2)
-
-        find_text_on_screen(searchText,delay=delay,occurance=occurance,isSearchToBeCleared = False) #dont clear the searched text
-
-        img = pg.screenshot()
-        img.save(str(ss_path_a))
-        time.sleep(0.2)
-        imageB = cv2.imread(str(ss_path_a))
-        time.sleep(0.2)
-
-        # convert both images to grayscale
-        grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
-        grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
-
-        # compute the Structural Similarity Index (SSIM) between the two
-        (_, diff) = structural_similarity(grayA, grayB, full=True)
-        diff = (diff * 255).astype("uint8")
-
-        thresh = cv2.threshold(diff, 0, 255,
-            cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-        cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
-            cv2.CHAIN_APPROX_SIMPLE)
-        cnts = imutils.grab_contours(cnts)
-
-        # loop over the contours
-        for c in cnts:
-            (x, y, w, h) = cv2.boundingRect(c)
-            
-            X = int(x + (w/2))
-            Y = int(y + (h/2))
-            
-            mouse_click(x=X,y=Y,left_or_right=left_right,single_double_triple=single_double_triple,copyToClipBoard_Yes_No=copyToClipBoard_Yes_No)
-            time.sleep(0.5)
-            break
-
-    except Exception as ex:
-        print("Error in mouse_find_highlight_click="+str(ex))
-                
 def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_mm_24_hr_frmt="11:00"):#*
     """
     Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create_batch_file() function before using this function to convert .pyw file to .bat
@@ -3273,195 +3115,6 @@ def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,dro
 
     except Exception as ex:
         print("Error in browser_get_html_tabular_data_from_website="+str(ex))
-
-def excel_draw_charts(excel_path="",sheet_name='Sheet1', header=0, x_col="", y_col="", color="", chart_type='bar', title='ClointFusion', show_chart=False):
-
-    """
-    Interactive data visualization function, which accepts excel file, X & Y column. 
-    Chart types accepted are bar , scatter , pie , sun , histogram , box  , strip. 
-    You can pass color column as well, having a boolean value.
-    Image gets saved as .PNG in the same path as excel file.
-
-    Usage: excel_charts(<excel path>,x_col='Name',y_col='Age', chart_type='bar',show_chart=True)
-    """
-    try:
-        from kaleido.scopes.plotly import PlotlyScope
-        import plotly.graph_objects as go
-        import plotly.express as px
-        
-        if not excel_path:
-            excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for data visualization')
-            
-        if not x_col:
-            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
-            x_col = gui_get_dropdownlist_values_from_user('X Axis Column',col_lst,multi_select=False)[0]  
-
-        if not y_col:
-            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
-            y_col = gui_get_dropdownlist_values_from_user('Y Axis Column',col_lst,multi_select=False)[0]  
-
-        if x_col and y_col:
-            if color:
-                df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={x_col,y_col,color},engine='openpyxl')
-            else:
-                df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={x_col,y_col},engine='openpyxl')
-
-            fig = go.Figure()
-
-            if chart_type == 'bar':
-
-                fig.add_trace(go.Bar(x=df[x_col].values.tolist()))
-                fig.add_trace(go.Bar(y=df[y_col].values.tolist()))
-
-                if color:
-                    fig = px.bar(df, x=x_col, y=y_col, barmode="group",color=color)
-                else:
-                    fig = px.bar(df, x=x_col, y=y_col, barmode="group")
-                    
-            elif chart_type == 'scatter':
-
-                fig.add_trace(go.Scatter(x=df[x_col].values.tolist()))
-                fig.add_trace(go.Scatter(y=df[x_col].values.tolist()))
-
-            elif chart_type =='pie':
-
-                if color:
-                    fig = px.pie(df, names=x_col, values=y_col, title=title,color=color)#,hover_data=df.columns)
-                else:
-                    fig = px.pie(df, names=x_col, values=y_col, title=title)#,hover_data=df.columns)
-
-            elif chart_type =='sun':
-
-                if color:
-                    fig = px.sunburst(df, path=[x_col], values=y_col,hover_data=df.columns,color=color)
-                else:
-                    fig = px.sunburst(df, path=[x_col], values=y_col,hover_data=df.columns)
-
-            elif chart_type == 'histogram':
-
-                if color:
-                    fig = px.histogram(df, x=x_col, y=y_col, marginal="rug",color=color, hover_data=df.columns)
-                else:
-                    fig = px.histogram(df, x=x_col, y=y_col, marginal="rug",hover_data=df.columns)
-
-            elif chart_type == 'box':
-
-                if color:
-                    fig = px.box(df, x=x_col, y=y_col, notched=True,color=color)
-                else:
-                    fig = px.box(df, x=x_col, y=y_col, notched=True)
-
-            elif chart_type == 'strip':
-
-                if color:
-                    fig = px.strip(df, x=x_col, y=y_col, orientation="h",color=color)
-                else:
-                    fig = px.strip(df, x=x_col, y=y_col, orientation="h")
-
-            fig.update_layout(title = title)
-            
-            if show_chart:
-                fig.show()
-            
-            strFileName = _extract_filename_from_filepath(excel_path)
-            strFileName = os.path.join(output_folder_path,strFileName + ".PNG")
-            strFileName = Path(strFileName)
-            
-            scope = PlotlyScope()
-            with open(strFileName, "wb") as f:
-                f.write(scope.transform(fig, format="png"))
-            print("Chart saved at " + str(strFileName))
-
-            message_toast("{} chart is ready".format(chart_type), file_folder_path=strFileName)
-
-        else:
-            print("Please supply all the required values")
-
-    except Exception as ex:
-        print("Error in excel_draw_charts=" + str(ex))
-
-def get_long_lat(strZipCode=0):
-    """
-    Function takes zip_code as input (int) and returns longitude, latitude, state, city, county. 
-    """
-    try:
-        import zipcodes
-
-        if not strZipCode:
-            strZipCode = str(gui_get_any_input_from_user("USA Zip Code ex: 77429"))
-
-        all_data_dict=zipcodes.matching(str(strZipCode))
-
-        all_data_dict = all_data_dict[0]
-
-        long = all_data_dict['long']
-        lat = all_data_dict['lat']
-        state = all_data_dict['state']
-        city = all_data_dict['city']
-        county = all_data_dict['county']
-        return long, lat, state, city, county    
-    except Exception as ex:
-        print("Error in get_long_lat="+str(ex))
-
-def excel_geotag_using_zipcodes(excel_path="",sheet_name='Sheet1',header=0,zoom_start=5,zip_code_column="",data_columns_as_list=[],color_boolean_column=""):
-    """
-    Function takes Excel file having ZipCode column as input. Takes one data column at present. 
-    Creates .html file having geo-tagged markers/baloons on the page.
-
-    Ex: excel_geotag_using_zipcodes()
-    """
-
-    try:
-        import folium
-
-        if not excel_path:
-            excel_path, sheet_name, header = gui_get_excel_sheet_header_from_user('for geo tagging (Note: As of now, works only for USA Zip codes)')
-
-        if not zip_code_column:
-            col_lst = excel_get_all_header_columns(excel_path, sheet_name, header)
-            zip_code_column = gui_get_dropdownlist_values_from_user('having Zip Codes',col_lst,multi_select=False)[0]
-
-        m = folium.Map(location=[40.178877,-100.914253 ], zoom_start=zoom_start)
-
-        if len(data_columns_as_list) == 1:
-            data_columns_as_str = str(data_columns_as_list).replace("[","").replace("]","").replace("'","")
-        else:
-            data_columns_as_str = str(data_columns_as_list).replace("[","").replace("]","")
-            data_columns_as_str = data_columns_as_str[1:-1]
-            
-        use_cols = data_columns_as_list
-        use_cols.append(zip_code_column)
-
-        if color_boolean_column:
-            use_cols.append(color_boolean_column)
-
-        df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols=use_cols,engine='openpyxl')
-        
-        for _, row in df.iterrows():
-            if not pd.isna(row[zip_code_column]) and str(row[zip_code_column]).isnumeric():
-                
-                long, lat, state, city, county = get_long_lat(str(row[zip_code_column]))
-                county = str(county).replace("County","")
-                
-                if color_boolean_column and data_columns_as_str and row[color_boolean_column] == True:
-                    folium.Marker(location=[lat, long], popup='State: ' + state + ',\nCity:' + city + ',\nCounty:' + county + ',\nDevice:' + row[data_columns_as_str], icon=folium.Icon(color='green', icon='info-sign')).add_to(m)
-                elif data_columns_as_str:
-                    folium.Marker(location=[lat, long], popup='State: ' + state + ',\nCity:' + city + ',\nCounty:' + county + ',\nDevice:' + row[data_columns_as_str], icon=folium.Icon(color='red', icon='info-sign')).add_to(m)
-                else:
-                    folium.Marker(location=[lat, long], popup='State: ' + state + ',\nCity:' + city + ',\nCounty:' + county, icon=folium.Icon(color='blue', icon='info-sign')).add_to(m)
-
-        graphFileName = _extract_filename_from_filepath(excel_path)
-        graphFileName = os.path.join(output_folder_path,graphFileName + ".html")
-        graphFileName = Path(graphFileName)
-
-        print("GeoTagged Graph saved at "+ graphFileName)
-
-        m.save(graphFileName)
-
-        message_toast("GeoTagged graph is ready", file_folder_path=graphFileName)
-    
-    except Exception as ex:
-        print("Error in excel_geotag_using_zipcodes="+str(ex))
     
 def _accept_cookies_h():
     """
@@ -3913,24 +3566,6 @@ def compute_hash(inputData=""):
     except Exception as ex:
         print("Error in compute_hash="+str(ex))
 
-def browser_get_html_text(url=""):
-    """
-    Function to get HTML text without tags using Beautiful soup
-    """
-    try:
-        from bs4 import BeautifulSoup
-
-        if not url:
-            url = gui_get_any_input_from_user("website URL to get HTML Text (without tags). Ex: https://www.clointfusion.com")
-
-        html_text = requests.get(url) 
-        soup = BeautifulSoup(html_text.content, 'lxml')
-        text = str(soup.text).strip()
-        text = ' '.join(text.split())
-        return text
-    except Exception as ex:
-        print("Error in browser_get_html_text="+str(ex))
-
 def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
     """
     Describe statistical data for the given excel
@@ -3957,80 +3592,6 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
 
     except Exception as ex:
         print("Error in excel_describe_data="+str(ex))
-
-def camera_capture_image(user_name=""):
-    try:
-        from cv2 import cv2
-        user_consent = gui_get_consent_from_user("turn ON camera & take photo ?")
-
-        if user_consent == 'Yes':
-            SECONDS = 5
-            TIMER = int(SECONDS) 
-            window_name = "ClointFusion"
-            cap = cv2.VideoCapture(0) 
-
-            if not cap.isOpened():
-                print("Error in opening camera")
-
-            cv2.namedWindow(window_name, cv2.WND_PROP_FULLSCREEN)
-            cv2.setWindowProperty(window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-            font = cv2.FONT_HERSHEY_SIMPLEX 
-
-            if not user_name:
-                user_name = gui_get_any_input_from_user("your name")
-
-            while True: 
-
-                _, img = cap.read() 
-                cv2.imshow(window_name, img) 
-                prev = time.time() 
-
-                text = "Taking selfie in 5 second(s)".format(str(TIMER))
-                textsize = cv2.getTextSize(text, font, 1, 2)[0]
-                print(str(textsize))
-
-                textX = int((img.shape[1] - textsize[0]) / 2)
-                textY = int((img.shape[0] + textsize[1]) / 2)
-
-                while TIMER >= 0: 
-                    _, img = cap.read() 
-
-                    cv2.putText(img, "Saving image in {} second(s)".format(str(TIMER)),  
-                                (textX, textY ), font, 
-                                1, (255, 0, 255), 
-                                2) 
-                    cv2.imshow(window_name, img) 
-                    cv2.waitKey(125) 
-
-                    cur = time.time() 
-
-                    if cur-prev >= 1: 
-                        prev = cur 
-                        TIMER = TIMER-1
-
-                ret, img = cap.read() 
-                cv2.imshow(window_name, img) 
-                cv2.waitKey(1000) 
-                file_path = os.path.join(output_folder_path,user_name + ".PNG")
-                file_path = Path(file_path)
-
-                cv2.imwrite(file_path, img) 
-                print("Image saved at {}".format(file_path))
-
-                cap.release() 
-                cv2.destroyAllWindows()
-
-                message_toast("Captured image saved", file_folder_path=file_path)
-
-                break
-
-        else:
-            print("Operation cancelled by user")
-
-    except Exception as ex:
-        print("Error in camera_capture_image="+str(ex))   
-
-          
 
 def convert_csv_to_excel(csv_path="",sep=""):
     """
@@ -4063,84 +3624,7 @@ def convert_csv_to_excel(csv_path="",sep=""):
 
     except Exception as ex:
         print("Error in convert_csv_to_excel="+str(ex))
-
-# Class related to capture_snip_now
-class CaptureSnip(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
-        root = tk.Tk()
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
-        self.setGeometry(0, 0, screen_width, screen_height)
-        self.setWindowTitle(' ')
-        self.begin = QtCore.QPoint()
-        self.end = QtCore.QPoint()
-        self.setWindowOpacity(0.3)
-        QtWidgets.QApplication.setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.CrossCursor)
-        )
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        print('Capture now...')
-        self.show()
-
-    def paintEvent(self, event):
-        qp = QtGui.QPainter(self)
-        qp.setPen(QtGui.QPen(QtGui.QColor('black'), 3))
-        qp.setBrush(QtGui.QColor(128, 128, 255, 128))
-        qp.drawRect(QtCore.QRect(self.begin, self.end))
-
-    def mousePressEvent(self, event):
-        self.begin = event.pos()
-        self.end = self.begin
-        self.update()
-
-    def mouseMoveEvent(self, event):
-        self.end = event.pos()
-        self.update()
-
-    def mouseReleaseEvent(self, event):
-        from PIL import ImageGrab
-        self.close()
-
-        x1 = min(self.begin.x(), self.end.x())
-        y1 = min(self.begin.y(), self.end.y())
-        x2 = max(self.begin.x(), self.end.x())
-        y2 = max(self.begin.y(), self.end.y())
-
-        img = ImageGrab.grab(bbox=(x1, y1, x2, y2))
-        file_num = str(len(os.listdir(img_folder_path)))
-        file_name = os.path.join(img_folder_path,file_num + "_snip.PNG" )
-        file_name = Path(file_name)
-
-        print("Snip saved at " + str(file_name))
-        img.save(file_name)
         
-def capture_snip_now():
-    """
-    Captures the snip and stores in Image Folder of the BOT by giving continous numbering
-
-    Ex: capture_snip_now()
-    """
-    app = ""
-    try:
-        if os_name == 'windows':
-            from PIL import ImageGrab
-            if message_counter_down_timer("Capturing snip in (seconds)",3):
-                app = QtWidgets.QApplication(sys.argv)
-                window = CaptureSnip()
-                window.activateWindow()
-                app.aboutToQuit.connect(app.deleteLater)
-                sys.exit(app.exec_())
-        else:
-            print("This function is available on Windows Only")
-            
-    except Exception as ex:
-        print("Error in capture_snip_now="+str(ex))        
-        try:
-            sys.exit(app.exec_())
-        except:
-            pass
-
 #Windows Objects Functions
     
 def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend='uia'):  
@@ -4313,47 +3797,6 @@ def ON_semi_automatic_mode():
         print("Semi Automatic Mode is ENABLED "+ show_emoji())
     except Exception as ex:
         print("Error in ON_semi_automatic_mode="+str(ex))
-
-def email_send_gmail_via_api(secret_key_path='',api_key_linked_gmail_address="", toAddress="",ccAddress="",subject="",htmlBody="",attachmentFilePath=""):
-    """
-    Sends gmail using API. User needs to supply his client_secret.json as parameter
-    """
-    try:
-        from simplegmail import Gmail
-
-        if secret_key_path:
-            gmail = Gmail(secret_key_path)
-
-            if api_key_linked_gmail_address and toAddress and subject and htmlBody and attachmentFilePath:
-                params = {
-            "to": toAddress,
-            "sender": api_key_linked_gmail_address,
-            "cc" : [ccAddress],
-            "subject": subject,
-            "msg_html": htmlBody,
-            "attachments": [str(attachmentFilePath)],
-            "signature": True
-        }
-                message = gmail.send_message(**params)
-                print(message)
-
-            elif api_key_linked_gmail_address and toAddress and subject and htmlBody:
-                params = {
-            "to": toAddress,
-            "cc" : [ccAddress],
-            "sender": api_key_linked_gmail_address,
-            "subject": subject,
-            "msg_html": htmlBody,
-            "signature": True
-        }
-                message = gmail.send_message(**params)
-                print(message)
-              
-        else:
-            print("Please create Secret Keys as per the steps mentioned here: https://github.com/jeremyephron/simplegmail")
-
-    except Exception as ex:
-        print("Error in email_send_gmail_via_api="+str(ex))            
 
 def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody="",embedImgPath="",attachmentFilePath=""):
     """
@@ -5010,13 +4453,8 @@ def clointfusion_self_test(last_updated_on_month):
     try:
         from pif import get_public_ip
         
-        google_sso_base64 = b'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'
-
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
-                # [sg.T("Please enter your name",text_color='white'),sg.In(key='-NAME-',text_color='orange')],
-                # [sg.T("Please enter your email",text_color='white'),sg.In(key='-EMAIL-',text_color='orange')],
-                [sg.Button('', image_data=google_sso_base64, button_color=(sg.theme_background_color(),sg.theme_background_color()),border_width=0, key='SSO', tooltip='Sign-In with Gmail ID')],
-                # [sg.T("I am",text_color='white'),sg.Combo(values=['Student','Hobbyist','Professor','Professional','Others'], size=(20, 20), key='-ROLE-',text_color='orange')],
+                [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
                 [sg.Text("We will be collecting OS name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
@@ -5033,7 +4471,6 @@ def clointfusion_self_test(last_updated_on_month):
             event, _ = window.read()
 
             if event == 'SSO':
-                # os_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                 webbrowser.open_new("https://api.clointfusion.com/cf/google/login_process?uuid={}".format(str(uuid)))
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
