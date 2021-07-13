@@ -103,7 +103,6 @@ from ClointFusion.ClointFusion import convert_csv_to_excel
 from ClointFusion.ClointFusion import browser_hit_enter_h
 from ClointFusion.ClointFusion import ON_semi_automatic_mode
 from ClointFusion.ClointFusion import OFF_semi_automatic_mode
-from ClointFusion.ClointFusion import excel_drag_drop_pivot_table
 from ClointFusion.ClointFusion import win_obj_open_app
 from ClointFusion.ClointFusion import win_obj_get_all_objects
 from ClointFusion.ClointFusion import win_obj_mouse_click

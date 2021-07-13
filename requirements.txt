@@ -4,16 +4,15 @@ PyAutoGUI >= 0.9.52
 PySimpleGUI >= 4.33.0
 clipboard >= 0.0.4
 emoji >= 0.6.0
-helium >= 3.0.6
+helium >= 3.0.7
 keyboard >= 0.13.5
 matplotlib >= 3.3.2
 numpy >= 1.19.2
 openpyxl >= 3.0.5
 pandas == 1.2.5
 requests >= 2.24.0
-selenium >= 3.141.0
+selenium==3.141.0
 pathlib >= 1.0.1
-pivottablejs >= 0.9.0
 cryptocode >= 0.1
 ImageHash >= 4.2.0
 xlsx2html >= 0.2.2 
@@ -29,3 +28,6 @@ xls2xlsx >= 0.1.4
 xlwt >= 1.2.0
 json5 >= 0.9.5
 chromedriver-py == 91.0.4472.19
+Flask>=2.0.1
+trio>=0.11
+wsproto>=0.14
