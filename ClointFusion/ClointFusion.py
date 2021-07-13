@@ -3673,7 +3673,7 @@ def browser_mouse_click_h(User_Visible_Text_Element="",element="",below='',to_ri
         if not double_click and not right_click:
             if not User_Visible_Text_Element and element:
                 click(element)
-            if User_Visible_Text_Element and element.lower()=="d":      #default
+            if User_Visible_Text_Element:      #default
                 click(User_Visible_Text_Element)
             elif User_Visible_Text_Element and element.lower()=="l":    #link
                 click(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
@@ -3690,7 +3690,7 @@ def browser_mouse_click_h(User_Visible_Text_Element="",element="",below='',to_ri
         if double_click and not right_click:
             if not User_Visible_Text_Element and element:
                 doubleclick(element)
-            if User_Visible_Text_Element and element.lower()=="d":      #default
+            if User_Visible_Text_Element:      #default
                 doubleclick(User_Visible_Text_Element)
             elif User_Visible_Text_Element and element.lower()=="l":    #link
                 doubleclick(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
@@ -3707,7 +3707,7 @@ def browser_mouse_click_h(User_Visible_Text_Element="",element="",below='',to_ri
         if right_click:
             if not User_Visible_Text_Element and element:
                 rightclick(element)
-            if User_Visible_Text_Element and element.lower()=="d":      #default
+            if User_Visible_Text_Element:      #default
                 rightclick(User_Visible_Text_Element)
             elif User_Visible_Text_Element and element.lower()=="l":    #link
                 rightclick(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
