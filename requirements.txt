@@ -28,4 +28,4 @@ tabloo >= 0.0.15
 xls2xlsx >= 0.1.4
 xlwt >= 1.2.0
 json5 >= 0.9.5
-chromedriver-py
+chromedriver-py == 91.0.4472.19
