@@ -31,3 +31,4 @@ chromedriver-py == 91.0.4472.19
 Flask>=2.0.1
 trio>=0.11
 wsproto>=0.14
+beautifulsoup4>=4.9.3

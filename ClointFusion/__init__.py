@@ -87,8 +87,7 @@ from ClointFusion.ClointFusion import find_text_on_screen
 from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_box
 from ClointFusion.ClointFusion import schedule_create_task_windows
 from ClointFusion.ClointFusion import schedule_delete_task_windows
-from ClointFusion.ClointFusion import browser_get_html_tabular_data_from_website
-from ClointFusion.ClointFusion import launch_website_h
+from ClointFusion.ClointFusion import browser_activate
 from ClointFusion.ClointFusion import browser_navigate_h
 from ClointFusion.ClointFusion import browser_write_h
 from ClointFusion.ClointFusion import browser_mouse_click_h
