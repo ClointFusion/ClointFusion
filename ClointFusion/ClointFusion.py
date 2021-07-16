@@ -32,11 +32,12 @@ from threading import Timer
 import clipboard
 import re
 from json import (load as jsonload, dump as jsondump)
-from helium import *
+import helium as browser
 from os import link
 from urllib.request import urlopen 
 from PIL import Image
 import requests
+from bs4 import BeautifulSoup
 from pathlib import Path
 import webbrowser 
 import logging
@@ -3036,159 +3037,79 @@ def schedule_delete_task_windows():
     except Exception as ex:
         print("Error in schedule_delete_task="+str(ex))
 
-@lru_cache(None)
-def _get_tabular_data_from_website(Website_URL):
-    """
-    internal function
-    """
-    all_tables = ""
-    try:
-        all_tables = pd.read_html(Website_URL)
-        return all_tables
-    except Exception as ex:
-        print("Error in _get_tabular_data_from_website="+str(ex))
-    finally:
-        return all_tables
-
-def browser_get_html_tabular_data_from_website(Website_URL="",table_index=-1,drop_first_row=False,drop_first_few_rows=[0],drop_last_row=False):
-    """
-    Web Scrape HTML Tables : Gets Website Table Data Easily as an Excel using Pandas. Just pass the URL of Website having HTML Tables.
-    If there are 5 tables on that HTML page and you want 4th table, pass table_index as 3
-
-    Ex: browser_get_html_tabular_data_from_website(Website_URL=URL)
-    """
-    try:
-        if not Website_URL:            
-            Website_URL= gui_get_any_input_from_user("website URL to get HTML Tabular Data ex: https://www.google.com ")
-
-        all_tables = _get_tabular_data_from_website(Website_URL)
-        
-        if all_tables:
-            
-            # if no table_index is specified, then get all tables in output
-            if table_index == -1:
-                try:
-                    strFileName = Website_URL[Website_URL.rindex("\\")+1:] + "_All_Tables" +  ".xlsx"
-                except:
-                    strFileName = Website_URL[Website_URL.rindex("/")+1:] + "_All_Tables" +  ".xlsx"
-
-                excel_create_excel_file_in_given_folder(output_folder_path,strFileName)
-            else:
-                try:
-                    strFileName = Website_URL[Website_URL.rindex("\\")+1:] + "_" + str(table_index) +  ".xlsx"
-                except:
-                    strFileName = Website_URL[Website_URL.rindex("/")+1:] + "_" + str(table_index) +  ".xlsx"
-
-            strFileName = os.path.join(output_folder_path,strFileName)
-            strFileName = Path(strFileName)
-            
-            if table_index == -1:
-                for i in range(len(all_tables)):
-                    table = all_tables[i] #lool thru table_index values
-
-                    table = table.reset_index(drop=True) #Avoid multi index error in our dataframes
-                    # pylint: disable=abstract-class-instantiated
-                    with pd.ExcelWriter(strFileName) as writer: 
-                        table.to_excel(writer, sheet_name=str(i)) #index=False
-            else:
-                table = all_tables[table_index] #get required table_index
-                
-                if drop_first_row:
-                    table = table.drop(drop_first_few_rows) # Drop first few rows (passed as list)
-
-                if drop_last_row:
-                    table = table.drop(len(table)-1) # Drop last row
-
-            # table.columns = list(table.iloc[0])
-            # table = table.drop(len(drop_first_few_rows)) 
-
-                table = table.reset_index(drop=True) 
-
-                table.to_excel(strFileName, index=False)
-
-            print("Table saved as Excel at {} ".format(strFileName))
-
-            message_toast("HTML table saved as excel", file_folder_path=strFileName)
-
-        else:
-            print("No tables found in given website " + str(Website_URL))
-
-    except Exception as ex:
-        print("Error in browser_get_html_tabular_data_from_website="+str(ex))
+@lru_cache(None)    
     
-def _accept_cookies_h():
+def get_chrome_driver_version(chrome_version:str):
+    """Give the required chrome driver version based on the input of chrome version.
+    This is used by browser_activate function when it fails to create a session.
+
+    Args:
+        chrome_version (str): Version of chrome to search the compatible driver version
+
+    Returns:
+        (str): Version of chrome driver thats needs to be installed.
     """
-    Internal function to accept cookies.
-    """
-    try:
-        if Text('Accept cookies?').exists():
-            click('I accept')
-    except Exception as ex:
-        print("Error in _accept_cookies_h="+str(ex))
-    
-def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, smcp=True, i=False, headless=False,
-                     files_download_path='', remote=False, port=9223):
-    """
-    Internal function to launch browser.
+    driver_versions_page = "https://pypi.org/rss/project/chromedriver-py/releases.xml"
+    version_list = BeautifulSoup(requests.get(driver_versions_page).content, "html.parser").find_all("title")[1:]
+    got_compatible_version = False
+    latest_version = version_list[0].text.strip()
+    for version in version_list:
+        version = version.text.strip()
+        if  chrome_version in version:
+            got_compatible_version = True
+            return version
+    if not got_compatible_version:
+        return latest_version    
+
+def browser_activate(url="", files_download_path='', dummy_browser=True, open_in_background=False, incognito=False,
+                     clear_previous_instances=False, profile="Default"):
+    """Function to launch browser and start the session.
+
+    Args:
+        url (str, optional): Website you want to visit. Defaults to "".
+        files_download_path (str, optional): Path to which the files need to be downloaded. Defaults to ''.
+        dummy_browser (bool, optional): If it is false Default profile is opened. Defaults to True.
+        incognito (bool, optional): Opens the browser in incognito mode. Defaults to False.
+        clear_previous_instances (bool, optional): If true all the opened chrome instances are closed. Defaults to False.
+        profile (str, optional): By default it opens the 'Default' profile. Eg : Profile 1, Profile 2
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
     status = False
-    global browser_driver
-    if remote and dummy_browser:
-        print("Disable either remote or dummy_browser")
-        exit(0)
+    global browser_driver, helium_service_launched
+
     try:
         # To clear previous instances of chrome
-        try:
-            subprocess.call('TASKKILL /IM chrome.exe',stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        except:
-            exit(0)
+        if clear_previous_instances:
+            if os_name == 'windows':
+                try:
+                    subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+                except Exception as ex:
+                    print(f"Error while closing previous chrome instances. {ex}")
+            if os_name == 'darwin':
+                try:
+                    subprocess.call('pkill "Google Chrome"', shell=True)
+                except Exception as ex:
+                    print(f"Error while closing previous chrome instances. {ex}")
+            if os_name == 'linux':
+                try:
+                    subprocess.call('killall chrome', shell=True)
+                except Exception as ex:
+                    print(f"Error while closing previous chrome instances. {ex}")
 
-        if not URL:
-            URL = gui_get_any_input_from_user(
-                "website URL to Launch Website using Helium functions. Ex https://www.google.com")
-
-        global helium_service_launched
-        helium_service_launched = True
         options = Options()
-        if dp:
-            options.add_argument("--disable-popup-blocking")
-        if dn:
-            options.add_argument("--disable-notifications")
-        if igc:
-            options.add_argument("--ignore-certificate-errors")
-        if smcp:
-            options.add_argument("--suppress-message-center-popups")
-        if i:
+        options.add_argument("--start-maximized")
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        if incognito:
             options.add_argument("--incognito")
-        if headless:
-            options.add_argument("--headless")
-
-        
-
         if not dummy_browser:
-            options.add_argument(
-                "user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-
-        if remote and not dummy_browser:
-            # (only available in chrome)
-            # Why remote,
-            # when helium is launched it store the chrome instance in program memory(memory reserved for program),
-            # when the task is heavy chrome doesn't respond momentarily because of overload.
-            # When the remote is used
-            # it creates chrome instance in system memory,
-            # so it can perform long operations without overload.
-            # this functions emulates a remote desktop
-            chrome_path = [r"C:\Program Files\Google\Chrome\Application",
-                           r"C:\Program Files (x86)\Google\Chrome\Application"]
-            for path in chrome_path:
-                if os.path.exists(path):
-                    print(path)
-                    chrome_path = path
-                    os.chdir(chrome_path)
-                    options.add_experimental_option(
-                        "debuggerAddress", f"127.0.0.1:{port}")
-
-            #  Set the download path
+            if os_name == 'windows':
+                options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+            if os_name == 'darwin':
+                options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
+            options.add_argument(f"profile-directory={profile}")
+        #  Set the download path
         if files_download_path != '':
             prefs = {
                 'download.default_directory': files_download_path,
@@ -3197,343 +3118,288 @@ def launch_website_h(URL="", dummy_browser=True, dp=False, dn=True, igc=True, sm
                 "safebrowsing.enabled": False
             }
             options.add_experimental_option('prefs', prefs)
-            
-        if not remote:
-            options.add_argument("--disable-translate")
-            options.add_argument("--ignore-autocomplete-off-autofill")
-            options.add_argument("--no-first-run")
-            options.add_experimental_option('excludeSwitches', ['enable-logging']) #PR-20 handled
-        options.add_argument("--start-maximized")
-        # options.add_argument("--window-size=1920,1080")
 
         try:
-            if remote and not dummy_browser:
-                subprocess.Popen(
-                    f'chrome.exe --remote-debugging-port={port}', shell=True)
-                browser_driver = webdriver.Chrome(binary_path, options=options)
-                set_driver(browser_driver)
-            if not remote:
-                browser_driver = webdriver.Chrome(binary_path, options=options)
-                set_driver(browser_driver)
-                _accept_cookies_h()
-            
-            go_to(URL)
+            browser_driver = webdriver.Chrome(binary_path, options=options)
+            browser.set_driver(browser_driver)
+            if url:
+                browser.go_to(url.lower())
+            if not url:
+                browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             status = True
+            browser.Config.implicit_wait_secs = 120
+            helium_service_launched = True
         except SessionNotCreatedException as ex:
             try:
-                chrome_driver_version_list = ["90.0.4430.24", "91.0.4472.19", "92.0.4515.43"]
-                version = str(ex).split()[17].split(".")[0]
-                for i in chrome_driver_version_list:
-                    if version in i:
-                        version = i
-                        break
-                subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={version}'])
-
-                if remote and not dummy_browser:
-                    subprocess.Popen(
-                        f'chrome.exe --remote-debugging-port={port}', shell=True)
-                    browser_driver = webdriver.Chrome(binary_path, options=options)
-                    set_driver(browser_driver)
-                if not remote:
-                    browser_driver = webdriver.Chrome(binary_path, options=options)
-                    set_driver(browser_driver)
-                    _accept_cookies_h()
-                go_to(URL)
-                status = True
+                chrome_version = str(ex).split()[17].split(".")[0]
+                driver_version = get_chrome_driver_version(chrome_version)
+                if os_name == "windows":
+                    subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={driver_version}'])
+                if os_name == "darwin":
+                    subprocess.run(f"sudo pip install chromedriver-py=={driver_version}", shell=True)
+                if os_name == "linux":
+                    subprocess.run(f"pip install chromedriver-py=={driver_version}", shell=True)
             except Exception as ex:
-                print("Error in launch_website_h {}".format(ex))
-        except:
+                print("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
             try:
-                browser_driver = start_firefox(url=URL)  # to be tested
-                browser_driver.maximize_window()
+                browser_driver = webdriver.Chrome(binary_path, options=options)
+                browser.set_driver(browser_driver)
+                if url:
+                    browser.go_to(url)
+                if not url:
+                    browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
                 status = True
+                browser.Config.implicit_wait_secs = 120
+                helium_service_launched = True
             except Exception as ex:
-                print("Cannot continue. Helium package's Compatible Chrome or Firefox is missing " + str(ex))
-
-        Config.implicit_wait_secs = 120
-
+                print(f"Error while browser_re-activation: {str(ex)}")
+        except Exception as ex:
+            print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
         print("Error in launch_website_h = " + str(ex))
-        kill_browser()
-        helium_service_launched = False
-
+        browser.kill_browser()
     finally:
         return status
 
-def browser_get_title_h():
-    """
-    Returns the Browser Window Title
-    """
-    try:
-        if helium_service_launched:
-            if browser_driver is not None:
-                return browser_driver.title
-            
-            else:
-                raise Exception("Browser isn't initialized. Call browser_launch_h() to initialize the browser")
-        else:
-            raise Exception('No Helium Service Launched.')
-    
-    except Exception as ex:
-        print(f'Error in browser_get_title_h() = {ex}')
+def browser_navigate_h(url=""):
+    """Navigate through the url after the session is started.
 
-def browser_navigate_h(url="",dp=False,dn=True,igc=True,smcp=True,i=False,headless=False):
+    Args:
+        url (str, optional): Url which you want to visit. Defaults to "".
+
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    status = False
     try:
-        """
-        Navigates to Specified URL.
-        """
         if not url:
-            url = gui_get_any_input_from_user("website URL to Navigate using Helium functions. Ex: https://www.google.com")
-
+            url = gui_get_any_input_from_user("Website URL to Navigate using Helium functions. Ex: https://www.google.com")
         global helium_service_launched
         if not helium_service_launched:
-            launch_website_h(URL=url,dummy_browser=True,dp=dp,dn=dn,igc=igc,smcp=smcp,i=i,headless=headless)
-            return
-        go_to(url.lower())
+            status = browser_activate(url=url.lower())
+        browser.go_to(url.lower())
+        status = True
     except Exception as ex:
-        print("Error in browser_navigate_h = "+str(ex))
-        helium_service_launched = False
-    
-def browser_write_h(Value="",User_Visible_Text_Element="",alert=False):
+        print("Error in browser_navigate_h = " + str(ex))
+    finally:
+        return status
+
+def browser_write_h(Value="", User_Visible_Text_Element=""):
+    """Write a string in browser, if User_Visible_Text_Element is given it writes on the given element.
+
+    Args:
+        Value (str, optional): String which has be written. Defaults to "".
+        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). Defaults to "".
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
-    Write a string in browser, if User_Visible_Text_Element is given it writes on the given element.
-    """
+    status = False
     try:
         if not Value:
-            Value= gui_get_any_input_from_user('Value to be Written')
-
-        if not alert:
-            if Value and User_Visible_Text_Element:
-                write(Value, into=User_Visible_Text_Element)
-            if Value and not User_Visible_Text_Element:
-                write(Value)
-        if alert:
-            if not User_Visible_Text_Element and not Value:
-                User_Visible_Text_Element = gui_get_any_input_from_user('visible element (placeholder) to WRITE your value. Ex: Username')
-            
-            if Value and User_Visible_Text_Element:
-                write(Value, into=Alert(User_Visible_Text_Element))
+            Value = gui_get_any_input_from_user('Value to be Written')
+        if Value and User_Visible_Text_Element:
+            browser.write(Value, into=User_Visible_Text_Element)
+            status = True
+        if Value and not User_Visible_Text_Element:
+            browser.write(Value)
+            status = True
     except Exception as ex:
-        print("Error in browser_write_h = "+str(ex))
-    
-def browser_mouse_click_h(User_Visible_Text_Element="",element="",below='',to_right_of='',above='',to_left_of='', double_click=False, right_click=False):
+        print("Error in browser_write_h = " + str(ex))
+    finally:
+        return status
+
+def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click=False, right_click=False):
+    """Click on the given element.
+
+    Args:
+        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). Defaults to "".
+        element (str, optional): Use locate_element to get element and use to click. Defaults to "".
+        double_click (bool, optional): True to perform a Double click. Defaults to False.
+        right_click (bool, optional): True to perform a Right click. Defaults to False.
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
-    click on the given element.
-    """
+    status = False
     try:
         if not User_Visible_Text_Element and not element:
-            User_Visible_Text_Element = gui_get_any_input_from_user("visible text element (button/link/checkbox/radio etc) to Click")
+            User_Visible_Text_Element = gui_get_any_input_from_user("Give visible text element (button/link/checkbox/radio etc) to Click")
         if not double_click and not right_click:
+            if User_Visible_Text_Element and not element:
+                browser.click(User_Visible_Text_Element)
             if not User_Visible_Text_Element and element:
-                click(element)
-            if User_Visible_Text_Element:      #default
-                click(User_Visible_Text_Element)
-            elif User_Visible_Text_Element and element.lower()=="l":    #link
-                click(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="b":    #button
-                click(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="t":    #textfield
-                click(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
-                click(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
-                click(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
-                click(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+                browser.click(element)
+                status = True
         if double_click and not right_click:
+            if User_Visible_Text_Element and not element:
+                browser.doubleclick(User_Visible_Text_Element)
             if not User_Visible_Text_Element and element:
-                doubleclick(element)
-            if User_Visible_Text_Element:      #default
-                doubleclick(User_Visible_Text_Element)
-            elif User_Visible_Text_Element and element.lower()=="l":    #link
-                doubleclick(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="b":    #button
-                doubleclick(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="t":    #textfield
-                doubleclick(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
-                doubleclick(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
-                doubleclick(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
-                doubleclick(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-        if right_click:
+                browser.doubleclick(element)
+                status = True
+        if right_click and not double_click:
+            if User_Visible_Text_Element and not element:
+                browser.rightclick(User_Visible_Text_Element)
             if not User_Visible_Text_Element and element:
-                rightclick(element)
-            if User_Visible_Text_Element:      #default
-                rightclick(User_Visible_Text_Element)
-            elif User_Visible_Text_Element and element.lower()=="l":    #link
-                rightclick(Link(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="b":    #button
-                rightclick(Button(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="t":    #textfield
-                rightclick(TextField(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="c":    #checkbox
-                rightclick(CheckBox(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="r":    #radiobutton
-                rightclick(RadioButton(User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
-            elif User_Visible_Text_Element and element.lower()=="i":    #image ALT Text
-                rightclick(Image(alt=User_Visible_Text_Element,below=below,to_right_of=to_right_of,above=above,to_left_of=to_left_of))
+                browser.rightclick(element)
+                status = True
     except Exception as ex:
-        print("Error in browser_mouse_click_h = "+str(ex))
-  
-    
-def browser_locate_element_h(element="",get_text=False):
-    """
-    Find the element by Xpath, id or css selection.
+        print("Error in browser_mouse_click_h = " + str(ex))
+    finally:
+        return status  
+
+def browser_locate_element_h(selector="", get_text=False, multiple_elements=False):
+    """Find the element by Xpath, id or css selection.
+
+    Args:
+        selector (str, optional): Give Xpath or CSS selector. Defaults to "".
+        get_text (bool, optional): Give the text of the element. Defaults to False.
+        multiple_elements (bool, optional): True if you want to get all the similar elements with matching selector as list. Defaults to False.
+
+    Returns:
+        element         : If only one element
+        list of elements: If multiple_elements is True
     """
     try:
-        if not element:
-            element = gui_get_any_input_from_user('browser element to locate (Helium)')
-        if get_text:
-            return S(element).web_element.text
-        return S(element)
+        if not selector:
+            selector = gui_get_any_input_from_user('Browser element to locate (Helium)')
+        if not multiple_elements:
+            if get_text:
+                return browser.S(selector).web_element.text
+            return browser.S(selector)
+        if multiple_elements:
+            if get_text:
+                return browser.find_all(browser.S(selector).web_element.text)
+            return browser.find_all(browser.S(selector))
     except Exception as ex:
-        print("Error in browser_locate_element_h = "+str(ex))
-    
-def browser_locate_elements_h(element="",get_text=False):
+        print("Error in browser_locate_element_h = " + str(ex))
+
+def browser_wait_until_h(text="", element="t"):
+    """Wait until a specific element is found.
+
+    Args:
+        text (str, optional): To wait until the string appears on the screen. Eg: Export Successfull Completed.
+        element (str, optional): Type of Element Whether its a Text(t) or Button(b). Defaults to "t - Text".
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
-    Find the elements by Xpath, id or css selection.
-    """
-    try:
-        if not element:
-            element = gui_get_any_input_from_user('browser ElementS to locate (Helium)')
-        if get_text:
-            return find_all(S(element).web_element.text)
-        return find_all(S(element))
-    except Exception as ex:
-        print("Error in browser_locate_elements_h = "+str(ex))
-    
-def browser_wait_until_h(text="",element="t"):
-    """
-    Wait until a specific element is found.
-    """
+    status = False
     try:
         if not text:
             text = gui_get_any_input_from_user("visible text element to Search & Wait for")
 
-        if element.lower()=="t":
-            wait_until(Text(text).exists,10)        #text
-        elif element.lower()=="b":
-            wait_until(Button(text).exists,10)      #button
-    except Exception as ex:
-        print("Error in browser_wait_until_h = "+str(ex))
-    
-def browser_refresh_page_h():
-    """
-    Refresh the page.
-    """
-    try:
-        refresh()
-    except Exception as ex:
-        print("Error in browser_refresh_page_h = "+str(ex))
-    
-def browser_hit_enter_h():
-    """
-    Hits enter KEY using Browser Helium Functions
-    """
-    try:
-        press(ENTER)
-    except Exception as ex:
-        print("Error in browser_hit_enter_h="+str(ex))
+        if element.lower() == "t":
+            browser.wait_until(browser.Text(text).exists, 10) # text
         
-def browser_key_press_h(text):
+        elif element.lower() == "b":
+            browser.wait_until(browser.Button(text).exists, 10) # button
+        status = True
+    except Exception as ex:
+        print("Error in browser_wait_until_h = " + str(ex))
+    finally:
+        return status
+
+def browser_refresh_page_h():
+    """Refresh the page.
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
-    Type text using Browser Helium Functions and press hot keys.
+    status = False
+    try:
+        browser.refresh()
+        status = True
+    except Exception as ex:
+        print("Error in browser_refresh_page_h = " + str(ex))
+    finally:
+        return status
+
+def browser_hit_enter_h():
+    """Hits enter KEY using Browser Helium Functions
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
+    status = False
+    try:
+        browser.press(browser.ENTER)
+        status = True
+    except Exception as ex:
+        print("Error in browser_hit_enter_h=" + str(ex))
+    finally:
+        return status
+
+def browser_key_press_h(key_1="", key_2=""):
+    """Type text using Browser Helium Functions and press hot keys.
+
+    Args:
+        key_1 (str): Keys you want to simulate or string you want to press Eg: "tab" or "Murali"
+        key_2 (str, optional): Key you want to simulate with combination to key_1. Eg: "shift" or "escape"
     
-    hot_keys =["enter", "shift", "tab", "alt", "escape", "esc", "ctrl", "control"]
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    status = False
+    from helium import ENTER, SHIFT, TAB, ALT, ESCAPE, CONTROL, press
+    hot_keys = ["enter", "shift", "tab", "alt", "escape", "esc", "ctrl", "control"]
     browser_keys = [ENTER, SHIFT, TAB, ALT, ESCAPE, ESCAPE, CONTROL, CONTROL]
     try:
-        if text.lower() in hot_keys:
-            press(browser_keys[hot_keys.index(text.lower())])
-        else:
-            press(text)
+        if not key_1:
+            key_1 = gui_get_any_input_from_user('Enter key to press(Eg: tab or a):')
+        if key_1 and not key_2:
+            if key_1.lower() in hot_keys:
+                key_1 = browser_keys[hot_keys.index(key_1.lower())]
+            press(key_1)
+        if key_1 and key_2:
+            if key_1.lower() in hot_keys and key_2.lower() in hot_keys:
+                print("Both in hot")
+                key_1 = browser_keys[hot_keys.index(key_1.lower())]
+                key_2 = browser_keys[hot_keys.index(key_2.lower())]
+            if key_1.lower() in hot_keys and key_2.lower() not in hot_keys:
+                key_1 = browser_keys[hot_keys.index(key_1.lower())]
+            press(key_1 + key_2)
+        status = True
     except Exception as ex:
-        print("Error in browser_hit_enter_h="+str(ex))
+        print("Error in browser_hit_enter_h=" + str(ex))
+    finally:
+        return status
 
-def browser_mouse_hover_h(User_Visible_Text_Element=''):
-    '''
-    Performs a Mouse Hover over the Given User Visible Text Element 
-    '''
+def browser_mouse_hover_h(User_Visible_Text_Element=""):
+    """Performs a Mouse Hover over the Given User Visible Text Element
+
+    Args:
+        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). Defaults to "".
+
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    status = False
     try:
         if not User_Visible_Text_Element:
-            User_Visible_Text_Element = gui_get_any_input_from_user('Visible Text/element to perform mouse hover on it ')
-
-        hover(User_Visible_Text_Element)
-        return True
-    
+            User_Visible_Text_Element = gui_get_any_input_from_user(
+                'Visible Text/element to perform mouse hover on it ')
+        browser.hover(User_Visible_Text_Element)
+        status = True
     except Exception as e:
-        print('Error in browser_mouse_hover_h = ',str(e))
+        print('Error in browser_mouse_hover_h = ', str(e))
+    finally:
+        return status
 
-def browser_get_dropdown_options_h(label=''):
-    '''
-    Returns the available options in the given labelled dropdown.
-    '''
-    try:
-        if not label:
-            label = gui_get_any_input_from_user('Enter the Visible dropdown label to get the options')
-
-        return ComboBox(label=label).options
-    except Exception as e:
-        print('Error in browser_get_dropdown_options_h = ',str(e))
-
-def browser_select_dropdown_option_h(by_label='',by_xpath='',set_value=''):
-    '''
-    Sets the Dropdown option either by label or by xpath with the given value.
-    '''
-    try:
-        if not by_label and not by_xpath:
-            elem = gui_get_dropdownlist_values_from_user('Select either a label or xpath of the dropdown element',dropdown_list=['by_label','by_xpath'],multi_select=False)
-            if elem == 'by_label':
-                by_label = gui_get_any_input_from_user('Pass the label name to locate the dropdown element')
-            else:
-                by_xpath = gui_get_any_input_from_user('Pass the xpath of the dropdown element')
-
-        if not set_value:
-            set_value = gui_get_any_input_from_user('The Value to set in the dropdown ')
-        
-        if set_value != '':
-            if by_label != '':
-                select(ComboBox(label=by_label),value=set_value)
-            
-            elif by_xpath != '':
-                select(S(selector=by_xpath).web_element,value=set_value)
-            
-            else:
-                raise Exception("Either 'by_label' or 'by_xpath' should be passed.")
-        else:
-            raise Exception("Missing important parameter 'set_value'.")
-    
-    except Exception as e:
-        print('Error in browser_select_dropdown_option_h = ',str(e))
-
-def browser_attach_file_h(path_of_file='',to_xpath=''):
-    '''
-    Upload the selected file to the respected xpath location
-    '''
-    try:
-        if not path_of_file:
-            path_of_file = gui_get_any_input_from_user('Full path of file')
-        if not to_xpath:
-            to_xpath = gui_get_any_input_from_user('Enter the xpath of attachment button/location')
-        
-        if os.path.exists(path_of_file):
-            elem_xpath = S(to_xpath).web_element
-            attach_file(file_path=path_of_file,to=elem_xpath)
-        else:
-            raise Exception('File can\'t be found.')
-    except Exception as e:
-        print('Error in browser_attach_file_h = ',str(e))
-      
 def browser_quit_h():
+    """Close the Browser or Browser Automation Session.
+
+    Returns:
+        bool: Whether the function is successful or failed.
     """
-    Close the Helium browser.
-    """
+    status = False
     try:
-        kill_browser()
+        browser.kill_browser()
+        status = True
     except Exception as ex:
-        print("Error in browser_quit_h = "+str(ex))
+        print("Error in browser_quit_h = " + str(ex))
+    finally:
+        return status
 
 #Utility Functions
 def dismantle_code(strFunctionName=""):
