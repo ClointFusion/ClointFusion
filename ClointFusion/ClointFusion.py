@@ -1278,20 +1278,6 @@ def file_rename(old_file_path='',new_file_name='',ext=False):
     except Exception as e:
         print('Error in file_rename = ',str(e))
 
-def folder_read_text_file(txt_file_path=""):
-    """
-    Reads from a given text file and returns entire contents as a single list
-    """
-    try:
-        if not txt_file_path:
-            txt_file_path = gui_get_any_file_from_user('the text file to READ from',"txt")
-
-        with open(txt_file_path) as f:
-            file_contents = f.readlines()
-        return file_contents
-    except:
-        return None
-
 def file_get_json_details(path_of_json_file='',section=''):
     '''
     Returns all the details of the given section in a dictionary 
