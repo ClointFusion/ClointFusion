@@ -45,7 +45,7 @@ from ClointFusion.ClointFusion import excel_create_file
 from ClointFusion.ClointFusion import folder_get_all_filenames_as_list
 from ClointFusion.ClointFusion import folder_delete_all_files
 from ClointFusion.ClointFusion import message_pop_up
-from ClointFusion.ClointFusion import key_hit_enter
+from ClointFusion.ClointFusion import keyboard_hit_enter
 from ClointFusion.ClointFusion import message_flash
 from ClointFusion.ClointFusion import launch_any_exe_bat_application
 from ClointFusion.ClointFusion import take_error_screenshot
@@ -78,8 +78,8 @@ from ClointFusion.ClointFusion import mouse_get_color_by_position
 from ClointFusion.ClointFusion import mouse_click
 from ClointFusion.ClointFusion import mouse_drag_from_to
 from ClointFusion.ClointFusion import search_highlight_tab_enter_open
-from ClointFusion.ClointFusion import key_press
-from ClointFusion.ClointFusion import key_write_enter
+from ClointFusion.ClointFusion import keyboard_hotkey_press
+from ClointFusion.ClointFusion import keyboard_write_text
 from ClointFusion.ClointFusion import date_convert_to_US_format
 from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_x_y
 from ClointFusion.ClointFusion import mouse_search_snips_return_coordinates_x_y

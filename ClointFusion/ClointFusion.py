@@ -52,11 +52,15 @@ from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import pyinspect as pi
 from tabloo import show
+import uuid
 
-os_name = str(platform.system()).lower()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
 # 2. All global variables
+os_name = str(platform.system()).lower()
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
 
 base_dir = ""
 config_folder_path = ""
@@ -88,10 +92,7 @@ helium_service_launched=False
 verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
 update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
 
-if os_name == 'windows':
-    uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
-else:
-    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
+system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, 'clointfusion.com')).upper()
 
 # 3. All function definitions
 
@@ -120,7 +121,7 @@ def _load_missing_python_packages_windows():
         print("Error in _load_missing_python_packages_windows="+str(ex))
 
 #Windows OS specific packages
-if os_name == 'windows':
+if os_name == windows_os:
     _load_missing_python_packages_windows()
 
     from unicodedata import name
@@ -583,7 +584,7 @@ def message_toast(message,website_url="", file_folder_path=""):
     Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
     """
     
-    if os_name == "windows":
+    if os_name == windows_os:
 
         if str(enable_semi_automatic_mode).lower() == 'false':
             from win10toast_click import ToastNotifier 
@@ -1647,17 +1648,6 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
     except Exception as ex:
         print("Error in folder_delete_all_files="+str(ex)) 
         return -1
-        
-def key_hit_enter(write_to_window=""):
-    """
-    Enter key will be pressed once.
-    """
-    if write_to_window:
-        window_activate_and_maximize_windows(write_to_window)
-
-    time.sleep(0.5)
-    kb.press_and_release('enter')
-    time.sleep(0.5)
 
 def message_flash(msg="",delay=3):
     """
@@ -1809,34 +1799,49 @@ def window_close_windows(windowName=""):
         print("Error in window_close="+str(ex))
 
 def launch_any_exe_bat_application(pathOfExeFile=""):
-    """
-    Launches any exe or batch file or excel file etc.
+    """Launches any exe or batch file or excel file etc.
 
-    Parameters:
-        pathOfExeFile  (str) : location of the file with extension.
+    Args:
+        pathOfExeFile (str, optional): Location of the file with extension 
+        Eg: Notepad, TextEdit. Defaults to "".
     """
+    status = False
     try:
         if not pathOfExeFile:
             pathOfExeFile = gui_get_any_file_from_user('EXE or BAT file')
 
-        try:
-            subprocess.Popen(pathOfExeFile)
-        except:
-            os.startfile(pathOfExeFile)
-
-        time.sleep(2) 
- 
-        try:
-            import win32gui, win32con
-            time.sleep(2) 
-            hwnd = win32gui.GetForegroundWindow()
-            win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-        except Exception as ex1:
-            print("launch_any_exe_bat_application"+str(ex1))
-
+        if os_name == windows_os:
+            try:
+                subprocess.Popen(pathOfExeFile)
+                time.sleep(2)
+                import win32gui, win32con
+                time.sleep(2) 
+                hwnd = win32gui.GetForegroundWindow()
+                win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
+                status = True
+            except Exception as ex1:
+                print("launch_any_exe_bat_application"+str(ex1))
+            
+        if os_name == linux_os:
+            try:
+                subprocess.Popen(pathOfExeFile)
+                time.sleep(2)
+                status = True
+            except Exception as ex:
+                print("launch_any_exe_bat_application"+str(ex))
+        
+        if os_name == mac_os:
+            try:
+                subprocess.Popen(f'open -a "{pathOfExeFile}"')
+                status = True
+            except Exception as ex:
+                print("launch_any_exe_bat_application"+str(ex))
+                
         time.sleep(1) 
     except Exception as ex:
         print("ERROR in launch_any_exe_bat_application="+str(ex))
+    finally:
+        return status
 
 class myThread1 (threading.Thread):
     def __init__(self,err_str):
@@ -2481,7 +2486,6 @@ def excel_convert_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
         errMsg = f"Error in converting file to xlsx format : {str(e)}"
         return errMsg
 
-
 def excel_apply_template_format_save_to_new(excel_rawdata_file_path='',excel_newfile_path='',rawexcel_sheet_name='Sheet1', usecols='',template_file_path='',template_sheet_name="Sheet1"):
 
     '''
@@ -2795,49 +2799,117 @@ def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='N
 
     except Exception as ex:
         print("Error in search_highlight_tab_enter_open="+str(ex))
+
+# Keyboard Functions:
+
+def keyboard_hotkey_press(key_1='', key_2='', key_3='', write_to_window=""):
+    """Emulates the given keystrokes.
+
+    Args:
+        key_1 (str, optional): Enter the 1st key 
+        Eg: ctrl or shift. Defaults to ''.
+        key_2 (str, optional): Enter the 2nd key in combination. 
+        Eg: alt or A. Defaults to ''.
+        key_3 (str, optional): Enter the 3rd key in combination. 
+        Eg: del or tab. Defaults to ''.
+        write_to_window (str, optional): (Only in Windows) Name of Window you want to activate. Defaults to "".
+        
+    Supported Keys:
+        ['\\t', '\\n', '\\r', ' ', '!', '"', '#', '$', '%', '&', "'", '(',')', '*', '+', ',', '-', '.', '/', 
+        '0', '1', '2', '3', '4', '5', '6', '7','8', '9', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', 
+        'a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 
+        '{', '|', '}', '~', 'accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace',
+        'browserback', 'browserfavorites', 'browserforward', 'browserhome',
+        'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear',
+        'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete',
+        'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10',
+        'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f2', 'f20',
+        'f21', 'f22', 'f23', 'f24', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9',
+        'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja',
+        'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail',
+        'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack',
+        'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6',
+        'num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn',
+        'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn',
+        'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator',
+        'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab',
+        'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen',
+        'command', 'option', 'optionleft', 'optionright']
     
-def key_press(write_to_window="",strKeys=""):
+    Returns:
+        bool: Whether the function is successful or failed.
     """
-    Emulates the given keystrokes.
-    """
+    status = False
     try:
-        if not strKeys:            
-            strKeys = gui_get_any_input_from_user("keys combination using + as delimeter. Ex: ctrl+O")
-
-        if write_to_window:
-            window_activate_and_maximize_windows(write_to_window)
-
-        strKeys = strKeys.lower()
-        if "shift" in strKeys:
-            strKeys = strKeys.replace("shift","left shift+right shift")
-
+        if not key_1:
+            key_1 = gui_get_any_input_from_user("keys combination using + as delimeter. Ex: ctrl or tab")
+            
+        if os_name == windows_os:
+            if write_to_window:
+                    window_activate_and_maximize_windows(write_to_window)
+        
         time.sleep(0.5)
-        kb.press_and_release(strKeys)
+        pg.hotkey(key_1,key_2,key_3)
         time.sleep(0.5)
+        status = True
     except Exception as ex:
-        print("Error in key_press="+str(ex))
+            print("Error in keyboard_hotkey_press="+str(ex))
+    finally:
+        return status
     
-def key_write_enter(write_to_window="",strMsg="",delay=1,key="e"):
-    """
-    Writes/Types the given text and press enter (by default) or tab key.
-    """
-    try:
-        if not strMsg:
-            strMsg = gui_get_any_input_from_user("message / username / any text")
+def keyboard_write_text(text_to_write="", write_to_window="", delay_after_typing=1):
+    """Writes/Types the given text.
 
-        if write_to_window:
-            window_activate_and_maximize_windows(write_to_window)
+    Args:
+        text_to_write (str, optional): Text you wanted to type
+        Eg: ClointFusion is awesone. Defaults to "".
+        write_to_window (str, optional): (Only in Windows) Name of Window you want to activate
+        Eg: Notepad. Defaults to "".
+        delay_after_typing (int, optional): Seconds in time to wait after entering the text
+        Eg: 5. Defaults to 1.
+
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    
+    status = False
+    try:
+        if not text_to_write:
+            text_to_write = gui_get_any_input_from_user("message / username / any text")
+
+        if os_name == windows_os:
+            if write_to_window:
+                    window_activate_and_maximize_windows(write_to_window)
 
         time.sleep(0.2)
-        kb.write(strMsg)
-        time.sleep(delay)
-        if key.lower() == "e":
-            key_press(strKeys='enter')
-        elif key.lower() == "t":
-            key_press(strKeys='tab')
-        time.sleep(1)
+        pg.write(text_to_write)
+        time.sleep(delay_after_typing)
+        status = True
     except Exception as ex:
-        print("Error in key_write_enter="+str(ex))
+        print("Error in keyboard_write_text="+str(ex))
+    finally:
+        return status
+
+def keyboard_hit_enter(write_to_window=""):
+    """Enter key will be pressed once.
+
+    Args:
+        write_to_window (str, optional): (Only in Windows)Name of Window you want to activate.
+        Eg: Notepad. Defaults to "".
+
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    status = False
+    try:
+        time.sleep(0.5)
+        keyboard_hotkey_press(key_1="enter", write_to_window=write_to_window)
+        time.sleep(0.5)
+        status = True
+    except Exception as ex:
+        print("Error in keyboard_hit_enter="+str(ex))
+    finally:
+        return status
 
 def date_convert_to_US_format(input_str=""):
     """
@@ -3037,7 +3109,9 @@ def schedule_delete_task_windows():
     except Exception as ex:
         print("Error in schedule_delete_task="+str(ex))
 
-@lru_cache(None)    
+@lru_cache(None)
+
+# Browser Functions:
     
 def get_chrome_driver_version(chrome_version:str):
     """Give the required chrome driver version based on the input of chrome version.
@@ -3067,11 +3141,16 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
 
     Args:
         url (str, optional): Website you want to visit. Defaults to "".
-        files_download_path (str, optional): Path to which the files need to be downloaded. Defaults to ''.
-        dummy_browser (bool, optional): If it is false Default profile is opened. Defaults to True.
-        incognito (bool, optional): Opens the browser in incognito mode. Defaults to False.
-        clear_previous_instances (bool, optional): If true all the opened chrome instances are closed. Defaults to False.
-        profile (str, optional): By default it opens the 'Default' profile. Eg : Profile 1, Profile 2
+        files_download_path (str, optional): Path to which the files need to be downloaded.
+        Defaults: ''.
+        dummy_browser (bool, optional): If it is false Default profile is opened. 
+        Defaults: True.
+        incognito (bool, optional): Opens the browser in incognito mode. 
+        Defaults: False.
+        clear_previous_instances (bool, optional): If true all the opened chrome instances are closed. 
+        Defaults: False.
+        profile (str, optional): By default it opens the 'Default' profile. 
+        Eg : Profile 1, Profile 2
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3082,17 +3161,17 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
     try:
         # To clear previous instances of chrome
         if clear_previous_instances:
-            if os_name == 'windows':
+            if os_name == windows_os:
                 try:
                     subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
-            if os_name == 'darwin':
+            if os_name == mac_os:
                 try:
                     subprocess.call('pkill "Google Chrome"', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
-            if os_name == 'linux':
+            if os_name == linux_os:
                 try:
                     subprocess.call('killall chrome', shell=True)
                 except Exception as ex:
@@ -3104,9 +3183,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
-            if os_name == 'windows':
+            if os_name == windows_os:
                 options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-            if os_name == 'darwin':
+            if os_name == mac_os:
                 options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
             options.add_argument(f"profile-directory={profile}")
         #  Set the download path
@@ -3133,11 +3212,11 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             try:
                 chrome_version = str(ex).split()[17].split(".")[0]
                 driver_version = get_chrome_driver_version(chrome_version)
-                if os_name == "windows":
+                if os_name == windows_os:
                     subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={driver_version}'])
-                if os_name == "darwin":
+                if os_name == mac_os:
                     subprocess.run(f"sudo pip install chromedriver-py=={driver_version}", shell=True)
-                if os_name == "linux":
+                if os_name == linux_os:
                     subprocess.run(f"pip install chromedriver-py=={driver_version}", shell=True)
             except Exception as ex:
                 print("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
@@ -3165,7 +3244,8 @@ def browser_navigate_h(url=""):
     """Navigate through the url after the session is started.
 
     Args:
-        url (str, optional): Url which you want to visit. Defaults to "".
+        url (str, optional): Url which you want to visit. 
+        Defaults: "".
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3188,8 +3268,10 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
     """Write a string in browser, if User_Visible_Text_Element is given it writes on the given element.
 
     Args:
-        Value (str, optional): String which has be written. Defaults to "".
-        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). Defaults to "".
+        Value (str, optional): String which has be written. 
+        Defaults: "".
+        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). 
+        Defaults: "".
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3213,10 +3295,14 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
     """Click on the given element.
 
     Args:
-        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). Defaults to "".
-        element (str, optional): Use locate_element to get element and use to click. Defaults to "".
-        double_click (bool, optional): True to perform a Double click. Defaults to False.
-        right_click (bool, optional): True to perform a Right click. Defaults to False.
+        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). 
+        Defaults: "".
+        element (str, optional): Use locate_element to get element and use to click. 
+        Defaults: "".
+        double_click (bool, optional): True to perform a Double click. 
+        Defaults: False.
+        right_click (bool, optional): True to perform a Right click. 
+        Defaults: False.
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3278,8 +3364,10 @@ def browser_wait_until_h(text="", element="t"):
     """Wait until a specific element is found.
 
     Args:
-        text (str, optional): To wait until the string appears on the screen. Eg: Export Successfull Completed.
-        element (str, optional): Type of Element Whether its a Text(t) or Button(b). Defaults to "t - Text".
+        text (str, optional): To wait until the string appears on the screen. 
+        Eg: Export Successfull Completed. Defaults: ""
+        element (str, optional): Type of Element Whether its a Text(t) or Button(b). 
+        Defaults: "t - Text".
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3301,7 +3389,7 @@ def browser_wait_until_h(text="", element="t"):
         return status
 
 def browser_refresh_page_h():
-    """Refresh the page.
+    """Refresh the current active browser page.
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3316,7 +3404,7 @@ def browser_refresh_page_h():
         return status
 
 def browser_hit_enter_h():
-    """Hits enter KEY using Browser Helium Functions
+    """Hits enter KEY in Browser
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3334,8 +3422,10 @@ def browser_key_press_h(key_1="", key_2=""):
     """Type text using Browser Helium Functions and press hot keys.
 
     Args:
-        key_1 (str): Keys you want to simulate or string you want to press Eg: "tab" or "Murali"
-        key_2 (str, optional): Key you want to simulate with combination to key_1. Eg: "shift" or "escape"
+        key_1 (str): Keys you want to simulate or string you want to press 
+        Eg: "tab" or "Murali". Defaults: ""
+        key_2 (str, optional): Key you want to simulate with combination to key_1. 
+        Eg: "shift" or "escape". Defaults: ""
     
     Returns:
         bool: Whether the function is successful or failed.
@@ -3369,7 +3459,8 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     """Performs a Mouse Hover over the Given User Visible Text Element
 
     Args:
-        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). Defaults to "".
+        User_Visible_Text_Element (str, optional): The element which is visible(Like : Sign in). 
+        Defaults: "".
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -3503,7 +3594,7 @@ def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend
         program_path_with_name - The full path of the application
         file_path_with_name - The full path to the file (only if required ex: to open an already saved excel file)
     """
-    if os_name == 'windows':
+    if os_name == windows_os:
         try:  
             if file_path_with_name:
                 app = Application(backend=backend).start(r'{} "{}"'.format(program_path_with_name, file_path_with_name))
@@ -3531,7 +3622,7 @@ def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
         save - True if you want to save.
         file_name_with_path - new txt file name with path if you want to save)
     """
-    if os_name == 'windows':
+    if os_name == windows_os:
         try:
             if save and file_name_with_path:
                 main_dlg.print_control_identifiers(filename=file_name_with_path)
@@ -3555,7 +3646,7 @@ def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
         auto_id - Automation ID of the windows object element.
         control_type - Control type of the windows object element.
     """
-    if os_name == 'windows':
+    if os_name == windows_os:
         try:
             main_dlg.set_focus()
             if title:
@@ -3584,7 +3675,7 @@ def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
         auto_id - Automation ID of the windows object element.
         control_type - Control type of the windows object element.
     """
-    if os_name == 'windows':
+    if os_name == windows_os:
         try:
             main_dlg.set_focus()
             if title:
@@ -3612,7 +3703,7 @@ def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = Fal
         control_type - Control type of the windows object element.
         Value - True to read  a set of text and false to read another set of text for the same windows object element.
     """
-    if os_name == 'windows':
+    if os_name == windows_os:
         try:
             main_dlg.set_focus()
             if title:
@@ -3669,7 +3760,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
     Send email using Outlook from Desktop email application
     """
     try:
-        if os_name == "windows":
+        if os_name == windows_os:
             if toAddress and subject and htmlBody:
                 import win32com.client 
                 outlook = win32com.client.Dispatch('outlook.application')
@@ -3751,7 +3842,7 @@ def excel_sub_routines():
     Excel VBA Macros called from ClointFusion
     """
     try:
-        if os_name == "windows":
+        if os_name == windows_os:
             import xlwings as xw
             cf_excel_rountine_file_path = os.path.join(current_working_dir,"CF_Excel_Routines.xlsb")
 
@@ -3850,7 +3941,7 @@ def excel_convert_to_image(excel_file_path=""):
     Returns an Image (PNG) of given Excel
     """
     try:
-        if os_name == "windows":
+        if os_name == windows_os:
             from PIL import ImageGrab
 
             import win32com.client 
@@ -4032,7 +4123,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Error while testing Folder operations='+str(ex))
             logging.info('Error while testing Folder operations='+str(ex))
 
-        if os_name == 'windows':
+        if os_name == windows_os:
             try:
                 print()
                 print('Testing window based operations')
@@ -4072,37 +4163,39 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         try:
             print()
             print('Testing keyboard operations')
-            if os_name == 'windows':
-                launch_any_exe_bat_application("notepad")
-            else:
-                launch_any_exe_bat_application("gedit") #Ubuntu / macOS ?
+            if os_name == windows_os:
+                launch_any_exe_bat_application("notepad") # Windows
+            if os_name == linux_os:
+                launch_any_exe_bat_application("gedit") # Ubuntu
+            # if os_name == mac_os:
+            #     launch_any_exe_bat_application("TextEdit") # macOS
 
-            if os_name == 'windows':
-                key_write_enter(write_to_window="notepad",strMsg="Performing ClointFusion Self Test for Notepad")
-                key_hit_enter(write_to_window="notepad")
-                key_press(write_to_window="notepad",strKeys='alt+f4,n')
-            else:
-                pg.write("Performing ClointFusion Self Test for Text Editor / GEDIT")
-                time.sleep(2)
-                pg.press('enter')
-                time.sleep(2)
-                pg.hotkey('alt','f4')
-                time.sleep(2)
-                pg.hotkey('alt','w')
-                time.sleep(2)
-            
-            message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
-            
-            print('Keyboard operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
-            logging.info('Keyboard operations tested successfully')
+            if os_name == windows_os:
+                keyboard_write_text(write_to_window="notepad",text_to_write="Performing ClointFusion Self Test for Notepad")
+                keyboard_hit_enter(write_to_window="notepad")
+                keyboard_hotkey_press(key_1="alt", key_2="f4", write_to_window="notepad")
+                message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+                print('Keyboard operations tested successfully '+show_emoji())
+                print("____________________________________________________________")
+                logging.info('Keyboard operations tested successfully')
+            if os_name == linux_os:
+                keyboard_write_text(text_to_write="Performing ClointFusion Self Test for Notepad")
+                keyboard_hit_enter()
+                keyboard_hotkey_press(key_1="alt", key_2="f4")
+                message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+                print('Keyboard operations tested successfully '+show_emoji())
+                print("____________________________________________________________")
+                logging.info('Keyboard operations tested successfully')
+            if os_name == mac_os:
+                print("Currently Not Supported.")
+                logging.info('Keyboard operations Skipped.')
         except Exception as ex:
             print('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
             try:
-                key_press(strKeys='alt+f4')
+                keyboard_hotkey_press(key_1="alt", key_2="f4")
             except:
-                pg.hotkey('alt','f4')
+                keyboard_hotkey_press(key_1="alt", key_2="f4")
 
         message_counter_down_timer("Starting Excel Operations in (seconds)",3)
     
@@ -4234,7 +4327,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
-            key_press(strKeys='ctrl+w')
+            keyboard_hotkey_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
@@ -4243,7 +4336,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print()
             print("Testing Browser's Helium functions")
             
-            if launch_website_h("https://pypi.org"):
+            if browser_activate("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
 
@@ -4267,7 +4360,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
-            key_press(strKeys='ctrl+w') #to close any open browser
+            keyboard_hotkey_press(key_1="ctrl", key_2="w") #to close any open browser
             TEST_CASES_STATUS_MESSAGE = "Error while Testing Browser Helium functions="+str(ex)
 
         message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
@@ -4328,7 +4421,7 @@ def clointfusion_self_test(last_updated_on_month):
                 [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
                 [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False if int(last_updated_on_month) == -9 else True, tooltip=  'Click this button to skip Self-Test' if int(last_updated_on_month) == -9 else 'Sign-In with Gmail to enable this option')]]
 
-        if os_name == 'windows':
+        if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
         else:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
@@ -4337,7 +4430,7 @@ def clointfusion_self_test(last_updated_on_month):
             event, _ = window.read()
 
             if event == 'SSO':
-                webbrowser.open_new("https://api.clointfusion.com/cf/google/login_process?uuid={}".format(str(uuid)))
+                webbrowser.open_new("https://api.clointfusion.com/cf/google/login_process?uuid={}".format(str(system_uuid)))
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
                 window['Skip for Now'].update(disabled=False)
@@ -4347,7 +4440,7 @@ def clointfusion_self_test(last_updated_on_month):
 
                 if int(last_updated_on_month) != -9:
                     try:
-                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':-9,'uuid':str(uuid)})
+                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':-9,'uuid':str(system_uuid)})
                         last_updated_on_month = -9
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4392,7 +4485,7 @@ def clointfusion_self_test(last_updated_on_month):
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
 
-                    URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.2046783065={}&entry.705740227={}&submit=Submit'.format(str(uuid), os_hn_ip + ";" + str(time_taken),file_contents)
+                    URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.2046783065={}&entry.705740227={}&submit=Submit'.format(str(system_uuid), os_hn_ip + ";" + str(time_taken),file_contents)
                     webbrowser.open(URL)
                     message_counter_down_timer("Closing browser (in seconds)",15)
                     window['Close'].update(disabled=True)
@@ -4401,14 +4494,14 @@ def clointfusion_self_test(last_updated_on_month):
                     time.sleep(2)
                     
                     try:
-                        key_press(strKeys='alt+f4')
+                        keyboard_hotkey_press(key_1="alt", key_2="f4")
                     except:
                         pg.hotkey('alt','f4')
                     time.sleep(2)
                     # is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
                     today_date_month = str(datetime.date.today().strftime('%m'))
                     try:
-                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'uuid':str(uuid)})
+                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'uuid':str(system_uuid)})
                         # print(resp.text)
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4470,7 +4563,7 @@ _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
 try:
-    resp = requests.post(verify_self_test_url, data={'uuid':str(uuid)})
+    resp = requests.post(verify_self_test_url, data={'uuid':str(system_uuid)})
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
 
