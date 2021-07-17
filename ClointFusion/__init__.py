@@ -82,9 +82,7 @@ from ClointFusion.ClointFusion import keyboard_hotkey_press
 from ClointFusion.ClointFusion import keyboard_write_text
 from ClointFusion.ClointFusion import date_convert_to_US_format
 from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_x_y
-from ClointFusion.ClointFusion import mouse_search_snips_return_coordinates_x_y
 from ClointFusion.ClointFusion import find_text_on_screen
-from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_box
 from ClointFusion.ClointFusion import schedule_create_task_windows
 from ClointFusion.ClointFusion import schedule_delete_task_windows
 from ClointFusion.ClointFusion import browser_activate
@@ -121,6 +119,5 @@ from ClointFusion.ClointFusion import excel_apply_template_format_save_to_new
 from ClointFusion.ClointFusion import excel_apply_format_as_table
 from ClointFusion.ClointFusion import excel_split_on_user_defined_conditions
 from ClointFusion.ClointFusion import logging
-from ClointFusion.ClointFusion import clear_screen
 from ClointFusion.ClointFusion import browser_key_press_h
 from ClointFusion.ClointFusion import time_sleep
