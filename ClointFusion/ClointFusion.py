@@ -1,6 +1,8 @@
 # Project Name: ClointFusion
 # Project Description: A Python based RPA Automation Framework for Desktop GUI, Citrix, Web and basic Excel operations.
 
+
+
 # Project Structure
 # 1. All imports
 # 2. All global variables
@@ -8,54 +10,59 @@
 # 4. All test cases
 # 5. All default services
 
-# 1. All imports
 
+
+# 1. All imports
+    # Python Inbuilt Libraries
 import subprocess
 import os
 import sys
 import platform
 import urllib.request
-from pandas.core.algorithms import mode
 from datetime import datetime
-import pyautogui as pg
 import time
-import pandas as pd
-# import keyboard as kb
-import PySimpleGUI as sg
-import openpyxl as op
-from openpyxl import Workbook
-from openpyxl import load_workbook
 import datetime
 from functools import lru_cache
 import threading
 from threading import Timer
-import clipboard
 import re
-# from json import (load as jsonload, dump as jsondump)
 import json
-import helium as browser
-# from os import link
-# from urllib.request import urlopen 
-from PIL import Image
-import requests
-from bs4 import BeautifulSoup
 from pathlib import Path
-import webbrowser 
+import webbrowser
 import logging
 import tempfile
 import warnings
 import traceback 
 import shutil
 import socket
+import uuid
+    # External libraries
+from pandas.core.algorithms import mode
+import pyautogui as pg
+import pandas as pd
+import PySimpleGUI as sg
+import openpyxl as op
+from openpyxl import Workbook
+from openpyxl import load_workbook
+import clipboard
+import helium as browser
+from PIL import Image
+import requests
+from bs4 import BeautifulSoup
+import webbrowser
 from selenium import webdriver
 from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import pyinspect as pi
 from tabloo import show
-import uuid
+
+
 
 sg.theme('Dark') # for PySimpleGUI FRONT END        
+
+
+
 
 # 2. All global variables
 os_name = str(platform.system()).lower()
@@ -771,86 +778,6 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
     except Exception as ex:
         print("Error in gui_get_folder_path_from_user="+str(ex))
 
-def gui_get_workspace_path_from_user():    
-    """
-    Function to accept Workspace folder path from user using GUI. Returns the folderpath value in string format.
-
-    """
-    values = []
-    ret_value = ""
-    try:
-        oldValue = ""
-        oldKey = "Please Choose Workspace Folder"
-        show_gui = False
-        existing_value = read_semi_automatic_log(oldKey)
-
-        if existing_value is None:
-            show_gui = True
-
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
-            show_gui = True
-            oldValue = existing_value
-
-        if show_gui:
-            layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
-                [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
-                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
-                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(current_working_dir) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
-                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Ask Me Later',button_color=('white','firebrick'))]]
-
-            window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
-            
-            while True:
-                event, values = window.read()
-
-                if event == '-DONT_ASK_AGAIN-':
-                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                    
-                    file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
-                    file_path = Path(file_path)
-                    
-                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-                
-                    if values and values['-DONT_ASK_AGAIN-']:
-                        window['-DND-'](visible=True)
-                    elif values and not values['-DONT_ASK_AGAIN-']:
-                        window['-DND-'](visible=False)
-                
-                if event == sg.WIN_CLOSED or event == 'Ask Me Later':
-                    break
-                if event == 'OK':
-                    if values and values['-FOLDER-']:
-                        break
-                    else:
-                        message_pop_up("Please enter the required values")
-            
-            window.close()
-            
-            if values and event == 'OK':
-                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                
-                file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
-                file_path = Path(file_path)
-                
-                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-
-                values['-KEY-'] = oldKey
-
-                if str(values['-KEY-']) and str(values['-FOLDER-']):
-                    update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
-            
-                if values is not None:
-                    ret_value = str(values['-FOLDER-']).strip()
-            
-            else:
-                ret_value = None
-        else:
-            ret_value = str(existing_value)
-            
-        return ret_value
-    except Exception as ex:
-        print("Error in gui_get_workspace_path_from_user="+str(ex))
-
 def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_line=False,mandatory_field=True):   
     import cryptocode 
     """
@@ -1016,6 +943,86 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
     except Exception as ex:
         print("Error in gui_get_any_file_from_user="+str(ex))
 
+def gui_get_workspace_path_from_user():    
+    """
+    Function to accept Workspace folder path from user using GUI. Returns the folderpath value in string format.
+
+    """
+    values = []
+    ret_value = ""
+    try:
+        oldValue = ""
+        oldKey = "Please Choose Workspace Folder"
+        show_gui = False
+        existing_value = read_semi_automatic_log(oldKey)
+
+        if existing_value is None:
+            show_gui = True
+
+        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+            show_gui = True
+            oldValue = existing_value
+
+        if show_gui:
+            layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
+                [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
+                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
+                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(current_working_dir) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
+                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Ask Me Later',button_color=('white','firebrick'))]]
+
+            window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
+            
+            while True:
+                event, values = window.read()
+
+                if event == '-DONT_ASK_AGAIN-':
+                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                    
+                    file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
+                    file_path = Path(file_path)
+                    
+                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+                
+                    if values and values['-DONT_ASK_AGAIN-']:
+                        window['-DND-'](visible=True)
+                    elif values and not values['-DONT_ASK_AGAIN-']:
+                        window['-DND-'](visible=False)
+                
+                if event == sg.WIN_CLOSED or event == 'Ask Me Later':
+                    break
+                if event == 'OK':
+                    if values and values['-FOLDER-']:
+                        break
+                    else:
+                        message_pop_up("Please enter the required values")
+            
+            window.close()
+            
+            if values and event == 'OK':
+                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                
+                file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
+                file_path = Path(file_path)
+                
+                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+
+                values['-KEY-'] = oldKey
+
+                if str(values['-KEY-']) and str(values['-FOLDER-']):
+                    update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
+            
+                if values is not None:
+                    ret_value = str(values['-FOLDER-']).strip()
+            
+            else:
+                ret_value = None
+        else:
+            ret_value = str(existing_value)
+            
+        return ret_value
+    except Exception as ex:
+        print("Error in gui_get_workspace_path_from_user="+str(ex))
+
 # ---------  GUI Functions Ends ---------
 
 
@@ -1084,7 +1091,7 @@ def message_flash(msg="",delay=3):
         if not msg:
             msg = gui_get_any_input_from_user("flash message")
 
-        r = Timer(int(delay), key_hit_enter)
+        r = Timer(int(delay), keyboard_hit_enter)
         r.start()
         pg.alert(text=msg, title='ClointFusion', button='OK')
     except Exception as ex:
@@ -1676,19 +1683,19 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
                 browser.click(User_Visible_Text_Element)
             if not User_Visible_Text_Element and element:
                 browser.click(element)
-                status = True
+            status = True
         if double_click and not right_click:
             if User_Visible_Text_Element and not element:
                 browser.doubleclick(User_Visible_Text_Element)
             if not User_Visible_Text_Element and element:
                 browser.doubleclick(element)
-                status = True
+            status = True
         if right_click and not double_click:
             if User_Visible_Text_Element and not element:
                 browser.rightclick(User_Visible_Text_Element)
             if not User_Visible_Text_Element and element:
                 browser.rightclick(element)
-                status = True
+            status = True
     except Exception as ex:
         print("Error in browser_mouse_click_h = " + str(ex))
     finally:
