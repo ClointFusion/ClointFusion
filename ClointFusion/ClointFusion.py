@@ -2995,6 +2995,9 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
         print("Error in excel_if_value_exists="+str(ex))
 
 def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
+    """
+        Create a Excel file in fullPathToTheFile with filename.
+    """
     try:
         if not fullPathToTheFile:
             fullPathToTheFile = gui_get_any_input_from_user('folder path to create excel')

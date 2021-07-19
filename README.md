@@ -77,7 +77,7 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/GUI_GIF.gif?raw=true" height="400">
     
-* ## 8 functions on Mouse operations:
+* ## 5 functions on Mouse operations:
 
     cf.mouse_click() : Clicks at the given X Y Co-ordinates on the screen using ingle / double / tripple click(s). Optionally copies selected data to clipboard (works for double / triple clicks)
 
@@ -88,12 +88,6 @@ You would receive an email with self-test report.
     cf.mouse_drag_from_to() : Clicks and drags from X1 Y1 co-ordinates to X2 Y2 Co-ordinates on the screen
 
     cf.mouse_search_snip_return_coordinates_x_y() : Searches the given image on the screen and returns its center of X Y co-ordinates.
-
-    cf.mouse_search_snips_return_coordinates_x_y() : Searches the given set of images on the screen and returns its center of X Y co-ordinates of FIRST OCCURANCE
-
-    cf.mouse_search_snip_return_coordinates_box() : Searches the given image on the screen and returns the 4 bounds co-ordinates (x,y,w,h)
-
-    cf.mouse_find_highlight_click() : Searches the given text on the screen, highlights and clicks it
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true" height="400">
 
@@ -139,17 +133,21 @@ You would receive an email with self-test report.
 
     cf.folder_delete_all_files() : Deletes all the files of the given folder
 
+    cf.file_rename() : Renames the given file name to new file name with same extension.
+
+    cf.file_get_json_details() : Returns all the details of the given section in a dictionary
+
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true" height="400">
 
 * ## 21 functions on Excel operations:
 
     cf.excel_get_all_sheet_names() : Gives you all names of the sheets in the given excel sheet.
 
-    cf.excel_create_cf.excel_file_in_given_folder()
+    cf.excel_create_excel_file_in_given_folder() : Creates an excel file in the desired folder with desired filename
 
     cf.excel_if_value_exists() : Check if a given value exists in given excel. Returns True / False
 
-    cf.excel_create_file()
+    cf.excel_create_file() : Create a Excel file in fullPathToTheFile with filename.
 
     cf.excel_copy_paste_range_from_to_sheet() : Pastes the copied data in specific range of the given excel sheet.
 
@@ -199,17 +197,21 @@ You would receive an email with self-test report.
 
 * ## 2 functions on Screenscraping operations:
 
-    cf.scrape_save_contents_to_notepad : Copy pastes all the available text on the screen to notepad and saves it.
+    cf.scrape_save_contents_to_notepad() : Copy pastes all the available text on the screen to notepad and saves it.
 
-    cf.scrape_get_contents_by_search_copy_paste : Gets the focus on the screen by searching given text using crtl+f and performs copy/paste of all data. Useful in Citrix applications. This is useful in Citrix applications
+    cf.scrape_get_contents_by_search_copy_paste() : Gets the focus on the screen by searching given text using crtl+f and performs copy/paste of all data. Useful in Citrix applications. This is useful in Citrix applications
+
+    cf.screen_clear_search() : Clears previously found text (crtl+f highlight)
+
+    cf.search_highlight_tab_enter_open() : Searches for a text on screen using crtl+f and hits enter. This function is useful in Citrix environment.
+
+    cf.find_text_on_screen() : Clears previous search and finds the provided text on screen.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true" height="400">
 
-* ## 12 functions on Browser operations:
+* ## 11 functions on Browser operations:
 
-    cf.browser_get_html_text() : Function to get HTML text without tags using Beautiful soup
-
-    cf.browser_get_html_tabular_data_from_website() : Web Scrape HTML Tables : Gets Website Table Data Easily as an Excel using Pandas. Just pass the URL of Website having HTML Tables.
+    cf.browser_activate() : Function to launch browser and start the session.
 
     cf.browser_navigate_h() : Navigates to Specified URL.
 
@@ -217,11 +219,7 @@ You would receive an email with self-test report.
 
     cf.browser_mouse_click_h() : Click on the given element.
 
-    cf.browser_mouse_double_click_h() : Doubleclick on the given element.
-
     cf.browser_locate_element_h() : Find the element by Xpath, id or css selection.
-
-    cf.browser_locate_elements_h() : Find the elements by Xpath, id or css selection.
 
     cf.browser_wait_until_h() : Wait until a specific element is found.
 
@@ -233,7 +231,7 @@ You would receive an email with self-test report.
 
     cf.browser_key_press_h() : Type text using Browser Helium Functions and press hot keys
 
-    cf.browser_attach_file_h() : Upload the selected file to the respected xpath location
+    cf.browser_mouse_hover_h() : Performs a Mouse Hover over the Given User Visible Text Element
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Browser_Functions.gif?raw=true" height="400">
 
@@ -244,6 +242,8 @@ You would receive an email with self-test report.
     cf.message_pop_up() : Specified message will popup on the screen for a specified duration of time.
 
     cf.message_flash() : Specified msg will popup for a specified duration of time with OK button.
+
+    cf.message_toast() : Function for displaying Windows 10 Toast Notifications. Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
 
 * ## 3 functions on String Operations:
 
@@ -258,8 +258,6 @@ You would receive an email with self-test report.
 * ## Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 
     cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
-
-    cf.launch_website_h() : Internal function to launch browser.
 
     cf.schedule_create_task_windows() : Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create_batch_file() function before using this function to convert .pyw file to .bat
 
@@ -285,8 +283,6 @@ You would receive an email with self-test report.
 
     cf.take_error_screenshot() : Takes screenshot of an error popup parallely without waiting for the flow of the program. The screenshot will be saved in the log folder for reference.
 
-    cf.find_text_on_screen() : Clears previous search and finds the provided text on screen.
-
     cf.isNaN() : Returns TRUE if a given value is NaN False otherwise
 
     cf.excel_sub_routines() : Excel VBA Macros called from ClointFusion
@@ -300,8 +296,6 @@ You would receive an email with self-test report.
     cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
 
     cf.time_sleep() : Stops the program for given seconds
-
-    cf.Clear_Screen() : Clears Python Interpreter Terminal Window Screen
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
 
