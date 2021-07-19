@@ -79,10 +79,11 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = ""
-current_working_dir = os.getcwd() #get cwd
+if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Files"))):
+    os.mkdir(Path(os.path.join(os.getcwd(),"CF Files")))
+current_working_dir = Path(os.path.join(os.getcwd(), "CF Files"))
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
-# chrome_service = ""
 browser_driver = ""
 
 cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
@@ -257,10 +258,11 @@ def _set_bot_name(strBotName=""):
     global bot_name
 
     if not strBotName: #if user has not given bot_name
+        bot_name = os.getcwd()
         try:
-            bot_name = current_working_dir[current_working_dir.rindex("\\") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
+            bot_name = bot_name[bot_name.rindex("\\") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
         except:
-            bot_name = current_working_dir[current_working_dir.rindex("/") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
+            bot_name = bot_name[bot_name.rindex("/") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
 
     else:
         strBotName = ''.join(e for e in strBotName if e.isalnum()) 
@@ -2195,11 +2197,10 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
             pathOfExeFile = gui_get_any_file_from_user('EXE or BAT file')
 
         if os_name == windows_os:
+            import win32gui, win32con
             try:
                 subprocess.Popen(pathOfExeFile)
                 time.sleep(2)
-                import win32gui, win32con
-                time.sleep(2) 
                 hwnd = win32gui.GetForegroundWindow()
                 win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
                 status = True
@@ -4727,6 +4728,8 @@ _download_cloint_ico_png()
 
 try:
     resp = requests.post(verify_self_test_url, data={'uuid':str(system_uuid)})
+    if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Folder"))):
+        os.mkdir(Path(os.path.join(current_working_dir,"CF Folder")))
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
 
