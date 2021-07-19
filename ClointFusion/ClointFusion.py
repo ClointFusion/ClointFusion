@@ -79,9 +79,14 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = ""
-if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Files"))):
-    os.mkdir(Path(os.path.join(os.getcwd(),"CF Files")))
-current_working_dir = Path(os.path.join(os.getcwd(), "CF Files"))
+
+try:
+    if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Files"))):
+        os.mkdir(Path(os.path.join(os.getcwd(),"CF Files")))
+    current_working_dir = Path(os.path.join(os.getcwd(), "CF Files")
+except:
+    current_working_dir = os.getcwd()
+    
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 browser_driver = ""
