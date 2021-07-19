@@ -82,7 +82,7 @@ bot_name = ""
 current_working_dir = os.getcwd() #get cwd
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
-chrome_service = ""
+# chrome_service = ""
 browser_driver = ""
 
 cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
@@ -4162,20 +4162,17 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Testing keyboard operations')
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
-            if os_name == linux_os:
-                launch_any_exe_bat_application("gedit") # Ubuntu
-            # if os_name == mac_os:
-            #     launch_any_exe_bat_application("TextEdit") # macOS
-
-            if os_name == windows_os:
                 keyboard_write_text(write_to_window="notepad",text_to_write="Performing ClointFusion Self Test for Notepad")
                 keyboard_hit_enter(write_to_window="notepad")
                 keyboard_hotkey_press(key_1="alt", key_2="f4", write_to_window="notepad")
+                keyboard_hotkey_press("right")
+                keyboard_hit_enter()
                 message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
             if os_name == linux_os:
+                launch_any_exe_bat_application("gedit") # Ubuntu
                 keyboard_write_text(text_to_write="Performing ClointFusion Self Test for Notepad")
                 keyboard_hit_enter()
                 keyboard_hotkey_press(key_1="alt", key_2="f4")
@@ -4184,15 +4181,25 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
             if os_name == mac_os:
-                print("Currently Not Supported.")
-                logging.info('Keyboard operations Skipped.')
+                try:
+                    launch_any_exe_bat_application("TextEdit") # macOS
+                    keyboard_write_text(text_to_write="Performing ClointFusion Self Test for Notepad")
+                    keyboard_hit_enter()
+                    keyboard_hotkey_press(key_1="command", key_2="f4")
+                    message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+                    print('Keyboard operations tested successfully '+show_emoji())
+                    print("____________________________________________________________")
+                    logging.info('Keyboard operations tested successfully')
+                except:
+                    print("Currently Not Supported.")
+                    logging.info('Keyboard operations Skipped.')
         except Exception as ex:
             print('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
             try:
                 keyboard_hotkey_press(key_1="alt", key_2="f4")
             except:
-                keyboard_hotkey_press(key_1="alt", key_2="f4")
+                pg.hotkey("alt", "f4")
 
         message_counter_down_timer("Starting Excel Operations in (seconds)",3)
     
@@ -4271,11 +4278,11 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             webbrowser.open('https://sites.google.com/view/clointfusion-hackathon') 
             message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
-            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_3),conf=0.5,wait=5)
+            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_3),wait=5)
             print(pos)
-            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_2),conf=0.5,wait=5)
+            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_2),wait=5)
             print(pos)
-            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_1),conf=0.5,wait=5)
+            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_1),wait=5)
             print(pos)
 
             # pos=mouse_search_snips_return_coordinates_x_y([str(twenty_PNG_1),str(twenty_PNG_2),str(twenty_PNG_3)],conf=0.5,wait=10)
@@ -4306,15 +4313,15 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             
             search_highlight_tab_enter_open("chat.whatsapp")
 
-            pos = mouse_search_snips_return_coordinates_x_y([str(chrome_close_PNG_1),str(chrome_close_PNG_2),str(chrome_close_PNG_3)],conf=0.8,wait=3)
-            print(pos)
-            if pos is not None:
-                mouse_click(*pos)
+            # pos = mouse_search_snips_return_coordinates_x_y([str(chrome_close_PNG_1),str(chrome_close_PNG_2),str(chrome_close_PNG_3)],conf=0.8,wait=3)
+            # print(pos)
+            # if pos is not None:
+            #     mouse_click(*pos)
 
-            pos = mouse_search_snips_return_coordinates_x_y([str(chrome_close_PNG_1),str(chrome_close_PNG_2),str(chrome_close_PNG_3)],conf=0.8,wait=3)
-            print(pos)
-            if pos is not None:
-                mouse_click(*pos)
+            # pos = mouse_search_snips_return_coordinates_x_y([str(chrome_close_PNG_1),str(chrome_close_PNG_2),str(chrome_close_PNG_3)],conf=0.8,wait=3)
+            # print(pos)
+            # if pos is not None:
+            #     mouse_click(*pos)
 
             mouse_click(int(pg.size()[0]/2),int(pg.size()[1]/2)) #Click at center of the screen
 
@@ -4344,7 +4351,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
                 browser_mouse_click_h(element="RPA",double_click=True)
                 
-                browser_mouse_click_h("Open in Colab")
+                browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/p[5]/a/img'))
+                
+                pause_program(10)
                 
                 browser_quit_h()
                 print("Tested Browser's Helium functions successfully " + show_emoji())
@@ -4365,10 +4374,10 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         try:
             print("____________________________________________________________")
             print()
-            print("Testing flash message")
-            message_pop_up("Testing flash message")
-            
-            logging.info("Flash message tested successfully")
+            print("Testing flash message.")
+            message_pop_up("Testing flash message.")
+            message_toast("Testing toast message.")
+            logging.info("Flash message tested successfully.")
         except Exception as ex:
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
