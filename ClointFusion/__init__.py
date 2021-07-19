@@ -55,9 +55,9 @@ from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_x_y
 
 
 # ---------  Keyboard Functions | Current Count : 3
-from ClointFusion.ClointFusion import keyboard_hotkey_press
-from ClointFusion.ClointFusion import keyboard_write_text
-from ClointFusion.ClointFusion import keyboard_hit_enter
+from ClointFusion.ClointFusion import key_press
+from ClointFusion.ClointFusion import key_write_enter
+from ClointFusion.ClointFusion import key_hit_enter
 
 
 # ---------  Browser Functions | Current Count : 11

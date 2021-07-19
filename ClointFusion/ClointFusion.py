@@ -83,7 +83,7 @@ bot_name = ""
 try:
     if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Files"))):
         os.mkdir(Path(os.path.join(os.getcwd(),"CF Files")))
-    current_working_dir = Path(os.path.join(os.getcwd(), "CF Files")
+    current_working_dir = os.path.join(os.getcwd(), "CF Files")
 except:
     current_working_dir = os.getcwd()
     
@@ -1036,127 +1036,6 @@ def gui_get_workspace_path_from_user():
 
 
 
-# ---------  Message  Functions --------- 
-
-def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds)",start_value=5):
-    """
-    Function to show count-down timer. Default is 5 seconds.
-    Ex: message_counter_down_timer()
-    """
-    CONTINUE = True
-    layout = [[sg.Text(strMsg,justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
-            [sg.Image(filename = str(cf_logo_file_path),size=(60,60))],
-            [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
-    
-    window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_cdt_file_path)
-    
-    current_value = start_value + 1
-
-    while True:
-        event, _ = window.read(timeout=2)
-        current_value = current_value - 1
-        time.sleep(1)
-            
-        if current_value == 0:
-            CONTINUE = True
-            break
-            
-        if event in (sg.WIN_CLOSED, 'Cancel'):    
-            CONTINUE = False  
-            print("Action cancelled by user")
-            break
-
-        window['text'].update(value=current_value)
-
-    window.close()
-    return CONTINUE
-
-def message_pop_up(strMsg="",delay=3):
-    """
-    Specified message will popup on the screen for a specified duration of time.
-
-    Parameters:
-        strMsg  (str) : message to popup.
-        delay   (int) : duration of the popup.
-    """
-    try:
-        # if not strMsg:
-        #     strMsg = gui_get_any_input_from_user("pop-up message")
-        sg.popup(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
-    except Exception as ex:
-        print("Error in message_pop_up="+str(ex))
-
-def message_flash(msg="",delay=3):
-    """
-    specified msg will popup for a specified duration of time with OK button.
-
-    Parameters:
-        msg     (str) : message to popup.
-        delay   (int) : duration of the popup.
-    """
-    try:
-        if not msg:
-            msg = gui_get_any_input_from_user("flash message")
-
-        r = Timer(int(delay), keyboard_hit_enter)
-        r.start()
-        pg.alert(text=msg, title='ClointFusion', button='OK')
-    except Exception as ex:
-        print("ERROR in message_flash="+str(ex))
-
-def message_toast(message,website_url="", file_folder_path=""):
-    """
-    Function for displaying Windows 10 Toast Notifications.
-    Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
-    """
-    
-    if os_name == windows_os:
-
-        if str(enable_semi_automatic_mode).lower() == 'false':
-            from win10toast_click import ToastNotifier 
-            toaster = ToastNotifier()
-
-            if website_url:
-
-                toaster.show_toast(
-                    "ClointFusion", 
-                    "{}. Click to open URL".format(message), 
-                    icon_path=cf_icon_cdt_file_path,
-                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
-                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
-                    callback_on_click=lambda: webbrowser.open_new(website_url) # click notification to run function 
-                )
-
-            elif file_folder_path:
-                toaster.show_toast(
-                    "ClointFusion", 
-                    "{}. Click to open".format(message), 
-                    icon_path=cf_icon_cdt_file_path,
-                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
-                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
-                    callback_on_click=lambda: os.startfile(file_folder_path) # click notification to run function 
-                )
-
-            else:
-                toaster.show_toast(
-                    "ClointFusion", # title
-                    message, # message 
-                    icon_path=cf_icon_cdt_file_path, # 'icon_path' 
-                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
-                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
-            )
-        else:
-            print("This function works when semi-automatic mode is enabled")    
-
-    else:
-        print("This function works only on Windows OS")
-
-# ---------  Message  Functions Ends ---------
-
-
-
-
-
 # ---------  Mouse Functions --------- 
     
 def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
@@ -1370,7 +1249,7 @@ def mouse_search_snip_return_coordinates_x_y(img="", wait=180):
 
 # ---------  Keyboard Functions --------- 
 
-def keyboard_hotkey_press(key_1='', key_2='', key_3='', write_to_window=""):
+def key_press(key_1='', key_2='', key_3='', write_to_window=""):
     """Emulates the given keystrokes.
 
     Args:
@@ -1421,11 +1300,11 @@ def keyboard_hotkey_press(key_1='', key_2='', key_3='', write_to_window=""):
         time.sleep(0.5)
         status = True
     except Exception as ex:
-            print("Error in keyboard_hotkey_press="+str(ex))
+            print("Error in key_press="+str(ex))
     finally:
         return status
     
-def keyboard_write_text(text_to_write="", write_to_window="", delay_after_typing=1):
+def key_write_enter(text_to_write="", write_to_window="", delay_after_typing=1, key="e"):
     """Writes/Types the given text.
 
     Args:
@@ -1435,6 +1314,8 @@ def keyboard_write_text(text_to_write="", write_to_window="", delay_after_typing
         Eg: Notepad. Defaults to "".
         delay_after_typing (int, optional): Seconds in time to wait after entering the text
         Eg: 5. Defaults to 1.
+        key (str, optional): Press Enter key after typing.
+        Eg: t for tab. Defaults to e
 
     Returns:
         bool: Whether the function is successful or failed.
@@ -1451,14 +1332,18 @@ def keyboard_write_text(text_to_write="", write_to_window="", delay_after_typing
 
         time.sleep(0.2)
         pg.write(text_to_write)
+        if key.lower() ==  "e":
+            pg.hotkey("enter")
+        if key.lower() == "t":
+            pg.hotkey("tab")
         time.sleep(delay_after_typing)
         status = True
     except Exception as ex:
-        print("Error in keyboard_write_text="+str(ex))
+        print("Error in key_write_enter="+str(ex))
     finally:
         return status
 
-def keyboard_hit_enter(write_to_window=""):
+def key_hit_enter(write_to_window=""):
     """Enter key will be pressed once.
 
     Args:
@@ -1471,15 +1356,137 @@ def keyboard_hit_enter(write_to_window=""):
     status = False
     try:
         time.sleep(0.5)
-        keyboard_hotkey_press(key_1="enter", write_to_window=write_to_window)
+        key_press(key_1="enter", write_to_window=write_to_window)
         time.sleep(0.5)
         status = True
     except Exception as ex:
-        print("Error in keyboard_hit_enter="+str(ex))
+        print("Error in key_hit_enter="+str(ex))
     finally:
         return status
 
 # --------- Keyboard Functions Ends --------- 
+
+
+
+
+
+
+# ---------  Message  Functions --------- 
+
+def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds)",start_value=5):
+    """
+    Function to show count-down timer. Default is 5 seconds.
+    Ex: message_counter_down_timer()
+    """
+    CONTINUE = True
+    layout = [[sg.Text(strMsg,justification='c')],[sg.Text('',size=(10, 0),font=('Helvetica', 20),justification='c', key='text')],
+            [sg.Image(filename = str(cf_logo_file_path),size=(60,60))],
+            [sg.Exit(button_color=('white', 'firebrick4'), key='Cancel')]]
+    
+    window = sg.Window('ClointFusion - Countdown Timer', layout, no_titlebar=True, auto_size_buttons=False,keep_on_top=True, grab_anywhere=False, element_justification='c',element_padding=(0, 0),finalize=True,icon=cf_icon_cdt_file_path)
+    
+    current_value = start_value + 1
+
+    while True:
+        event, _ = window.read(timeout=2)
+        current_value = current_value - 1
+        time.sleep(1)
+            
+        if current_value == 0:
+            CONTINUE = True
+            break
+            
+        if event in (sg.WIN_CLOSED, 'Cancel'):    
+            CONTINUE = False  
+            print("Action cancelled by user")
+            break
+
+        window['text'].update(value=current_value)
+
+    window.close()
+    return CONTINUE
+
+def message_pop_up(strMsg="",delay=3):
+    """
+    Specified message will popup on the screen for a specified duration of time.
+
+    Parameters:
+        strMsg  (str) : message to popup.
+        delay   (int) : duration of the popup.
+    """
+    try:
+        # if not strMsg:
+        #     strMsg = gui_get_any_input_from_user("pop-up message")
+        sg.popup(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
+    except Exception as ex:
+        print("Error in message_pop_up="+str(ex))
+
+def message_flash(msg="",delay=3):
+    """
+    specified msg will popup for a specified duration of time with OK button.
+
+    Parameters:
+        msg     (str) : message to popup.
+        delay   (int) : duration of the popup.
+    """
+    try:
+        if not msg:
+            msg = gui_get_any_input_from_user("flash message")
+
+        r = Timer(int(delay), key_hit_enter)
+        r.start()
+        pg.alert(text=msg, title='ClointFusion', button='OK')
+    except Exception as ex:
+        print("ERROR in message_flash="+str(ex))
+
+def message_toast(message,website_url="", file_folder_path=""):
+    """
+    Function for displaying Windows 10 Toast Notifications.
+    Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.
+    """
+    
+    if os_name == windows_os:
+
+        if str(enable_semi_automatic_mode).lower() == 'false':
+            from win10toast_click import ToastNotifier 
+            toaster = ToastNotifier()
+
+            if website_url:
+
+                toaster.show_toast(
+                    "ClointFusion", 
+                    "{}. Click to open URL".format(message), 
+                    icon_path=cf_icon_cdt_file_path,
+                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+                    callback_on_click=lambda: webbrowser.open_new(website_url) # click notification to run function 
+                )
+
+            elif file_folder_path:
+                toaster.show_toast(
+                    "ClointFusion", 
+                    "{}. Click to open".format(message), 
+                    icon_path=cf_icon_cdt_file_path,
+                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+                    callback_on_click=lambda: os.startfile(file_folder_path) # click notification to run function 
+                )
+
+            else:
+                toaster.show_toast(
+                    "ClointFusion", # title
+                    message, # message 
+                    icon_path=cf_icon_cdt_file_path, # 'icon_path' 
+                    duration=5, # for how many seconds toast should be visible; None = leave notification in Notification Center
+                    threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
+            )
+        else:
+            print("This function works when semi-automatic mode is enabled")    
+
+    else:
+        print("This function works only on Windows OS")
+
+# ---------  Message  Functions Ends ---------
 
 
 
@@ -4168,20 +4175,20 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Testing keyboard operations')
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
-                keyboard_write_text(write_to_window="notepad",text_to_write="Performing ClointFusion Self Test for Notepad")
-                keyboard_hit_enter(write_to_window="notepad")
-                keyboard_hotkey_press(key_1="alt", key_2="f4", write_to_window="notepad")
-                keyboard_hotkey_press("right")
-                keyboard_hit_enter()
+                key_write_enter(write_to_window="notepad",text_to_write="Performing ClointFusion Self Test for Notepad")
+                key_hit_enter(write_to_window="notepad")
+                key_press(key_1="alt", key_2="f4", write_to_window="notepad")
+                key_press("right")
+                key_hit_enter()
                 message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
             if os_name == linux_os:
                 launch_any_exe_bat_application("gedit") # Ubuntu
-                keyboard_write_text(text_to_write="Performing ClointFusion Self Test for Notepad")
-                keyboard_hit_enter()
-                keyboard_hotkey_press(key_1="alt", key_2="f4")
+                key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
+                key_hit_enter()
+                key_press(key_1="alt", key_2="f4")
                 message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
@@ -4189,9 +4196,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             if os_name == mac_os:
                 try:
                     launch_any_exe_bat_application("TextEdit") # macOS
-                    keyboard_write_text(text_to_write="Performing ClointFusion Self Test for Notepad")
-                    keyboard_hit_enter()
-                    keyboard_hotkey_press(key_1="command", key_2="f4")
+                    key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
+                    key_hit_enter()
+                    key_press(key_1="command", key_2="f4")
                     message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
                     print('Keyboard operations tested successfully '+show_emoji())
                     print("____________________________________________________________")
@@ -4203,7 +4210,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
             try:
-                keyboard_hotkey_press(key_1="alt", key_2="f4")
+                key_press(key_1="alt", key_2="f4")
             except:
                 pg.hotkey("alt", "f4")
 
@@ -4337,7 +4344,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
-            keyboard_hotkey_press(key_1="ctrl", key_2="w")
+            key_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
@@ -4372,7 +4379,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
-            keyboard_hotkey_press(key_1="ctrl", key_2="w") #to close any open browser
+            key_press(key_1="ctrl", key_2="w") #to close any open browser
             TEST_CASES_STATUS_MESSAGE = "Error while Testing Browser Helium functions="+str(ex)
 
         message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
@@ -4506,7 +4513,7 @@ def clointfusion_self_test(last_updated_on_month):
                     time.sleep(2)
                     
                     try:
-                        keyboard_hotkey_press(key_1="alt", key_2="f4")
+                        key_press(key_1="alt", key_2="f4")
                     except:
                         pg.hotkey('alt','f4')
                     time.sleep(2)
