@@ -4352,25 +4352,19 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         
         # Closing Browsers
         if os_name == windows_os:
-            code = subprocess.call("taskkill /im firefox.exe /f")
-            if code != 0:
-                code = subprocess.call("taskkill /im chrome.exe /f")
-                if code != 0:
-                    code = subprocess.call("taskkill /im brave.exe /f")
+            subprocess.call("taskkill /im firefox.exe /f")
+            subprocess.call("taskkill /im chrome.exe /f")
+            subprocess.call("taskkill /im brave.exe /f")
         
         if os_name == linux_os:
-            code = subprocess.call("'killall -9 chrome'")
-            if code != 0:
-                code = subprocess.call("'killall -9 firefox'")
-                if code != 0:
-                    code = subprocess.call("'killall -9 brave'")
+            subprocess.call("'killall -9 chrome'")
+            subprocess.call("'killall -9 firefox'")
+            subprocess.call("'killall -9 brave'")
                     
         if os_name == mac_os: 
-            code = subprocess.call('pkill -9 "Google Chrome"', shell=True)
-            if code != 0:
-                code = subprocess.call('pkill -9 "Firefox"')
-                if code != 0:
-                    code = subprocess.call('pkill -9 "Brave"')
+            subprocess.call('pkill -9 "Google Chrome"', shell=True)
+            subprocess.call('pkill -9 "Firefox"')
+            subprocess.call('pkill -9 "Brave"')
         
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
