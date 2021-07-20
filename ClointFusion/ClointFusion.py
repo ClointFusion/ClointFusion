@@ -4294,12 +4294,12 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             webbrowser.open('https://sites.google.com/view/clointfusion-hackathon') 
             message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
-            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_3),wait=5)
-            print(pos)
-            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_2),wait=5)
-            print(pos)
-            pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_1),wait=5)
-            print(pos)
+            # pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_3),wait=5)
+            # print(pos)
+            # pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_2),wait=5)
+            # print(pos)
+            # pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_1),wait=5)
+            # print(pos)
 
             # pos=mouse_search_snips_return_coordinates_x_y([str(twenty_PNG_1),str(twenty_PNG_2),str(twenty_PNG_3)],conf=0.5,wait=10)
             # print(pos)
@@ -4386,6 +4386,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                     browser_mouse_click_h("ClointFusion 0.1.")
                 except:
                     browser_mouse_click_h("ClointFusion 0")
+                
+                key_press("browserstop")
 
                 browser_mouse_click_h(element="RPA",double_click=True)
                 
