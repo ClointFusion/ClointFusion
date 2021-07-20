@@ -4743,8 +4743,6 @@ _download_cloint_ico_png()
 
 try:
     resp = requests.post(verify_self_test_url, data={'uuid':str(system_uuid)})
-    if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Folder"))):
-        os.mkdir(Path(os.path.join(current_working_dir,"CF Folder")))
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
 
