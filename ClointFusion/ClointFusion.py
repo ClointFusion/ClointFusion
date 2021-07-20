@@ -4350,6 +4350,28 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             key_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
+        # Closing Browsers
+        if os_name == windows_os:
+            code = subprocess.call("taskkill /im firefox.exe")
+            if code != 0:
+                code = subprocess.call("taskkill /im chrome.exe")
+                if code != 0:
+                    code = subprocess.call("taskkill /im brave.exe")
+        
+        if os_name == linux_os:
+            code = subprocess.call("'killall chrome'")
+            if code != 0:
+                code = subprocess.call("'killall firefox'")
+                if code != 0:
+                    code = subprocess.call("'killall brave'")
+                    
+        if os_name == mac_os: 
+            code = subprocess.call('pkill "Google Chrome"', shell=True)
+            if code != 0:
+                code = subprocess.call('pkill "Firefox"')
+                if code != 0:
+                    code = subprocess.call('pkill "Brave"')
+        
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
