@@ -106,7 +106,7 @@ helium_service_launched=False
 verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
 update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
 
-system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, 'clointfusion.com')).upper()
+system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, 'clointfusion.com')).upper() + "-" + socket.gethostname()
 
 # 3. All function definitions
 
