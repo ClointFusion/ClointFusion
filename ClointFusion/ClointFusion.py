@@ -3981,6 +3981,18 @@ def get_image_from_base64(imgFileName,imgBase64Str):
         except Exception as ex:
             print("Error in get_image_from_base64="+str(ex))
 
+def clear_screen():
+    """
+    Clears Python Interpreter Terminal Window Screen
+    """
+    try:
+      command = 'clear'
+      if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+        command = 'cls'
+      os.system(command)
+    except:
+        pass
+
 # --------- Utility Functions Ends ---------
 
 
