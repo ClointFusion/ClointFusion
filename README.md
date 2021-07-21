@@ -257,6 +257,8 @@ You would receive an email with self-test report.
 
 * ## Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 
+    cf.clear_screen() : Clears Python Interpreter Terminal Window Screen
+
     cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
 
     cf.schedule_create_task_windows() : Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create_batch_file() function before using this function to convert .pyw file to .bat
@@ -265,21 +267,13 @@ You would receive an email with self-test report.
 
     cf.show_emoji() : Function which prints Emojis
 
-    cf.message_counter_down_timer() : Function to show count-down timer. Default is 5 seconds.
-
-    cf.get_long_lat() : Function takes zip_code as input (int) and returns longitude, latitude, state, city, county. 
-
     cf.dismantle_code() : This functions dis-assembles given function and shows you column-by-column summary to explain the output of disassembled bytecode.
 
     cf.ON_semi_automatic_mode() : This function sets semi_automatic_mode as True => ON
 
     cf.OFF_semi_automatic_mode() : This function sets semi_automatic_mode as False => OFF
 
-    cf.camera_capture_image() : turn ON camera & take photo 
-
     cf.convert_csv_to_excel() : Function to convert CSV to Excel 
-
-    cf.capture_snip_now() :  Captures the snip and stores in Image Folder of the BOT by giving continous numbering
 
     cf.take_error_screenshot() : Takes screenshot of an error popup parallely without waiting for the flow of the program. The screenshot will be saved in the log folder for reference.
 
@@ -289,13 +283,11 @@ You would receive an email with self-test report.
 
     cf.email_send_via_desktop_outlook() : Send email using Outlook from Desktop email application
 
-    cf.email_send_gmail_via_api() : Sends gmail using API. User needs to supply his client_secret.json as parameter
-
     cf.download_this_file() : Downloads a given url file to BOT output folder or Browser's Download folder
 
     cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
 
-    cf.time_sleep() : Stops the program for given seconds
+    cf.pause_program() : Stops the program for given seconds
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
 
