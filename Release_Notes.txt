@@ -1,3 +1,6 @@
+24) ClointFusion version 0.1.16 released on 21-07-2021 11:40 AM
+    Code revamped (Contribution by Research Intern Murali Manohar Varma) to make it Compatible with Windows 10, 11, Ubuntu and macOS
+
 23) ClointFusion version 0.1.13 to 0.1.15 released on 09-07-2021 08:30 AM
     1) GIFs added to ReadMe.MD (Contribution by interns@ClointFusion)
     2) Minor bug fixes in few functions

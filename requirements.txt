@@ -17,8 +17,6 @@ cryptocode >= 0.1
 ImageHash >= 4.2.0
 xlsx2html >= 0.2.2 
 python-dateutil>=2.8.1
-jupyterlab
-notebook
 pygments>=2.7.4 
 pyinspect>= 0.0.8
 pyfiglet
@@ -32,3 +30,4 @@ Flask>=2.0.1
 trio>=0.11
 wsproto>=0.14
 beautifulsoup4>=4.9.3
+enum34>=1.1.10
