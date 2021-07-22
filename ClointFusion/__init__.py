@@ -1,6 +1,9 @@
 # ---------  Libraries Imports | Current Count : 13
 from ClointFusion.ClointFusion import pd
-from ClointFusion.ClointFusion import pg
+try:
+    from ClointFusion.ClointFusion import pg
+except:
+    pass
 from ClointFusion.ClointFusion import clipboard
 from ClointFusion.ClointFusion import re
 from ClointFusion.ClointFusion import op
