@@ -38,7 +38,12 @@ import socket
 import uuid
     # External libraries
 from pandas.core.algorithms import mode
-import pyautogui as pg
+
+try:
+    import pyautogui as pg
+except:
+    pass
+
 import pandas as pd
 import PySimpleGUI as sg
 import openpyxl as op
@@ -56,12 +61,10 @@ from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import pyinspect as pi
 from tabloo import show
-
+from pif import get_public_ip
 
 
 sg.theme('Dark') # for PySimpleGUI FRONT END        
-
-
 
 
 # 2. All global variables
@@ -245,7 +248,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.16)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.17)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -342,71 +345,74 @@ def _ask_user_semi_automatic_mode():
     """
     Ask user to 'Enable Semi Automatic Mode'
     """
-    global enable_semi_automatic_mode
-    values = []
-    
-    file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-    file_path = Path(file_path)
-    stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
-
-    file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
-    file_path = Path(file_path)
-    enable_semi_automatic_mode = _folder_read_text_file(file_path)
-    
-    bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
-    bot_config_path = Path(bot_config_path)
-
-    if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
-
-        layout = [[sg.Text('Do you want me to store GUI responses & use them next time when you run this BOT ?',text_color='orange',font='Courier 13')],
-                [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14', focus=True), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
-                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
-                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Dont_Ask_Again.txt' to False. \n Please find path here: {}".format(Path(os.path.join(config_folder_path, 'Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')]]
-
-        window = sg.Window('ClointFusion - Enable Semi Automatic Mode ?',layout,return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
+    try:
+        global enable_semi_automatic_mode
+        values = []
         
-        while True:
-            event, values = window.read()
-            if event == '-DONT_ASK_AGAIN-':
-                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-                file_path = Path(file_path)
-                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+        file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+        file_path = Path(file_path)
+        stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
 
-                if values['-DONT_ASK_AGAIN-']:
-                    window.Element('-DND-').Update(visible=True)
-                else:
-                    window.Element('-DND-').Update(visible=False)
-
-            file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-            file_path = Path(file_path)
-            _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-
-            if event in (sg.WIN_CLOSED, 'No'): #ask me every time
-                enable_semi_automatic_mode = False
-                break
-            elif event == 'Yes': #do not ask me again
-                enable_semi_automatic_mode = True
-                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-                file_path = Path(file_path)
-                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-                break
-    
-        window.close()
-
-        if not os.path.exists(bot_config_path):
-            df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-            append_df_to_excel(bot_config_path, df, index=False, startrow=0)
-            
-        if enable_semi_automatic_mode:
-            print("Semi Automatic Mode is ENABLED "+ show_emoji())
-        else:
-            print("Semi Automatic Mode is DISABLED "+ show_emoji())
-        
         file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
         file_path = Path(file_path)
-        _folder_write_text_file(file_path,str(enable_semi_automatic_mode))
+        enable_semi_automatic_mode = _folder_read_text_file(file_path)
+        
+        bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
+        bot_config_path = Path(bot_config_path)
+
+        if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
+
+            layout = [[sg.Text('Do you want me to store GUI responses & use them next time when you run this BOT ?',text_color='orange',font='Courier 13')],
+                    [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14', focus=True), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
+                    [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
+                    [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Dont_Ask_Again.txt' to False. \n Please find path here: {}".format(Path(os.path.join(config_folder_path, 'Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')]]
+
+            window = sg.Window('ClointFusion - Enable Semi Automatic Mode ?',layout,return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
+            
+            while True:
+                event, values = window.read()
+                if event == '-DONT_ASK_AGAIN-':
+                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                    file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+                    file_path = Path(file_path)
+                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+
+                    if values['-DONT_ASK_AGAIN-']:
+                        window.Element('-DND-').Update(visible=True)
+                    else:
+                        window.Element('-DND-').Update(visible=False)
+
+                file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+                file_path = Path(file_path)
+                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+
+                if event in (sg.WIN_CLOSED, 'No'): #ask me every time
+                    enable_semi_automatic_mode = False
+                    break
+                elif event == 'Yes': #do not ask me again
+                    enable_semi_automatic_mode = True
+                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+                    file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+                    file_path = Path(file_path)
+                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+                    break
+        
+            window.close()
+
+            if not os.path.exists(bot_config_path):
+                df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
+                append_df_to_excel(bot_config_path, df, index=False, startrow=0)
+                
+            if enable_semi_automatic_mode:
+                print("Semi Automatic Mode is ENABLED "+ show_emoji())
+            else:
+                print("Semi Automatic Mode is DISABLED "+ show_emoji())
+            
+            file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
+            file_path = Path(file_path)
+            _folder_write_text_file(file_path,str(enable_semi_automatic_mode))
+    except Exception as ex:
+        print("Error in _ask_user_semi_automatic_mode " + str(ex))
 
 def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",value=""):
     """
@@ -3471,11 +3477,9 @@ def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = Fal
 
 
 
-
-
 # --------- Screenscraping Functions ---------
 
-def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",X=pg.size()[0]/2,Y=pg.size()[1]/2): #"Full path to the folder (with double slashes) where notepad is to be stored"
+def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",X=0,Y=0): #"Full path to the folder (with double slashes) where notepad is to be stored"
     """
     Copy pastes all the available text on the screen to notepad and saves it.
     """
@@ -3485,6 +3489,10 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",X=pg.size()[0]
 
         message_counter_down_timer("Screen scraping in (seconds)",3)
         time.sleep(1)
+
+        if X == 0 and Y == 0:
+            X = pg.size()[0]/2
+            Y = pg.size()[1]/2
         
         pg.click(X,Y)
         
@@ -4007,8 +4015,7 @@ def _init_cf_quick_test_log_file(log_path_arg):
     """
     global log_path
     log_path = log_path_arg
-    from pif import get_public_ip
-
+    
     try:
         
         dt_tm= str(datetime.datetime.now())    
@@ -4031,7 +4038,10 @@ def _init_cf_quick_test_log_file(log_path_arg):
         logging.info("{}/{}".format(host_ip,str(get_public_ip())))
 
 def _rerun_clointfusion_first_run(ex):
-    pg.alert("Please Re-run..." + str(ex))
+    try:
+        pg.alert("Please Re-run..." + str(ex))
+    except:
+        print("Please Re-run...")
     # _,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=False)
     # with open(last_updated_date_file, 'w',encoding="utf-8") as f:
     #     last_updated_on_date = int(datetime.date.today().strftime('%m')) - 1
@@ -4460,10 +4470,10 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
 def clointfusion_self_test(last_updated_on_month):
     global os_name
+    WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
     try:
-        from pif import get_public_ip
-        
+
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
                 [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
                 [sg.Text("We will be collecting OS name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
@@ -4476,9 +4486,12 @@ def clointfusion_self_test(last_updated_on_month):
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
         else:
-            window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
+            try:
+                window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
+            except:
+                WHILE_TRUE = False
         
-        while True:             
+        while WHILE_TRUE:             
             event, _ = window.read()
 
             if event == 'SSO':
@@ -4561,19 +4574,25 @@ def clointfusion_self_test(last_updated_on_month):
                 break        
                     
     except Exception as ex:
-        pg.alert('Error in Clointfusion Self Test = '+str(ex))
+        try:
+            pg.alert('Error in Clointfusion Self Test = '+str(ex))
+        except:
+            print("Error in Clointfusion Self Test = " +str(ex))
 
         exc_type, exc_value, exc_tb = sys.exc_info()
         print(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
 
         _rerun_clointfusion_first_run(str(ex))
     finally:
-        print('Thank you !')
+        try:
+            # print('Thank you !')
 
-        if int(last_updated_on_month) != -9 :
-            sys.exit(0)
-        else:
-            window.close()
+            if int(last_updated_on_month) != -9 :
+                sys.exit(0)
+            else:
+                window.close()
+        except: 
+            pass
 
 def is_execution_required_today(function_name,execution_type="D",save_todays_date_month=False):
     """
