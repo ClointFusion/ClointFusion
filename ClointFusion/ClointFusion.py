@@ -84,9 +84,9 @@ status_log_excel_filepath = ""
 bot_name = ""
 
 try:
-    if not os.path.exists(Path(os.path.join(os.getcwd(), "CF Files"))):
-        os.mkdir(Path(os.path.join(os.getcwd(),"CF Files")))
-    current_working_dir = os.path.join(os.getcwd(), "CF Files")
+    if not os.path.exists(Path(os.path.join(os.getcwd(), "CF_Files"))):
+        os.mkdir(Path(os.path.join(os.getcwd(),"CF_Files")))
+    current_working_dir = os.path.join(os.getcwd(), "CF_Files")
 except:
     current_working_dir = os.getcwd()
     
