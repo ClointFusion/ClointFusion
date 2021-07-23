@@ -4047,8 +4047,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
     red_close_PNG_1 = temp_current_working_dir / "RED-Close_1.PNG"
 
-    
-
     if not os.path.exists(red_close_PNG_1):
         urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/RED-Close_1.PNG',red_close_PNG_1)
 
@@ -4410,6 +4408,12 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
+            
+        try:
+            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+            mouse_click(pos[0], pos[1])
+        except:
+            print("Please click red 'Close' button")
 
     except Exception as ex:
         print("ClointFusion Automated Testing Failed "+str(ex))
@@ -4429,12 +4433,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
             print("____________________________________________________________")
             
-            # print("Please click red 'Close' button")
-            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
-            
-            if pos is not None:
-                mouse_click(*pos)
-
             message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
 
         else:
@@ -4495,7 +4493,7 @@ def clointfusion_self_test(last_updated_on_month):
 
             if event == 'Start':
                 window['Start'].update(disabled=True)
-                window['Close'].update(disabled=True)
+                # window['Close'].update(disabled=True)
                 window['Skip for Now'].update(disabled=True)
                 _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
