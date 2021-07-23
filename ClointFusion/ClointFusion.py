@@ -84,12 +84,7 @@ error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = ""
 
-try:
-    if not os.path.exists(Path(os.path.join(os.getcwd(), "CF_Files"))):
-        os.mkdir(Path(os.path.join(os.getcwd(),"CF_Files")))
-    current_working_dir = os.path.join(os.getcwd(), "CF_Files")
-except:
-    current_working_dir = os.getcwd()
+current_working_dir = os.getcwd()
     
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
@@ -110,7 +105,12 @@ helium_service_launched=False
 verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
 update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
 
-system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, socket.gethostname()+get_public_ip())).upper()
+if os_name == windows_os:
+    system_uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
+if os_name == linux_os:
+    system_uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
+if os_name == mac_os:
+    system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, socket.gethostname())).upper()
 
 # 3. All function definitions
 
@@ -150,6 +150,7 @@ def ON_semi_automatic_mode():
         print("Error in ON_semi_automatic_mode="+str(ex))
 
 # ---------  Methods Ends ---------
+
 
 
 
@@ -254,8 +255,6 @@ def _create_status_log_file(xtLogFilePath):
             writer.save()
     except Exception as ex:
         print("Error in _create_status_log_file = " +str(ex))
-
-# @timeit
 
 def _init_log_file():
     """
@@ -489,7 +488,7 @@ def _excel_paste_range(startCol=1, startRow=1, endCol=1, endRow=1, sheetReceivin
 
 
 
-# @background
+
 # ---------  GUI Functions ---------
 
 def gui_get_consent_from_user(msgForUser="Continue ?"):    
@@ -1027,6 +1026,7 @@ def gui_get_workspace_path_from_user():
 
 
 
+
 # ---------  Mouse Functions --------- 
     
 def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
@@ -1047,17 +1047,6 @@ def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
     """
     status = False
     try:
-        # if not x or not y:
-            # if not x and not y:
-            #     x_y = str(gui_get_any_input_from_user(f"X,Y co-ordinates to perform Mouse {left_or_right.title()} Click. Ex: 369,435"))
-            #     if "," in x_y:
-            #         x, y = x_y.split(",")
-            #     elif " " in x_y:
-            #         x, y = x_y.split(" ")
-            # if not x and y:
-            #     x = str(gui_get_any_input_from_user(f"Enter 'X' co-ordinate Y={y} to perform Mouse {left_or_right.title()} Click. Ex: 369"))
-            # if not y and x:
-            #     y = str(gui_get_any_input_from_user(f"Enter 'Y' co-ordinate X={x} to perform Mouse {left_or_right.title()} Click. Ex: 369"))
         
         if not x or not y:
             x, y = pg.position()
@@ -1238,6 +1227,7 @@ def mouse_search_snip_return_coordinates_x_y(img="", wait=180):
 
 
 
+
 # ---------  Keyboard Functions --------- 
 
 def key_press(key_1='', key_2='', key_3='', write_to_window=""):
@@ -1411,8 +1401,7 @@ def message_pop_up(strMsg="",delay=3):
         sg.popup(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
     except Exception as ex:
         popup('', [put_html('<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO-New.png">'),
-        put_html('<center><h3>' + strMsg + '</h3></center>'),
-])
+        put_html('<center><h3>' + strMsg + '</h3></center>'),])
 
 def message_flash(msg="",delay=3):
     """
@@ -1480,6 +1469,7 @@ def message_toast(message,website_url="", file_folder_path=""):
         print("This function works only on Windows OS")
 
 # ---------  Message  Functions Ends ---------
+
 
 
 
@@ -1872,6 +1862,7 @@ def browser_quit_h():
 
 
 
+
 # ---------  Folder Functions ---------
 
 def folder_read_text_file(txt_file_path=""):
@@ -2085,6 +2076,7 @@ def file_get_json_details(path_of_json_file='',section=''):
 
 
 
+
 # ---------  Window Operations Functions --------- 
 
 def window_show_desktop():
@@ -2239,6 +2231,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
 
 
 
+
 # ---------  String Functions --------- 
 
 def string_extract_only_alphabets(inputString=""):
@@ -2280,6 +2273,7 @@ def string_remove_special_characters(inputStr=""):
         return outputStr  
 
 # ---------  String Functions Ends --------- 
+
 
 
 
@@ -3304,6 +3298,7 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startco
 
 
 
+
 @lru_cache(None)
 # --------- Windows Objects Functions ---------
 
@@ -3461,6 +3456,9 @@ def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = Fal
         print("Works only on windows OS")
 
 # --------- Windows Objects Functions Ends ---------
+
+
+
 
 
 
@@ -3662,6 +3660,7 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
 
 
 
+
 # --------- Schedule Functions ---------
 
 def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_mm_24_hr_frmt="11:00"):#*
@@ -3700,6 +3699,7 @@ def schedule_delete_task_windows():
         print("Error in schedule_delete_task="+str(ex))
 
 # --------- Schedule Functions Ends ---------
+
 
 
 
@@ -3747,6 +3747,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
         print("Error in email_send_via_desktop_outlook="+str(ex))
 
 # --------- Email Functions Ends ---------
+
 
 
 
@@ -3994,6 +3995,7 @@ def clear_screen():
 
 
 
+
 # --------- Self-Test and ClointFusion Related Functions ---------
 
 def _init_cf_quick_test_log_file(log_path_arg):
@@ -4044,8 +4046,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
     TEST_CASES_STATUS_MESSAGE = ""
 
     red_close_PNG_1 = temp_current_working_dir / "RED-Close_1.PNG"
-
-    
 
     if not os.path.exists(red_close_PNG_1):
         urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/RED-Close_1.PNG',red_close_PNG_1)
@@ -4166,6 +4166,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         try:
             print()
             print('Testing keyboard operations')
+            message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
                 key_write_enter(write_to_window="notepad",text_to_write="Performing ClointFusion Self Test for Notepad")
@@ -4173,7 +4174,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                 key_press("right")
                 key_hit_enter()
-                message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
@@ -4182,7 +4182,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
                 key_hit_enter()
                 key_press(key_1="alt", key_2="f4")
-                message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+                subprocess.Popen(f"killall -9 gedit", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
@@ -4192,7 +4194,9 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                     key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
                     key_hit_enter()
                     key_press(key_1="command", key_2="f4")
-                    message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+                    subprocess.Popen('pkill -9 "TextEdit"', shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
                     print('Keyboard operations tested successfully '+show_emoji())
                     print("____________________________________________________________")
                     logging.info('Keyboard operations tested successfully')
@@ -4321,21 +4325,40 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
         # Closing Browsers
+        browsers = ["firefox", "chrome", "brave"]
         if os_name == windows_os:
-            subprocess.call("taskkill /im firefox.exe /f")
-            subprocess.call("taskkill /im chrome.exe /f")
-            subprocess.call("taskkill /im brave.exe /f")
-        
+            subprocess.Popen(f"taskkill /im {browsers[0]}.exe /f", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            subprocess.Popen(f"taskkill /im {browsers[1]}.exe /f", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            subprocess.Popen(f"taskkill /im {browsers[2]}.exe /f", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            
         if os_name == linux_os:
-            subprocess.call("'killall -9 chrome'")
-            subprocess.call("'killall -9 firefox'")
-            subprocess.call("'killall -9 brave'")
-                    
+            subprocess.Popen(f"killall -9 {browsers[0]}", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            subprocess.Popen(f"killall -9 {browsers[1]}", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            subprocess.Popen(f"killall -9 {browsers[2]}", shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            
         if os_name == mac_os: 
-            subprocess.call('pkill -9 "Google Chrome"', shell=True)
-            subprocess.call('pkill -9 "Firefox"')
-            subprocess.call('pkill -9 "Brave"')
-        
+            subprocess.Popen('pkill -9 "Google Chrome"', shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            subprocess.Popen('pkill -9 "Firefox"', shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            subprocess.Popen('pkill -9 "Brave"', shell=True,
+                           stdout=subprocess.PIPE, 
+                           stderr=subprocess.PIPE)
+            
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
@@ -4386,6 +4409,12 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
+        
+        try:
+            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+            mouse_click(pos[0], pos[1])
+        except:
+            print("Please click red 'Close' button")
 
     except Exception as ex:
         print("ClointFusion Automated Testing Failed "+str(ex))
@@ -4405,12 +4434,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
             print("____________________________________________________________")
             
-            # print("Please click red 'Close' button")
-            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
-            
-            if pos is not None:
-                mouse_click(*pos)
-
             message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
 
         else:
@@ -4471,7 +4494,7 @@ def clointfusion_self_test(last_updated_on_month):
 
             if event == 'Start':
                 window['Start'].update(disabled=True)
-                window['Close'].update(disabled=True)
+                # window['Close'].update(disabled=True)
                 window['Skip for Now'].update(disabled=True)
                 _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
