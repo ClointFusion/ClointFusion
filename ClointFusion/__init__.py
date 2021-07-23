@@ -1,175 +1,173 @@
-from ClointFusion import loader    
-
 # ---------  Libraries Imports | Current Count : 13
-from loader import pd
+from ClointFusion.ClointFusion import pd
 try:
-    from loader import pg
+    from ClointFusion.ClointFusion import pg
 except:
     pass
-from loader import clipboard
-from loader import re
-from loader import op
-from loader import os
-from loader import time
-from loader import shutil
-from loader import sys
-from loader import datetime
-from loader import subprocess
-from loader import traceback
-from loader import logging
+from ClointFusion.ClointFusion import clipboard
+from ClointFusion.ClointFusion import re
+from ClointFusion.ClointFusion import op
+from ClointFusion.ClointFusion import os
+from ClointFusion.ClointFusion import time
+from ClointFusion.ClointFusion import shutil
+from ClointFusion.ClointFusion import sys
+from ClointFusion.ClointFusion import datetime
+from ClointFusion.ClointFusion import subprocess
+from ClointFusion.ClointFusion import traceback
+from ClointFusion.ClointFusion import logging
 
 # ---------  Variables Imports | Current Count : 8
-from loader import batch_file_path
-from loader import output_folder_path
-from loader import config_folder_path
-from loader import img_folder_path
-from loader import error_screen_shots_path
-from loader import cf_icon_file_path
-from loader import cf_logo_file_path
-from loader import os_name
+from ClointFusion.ClointFusion import batch_file_path
+from ClointFusion.ClointFusion import output_folder_path
+from ClointFusion.ClointFusion import config_folder_path
+from ClointFusion.ClointFusion import img_folder_path
+from ClointFusion.ClointFusion import error_screen_shots_path
+from ClointFusion.ClointFusion import cf_icon_file_path
+from ClointFusion.ClointFusion import cf_logo_file_path
+from ClointFusion.ClointFusion import os_name
 
 
 # ---------  GUI Functions | Current Count : 6
-from loader import gui_get_consent_from_user
-from loader import gui_get_dropdownlist_values_from_user
-from loader import gui_get_excel_sheet_header_from_user
-from loader import gui_get_folder_path_from_user
-from loader import gui_get_any_input_from_user
-from loader import gui_get_any_file_from_user
+from ClointFusion.ClointFusion import gui_get_consent_from_user
+from ClointFusion.ClointFusion import gui_get_dropdownlist_values_from_user
+from ClointFusion.ClointFusion import gui_get_excel_sheet_header_from_user
+from ClointFusion.ClointFusion import gui_get_folder_path_from_user
+from ClointFusion.ClointFusion import gui_get_any_input_from_user
+from ClointFusion.ClointFusion import gui_get_any_file_from_user
 
 
 # ---------  Message  Functions | Current Count : 4
-from loader import message_counter_down_timer
-from loader import message_pop_up
-from loader import message_flash
-from loader import message_toast
+from ClointFusion.ClointFusion import message_counter_down_timer
+from ClointFusion.ClointFusion import message_pop_up
+from ClointFusion.ClointFusion import message_flash
+from ClointFusion.ClointFusion import message_toast
 
 
 # ---------  Mouse Functions | Current Count : 5
-from loader import mouse_click
-from loader import mouse_move
-from loader import mouse_get_color_by_position
-from loader import mouse_drag_from_to
-from loader import mouse_search_snip_return_coordinates_x_y
+from ClointFusion.ClointFusion import mouse_click
+from ClointFusion.ClointFusion import mouse_move
+from ClointFusion.ClointFusion import mouse_get_color_by_position
+from ClointFusion.ClointFusion import mouse_drag_from_to
+from ClointFusion.ClointFusion import mouse_search_snip_return_coordinates_x_y
 
 
 # ---------  Keyboard Functions | Current Count : 3
-from loader import key_press
-from loader import key_write_enter
-from loader import key_hit_enter
+from ClointFusion.ClointFusion import key_press
+from ClointFusion.ClointFusion import key_write_enter
+from ClointFusion.ClointFusion import key_hit_enter
 
 
 # ---------  Browser Functions | Current Count : 11
-from loader import browser_activate
-from loader import browser_navigate_h
-from loader import browser_write_h
-from loader import browser_mouse_click_h
-from loader import browser_locate_element_h
-from loader import browser_wait_until_h
-from loader import browser_refresh_page_h
-from loader import browser_hit_enter_h
-from loader import browser_key_press_h
-from loader import browser_mouse_hover_h
-from loader import browser_quit_h
+from ClointFusion.ClointFusion import browser_activate
+from ClointFusion.ClointFusion import browser_navigate_h
+from ClointFusion.ClointFusion import browser_write_h
+from ClointFusion.ClointFusion import browser_mouse_click_h
+from ClointFusion.ClointFusion import browser_locate_element_h
+from ClointFusion.ClointFusion import browser_wait_until_h
+from ClointFusion.ClointFusion import browser_refresh_page_h
+from ClointFusion.ClointFusion import browser_hit_enter_h
+from ClointFusion.ClointFusion import browser_key_press_h
+from ClointFusion.ClointFusion import browser_mouse_hover_h
+from ClointFusion.ClointFusion import browser_quit_h
 
 
 # ---------  Folder Functions | Current Count : 8
-from loader import folder_read_text_file
-from loader import folder_write_text_file
-from loader import folder_create
-from loader import folder_create_text_file
-from loader import folder_get_all_filenames_as_list
-from loader import folder_delete_all_files
-from loader import file_rename
-from loader import file_get_json_details
+from ClointFusion.ClointFusion import folder_read_text_file
+from ClointFusion.ClointFusion import folder_write_text_file
+from ClointFusion.ClointFusion import folder_create
+from ClointFusion.ClointFusion import folder_create_text_file
+from ClointFusion.ClointFusion import folder_get_all_filenames_as_list
+from ClointFusion.ClointFusion import folder_delete_all_files
+from ClointFusion.ClointFusion import file_rename
+from ClointFusion.ClointFusion import file_get_json_details
 
 
 # ---------  Window Operations Functions | Current Count : 6
-from loader import window_show_desktop
-from loader import window_get_all_opened_titles_windows
-from loader import window_activate_and_maximize_windows
-from loader import window_minimize_windows
-from loader import window_close_windows
-from loader import launch_any_exe_bat_application
+from ClointFusion.ClointFusion import window_show_desktop
+from ClointFusion.ClointFusion import window_get_all_opened_titles_windows
+from ClointFusion.ClointFusion import window_activate_and_maximize_windows
+from ClointFusion.ClointFusion import window_minimize_windows
+from ClointFusion.ClointFusion import window_close_windows
+from ClointFusion.ClointFusion import launch_any_exe_bat_application
 
 
 # ---------  String Functions | Current Count : 3
-from loader import string_extract_only_alphabets
-from loader import string_extract_only_numbers
-from loader import string_remove_special_characters
+from ClointFusion.ClointFusion import string_extract_only_alphabets
+from ClointFusion.ClointFusion import string_extract_only_numbers
+from ClointFusion.ClointFusion import string_remove_special_characters
 
 
 # ---------  Excel Functions | Current Count : 29
-from loader import excel_get_row_column_count
-from loader import excel_copy_range_from_sheet
-from loader import excel_copy_paste_range_from_to_sheet
-from loader import excel_split_by_column
-from loader import excel_split_the_file_on_row_count
-from loader import excel_merge_all_files
-from loader import excel_drop_columns
-from loader import excel_sort_columns
-from loader import excel_clear_sheet
-from loader import excel_set_single_cell
-from loader import excel_get_single_cell
-from loader import excel_remove_duplicates
-from loader import excel_vlook_up
-from loader import excel_change_corrupt_xls_to_xlsx
-from loader import excel_convert_xls_to_xlsx
-from loader import excel_apply_template_format_save_to_new
-from loader import excel_apply_format_as_table
-from loader import excel_split_on_user_defined_conditions
-from loader import excel_convert_to_image
-from loader import excel_create_excel_file_in_given_folder
-from loader import excel_if_value_exists
-from loader import excel_create_file
-from loader import excel_to_colored_html
-from loader import excel_get_all_sheet_names
-from loader import excel_get_all_header_columns
-from loader import excel_describe_data
-from loader import excel_sub_routines
-from loader import convert_csv_to_excel
-from loader import isNaN
+from ClointFusion.ClointFusion import excel_get_row_column_count
+from ClointFusion.ClointFusion import excel_copy_range_from_sheet
+from ClointFusion.ClointFusion import excel_copy_paste_range_from_to_sheet
+from ClointFusion.ClointFusion import excel_split_by_column
+from ClointFusion.ClointFusion import excel_split_the_file_on_row_count
+from ClointFusion.ClointFusion import excel_merge_all_files
+from ClointFusion.ClointFusion import excel_drop_columns
+from ClointFusion.ClointFusion import excel_sort_columns
+from ClointFusion.ClointFusion import excel_clear_sheet
+from ClointFusion.ClointFusion import excel_set_single_cell
+from ClointFusion.ClointFusion import excel_get_single_cell
+from ClointFusion.ClointFusion import excel_remove_duplicates
+from ClointFusion.ClointFusion import excel_vlook_up
+from ClointFusion.ClointFusion import excel_change_corrupt_xls_to_xlsx
+from ClointFusion.ClointFusion import excel_convert_xls_to_xlsx
+from ClointFusion.ClointFusion import excel_apply_template_format_save_to_new
+from ClointFusion.ClointFusion import excel_apply_format_as_table
+from ClointFusion.ClointFusion import excel_split_on_user_defined_conditions
+from ClointFusion.ClointFusion import excel_convert_to_image
+from ClointFusion.ClointFusion import excel_create_excel_file_in_given_folder
+from ClointFusion.ClointFusion import excel_if_value_exists
+from ClointFusion.ClointFusion import excel_create_file
+from ClointFusion.ClointFusion import excel_to_colored_html
+from ClointFusion.ClointFusion import excel_get_all_sheet_names
+from ClointFusion.ClointFusion import excel_get_all_header_columns
+from ClointFusion.ClointFusion import excel_describe_data
+from ClointFusion.ClointFusion import excel_sub_routines
+from ClointFusion.ClointFusion import convert_csv_to_excel
+from ClointFusion.ClointFusion import isNaN
 
 
 # --------- Windows Objects Functions | Current Count : 5
-from loader import win_obj_open_app
-from loader import win_obj_get_all_objects
-from loader import win_obj_mouse_click
-from loader import win_obj_key_press
-from loader import win_obj_get_text
+from ClointFusion.ClointFusion import win_obj_open_app
+from ClointFusion.ClointFusion import win_obj_get_all_objects
+from ClointFusion.ClointFusion import win_obj_mouse_click
+from ClointFusion.ClointFusion import win_obj_key_press
+from ClointFusion.ClointFusion import win_obj_get_text
 
 
 # --------- Screenscraping Functions | Current Count : 5
-from loader import scrape_save_contents_to_notepad
-from loader import scrape_get_contents_by_search_copy_paste
-from loader import screen_clear_search
-from loader import search_highlight_tab_enter_open
-from loader import find_text_on_screen
+from ClointFusion.ClointFusion import scrape_save_contents_to_notepad
+from ClointFusion.ClointFusion import scrape_get_contents_by_search_copy_paste
+from ClointFusion.ClointFusion import screen_clear_search
+from ClointFusion.ClointFusion import search_highlight_tab_enter_open
+from ClointFusion.ClointFusion import find_text_on_screen
 
 
 # --------- Schedule Functions | Current Count : 2
-from loader import schedule_create_task_windows
-from loader import schedule_delete_task_windows
+from ClointFusion.ClointFusion import schedule_create_task_windows
+from ClointFusion.ClointFusion import schedule_delete_task_windows
 
 
 # --------- Email Functions | Current Count : 1
-from loader import email_send_via_desktop_outlook
+from ClointFusion.ClointFusion import email_send_via_desktop_outlook
 
 
 # --------- Utility Functions | Current Count : 9
-from loader import find
-from loader import pause_program
-from loader import show_emoji
-from loader import create_batch_file
-from loader import dismantle_code
-from loader import compute_hash
-from loader import date_convert_to_US_format
-from loader import download_this_file
-from loader import get_image_from_base64
+from ClointFusion.ClointFusion import find
+from ClointFusion.ClointFusion import pause_program
+from ClointFusion.ClointFusion import show_emoji
+from ClointFusion.ClointFusion import create_batch_file
+from ClointFusion.ClointFusion import dismantle_code
+from ClointFusion.ClointFusion import compute_hash
+from ClointFusion.ClointFusion import date_convert_to_US_format
+from ClointFusion.ClointFusion import download_this_file
+from ClointFusion.ClointFusion import get_image_from_base64
 
 
 # --------- Self-Test and ClointFusion Related Functions | Current Count : 4
-from loader import take_error_screenshot
-from loader import update_log_excel_file
-from loader import ON_semi_automatic_mode
-from loader import OFF_semi_automatic_mode
+from ClointFusion.ClointFusion import take_error_screenshot
+from ClointFusion.ClointFusion import update_log_excel_file
+from ClointFusion.ClointFusion import ON_semi_automatic_mode
+from ClointFusion.ClointFusion import OFF_semi_automatic_mode
