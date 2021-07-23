@@ -157,6 +157,7 @@ from loader import email_send_via_desktop_outlook
 
 
 # --------- Utility Functions | Current Count : 9
+
 from loader import find
 from loader import pause_program
 from loader import show_emoji
@@ -166,6 +167,7 @@ from loader import compute_hash
 from loader import date_convert_to_US_format
 from loader import download_this_file
 from loader import get_image_from_base64
+from loader import clear_screen
 
 
 # --------- Self-Test and ClointFusion Related Functions | Current Count : 4
