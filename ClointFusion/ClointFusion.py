@@ -38,11 +38,12 @@ import socket
 import uuid
     # External libraries
 from pandas.core.algorithms import mode
+from pywebio.output import put_text
 
 try:
     import pyautogui as pg
 except:
-    pass
+    from pywebio.output import popup, put_html
 
 import pandas as pd
 import PySimpleGUI as sg
@@ -1425,7 +1426,9 @@ def message_pop_up(strMsg="",delay=3):
         #     strMsg = gui_get_any_input_from_user("pop-up message")
         sg.popup(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
     except Exception as ex:
-        print("Error in message_pop_up="+str(ex))
+        popup('', [put_html('<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO-New.png">'),
+        put_html('<center><h3>' + strMsg + '</h3></center>'),
+])
 
 def message_flash(msg="",delay=3):
     """
@@ -4041,7 +4044,7 @@ def _rerun_clointfusion_first_run(ex):
     try:
         pg.alert("Please Re-run..." + str(ex))
     except:
-        print("Please Re-run...")
+        put_text("Please Re-run..." + str(ex)).show()
     # _,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=False)
     # with open(last_updated_date_file, 'w',encoding="utf-8") as f:
     #     last_updated_on_date = int(datetime.date.today().strftime('%m')) - 1
@@ -4056,31 +4059,12 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
     TEST_CASES_STATUS_MESSAGE = ""
 
-    chrome_close_PNG_1 = temp_current_working_dir / "Chrome-Close_1.PNG"
-    chrome_close_PNG_2 = temp_current_working_dir / "Chrome-Close_2.PNG"
-    chrome_close_PNG_3 = temp_current_working_dir / "Chrome-Close_3.PNG"
+    red_close_PNG_1 = temp_current_working_dir / "RED-Close_1.PNG"
 
-    twenty_PNG_1 = temp_current_working_dir / "Twenty_1.PNG"
-    twenty_PNG_2 = temp_current_working_dir / "Twenty_2.PNG"
-    twenty_PNG_3 = temp_current_working_dir / "Twenty_3.PNG"
+    
 
-    if not os.path.exists(chrome_close_PNG_1):
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Chrome-Close_1.png',chrome_close_PNG_1)
-
-    if not os.path.exists(chrome_close_PNG_2):
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Chrome-Close_2.png',chrome_close_PNG_2)
-
-    if not os.path.exists(chrome_close_PNG_3):
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Chrome-Close_3.png',chrome_close_PNG_3)
-
-    if not os.path.exists(twenty_PNG_1):
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Twenty_1.png',twenty_PNG_1)
-
-    if not os.path.exists(twenty_PNG_2):
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Twenty_2.png',twenty_PNG_2)
-
-    if not os.path.exists(twenty_PNG_3):
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Twenty_3.png',twenty_PNG_3)
+    if not os.path.exists(red_close_PNG_1):
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/RED-Close_1.PNG',red_close_PNG_1)
 
     test_folder_path = Path(os.path.join(user_chosen_test_folder,"ClointFusion_Self_Tests"))
     test_run_excel_path = Path(os.path.join(test_folder_path,'Quick_Self_Test_Excel.xlsx'))
@@ -4316,16 +4300,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             webbrowser.open('https://sites.google.com/view/clointfusion-hackathon') 
             message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
-            # pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_3),wait=5)
-            # print(pos)
-            # pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_2),wait=5)
-            # print(pos)
-            # pos=mouse_search_snip_return_coordinates_x_y(str(twenty_PNG_1),wait=5)
-            # print(pos)
-
-            # pos=mouse_search_snips_return_coordinates_x_y([str(twenty_PNG_1),str(twenty_PNG_2),str(twenty_PNG_3)],conf=0.5,wait=10)
-            # print(pos)
-
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
                 
@@ -4350,16 +4324,6 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             message_counter_down_timer("Testing Mouse Operations in (seconds)",3)
             
             search_highlight_tab_enter_open("chat.whatsapp")
-
-            # pos = mouse_search_snips_return_coordinates_x_y([str(chrome_close_PNG_1),str(chrome_close_PNG_2),str(chrome_close_PNG_3)],conf=0.8,wait=3)
-            # print(pos)
-            # if pos is not None:
-            #     mouse_click(*pos)
-
-            # pos = mouse_search_snips_return_coordinates_x_y([str(chrome_close_PNG_1),str(chrome_close_PNG_2),str(chrome_close_PNG_3)],conf=0.8,wait=3)
-            # print(pos)
-            # if pos is not None:
-            #     mouse_click(*pos)
 
             mouse_click(int(pg.size()[0]/2),int(pg.size()[1]/2)) #Click at center of the screen
 
@@ -4456,7 +4420,12 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
             print("____________________________________________________________")
-            print("Please click red 'Close' button")
+            
+            # print("Please click red 'Close' button")
+            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+            
+            if pos is not None:
+                mouse_click(*pos)
 
             message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
 
@@ -4501,7 +4470,10 @@ def clointfusion_self_test(last_updated_on_month):
                 window['Skip for Now'].update(disabled=False)
                 
             if event == 'Skip for Now':
-                pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
+                try:
+                    pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
+                except:
+                    put_text("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
 
                 if int(last_updated_on_month) != -9:
                     try:
@@ -4532,7 +4504,11 @@ def clointfusion_self_test(last_updated_on_month):
                 if status_msg == "":
                     window['Close'].update(disabled=False)
                 else:
-                    pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
+                    try:
+                        pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
+                    except:
+                        put_text("Please resolve below errors and try again:\n\n" + status_msg)
+
                     sys.exit(0)
 
             if event in (sg.WIN_CLOSED, 'Close'):
@@ -4832,7 +4808,10 @@ else:
             file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
             file_path = Path(file_path)
             _folder_write_text_file(file_path,str(True))
-            pg.alert('Please re-run & select the Workspace Folder')
+            try:
+                pg.alert('Please re-run & select the Workspace Folder')
+            except:
+                put_text('Please re-run & select the Workspace Folder')
 
     elif not base_dir:
         # base_dir = gui_get_workspace_path_from_user()

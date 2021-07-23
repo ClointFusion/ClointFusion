@@ -31,3 +31,4 @@ trio>=0.11
 wsproto>=0.14
 beautifulsoup4>=4.9.3
 enum34>=1.1.10
+pywebio>=1.3.3
