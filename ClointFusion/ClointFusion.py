@@ -756,6 +756,8 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
 
 def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_line=False,mandatory_field=True):   
     import cryptocode 
+    from pywebio.input import PASSWORD, TEXT, textarea 
+
     """
     Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.
     Please use unique message (key) for each value.
@@ -861,7 +863,27 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_l
             return str(existing_value)
 
     except Exception as ex:
-        print("Error in gui_get_any_input_from_user="+str(ex))
+        try:
+            msgForUser = "Please enter " + msgForUser
+
+            if not password and not mandatory_field and not multi_line:
+                existing_value = input(msgForUser, type=TEXT, required=False)
+
+            elif not password and mandatory_field and multi_line:
+                existing_value = textarea(msgForUser,rows=6, required=True)
+                
+            elif not password and mandatory_field and not multi_line:
+                existing_value = input(msgForUser, type=TEXT,required=mandatory_field)    
+            
+            elif not password and not mandatory_field and multi_line:
+                existing_value = textarea(msgForUser,rows=6, required=False)
+            
+            elif password:
+                existing_value = input(msgForUser, type=PASSWORD, required=mandatory_field)
+
+            return existing_value
+        except:
+            print("Error in gui_get_any_input_from_user=" + str(ex))
 
 def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*"):    
     """
