@@ -1047,17 +1047,6 @@ def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
     """
     status = False
     try:
-        # if not x or not y:
-            # if not x and not y:
-            #     x_y = str(gui_get_any_input_from_user(f"X,Y co-ordinates to perform Mouse {left_or_right.title()} Click. Ex: 369,435"))
-            #     if "," in x_y:
-            #         x, y = x_y.split(",")
-            #     elif " " in x_y:
-            #         x, y = x_y.split(" ")
-            # if not x and y:
-            #     x = str(gui_get_any_input_from_user(f"Enter 'X' co-ordinate Y={y} to perform Mouse {left_or_right.title()} Click. Ex: 369"))
-            # if not y and x:
-            #     y = str(gui_get_any_input_from_user(f"Enter 'Y' co-ordinate X={x} to perform Mouse {left_or_right.title()} Click. Ex: 369"))
         
         if not x or not y:
             x, y = pg.position()
