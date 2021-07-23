@@ -154,7 +154,7 @@ from ClointFusion.ClointFusion import schedule_delete_task_windows
 from ClointFusion.ClointFusion import email_send_via_desktop_outlook
 
 
-# --------- Utility Functions | Current Count : 9
+# --------- Utility Functions | Current Count : 10
 from ClointFusion.ClointFusion import find
 from ClointFusion.ClointFusion import pause_program
 from ClointFusion.ClointFusion import show_emoji
@@ -164,6 +164,7 @@ from ClointFusion.ClointFusion import compute_hash
 from ClointFusion.ClointFusion import date_convert_to_US_format
 from ClointFusion.ClointFusion import download_this_file
 from ClointFusion.ClointFusion import get_image_from_base64
+from ClointFusion.ClointFusion import clear_screen
 
 
 # --------- Self-Test and ClointFusion Related Functions | Current Count : 4
