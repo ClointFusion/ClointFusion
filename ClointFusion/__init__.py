@@ -16,12 +16,6 @@ from ClointFusion.ClointFusion import subprocess
 from ClointFusion.ClointFusion import traceback
 from ClointFusion.ClointFusion import logging
 
-
-# ---------  Method Imports | Current Count : 2
-from ClointFusion.ClointFusion import background
-from ClointFusion.ClointFusion import timeit
-
-
 # ---------  Variables Imports | Current Count : 8
 from ClointFusion.ClointFusion import batch_file_path
 from ClointFusion.ClointFusion import output_folder_path

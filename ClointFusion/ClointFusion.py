@@ -114,45 +114,7 @@ system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, socket.gethostname()+get_public
 
 # 3. All function definitions
 
-
 # ---------  Methods ---------
-
-#decorator to push a function to background using asyncio
-def background(f):
-    """
-    Decorator function to push a function to background using asyncio
-    """
-    import asyncio
-    try:
-        from functools import wraps
-        @wraps(f)
-        def wrapped(*args, **kwargs):
-            loop = asyncio.get_event_loop()
-            if callable(f):
-                return loop.run_in_executor(None, f, *args, **kwargs)
-            else:
-                raise TypeError('Task must be a callable')    
-        return wrapped
-    except Exception as ex:
-        print("Task pushed to background = "+str(f) + str(ex))
-
-def timeit(method):
-    """
-    Decorator for computing time taken
-
-    parameters:
-        Method() name, by using @timeit just above the def: - defination of the function.
-
-    returns:
-        prints time take by the function 
-    """
-    def timed(*args, **kw):
-        ts = time.time()
-        result = method(*args, **kw)
-        te = time.time()
-        print('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
-        return result
-    return timed
 
 def OFF_semi_automatic_mode():
     """
