@@ -35,7 +35,6 @@ import warnings
 import traceback 
 import shutil
 import socket
-import uuid
     # External libraries
 from pandas.core.algorithms import mode
 from pywebio.output import put_text
@@ -101,16 +100,6 @@ Browser_Service_Started = False
 ai_screenshot = ""
 ai_processes = []
 helium_service_launched=False
-
-verify_self_test_url = 'https://api.clointfusion.com/verify_self_test'
-update_last_month_number_url = "https://api.clointfusion.com/update_last_month"
-
-if os_name == windows_os:
-    system_uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
-if os_name == linux_os:
-    system_uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
-if os_name == mac_os:
-    system_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, socket.gethostname())).upper()
 
 # 3. All function definitions
 
@@ -4471,7 +4460,8 @@ def clointfusion_self_test(last_updated_on_month):
             event, _ = window.read()
 
             if event == 'SSO':
-                webbrowser.open_new("https://api.clointfusion.com/cf/google/login_process?uuid={}".format(str(system_uuid)))
+                from ClointFusion import self
+                self.sso()
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
                 window['Skip for Now'].update(disabled=False)
@@ -4484,7 +4474,8 @@ def clointfusion_self_test(last_updated_on_month):
 
                 if int(last_updated_on_month) != -9:
                     try:
-                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':-9,'uuid':str(system_uuid)})
+                        from ClointFusion import self
+                        resp = self.sfn()
                         last_updated_on_month = -9
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4532,9 +4523,8 @@ def clointfusion_self_test(last_updated_on_month):
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-
-                    URL = 'https://docs.google.com/forms/d/e/1FAIpQLSehRuz_RWJDcqZMAWRPMOfV7CVZB7PjFruXZtQKXO1Q81jOgw/formResponse?usp=pp_url&entry.1012698071={}&entry.2046783065={}&entry.705740227={}&submit=Submit'.format(str(system_uuid), os_hn_ip + ";" + str(time_taken),file_contents)
-                    webbrowser.open(URL)
+                    from ClointFusion import self
+                    self.gf(os_hn_ip, time_taken, file_contents)
                     message_counter_down_timer("Closing browser (in seconds)",15)
                     window['Close'].update(disabled=True)
                     
@@ -4547,9 +4537,10 @@ def clointfusion_self_test(last_updated_on_month):
                         pg.hotkey('alt','f4')
                     time.sleep(2)
                     # is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
-                    today_date_month = str(datetime.date.today().strftime('%m'))
+                    
                     try:
-                        resp = requests.post(update_last_month_number_url, data={'last_self_test_month':today_date_month,'uuid':str(system_uuid)})
+                        from ClointFusion import self
+                        resp = self.ast()
                         # print(resp.text)
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4774,7 +4765,8 @@ _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
 try:
-    resp = requests.post(verify_self_test_url, data={'uuid':str(system_uuid)})
+    from ClointFusion import self
+    resp = self.vst()
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
 
