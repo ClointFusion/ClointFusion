@@ -35,6 +35,7 @@ import warnings
 import traceback 
 import shutil
 import socket
+import uuid
     # External libraries
 from pandas.core.algorithms import mode
 from pywebio.output import put_text
@@ -4460,8 +4461,8 @@ def clointfusion_self_test(last_updated_on_month):
             event, _ = window.read()
 
             if event == 'SSO':
-                from ClointFusion import self
-                self.sso()
+                from ClointFusion import selft
+                selft.sso()
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
                 window['Skip for Now'].update(disabled=False)
@@ -4474,8 +4475,8 @@ def clointfusion_self_test(last_updated_on_month):
 
                 if int(last_updated_on_month) != -9:
                     try:
-                        from ClointFusion import self
-                        resp = self.sfn()
+                        from ClointFusion import selft
+                        resp = selft.sfn()
                         last_updated_on_month = -9
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4523,8 +4524,8 @@ def clointfusion_self_test(last_updated_on_month):
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-                    from ClointFusion import self
-                    self.gf(os_hn_ip, time_taken, file_contents)
+                    from ClointFusion import selft
+                    selft.gf(os_hn_ip, time_taken, file_contents)
                     message_counter_down_timer("Closing browser (in seconds)",15)
                     window['Close'].update(disabled=True)
                     
@@ -4539,8 +4540,8 @@ def clointfusion_self_test(last_updated_on_month):
                     # is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
                     
                     try:
-                        from ClointFusion import self
-                        resp = self.ast()
+                        from ClointFusion import selft
+                        resp = selft.ast()
                         # print(resp.text)
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4765,8 +4766,8 @@ _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
 try:
-    from ClointFusion import self
-    resp = self.vst()
+    from ClointFusion import selft
+    resp = selft.vst()
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
 
