@@ -106,6 +106,74 @@ helium_service_launched=False
 
 # ---------  Methods ---------
 
+def show_emoji(strInput=""):
+    """
+    Function which prints Emojis
+
+    Usage: 
+    print(show_emoji('thumbsup'))
+    print("OK",show_emoji('thumbsup'))
+    Default: thumbsup
+    """
+    import emoji
+    
+    if not strInput:
+        return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
+    else:
+        return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
+
+def read_semi_automatic_log(key):
+    """
+    Function to read a value from semi_automatic_log for a given key
+    """
+    try:
+        if config_folder_path:
+            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
+            bot_config_path = Path(bot_config_path)
+        else:
+            bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
+            bot_config_path = Path(bot_config_path)
+            
+            if not os.path.exists(bot_config_path):
+                df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
+                append_df_to_excel(bot_config_path, df, index=False, startrow=0)
+
+        df = pd.read_excel(bot_config_path,engine='openpyxl')
+        
+        value = df[df['KEY'] == key]['VALUE'].to_list()
+        value = str(value[0])
+        return value
+
+    except:
+        return None
+
+def update_semi_automatic_log(key, value):
+    """
+    Update semi automatic excel log 
+    """
+    try:
+        if config_folder_path:
+            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
+            
+        else:
+            bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
+        
+        bot_config_path = Path(bot_config_path)
+        
+        if _excel_if_value_exists(bot_config_path,usecols=['KEY'],value=key):
+            df = pd.read_excel(bot_config_path,engine='openpyxl')
+            row_index = df.index[df['KEY'] == key].tolist()[0]
+            
+            df.loc[row_index,'VALUE'] = value
+            df.to_excel(bot_config_path,index=False)
+        else:
+            reader = pd.read_excel(bot_config_path,engine='openpyxl')
+            
+            df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
+            append_df_to_excel(bot_config_path, df, index=False,startrow=None,header=None)
+
+    except Exception as ex:
+        print("Error in update_semi_automatic_log="+str(ex))
 def OFF_semi_automatic_mode():
     """
     This function sets semi_automatic_mode as False => OFF
@@ -3766,22 +3834,6 @@ def pause_program(seconds="5"):
     except Exception as ex:
         print("Error in pause_program="+str(ex))
 
-def show_emoji(strInput=""):
-    """
-    Function which prints Emojis
-
-    Usage: 
-    print(show_emoji('thumbsup'))
-    print("OK",show_emoji('thumbsup'))
-    Default: thumbsup
-    """
-    import emoji
-    
-    if not strInput:
-        return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
-    else:
-        return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
-
 def create_batch_file(application_exe_pyw_file_path=""):
     """
     Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler.
@@ -4480,6 +4532,7 @@ def clointfusion_self_test(last_updated_on_month):
                         last_updated_on_month = -9
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
+                        sys.exit(0)
 
                 message_toast("ClointFusion Self-Test is Skipped")
                 break
@@ -4545,6 +4598,7 @@ def clointfusion_self_test(last_updated_on_month):
                         # print(resp.text)
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
+                        sys.exit(0)
                     
                 break        
                     
@@ -4617,59 +4671,6 @@ def is_execution_required_today(function_name,execution_type="D",save_todays_dat
         pass
 
     return EXECUTE_NOW,last_updated_date_file
-
-def update_semi_automatic_log(key, value):
-    """
-    Update semi automatic excel log 
-    """
-    try:
-        if config_folder_path:
-            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
-            
-        else:
-            bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
-        
-        bot_config_path = Path(bot_config_path)
-        
-        if _excel_if_value_exists(bot_config_path,usecols=['KEY'],value=key):
-            df = pd.read_excel(bot_config_path,engine='openpyxl')
-            row_index = df.index[df['KEY'] == key].tolist()[0]
-            
-            df.loc[row_index,'VALUE'] = value
-            df.to_excel(bot_config_path,index=False)
-        else:
-            reader = pd.read_excel(bot_config_path,engine='openpyxl')
-            
-            df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
-            append_df_to_excel(bot_config_path, df, index=False,startrow=None,header=None)
-
-    except Exception as ex:
-        print("Error in update_semi_automatic_log="+str(ex))
-
-def read_semi_automatic_log(key):
-    """
-    Function to read a value from semi_automatic_log for a given key
-    """
-    try:
-        if config_folder_path:
-            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
-            bot_config_path = Path(bot_config_path)
-        else:
-            bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
-            bot_config_path = Path(bot_config_path)
-            
-            if not os.path.exists(bot_config_path):
-                df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-                append_df_to_excel(bot_config_path, df, index=False, startrow=0)
-
-        df = pd.read_excel(bot_config_path,engine='openpyxl')
-        
-        value = df[df['KEY'] == key]['VALUE'].to_list()
-        value = str(value[0])
-        return value
-
-    except:
-        return None
 
 def update_log_excel_file(message=""):
     """
@@ -4765,11 +4766,12 @@ def take_error_screenshot(err_str):
 _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
-try:
-    from ClointFusion import selft
+try:    
+    from ClointFusion import selft        
     resp = selft.vst()
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
+    sys.exit(0)
 
 try:
     last_updated_on_month = resp.text
