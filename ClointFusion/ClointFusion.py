@@ -269,7 +269,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.18)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.19)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
@@ -1587,12 +1587,12 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                     subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
-            if os_name == mac_os:
+            elif os_name == mac_os:
                 try:
                     subprocess.call('pkill "Google Chrome"', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
-            if os_name == linux_os:
+            elif os_name == linux_os:
                 try:
                     subprocess.call('killall chrome', shell=True)
                 except Exception as ex:
@@ -1606,7 +1606,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         if not dummy_browser:
             if os_name == windows_os:
                 options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-            if os_name == mac_os:
+            elif os_name == mac_os:
                 options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
             options.add_argument(f"profile-directory={profile}")
         #  Set the download path
@@ -1635,9 +1635,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 driver_version = get_chrome_driver_version(chrome_version)
                 if os_name == windows_os:
                     subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={driver_version}'])
-                if os_name == mac_os:
+                elif os_name == mac_os:
                     subprocess.run(f"sudo pip install chromedriver-py=={driver_version}", shell=True)
-                if os_name == linux_os:
+                elif os_name == linux_os:
                     subprocess.run(f"pip install chromedriver-py=={driver_version}", shell=True)
             except Exception as ex:
                 print("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
@@ -2261,7 +2261,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
             except Exception as ex1:
                 print("launch_any_exe_bat_application"+str(ex1))
             
-        if os_name == linux_os:
+        elif os_name == linux_os:
             try:
                 subprocess.Popen(pathOfExeFile)
                 time.sleep(2)
@@ -2269,7 +2269,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
             except Exception as ex:
                 print("launch_any_exe_bat_application"+str(ex))
         
-        if os_name == mac_os:
+        elif os_name == mac_os:
             try:
                 subprocess.Popen(f'open -a "{pathOfExeFile}"')
                 status = True
@@ -4218,7 +4218,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
-            if os_name == linux_os:
+            elif os_name == linux_os:
                 launch_any_exe_bat_application("gedit") # Ubuntu
                 key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
                 key_hit_enter()
@@ -4229,7 +4229,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 print('Keyboard operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
-            if os_name == mac_os:
+            elif os_name == mac_os:
                 try:
                     launch_any_exe_bat_application("TextEdit") # macOS
                     key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
@@ -4378,7 +4378,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
             
-        if os_name == linux_os:
+        elif os_name == linux_os:
             subprocess.Popen(f"killall -9 {browsers[0]}", shell=True,
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
@@ -4389,7 +4389,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
             
-        if os_name == mac_os: 
+        elif os_name == mac_os: 
             subprocess.Popen('pkill -9 "Google Chrome"', shell=True,
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)

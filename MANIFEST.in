@@ -3,5 +3,6 @@ include README.md
 include README.rst
 include setup.cfg
 include setup.py
+recursive-include *.pyd
 include ClointFusion/__init__.py
 include ClointFusion/ClointFusion.py
