@@ -35,7 +35,6 @@ import warnings
 import traceback 
 import shutil
 import socket
-import uuid
     # External libraries
 from pandas.core.algorithms import mode
 from pywebio.output import put_text
