@@ -6,3 +6,5 @@ include setup.py
 include *.pyd
 include ClointFusion/__init__.py
 include ClointFusion/ClointFusion.py
+include ClointFusion/loader.cp39-win_amd64.pyd
+include ClointFusion/selft.cp39-win_amd64.pyd
