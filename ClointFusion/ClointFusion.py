@@ -268,7 +268,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.21)"
+    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.22)"
     print(welcome_msg)
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
