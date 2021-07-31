@@ -61,7 +61,6 @@ from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import pyinspect as pi
 from tabloo import show
-from pif import get_public_ip
 
 
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -538,6 +537,14 @@ def _excel_paste_range(startCol=1, startRow=1, endCol=1, endRow=1, sheetReceivin
 
     except Exception as ex:
         print("Error in _excel_paste_range="+str(ex))
+
+def get_public_ip():
+    try:
+        public_ip = str(requests.get('https://checkip.amazonaws.com').text.strip())
+        return public_ip
+    except:
+        public_ip = str(requests.get('http://ip.42.pl/raw').text)
+        return public_ip
 
 # ---------  Private Functions Ends ---------
 
