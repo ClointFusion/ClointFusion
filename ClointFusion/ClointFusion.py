@@ -54,7 +54,6 @@ import helium as browser
 from PIL import Image
 import requests
 from bs4 import BeautifulSoup
-import webbrowser
 from selenium import webdriver
 from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.options import Options
@@ -3340,9 +3339,9 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startco
 
 
 
-@lru_cache(None)
-# --------- Windows Objects Functions ---------
 
+# --------- Windows Objects Functions ---------
+@lru_cache(None)
 def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend='uia'):  
     from pywinauto import Desktop, Application
 
@@ -3984,23 +3983,6 @@ def download_this_file(url=""):
 
     except Exception as ex:
         print("Error in download_this_file="+str(ex))
-
-def get_image_from_base64(imgFileName,imgBase64Str):
-    """
-    Function which converts the given Base64 string to an image and saves in given path
-
-    Parameters:
-        imgFileName  (str) : Image file name with png extension
-        imgBase64Str (str) : Base64 string for conversion.
-    """    
-    if not os.path.exists(imgFileName) :
-        try:
-            import base64
-            img_binary = base64.decodebytes(imgBase64Str)
-            with open(imgFileName,"wb") as f:
-                f.write(img_binary)
-        except Exception as ex:
-            print("Error in get_image_from_base64="+str(ex))
 
 def clear_screen():
     """
