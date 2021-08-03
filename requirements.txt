@@ -25,7 +25,7 @@ tabloo >= 0.0.15
 xls2xlsx >= 0.1.4
 xlwt >= 1.2.0
 json5 >= 0.9.5
-chromedriver-py == 91.0.4472.19
+chromedriver-binary-auto >= 0.1.1
 Flask>=2.0.1
 trio>=0.11
 wsproto>=0.14

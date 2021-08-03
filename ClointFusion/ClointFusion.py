@@ -58,7 +58,7 @@ import webbrowser
 from selenium import webdriver
 from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.options import Options
-from chromedriver_py import binary_path
+import chromedriver_binary
 import pyinspect as pi
 from tabloo import show
 
@@ -1541,28 +1541,6 @@ def message_toast(message,website_url="", file_folder_path=""):
 
 # ---------  Browser Functions --------- 
     
-def get_chrome_driver_version(chrome_version:str):
-    """Give the required chrome driver version based on the input of chrome version.
-    This is used by browser_activate function when it fails to create a session.
-
-    Args:
-        chrome_version (str): Version of chrome to search the compatible driver version
-
-    Returns:
-        (str): Version of chrome driver thats needs to be installed.
-    """
-    driver_versions_page = "https://pypi.org/rss/project/chromedriver-py/releases.xml"
-    version_list = BeautifulSoup(requests.get(driver_versions_page).content, "html.parser").find_all("title")[1:]
-    got_compatible_version = False
-    latest_version = version_list[0].text.strip()
-    for version in version_list:
-        version = version.text.strip()
-        if  chrome_version in version:
-            got_compatible_version = True
-            return version
-    if not got_compatible_version:
-        return latest_version    
-
 def browser_activate(url="", files_download_path='', dummy_browser=True, open_in_background=False, incognito=False,
                      clear_previous_instances=False, profile="Default"):
     """Function to launch browser and start the session.
@@ -1627,7 +1605,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             options.add_experimental_option('prefs', prefs)
 
         try:
-            browser_driver = webdriver.Chrome(binary_path, options=options)
+            browser_driver = webdriver.Chrome(options=options)
             browser.set_driver(browser_driver)
             if url:
                 browser.go_to(url.lower())
@@ -1638,21 +1616,20 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             helium_service_launched = True
         except SessionNotCreatedException as ex:
             try:
-                chrome_version = str(ex).split()[17].split(".")[0]
-                driver_version = get_chrome_driver_version(chrome_version)
                 if os_name == windows_os:
-                    subprocess.check_call([sys.executable, "-m", "pip", "install", f'chromedriver-py=={driver_version}'])
+                    subprocess.call([sys.executable,'-m', 'pip', 'install','--upgrade', '--force-reinstall', 'chromedriver-binary-auto'])
                 elif os_name == mac_os:
-                    subprocess.run(f"sudo pip install chromedriver-py=={driver_version}", shell=True)
+                    subprocess.run(f"sudo pip install --upgrade --force-reinstall chromedriver-binary-auto", shell=True)
                 elif os_name == linux_os:
-                    subprocess.run(f"pip install chromedriver-py=={driver_version}", shell=True)
+                    subprocess.run(f"pip install --upgrade --force-reinstall chromedriver-binary-auto", shell=True)
+
             except Exception as ex:
                 print("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
             try:
-                browser_driver = webdriver.Chrome(binary_path, options=options)
+                browser_driver = webdriver.Chrome(options=options)
                 browser.set_driver(browser_driver)
                 if url:
-                    browser.go_to(url)
+                    browser.go_to(url.lower())
                 if not url:
                     browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
                 status = True
