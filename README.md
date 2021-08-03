@@ -308,6 +308,8 @@ You would receive an email with self-test report.
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Outlook%20BOT.gif?raw=true" height="400">
 
+# ClointFusion thanks its dependent packages : <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion Thanks!</a>
+
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..
 

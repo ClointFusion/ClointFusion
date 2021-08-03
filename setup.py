@@ -9,13 +9,14 @@ with open(os.path.join(this_directory, "README.md"), "r") as fh:
     long_description = fh.read()
 
 setup(
+    options={'bdist_wheel':{'universal':True}},
     name='ClointFusion',
     author='Mayur Patil',
     author_email = 'mayur@cloint.com',
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.22',
+    version='0.1.23',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -52,3 +53,5 @@ setup(
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)
+
+# https://github.com/python/cpython/blob/main/Lib/distutils/dist.py#L247
