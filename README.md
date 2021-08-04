@@ -259,6 +259,8 @@ You would receive an email with self-test report.
 
     cf.clear_screen() : Clears Python Interpreter Terminal Window Screen
 
+    cf.print_with_magic_color() : Function to color and format terminal output
+
     cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
 
     cf.schedule_create_task_windows() : Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create_batch_file() function before using this function to convert .pyw file to .bat

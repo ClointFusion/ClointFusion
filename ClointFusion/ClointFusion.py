@@ -121,12 +121,20 @@ def show_emoji(strInput=""):
     else:
         return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
 
-def print_with_magic_color(strMsg=""):
+def print_with_magic_color(strMsg="", magic=False):
     """
     Prints the message with colored foreground font
     """
-    fg_random = random.randint(0,256)
-    print ('%s %s  %s' % (fg(fg_random), strMsg, attr(0)))
+    if magic == False:
+        fg_random = random.randint(1,255)
+        print ('%s %s  %s' % (fg(fg_random), strMsg, attr(1)))
+    else:
+        for ch in strMsg:
+            try:
+                print ('%s%s%s' % (fg(random.randint(1,255)), ch,attr(1)),sep='',end='')
+            except:
+                print (ch,sep='',end='')
+        print()                
 
 def read_semi_automatic_log(key):
     """
@@ -279,13 +287,7 @@ def _welcome_to_clointfusion():
     version = "(Version: 0.1.23)"
     welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". {}".format(version)
 
-    for ch in welcome_msg:
-        if ch not in version:
-            print ('%s%s%s' % (fg(random.randint(0,256)), ch,attr(0)),sep='',end='')
-        else:
-            print (ch,sep='',end='')
-    print()
-    # print_with_magic_color(welcome_msg)
+    print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
     print_with_magic_color(f.renderText("ClointFusion Community Edition"))
     
