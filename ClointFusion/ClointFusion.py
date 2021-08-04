@@ -35,6 +35,7 @@ import warnings
 import traceback 
 import shutil
 import socket
+import random
     # External libraries
 from pandas.core.algorithms import mode
 from pywebio.output import put_text
@@ -60,6 +61,7 @@ from selenium.webdriver.chrome.options import Options
 import chromedriver_binary
 import pyinspect as pi
 from tabloo import show
+from colored import fg, bg, attr
 
 
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -108,8 +110,8 @@ def show_emoji(strInput=""):
     Function which prints Emojis
 
     Usage: 
-    print(show_emoji('thumbsup'))
-    print("OK",show_emoji('thumbsup'))
+    print_with_magic_color(show_emoji('thumbsup'))
+    print_with_magic_color("OK",show_emoji('thumbsup'))
     Default: thumbsup
     """
     import emoji
@@ -118,6 +120,13 @@ def show_emoji(strInput=""):
         return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
     else:
         return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
+
+def print_with_magic_color(strMsg=""):
+    """
+    Prints the message with colored foreground font
+    """
+    fg_random = random.randint(0,256)
+    print ('%s %s  %s' % (fg(fg_random), strMsg, attr(0)))
 
 def read_semi_automatic_log(key):
     """
@@ -170,7 +179,7 @@ def update_semi_automatic_log(key, value):
             append_df_to_excel(bot_config_path, df, index=False,startrow=None,header=None)
 
     except Exception as ex:
-        print("Error in update_semi_automatic_log="+str(ex))
+        print_with_magic_color("Error in update_semi_automatic_log="+str(ex))
 def OFF_semi_automatic_mode():
     """
     This function sets semi_automatic_mode as False => OFF
@@ -183,9 +192,9 @@ def OFF_semi_automatic_mode():
         with open(semi_automatic_config_file_path, 'w') as f:
             f.write('False')
         enable_semi_automatic_mode = False
-        print("Semi Automatic Mode is DISABLED "+ show_emoji())
+        print_with_magic_color("Semi Automatic Mode is DISABLED "+ show_emoji())
     except Exception as ex:
-        print("Error in OFF_semi_automatic_mode="+str(ex))        
+        print_with_magic_color("Error in OFF_semi_automatic_mode="+str(ex))        
 
 def ON_semi_automatic_mode():
     """
@@ -200,9 +209,9 @@ def ON_semi_automatic_mode():
             f.write('True')    
             
         enable_semi_automatic_mode = True
-        print("Semi Automatic Mode is ENABLED "+ show_emoji())
+        print_with_magic_color("Semi Automatic Mode is ENABLED "+ show_emoji())
     except Exception as ex:
-        print("Error in ON_semi_automatic_mode="+str(ex))
+        print_with_magic_color("Error in ON_semi_automatic_mode="+str(ex))
 
 # ---------  Methods Ends ---------
 
@@ -224,7 +233,7 @@ def _load_missing_python_packages_windows():
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
         missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
         if missing_packages:
-            print("{} package(s) are missing".format(missing_packages)) 
+            print_with_magic_color("{} package(s) are missing".format(missing_packages)) 
             
             if "comtypes" in missing_packages:
                 os.system("{} -m pip install comtypes==1.1.7".format(sys.executable))
@@ -232,11 +241,11 @@ def _load_missing_python_packages_windows():
                 os.system("{} -m pip install --upgrade pip".format(sys.executable))
             
             cmd = "pip install --upgrade {}".format(missing_packages)
-            # print(cmd)
+            # print_with_magic_color(cmd)
             os.system(cmd) 
 
     except Exception as ex:
-        print("Error in _load_missing_python_packages_windows="+str(ex))
+        print_with_magic_color("Error in _load_missing_python_packages_windows="+str(ex))
 
 if os_name == windows_os:
     _load_missing_python_packages_windows()
@@ -260,7 +269,7 @@ def _download_cloint_ico_png():
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',str(cf_logo_file_path))
 
     except Exception as ex:
-        print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
+        print_with_magic_color("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
 def _welcome_to_clointfusion():
     """
@@ -268,9 +277,9 @@ def _welcome_to_clointfusion():
     """
     from pyfiglet import Figlet
     welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". (Version: 0.1.23)"
-    print(welcome_msg)
+    print_with_magic_color(welcome_msg)
     f = Figlet(font='small', width=150)
-    print(f.renderText("ClointFusion Community Edition"))
+    print_with_magic_color(f.renderText("ClointFusion Community Edition"))
     
 def _set_bot_name(strBotName=""):
     """
@@ -309,7 +318,7 @@ def _create_status_log_file(xtLogFilePath):
             df.to_excel(writer, sheet_name='Sheet1', index=False)
             writer.save()
     except Exception as ex:
-        print("Error in _create_status_log_file = " +str(ex))
+        print_with_magic_color("Error in _create_status_log_file = " +str(ex))
 
 def _init_log_file():
     """
@@ -332,7 +341,7 @@ def _init_log_file():
         _create_status_log_file(status_log_excel_filepath)   
 
     except Exception as ex:
-        print("ERROR in _init_log_file="+str(ex))
+        print_with_magic_color("ERROR in _init_log_file="+str(ex))
 
 def _folder_read_text_file(txt_file_path=""):
     """
@@ -356,7 +365,7 @@ def _folder_write_text_file(txt_file_path="",contents=""):
         f.close()
         
     except Exception as ex:
-        print("Error in folder_write_text_file="+str(ex))
+        print_with_magic_color("Error in folder_write_text_file="+str(ex))
 
 def _ask_user_semi_automatic_mode():
     """
@@ -421,15 +430,15 @@ def _ask_user_semi_automatic_mode():
                 append_df_to_excel(bot_config_path, df, index=False, startrow=0)
                 
             if enable_semi_automatic_mode:
-                print("Semi Automatic Mode is ENABLED "+ show_emoji())
+                print_with_magic_color("Semi Automatic Mode is ENABLED "+ show_emoji())
             else:
-                print("Semi Automatic Mode is DISABLED "+ show_emoji())
+                print_with_magic_color("Semi Automatic Mode is DISABLED "+ show_emoji())
             
             file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
             file_path = Path(file_path)
             _folder_write_text_file(file_path,str(enable_semi_automatic_mode))
     except Exception as ex:
-        print("Error in _ask_user_semi_automatic_mode " + str(ex))
+        print_with_magic_color("Error in _ask_user_semi_automatic_mode " + str(ex))
 
 def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",value=""):
     """
@@ -450,7 +459,7 @@ def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols=""
             return False
 
     except Exception:
-        # print("Error in _excel_if_value_exists="+str(ex))
+        # print_with_magic_color("Error in _excel_if_value_exists="+str(ex))
         return False
 
 def _extract_filename_from_filepath(strFilePath=""):
@@ -464,11 +473,11 @@ def _extract_filename_from_filepath(strFilePath=""):
 
             return strFileName
         except Exception as ex:
-            print("Error in _extract_filename_from_filepath="+str(ex))
+            print_with_magic_color("Error in _extract_filename_from_filepath="+str(ex))
 
 
     else:
-        print("Please enter the value="+str(strFilePath))    
+        print_with_magic_color("Please enter the value="+str(strFilePath))    
 
 def _window_find_exact_name(windowName=""):
     """
@@ -498,7 +507,7 @@ def _window_find_exact_name(windowName=""):
                     break
         return win, window_found
     except Exception as ex:
-        print("Error in _window_find_exact_name="+str(ex))
+        print_with_magic_color("Error in _window_find_exact_name="+str(ex))
 
 def _excel_copy_range(startCol=1, startRow=1, endCol=1, endRow=1, sheet='Sheet1'):
     """
@@ -518,7 +527,7 @@ def _excel_copy_range(startCol=1, startRow=1, endCol=1, endRow=1, sheet='Sheet1'
         return rangeSelected
 
     except Exception as ex:
-        print("Error in _excel_copy_range="+str(ex))
+        print_with_magic_color("Error in _excel_copy_range="+str(ex))
     
 def _excel_paste_range(startCol=1, startRow=1, endCol=1, endRow=1, sheetReceiving='Sheet1',copiedData=[]):
     """
@@ -535,7 +544,7 @@ def _excel_paste_range(startCol=1, startRow=1, endCol=1, endRow=1, sheetReceivin
         return countRow
 
     except Exception as ex:
-        print("Error in _excel_paste_range="+str(ex))
+        print_with_magic_color("Error in _excel_paste_range="+str(ex))
 
 def get_public_ip():
     try:
@@ -602,7 +611,7 @@ def gui_get_consent_from_user(msgForUser="Continue ?"):
             return str(existing_value)
 
     except Exception as ex:
-        print("Error in gui_get_consent_from_user="+str(ex))
+        print_with_magic_color("Error in gui_get_consent_from_user="+str(ex))
 
 def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_select=True): 
     """
@@ -670,9 +679,9 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
                 return oldValue
                 
         except Exception as ex:
-            print("Error in gui_get_dropdownlist_values_from_user="+str(ex))
+            print_with_magic_color("Error in gui_get_dropdownlist_values_from_user="+str(ex))
     else:
-        print('gui_get_dropdownlist_values_from_user - List is empty')
+        print_with_magic_color('gui_get_dropdownlist_values_from_user - List is empty')
 
 def gui_get_excel_sheet_header_from_user(msgForUser=""): 
     """
@@ -757,7 +766,7 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
             return oldFilePath, oldSheet , int(oldHeader)
             
     except Exception as ex:
-        print("Error in gui_get_excel_sheet_header_from_user="+str(ex))
+        print_with_magic_color("Error in gui_get_excel_sheet_header_from_user="+str(ex))
     
 def gui_get_folder_path_from_user(msgForUser="the folder : "):    
     """
@@ -814,7 +823,7 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
             return str(existing_value)
 
     except Exception as ex:
-        print("Error in gui_get_folder_path_from_user="+str(ex))
+        print_with_magic_color("Error in gui_get_folder_path_from_user="+str(ex))
 
 def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_line=False,mandatory_field=True):   
     import cryptocode 
@@ -890,10 +899,10 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_l
                     else:
                         if mandatory_field:
                             message_pop_up("Its a mandatory field !.. Cannot proceed, exiting now..")
-                            print("Exiting ClointFusion, as Mandatory field is missing")
+                            print_with_magic_color("Exiting ClointFusion, as Mandatory field is missing")
                             sys.exit(0)
                         else:
-                            print("Mandatory field is missing, continuing with None/Empty value")
+                            print_with_magic_color("Mandatory field is missing, continuing with None/Empty value")
                             break
                 
                 if event == 'OK':
@@ -945,7 +954,7 @@ def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_l
 
             return existing_value
         except:
-            print("Error in gui_get_any_input_from_user=" + str(ex))
+            print_with_magic_color("Error in gui_get_any_input_from_user=" + str(ex))
 
 def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*"):    
     """
@@ -983,7 +992,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
                             break
                         else:
                             message_pop_up("Please enter the required values")
-                            # print("Please enter the values")
+                            # print_with_magic_color("Please enter the values")
             window.close()
 
             if values and event == 'OK':
@@ -1001,7 +1010,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
             return str(existing_value)
 
     except Exception as ex:
-        print("Error in gui_get_any_file_from_user="+str(ex))
+        print_with_magic_color("Error in gui_get_any_file_from_user="+str(ex))
 
 def gui_get_workspace_path_from_user():    
     """
@@ -1081,7 +1090,7 @@ def gui_get_workspace_path_from_user():
             
         return ret_value
     except Exception as ex:
-        print("Error in gui_get_workspace_path_from_user="+str(ex))
+        print_with_magic_color("Error in gui_get_workspace_path_from_user="+str(ex))
 
 # ---------  GUI Functions Ends ---------
 
@@ -1124,7 +1133,7 @@ def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
             time.sleep(1)
         status = True
     except Exception as ex:
-        print("Error in mouseClick="+str(ex))
+        print_with_magic_color("Error in mouseClick="+str(ex))
     finally:
         return status
 
@@ -1161,7 +1170,7 @@ def mouse_move(x="",y=""):
             time.sleep(0.2)
         status = True
     except Exception as ex:
-        print("Error in mouse_move="+str(ex))
+        print_with_magic_color("Error in mouse_move="+str(ex))
     finally:
         return status
 
@@ -1189,7 +1198,7 @@ def mouse_get_color_by_position(x="",y="", delay=3):
         x,y = int(x), int(y)
         status = im.getpixel((x, y))
     except Exception as ex:
-        print("Error in mouse_get_color_by_position = "+str(ex))
+        print_with_magic_color("Error in mouse_get_color_by_position = "+str(ex))
     finally:
         return status
 
@@ -1241,7 +1250,7 @@ def mouse_drag_from_to(x1="",y1="",x2="",y2="",delay=0.5):
         time.sleep(0.2)
         status = True
     except Exception as ex:
-        print("Error in mouse_drag_from_to="+str(ex))
+        print_with_magic_color("Error in mouse_drag_from_to="+str(ex))
     finally:
         return status
 
@@ -1280,7 +1289,7 @@ def mouse_search_snip_return_coordinates_x_y(img="", wait=180):
             x,y = pos.left + int(pos.width / 2), pos.top + int(pos.height / 2)
         status = (x,y)
     except Exception as ex:
-        print("Error in mouse_search_snip_return_coordinates_x_y="+str(ex))
+        print_with_magic_color("Error in mouse_search_snip_return_coordinates_x_y="+str(ex))
     finally:
         return status
 
@@ -1344,7 +1353,7 @@ def key_press(key_1='', key_2='', key_3='', write_to_window=""):
         time.sleep(0.5)
         status = True
     except Exception as ex:
-            print("Error in key_press="+str(ex))
+            print_with_magic_color("Error in key_press="+str(ex))
     finally:
         return status
     
@@ -1383,7 +1392,7 @@ def key_write_enter(text_to_write="", write_to_window="", delay_after_typing=1, 
         time.sleep(delay_after_typing)
         status = True
     except Exception as ex:
-        print("Error in key_write_enter="+str(ex))
+        print_with_magic_color("Error in key_write_enter="+str(ex))
     finally:
         return status
 
@@ -1404,7 +1413,7 @@ def key_hit_enter(write_to_window=""):
         time.sleep(0.5)
         status = True
     except Exception as ex:
-        print("Error in key_hit_enter="+str(ex))
+        print_with_magic_color("Error in key_hit_enter="+str(ex))
     finally:
         return status
 
@@ -1442,7 +1451,7 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
             
         if event in (sg.WIN_CLOSED, 'Cancel'):    
             CONTINUE = False  
-            print("Action cancelled by user")
+            print_with_magic_color("Action cancelled by user")
             break
 
         window['text'].update(value=current_value)
@@ -1482,7 +1491,7 @@ def message_flash(msg="",delay=3):
         r.start()
         pg.alert(text=msg, title='ClointFusion', button='OK')
     except Exception as ex:
-        print("ERROR in message_flash="+str(ex))
+        print_with_magic_color("ERROR in message_flash="+str(ex))
 
 def message_toast(message,website_url="", file_folder_path=""):
     """
@@ -1526,10 +1535,10 @@ def message_toast(message,website_url="", file_folder_path=""):
                     threaded=True, # True = run other code in parallel; False = code execution will wait till notification disappears 
             )
         else:
-            print("This function works when semi-automatic mode is enabled")    
+            print_with_magic_color("This function works when semi-automatic mode is enabled")    
 
     else:
-        print("This function works only on Windows OS")
+        print_with_magic_color("This function works only on Windows OS")
 
 # ---------  Message  Functions Ends ---------
 
@@ -1570,17 +1579,17 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 try:
                     subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
                 except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
+                    print_with_magic_color(f"Error while closing previous chrome instances. {ex}")
             elif os_name == mac_os:
                 try:
                     subprocess.call('pkill "Google Chrome"', shell=True)
                 except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
+                    print_with_magic_color(f"Error while closing previous chrome instances. {ex}")
             elif os_name == linux_os:
                 try:
                     subprocess.call('killall chrome', shell=True)
                 except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
+                    print_with_magic_color(f"Error while closing previous chrome instances. {ex}")
 
         options = Options()
         options.add_argument("--start-maximized")
@@ -1623,7 +1632,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                     subprocess.run(f"pip install --upgrade --force-reinstall chromedriver-binary-auto", shell=True)
 
             except Exception as ex:
-                print("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
+                print_with_magic_color("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
             try:
                 browser_driver = webdriver.Chrome(options=options)
                 browser.set_driver(browser_driver)
@@ -1635,11 +1644,11 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 browser.Config.implicit_wait_secs = 120
                 helium_service_launched = True
             except Exception as ex:
-                print(f"Error while browser_re-activation: {str(ex)}")
+                print_with_magic_color(f"Error while browser_re-activation: {str(ex)}")
         except Exception as ex:
-            print(f"Error while browser_activate: {str(ex)}")
+            print_with_magic_color(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
-        print("Error in launch_website_h = " + str(ex))
+        print_with_magic_color("Error in launch_website_h = " + str(ex))
         browser.kill_browser()
     finally:
         return status
@@ -1664,7 +1673,7 @@ def browser_navigate_h(url=""):
         browser.go_to(url.lower())
         status = True
     except Exception as ex:
-        print("Error in browser_navigate_h = " + str(ex))
+        print_with_magic_color("Error in browser_navigate_h = " + str(ex))
     finally:
         return status
 
@@ -1691,7 +1700,7 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
             browser.write(Value)
             status = True
     except Exception as ex:
-        print("Error in browser_write_h = " + str(ex))
+        print_with_magic_color("Error in browser_write_h = " + str(ex))
     finally:
         return status
 
@@ -1734,7 +1743,7 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
                 browser.rightclick(element)
             status = True
     except Exception as ex:
-        print("Error in browser_mouse_click_h = " + str(ex))
+        print_with_magic_color("Error in browser_mouse_click_h = " + str(ex))
     finally:
         return status  
 
@@ -1762,7 +1771,7 @@ def browser_locate_element_h(selector="", get_text=False, multiple_elements=Fals
                 return browser.find_all(browser.S(selector).web_element.text)
             return browser.find_all(browser.S(selector))
     except Exception as ex:
-        print("Error in browser_locate_element_h = " + str(ex))
+        print_with_magic_color("Error in browser_locate_element_h = " + str(ex))
 
 def browser_wait_until_h(text="", element="t"):
     """Wait until a specific element is found.
@@ -1788,7 +1797,7 @@ def browser_wait_until_h(text="", element="t"):
             browser.wait_until(browser.Button(text).exists, 10) # button
         status = True
     except Exception as ex:
-        print("Error in browser_wait_until_h = " + str(ex))
+        print_with_magic_color("Error in browser_wait_until_h = " + str(ex))
     finally:
         return status
 
@@ -1803,7 +1812,7 @@ def browser_refresh_page_h():
         browser.refresh()
         status = True
     except Exception as ex:
-        print("Error in browser_refresh_page_h = " + str(ex))
+        print_with_magic_color("Error in browser_refresh_page_h = " + str(ex))
     finally:
         return status
 
@@ -1818,7 +1827,7 @@ def browser_hit_enter_h():
         browser.press(browser.ENTER)
         status = True
     except Exception as ex:
-        print("Error in browser_hit_enter_h=" + str(ex))
+        print_with_magic_color("Error in browser_hit_enter_h=" + str(ex))
     finally:
         return status
 
@@ -1847,7 +1856,7 @@ def browser_key_press_h(key_1="", key_2=""):
             press(key_1)
         if key_1 and key_2:
             if key_1.lower() in hot_keys and key_2.lower() in hot_keys:
-                print("Both in hot")
+                print_with_magic_color("Both in hot")
                 key_1 = browser_keys[hot_keys.index(key_1.lower())]
                 key_2 = browser_keys[hot_keys.index(key_2.lower())]
             if key_1.lower() in hot_keys and key_2.lower() not in hot_keys:
@@ -1855,7 +1864,7 @@ def browser_key_press_h(key_1="", key_2=""):
             press(key_1 + key_2)
         status = True
     except Exception as ex:
-        print("Error in browser_hit_enter_h=" + str(ex))
+        print_with_magic_color("Error in browser_hit_enter_h=" + str(ex))
     finally:
         return status
 
@@ -1877,7 +1886,7 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
         browser.hover(User_Visible_Text_Element)
         status = True
     except Exception as e:
-        print('Error in browser_mouse_hover_h = ', str(e))
+        print_with_magic_color('Error in browser_mouse_hover_h = ', str(e))
     finally:
         return status
 
@@ -1892,7 +1901,7 @@ def browser_quit_h():
         browser.kill_browser()
         status = True
     except Exception as ex:
-        print("Error in browser_quit_h = " + str(ex))
+        print_with_magic_color("Error in browser_quit_h = " + str(ex))
     finally:
         return status
 
@@ -1937,7 +1946,7 @@ def folder_write_text_file(txt_file_path="",contents=""):
         f.close()
         
     except Exception as ex:
-        print("Error in folder_write_text_file="+str(ex))
+        print_with_magic_color("Error in folder_write_text_file="+str(ex))
 
 def folder_create(strFolderPath=""):
     """
@@ -1957,7 +1966,7 @@ def folder_create(strFolderPath=""):
         if not os.path.exists(strFolderPath):
             os.makedirs(strFolderPath)
     except Exception as ex:
-        print("Error in folder_create="+str(ex))
+        print_with_magic_color("Error in folder_create="+str(ex))
 
 def folder_create_text_file(textFolderPath="",txtFileName=""):
     """
@@ -1987,7 +1996,7 @@ def folder_create_text_file(textFolderPath="",txtFileName=""):
         f.close()
         
     except Exception as ex:
-        print("Error in folder_create_text_file="+str(ex))
+        print_with_magic_color("Error in folder_create_text_file="+str(ex))
 
 def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
     """
@@ -2011,7 +2020,7 @@ def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
 
         return allFilesOfaFolderAsLst
     except Exception as ex:
-        print("Error in folder_get_all_filenames_as_list="+str(ex))
+        print_with_magic_color("Error in folder_get_all_filenames_as_list="+str(ex))
 
 def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="all"):  
     """
@@ -2037,7 +2046,7 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
             filelist = [ f for f in os.listdir(fullPathOfTheFolder) ]
         else:
             filelist = [ f for f in os.listdir(fullPathOfTheFolder) if f.endswith(file_extension_with_dot) ]
-        print(filelist)
+        print_with_magic_color(filelist)
         for f in filelist:
             try:
                 file_path = os.path.join(fullPathOfTheFolder, f)
@@ -2049,7 +2058,7 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
         
         return count
     except Exception as ex:
-        print("Error in folder_delete_all_files="+str(ex)) 
+        print_with_magic_color("Error in folder_delete_all_files="+str(ex)) 
         return -1
 
 def file_rename(old_file_path='',new_file_name='',ext=False):
@@ -2076,14 +2085,14 @@ def file_rename(old_file_path='',new_file_name='',ext=False):
                     path_of_new_file = os.path.join('\\'.join(old_file_path.split('\\')[:-1]) , '.'.join([new_file_name,ext]))
             
                 os.rename(src=Path(old_file_path),dst=Path(path_of_new_file))
-                print(path_of_new_file)
+                print_with_magic_color(path_of_new_file)
             else:
                 raise Exception('new_file_name can\'t be empty.')
         else:
             raise Exception('Old_file_path is invalid. Please pass a valid path.')
      
     except Exception as e:
-        print('Error in file_rename = ',str(e))
+        print_with_magic_color('Error in file_rename = ',str(e))
 
 def file_get_json_details(path_of_json_file='',section=''):
     '''
@@ -2108,7 +2117,7 @@ def file_get_json_details(path_of_json_file='',section=''):
             raise Exception('Section can\'t be find in given json file.')
 
     except Exception as ex:
-        print(f'Error in file_get_json_details = {ex}')
+        print_with_magic_color(f'Error in file_get_json_details = {ex}')
 
 # ---------  Folder Functions Ends ---------
 
@@ -2129,7 +2138,7 @@ def window_show_desktop():
         pg.hotkey("win","d")
         time.sleep(0.5)
     except Exception as ex:
-        print("Error in window_show_desktop="+str(ex))
+        print_with_magic_color("Error in window_show_desktop="+str(ex))
 
 def window_get_all_opened_titles_windows():
     """
@@ -2146,7 +2155,7 @@ def window_get_all_opened_titles_windows():
                 allTitles_lst.append(str(item).strip())
         return allTitles_lst
     except Exception as ex:
-        print("Error in window_get_all_opened_titles="+str(ex))
+        print_with_magic_color("Error in window_get_all_opened_titles="+str(ex))
 
 def window_activate_and_maximize_windows(windowName=""):
     """
@@ -2173,9 +2182,9 @@ def window_activate_and_maximize_windows(windowName=""):
             time.sleep(1)
             
         else:
-            print("No window OPEN by name="+str(windowName))
+            print_with_magic_color("No window OPEN by name="+str(windowName))
     except Exception as ex:
-        print("Error in window_activate_and_maximize="+str(ex))
+        print_with_magic_color("Error in window_activate_and_maximize="+str(ex))
 
 def window_minimize_windows(windowName=""):
     """
@@ -2195,9 +2204,9 @@ def window_minimize_windows(windowName=""):
             windw.minimize()
             time.sleep(1)
         else:
-            print("No window available to minimize by name="+str(windowName))
+            print_with_magic_color("No window available to minimize by name="+str(windowName))
     except Exception as ex:
-        print("Error in window_minimize="+str(ex))
+        print_with_magic_color("Error in window_minimize="+str(ex))
 
 def window_close_windows(windowName=""):
     """
@@ -2217,9 +2226,9 @@ def window_close_windows(windowName=""):
             windw.close()
             time.sleep(1)
         else:
-            print("No window available to close, by name="+str(windowName))
+            print_with_magic_color("No window available to close, by name="+str(windowName))
     except Exception as ex:
-        print("Error in window_close="+str(ex))
+        print_with_magic_color("Error in window_close="+str(ex))
 
 def launch_any_exe_bat_application(pathOfExeFile=""):
     """Launches any exe or batch file or excel file etc.
@@ -2242,7 +2251,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
                 win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
                 status = True
             except Exception as ex1:
-                print("launch_any_exe_bat_application"+str(ex1))
+                print_with_magic_color("launch_any_exe_bat_application"+str(ex1))
             
         elif os_name == linux_os:
             try:
@@ -2250,18 +2259,18 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
                 time.sleep(2)
                 status = True
             except Exception as ex:
-                print("launch_any_exe_bat_application"+str(ex))
+                print_with_magic_color("launch_any_exe_bat_application"+str(ex))
         
         elif os_name == mac_os:
             try:
                 subprocess.Popen(f'open -a "{pathOfExeFile}"')
                 status = True
             except Exception as ex:
-                print("launch_any_exe_bat_application"+str(ex))
+                print_with_magic_color("launch_any_exe_bat_application"+str(ex))
                 
         time.sleep(1) 
     except Exception as ex:
-        print("ERROR in launch_any_exe_bat_application="+str(ex))
+        print_with_magic_color("ERROR in launch_any_exe_bat_application="+str(ex))
     finally:
         return status
 
@@ -2342,7 +2351,7 @@ def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
         row = row + 1
         return row, col
     except Exception as ex:
-        print("Error in excel_get_row_column_count="+str(ex))
+        print_with_magic_color("Error in excel_get_row_column_count="+str(ex))
 
 def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, startRow=0, endCol=0, endRow=0): #*
     """
@@ -2393,7 +2402,7 @@ def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, 
     
         return rangeSelected
     except Exception as ex:
-        print("Error in copy_range_from_excel_sheet="+str(ex))
+        print_with_magic_color("Error in copy_range_from_excel_sheet="+str(ex))
 
 def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', startCol=0, startRow=0, endCol=0, endRow=0, copiedData=""):#*
     """
@@ -2443,7 +2452,7 @@ def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', sta
         to_wb.save(excel_path)
         return countRow-1
     except Exception as ex:
-        print("Error in excel_copy_paste_range_from_to_sheet="+str(ex))
+        print_with_magic_color("Error in excel_copy_paste_range_from_to_sheet="+str(ex))
 
 def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=""):#*
     """
@@ -2469,7 +2478,7 @@ def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=
         message_toast("Excel splitting done", file_folder_path=file_path)
             
     except Exception as ex:
-        print("Error in excel_split_by_column="+str(ex))
+        print_with_magic_color("Error in excel_split_by_column="+str(ex))
 
 def excel_split_the_file_on_row_count(excel_path="", sheet_name = 'Sheet1', rowSplitLimit="", outputFolderPath="", outputTemplateFileName ="Split"):#*
     """
@@ -2521,7 +2530,7 @@ def excel_split_the_file_on_row_count(excel_path="", sheet_name = 'Sheet1', rowS
             i = i + 1
         return True
     except Exception as ex:
-        print("Error in excel_split_the_file_on_row_count="+str(ex))
+        print_with_magic_color("Error in excel_split_the_file_on_row_count="+str(ex))
 
 def excel_merge_all_files(input_folder_path="",output_folder_path=""):
     """
@@ -2553,7 +2562,7 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
         
         return True
     except Exception as ex:
-        print("Error in excel_merge_all_files="+str(ex))
+        print_with_magic_color("Error in excel_merge_all_files="+str(ex))
 
 def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBeDropped = ""):
     """
@@ -2582,7 +2591,7 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
             df.to_excel(writer, sheet_name=sheet_name,index=False) 
 
     except Exception as ex:
-        print("Error in excel_drop_columns="+str(ex))
+        print_with_magic_color("Error in excel_drop_columns="+str(ex))
 
 def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToBeSorted=None,secondColumnToBeSorted=None,thirdColumnToBeSorted=None,firstColumnSortType=True,secondColumnSortType=True,thirdColumnSortType=True):#*
     """
@@ -2629,7 +2638,7 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
         
         return True
     except Exception as ex:
-        print("Error in excel_sort_columns="+str(ex))        
+        print_with_magic_color("Error in excel_sort_columns="+str(ex))        
 
 def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
     """
@@ -2647,7 +2656,7 @@ def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
             df.to_excel(writer,sheet_name=sheet_name, index=False)
 
     except Exception as ex:
-        print("Error in excel_clear_sheet="+str(ex))
+        print_with_magic_color("Error in excel_clear_sheet="+str(ex))
 
 def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnName="", cellNumber=0, setText=""): #*
     """
@@ -2672,7 +2681,7 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
         return True
 
     except Exception as ex:
-        print("Error in excel_set_single_cell="+str(ex))
+        print_with_magic_color("Error in excel_set_single_cell="+str(ex))
 
 def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName="",cellNumber=0): #*
     """
@@ -2693,7 +2702,7 @@ def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName
         cellValue = df.at[cellNumber,columnName[0]]
         return cellValue
     except Exception as ex:
-        print("Error in excel_get_single_cell="+str(ex))
+        print_with_magic_color("Error in excel_get_single_cell="+str(ex))
 
 def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnName="", saveResultsInSameExcel=True, which_one_to_keep="first"): #*
     """
@@ -2725,7 +2734,7 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
 
         return count
     except Exception as ex:
-        print("Error in excel_remove_duplicates="+str(ex))
+        print_with_magic_color("Error in excel_remove_duplicates="+str(ex))
 
 def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepath_2="", sheet_name_2 = 'Sheet1', header_2 = 0, Output_path="", OutputExcelFileName="", match_column_name="",how='left'):#*
     """
@@ -2770,7 +2779,7 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
         return True
     
     except Exception as ex:
-        print("Error in excel_vlook_up="+str(ex))
+        print_with_magic_color("Error in excel_vlook_up="+str(ex))
 
 def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name=''): 
     '''
@@ -2950,9 +2959,9 @@ def excel_convert_to_image(excel_file_path=""):
 
             return image_path
         else:
-            print("This feature is available only on Windows OS")
+            print_with_magic_color("This feature is available only on Windows OS")
     except Exception as ex:
-        print("Error in excel_convert_to_image="+str(ex))
+        print_with_magic_color("Error in excel_convert_to_image="+str(ex))
 
 def excel_create_excel_file_in_given_folder(fullPathToTheFolder="",excelFileName="",sheet_name="Sheet1"):
     """
@@ -2993,7 +3002,7 @@ def excel_create_excel_file_in_given_folder(fullPathToTheFolder="",excelFileName
         
         return True
     except Exception as ex:
-        print("Error in excel_create_excel_file_in_given_folder="+str(ex))
+        print_with_magic_color("Error in excel_create_excel_file_in_given_folder="+str(ex))
 
 def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",value=""):
     """
@@ -3019,7 +3028,7 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
             return False
 
     except Exception as ex:
-        print("Error in excel_if_value_exists="+str(ex))
+        print_with_magic_color("Error in excel_if_value_exists="+str(ex))
 
 def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
     """
@@ -3049,7 +3058,7 @@ def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
         
         return True
     except Exception as ex:
-        print("Error in excel_create_file="+str(ex))
+        print_with_magic_color("Error in excel_create_file="+str(ex))
 
 def excel_to_colored_html(formatted_excel_path=""):
     """
@@ -3065,7 +3074,7 @@ def excel_to_colored_html(formatted_excel_path=""):
         xlsx2html(formatted_excel_path, formatted_html_path)
         return formatted_html_path
     except Exception as ex:
-        print("Error in excel_to_colored_html="+str(ex))
+        print_with_magic_color("Error in excel_to_colored_html="+str(ex))
 
 def excel_get_all_sheet_names(excelFilePath=""):
     """
@@ -3084,7 +3093,7 @@ def excel_get_all_sheet_names(excelFilePath=""):
         wb = load_workbook(excelFilePath)
         return wb.sheetnames
     except Exception as ex:
-        print("Error in excel_get_all_sheet_names="+str(ex))
+        print_with_magic_color("Error in excel_get_all_sheet_names="+str(ex))
 
 def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
     """
@@ -3098,7 +3107,7 @@ def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
         col_lst = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,nrows=1,dtype=str,engine='openpyxl').columns.tolist()
         return col_lst
     except Exception as ex:
-        print("Error in excel_get_all_header_columns="+str(ex))
+        print_with_magic_color("Error in excel_get_all_header_columns="+str(ex))
 
 def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
     """
@@ -3125,7 +3134,7 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
         return df.describe()
 
     except Exception as ex:
-        print("Error in excel_describe_data="+str(ex))
+        print_with_magic_color("Error in excel_describe_data="+str(ex))
 
 def excel_sub_routines():
     """
@@ -3211,10 +3220,10 @@ def excel_sub_routines():
             except:
                 pass
         else:
-            print("This feature is available only on Windows OS")
+            print_with_magic_color("This feature is available only on Windows OS")
 
     except Exception as ex:
-        print("Error in excel_sub_routines="+str(ex))
+        print_with_magic_color("Error in excel_sub_routines="+str(ex))
 
 def convert_csv_to_excel(csv_path="",sep=""):
     """
@@ -3241,12 +3250,12 @@ def convert_csv_to_excel(csv_path="",sep=""):
 
         writer.save()
         
-        print("Excel file saved : "+str(excel_file_path))
+        print_with_magic_color("Excel file saved : "+str(excel_file_path))
 
         message_toast("CSV to excel conversion done", file_folder_path=excel_file_path)
 
     except Exception as ex:
-        print("Error in convert_csv_to_excel="+str(ex))
+        print_with_magic_color("Error in convert_csv_to_excel="+str(ex))
 
 def isNaN(value):
     """
@@ -3272,7 +3281,7 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startco
         f = open(filename)
         # Do something with the file
     except IOError:
-        # print("File not accessible")
+        # print_with_magic_color("File not accessible")
         wb = Workbook()
         ws = wb.active
         ws.title = sheet_name
@@ -3366,9 +3375,9 @@ def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend
             time.sleep(1)
             return app, main_dlg
         except Exception as ex:
-            print("Exception in win_obj_open_app : " + str(ex))
+            print_with_magic_color("Exception in win_obj_open_app : " + str(ex))
     else:
-        print("Works only on windows OS")
+        print_with_magic_color("Works only on windows OS")
 
 def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
     from pywinauto import Desktop, Application
@@ -3384,13 +3393,13 @@ def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
         try:
             if save and file_name_with_path:
                 main_dlg.print_control_identifiers(filename=file_name_with_path)
-                print("File Saved...")
+                print_with_magic_color("File Saved...")
             else:
                 main_dlg.print_control_identifiers()
         except Exception as ex:
-            print("Exception in win_obj_get_all_objects : " + str(ex))
+            print_with_magic_color("Exception in win_obj_get_all_objects : " + str(ex))
     else:
-        print("Works only on windows OS")
+        print_with_magic_color("Works only on windows OS")
 
 def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
     from pywinauto import Desktop, Application
@@ -3413,12 +3422,12 @@ def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
             elif auto_id:
                 main_dlg.child_window(auto_id=auto_id).invoke()
             else:
-                print("Need \'title\' or \'auto_id\' Parameter for Mouse Click to work")
+                print_with_magic_color("Need \'title\' or \'auto_id\' Parameter for Mouse Click to work")
                 exit()
         except Exception as ex:
-            print("Exception in win_obj_mouse_click : " + str(ex))
+            print_with_magic_color("Exception in win_obj_mouse_click : " + str(ex))
     else:
-        print("Works only on windows OS")
+        print_with_magic_color("Works only on windows OS")
 
 def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
     from pywinauto import Desktop, Application
@@ -3444,9 +3453,9 @@ def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
             else:
                 main_dlg.type_keys(write, with_spaces=True)
         except Exception as ex:
-            print("Exception in win_obj_key_press : " + str(ex))
+            print_with_magic_color("Exception in win_obj_key_press : " + str(ex))
     else:
-        print("Works only on windows OS")
+        print_with_magic_color("Works only on windows OS")
 
 def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = False):
     from pywinauto import Desktop, Application
@@ -3491,9 +3500,9 @@ def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = Fal
                     read = main_dlg.window_text()
                 return read
         except Exception as ex:
-            print("Exception in win_obj_get_text : " + str(ex))
+            print_with_magic_color("Exception in win_obj_get_text : " + str(ex))
     else:
-        print("Works only on windows OS")
+        print_with_magic_color("Works only on windows OS")
 
 # --------- Windows Objects Functions Ends ---------
 
@@ -3546,7 +3555,7 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",X=0,Y=0): #"Fu
         clipboard_data = ''
         return "Saved the contents at " + str(notepad_file_path)
     except Exception as ex:
-        print("Error in scrape_save_contents_to_notepad = "+str(ex))
+        print_with_magic_color("Error in scrape_save_contents_to_notepad = "+str(ex))
     
 def scrape_get_contents_by_search_copy_paste(highlightText=""):
     """
@@ -3592,7 +3601,7 @@ def scrape_get_contents_by_search_copy_paste(highlightText=""):
         clipboard_data = ''
         return output_lst_newline_removed
     except Exception as ex:
-        print("Error in scrape_get_contents_by_search_copy_paste="+str(ex))
+        print_with_magic_color("Error in scrape_get_contents_by_search_copy_paste="+str(ex))
     
     """
     Gets the color by X Y co-ordinates of the screen.
@@ -3606,7 +3615,7 @@ def scrape_get_contents_by_search_copy_paste(highlightText=""):
         time.sleep(0.5)
         return im.getpixel(pos)    
     except Exception as ex:
-        print("Error in mouse_get_color_by_position = "+str(ex))
+        print_with_magic_color("Error in mouse_get_color_by_position = "+str(ex))
 
 def screen_clear_search(delay=0.2):
     """
@@ -3623,7 +3632,7 @@ def screen_clear_search(delay=0.2):
         pg.hotkey("esc")
         time.sleep(delay)
     except Exception as ex:
-        print("Error in screen_clear_search="+str(ex))
+        print_with_magic_color("Error in screen_clear_search="+str(ex))
 
 def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='No'):
     """
@@ -3664,7 +3673,7 @@ def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='N
         return True
 
     except Exception as ex:
-        print("Error in search_highlight_tab_enter_open="+str(ex))
+        print_with_magic_color("Error in search_highlight_tab_enter_open="+str(ex))
 
 def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared=False):
     """
@@ -3721,9 +3730,9 @@ def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_m
             str_cmd = r"powershell.exe Start-Process schtasks '/create  /SC WEEKLY /D {} /tn ClointFusion\{} /tr {} /st {}' ".format(week_day,bot_name,batch_file_path,start_time_hh_mm_24_hr_frmt)
 
         subprocess.call(str_cmd)
-        print("Task Scheduled")
+        print_with_magic_color("Task Scheduled")
     except Exception as ex:
-        print("Error in schedule_create_task_windows="+str(ex))
+        print_with_magic_color("Error in schedule_create_task_windows="+str(ex))
 
 def schedule_delete_task_windows():
     """
@@ -3733,10 +3742,10 @@ def schedule_delete_task_windows():
         str_cmd = r"powershell.exe Start-Process schtasks '/delete /tn ClointFusion\{} ' ".format(bot_name)
         
         subprocess.call(str_cmd)
-        print("Task {} Deleted".format(bot_name))
+        print_with_magic_color("Task {} Deleted".format(bot_name))
 
     except Exception as ex:
-        print("Error in schedule_delete_task="+str(ex))
+        print_with_magic_color("Error in schedule_delete_task="+str(ex))
 
 # --------- Schedule Functions Ends ---------
 
@@ -3779,12 +3788,12 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 
                 mail.Send()
 
-                print(f"Mail sent to {toAddress}")
+                print_with_magic_color(f"Mail sent to {toAddress}")
         else:
-            print("This feature is available only on Windows OS")
+            print_with_magic_color("This feature is available only on Windows OS")
 
     except Exception as ex:
-        print("Error in email_send_via_desktop_outlook="+str(ex))
+        print_with_magic_color("Error in email_send_via_desktop_outlook="+str(ex))
 
 # --------- Email Functions Ends ---------
 
@@ -3802,9 +3811,9 @@ def find(function_partial_name=""):
             import ClointFusion as cf
             return pi.search(cf, name=function_partial_name)
         else:
-            print("Please pass partial name of the function. Ex: sort")
+            print_with_magic_color("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
-        print("Error in find="+str(ex))
+        print_with_magic_color("Error in find="+str(ex))
 
 def pause_program(seconds="5"):
     """
@@ -3814,7 +3823,7 @@ def pause_program(seconds="5"):
         seconds = int(seconds)
         time.sleep(seconds)
     except Exception as ex:
-        print("Error in pause_program="+str(ex))
+        print_with_magic_color("Error in pause_program="+str(ex))
 
 def create_batch_file(application_exe_pyw_file_path=""):
     """
@@ -3828,7 +3837,7 @@ def create_batch_file(application_exe_pyw_file_path=""):
             application_exe_pyw_file_path = gui_get_any_file_from_user('.pyw/.exe file for which .bat is to be made')
 
             while not (str(application_exe_pyw_file_path).endswith(".exe") or str(application_exe_pyw_file_path).endswith(".pyw")):
-                print("Please choose the file ending with .pyw or .exe")
+                print_with_magic_color("Please choose the file ending with .pyw or .exe")
                 application_exe_pyw_file_path = gui_get_any_file_from_user('.pyw/.exe file for which .bat is to be made')
             
         application_name= ""
@@ -3860,9 +3869,9 @@ def create_batch_file(application_exe_pyw_file_path=""):
             f.write("exit")    
             f.close()
 
-        print("Batch file saved in " + str(batch_file_path))
+        print_with_magic_color("Batch file saved in " + str(batch_file_path))
     except Exception as ex:
-        print("Error in create_batch_file="+str(ex))
+        print_with_magic_color("Error in create_batch_file="+str(ex))
 
     finally:
         return batch_file_path
@@ -3878,10 +3887,10 @@ def dismantle_code(strFunctionName=""):
 
         if not strFunctionName:
             strFunctionName = gui_get_any_input_from_user('Exact function name to dis-assemble. Ex: show_emoji')
-            print("Code dismantling {}".format(strFunctionName))
+            print_with_magic_color("Code dismantling {}".format(strFunctionName))
             return dis.dis(strFunctionName) 
     except Exception as ex:
-       print("Error in dismantle_code="+str(ex)) 
+       print_with_magic_color("Error in dismantle_code="+str(ex)) 
 
 def compute_hash(inputData=""):
     """
@@ -3895,7 +3904,7 @@ def compute_hash(inputData=""):
 
         return sha256(inputData.encode()).hexdigest()
     except Exception as ex:
-        print("Error in compute_hash="+str(ex))
+        print_with_magic_color("Error in compute_hash="+str(ex))
 
 def date_convert_to_US_format(input_str=""):
     """
@@ -3930,7 +3939,7 @@ def date_convert_to_US_format(input_str=""):
             dt=datetime.datetime.strptime(match.group(), '%Y-%m-%d').date() #1
         return dt.strftime('%m/%d/%Y')    
     except Exception as ex:
-        print("Error in date_convert_to_US_format="+str(ex))
+        print_with_magic_color("Error in date_convert_to_US_format="+str(ex))
 
 def image_diff_hash(img_1,img_2,hash_type='p'):
     """
@@ -3955,9 +3964,9 @@ def image_diff_hash(img_1,img_2,hash_type='p'):
             hash_1 = imagehash.colorhash(Image.open(img_1))
             hash_2 = imagehash.colorhash(Image.open(img_2))
         
-        print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
+        print_with_magic_color("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
     except Exception as ex:
-        print("Error in image_diff_hash="+str(ex))
+        print_with_magic_color("Error in image_diff_hash="+str(ex))
 
 def download_this_file(url=""):
     """
@@ -3982,7 +3991,7 @@ def download_this_file(url=""):
             return download_file_path
 
     except Exception as ex:
-        print("Error in download_this_file="+str(ex))
+        print_with_magic_color("Error in download_this_file="+str(ex))
 
 def clear_screen():
     """
@@ -4027,7 +4036,7 @@ def _init_cf_quick_test_log_file(log_path_arg):
         logging.basicConfig(filename=log_path, level=logging.INFO, format='%(asctime)s  :  %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
         
     except Exception as ex:
-        print("ERROR in _init_log_file="+str(ex))
+        print_with_magic_color("ERROR in _init_log_file="+str(ex))
     finally:
         host_ip = socket.gethostbyname(socket.gethostname()) 
         logging.info("{} ClointFusion Self Testing initiated".format(os_name))
@@ -4067,17 +4076,17 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
     try:
         message_pop_up('Importing ClointFusion', delay=1)
-        print('Importing ClointFusion')
-        print()
+        print_with_magic_color('Importing ClointFusion')
+        print_with_magic_color()
 
-        print('ClointFusion imported successfully '+ show_emoji())
-        print("____________________________________________________________")
-        print()
+        print_with_magic_color('ClointFusion imported successfully '+ show_emoji())
+        print_with_magic_color("____________________________________________________________")
+        print_with_magic_color()
         logging.info('ClointFusion imported successfully')
         try:
             base_dir = Path(user_chosen_test_folder)
             folder_create(base_dir) 
-            print('Test folder location {}'.format(base_dir))
+            print_with_magic_color('Test folder location {}'.format(base_dir))
             logging.info('Test folder location {}'.format(base_dir))
             
             img_folder_path =  os.path.join(base_dir, "Images")
@@ -4087,27 +4096,27 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             error_screen_shots_path = os.path.join(base_dir, "Error_Screenshots")
             
             try:
-                print('Creating sub folders viz. img/batch/config/output/error_screen_shot at {}'.format(base_dir))
+                print_with_magic_color('Creating sub folders viz. img/batch/config/output/error_screen_shot at {}'.format(base_dir))
                 folder_create(img_folder_path)
                 folder_create(batch_file_path)
                 folder_create(config_folder_path)
                 folder_create(error_screen_shots_path)
                 folder_create(output_folder_path)
             except Exception as ex:
-                print('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex))
+                print_with_magic_color('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex))
                 logging.info('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot')
                 TEST_CASES_STATUS_MESSAGE = "Unable to create basic sub-folders for img/batch/config/output/error_screen_shot"
 
-            print()
-            print('ClointFusion Self Testing Initiated '+show_emoji())
+            print_with_magic_color()
+            print_with_magic_color('ClointFusion Self Testing Initiated '+show_emoji())
             logging.info('ClointFusion Self Testing Initiated')
         except Exception as ex:
-            print('Error while creating sub-folders='+str(ex))
+            print_with_magic_color('Error while creating sub-folders='+str(ex))
             logging.info('Error while creating sub-folders='+str(ex))
 
         try:
-            print()
-            print('Testing folder operations')
+            print_with_magic_color()
+            print_with_magic_color('Testing folder operations')
             folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
             folder_create_text_file(test_folder_path, "My Text File")
             excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
@@ -4119,60 +4128,60 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 excel_create_excel_file_in_given_folder(os.path.join(test_folder_path,"Delete Excel"),'Delete-Excel-2')
                 folder_delete_all_files(os.path.join(test_folder_path,'Delete Excel'), "xlsx")
             except Exception as ex:
-                print('Unable to delete files in test folder='+str(ex))
+                print_with_magic_color('Unable to delete files in test folder='+str(ex))
                 logging.info('Unable to delete files in test folder='+str(ex))
                 TEST_CASES_STATUS_MESSAGE = 'Unable to delete files in test folder='+str(ex)
 
             folder_create(Path(test_folder_path / 'Split_Merge'))
-            print(folder_get_all_filenames_as_list(test_folder_path))
-            print(folder_get_all_filenames_as_list(test_folder_path, extension="xlsx"))
-            print('Folder operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
+            print_with_magic_color(folder_get_all_filenames_as_list(test_folder_path))
+            print_with_magic_color(folder_get_all_filenames_as_list(test_folder_path, extension="xlsx"))
+            print_with_magic_color('Folder operations tested successfully '+show_emoji())
+            print_with_magic_color("____________________________________________________________")
             logging.info('Folder operations tested successfully')
         except Exception as ex:
-            print('Error while testing Folder operations='+str(ex))
+            print_with_magic_color('Error while testing Folder operations='+str(ex))
             logging.info('Error while testing Folder operations='+str(ex))
 
         if os_name == windows_os:
             try:
-                print()
-                print('Testing window based operations')
+                print_with_magic_color()
+                print_with_magic_color('Testing window based operations')
                 window_show_desktop()
                 launch_any_exe_bat_application(test_run_excel_path)
                 window_minimize_windows('Quick_Self_Test_Excel')
                 window_activate_and_maximize_windows('Quick_Self_Test_Excel')
                 window_close_windows('Quick_Self_Test_Excel')
-                print(window_get_all_opened_titles_windows())
-                print('Window based operations tested successfully '+show_emoji())
-                print("____________________________________________________________")
+                print_with_magic_color(window_get_all_opened_titles_windows())
+                print_with_magic_color('Window based operations tested successfully '+show_emoji())
+                print_with_magic_color("____________________________________________________________")
                 logging.info('Window based operations tested successfully')
             except Exception as ex:
-                print('Error while testing window based operations='+str(ex))
+                print_with_magic_color('Error while testing window based operations='+str(ex))
                 logging.info('Error while testing window based operations='+str(ex))
         else:
-            print('Skipping window operations as it is Windows OS specific')
+            print_with_magic_color('Skipping window operations as it is Windows OS specific')
             logging.info('Skipping window operations as it is Windows OS specific')
             # TEST_CASES_STATUS_MESSAGE = 'Skipping window operations as it is Windows OS specific'
             TEST_CASES_STATUS_MESSAGE = ''
 
         try:
-            print()
-            print('Testing String Operations')
-            print(string_remove_special_characters("C!@loin#$tFu*(sion"))
-            print(string_extract_only_alphabets(inputString="C1l2o#%^int&*Fus12i5on"))
-            print(string_extract_only_numbers("C1l2o3i4n5t6F7u8i9o0n"))
-            print(date_convert_to_US_format("31-01-2021"))
-            print('String operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
+            print_with_magic_color()
+            print_with_magic_color('Testing String Operations')
+            print_with_magic_color(string_remove_special_characters("C!@loin#$tFu*(sion"))
+            print_with_magic_color(string_extract_only_alphabets(inputString="C1l2o#%^int&*Fus12i5on"))
+            print_with_magic_color(string_extract_only_numbers("C1l2o3i4n5t6F7u8i9o0n"))
+            print_with_magic_color(date_convert_to_US_format("31-01-2021"))
+            print_with_magic_color('String operations tested successfully '+show_emoji())
+            print_with_magic_color("____________________________________________________________")
             logging.info('String operations tested successfully')
         except Exception as ex:
-            print('Error while testing string operations='+str(ex))
+            print_with_magic_color('Error while testing string operations='+str(ex))
             logging.info('Error while testing string operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing string operations="+str(ex)
             
         try:
-            print()
-            print('Testing keyboard operations')
+            print_with_magic_color()
+            print_with_magic_color('Testing keyboard operations')
             message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
@@ -4181,8 +4190,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                 key_press("right")
                 key_hit_enter()
-                print('Keyboard operations tested successfully '+show_emoji())
-                print("____________________________________________________________")
+                print_with_magic_color('Keyboard operations tested successfully '+show_emoji())
+                print_with_magic_color("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
             elif os_name == linux_os:
                 launch_any_exe_bat_application("gedit") # Ubuntu
@@ -4192,8 +4201,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 subprocess.Popen(f"killall -9 gedit", shell=True,
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
-                print('Keyboard operations tested successfully '+show_emoji())
-                print("____________________________________________________________")
+                print_with_magic_color('Keyboard operations tested successfully '+show_emoji())
+                print_with_magic_color("____________________________________________________________")
                 logging.info('Keyboard operations tested successfully')
             elif os_name == mac_os:
                 try:
@@ -4204,14 +4213,14 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                     subprocess.Popen('pkill -9 "TextEdit"', shell=True,
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
-                    print('Keyboard operations tested successfully '+show_emoji())
-                    print("____________________________________________________________")
+                    print_with_magic_color('Keyboard operations tested successfully '+show_emoji())
+                    print_with_magic_color("____________________________________________________________")
                     logging.info('Keyboard operations tested successfully')
                 except:
-                    print("Currently Not Supported.")
+                    print_with_magic_color("Currently Not Supported.")
                     logging.info('Keyboard operations Skipped.')
         except Exception as ex:
-            print('Error in keyboard operations='+str(ex))
+            print_with_magic_color('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
             try:
                 key_press(key_1="alt", key_2="f4")
@@ -4221,10 +4230,10 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         message_counter_down_timer("Starting Excel Operations in (seconds)",3)
     
         try:
-            print()
-            print('Testing excel operations')
+            print_with_magic_color()
+            print_with_magic_color('Testing excel operations')
             excel_create_excel_file_in_given_folder(test_folder_path, "Test_Excel_File", "Test_Sheet")
-            print(excel_get_row_column_count(test_run_excel_path))
+            print_with_magic_color(excel_get_row_column_count(test_run_excel_path))
 
             excel_create_excel_file_in_given_folder(test_folder_path,excelFileName="Excel_Test_Data")
             test_excel_path = test_folder_path / "Excel_Test_Data.xlsx"
@@ -4240,17 +4249,17 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=3,setText="3")
             excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=4,setText="5")
 
-            print(excel_get_single_cell(test_excel_path,sheet_name='Sheet1',columnName='Name'))
+            print_with_magic_color(excel_get_single_cell(test_excel_path,sheet_name='Sheet1',columnName='Name'))
 
             excel_create_file(test_folder_path,"My New Paste Excel")
 
             excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-3','CF-Sheet-1')
             excel_file_path = test_folder_path / 'My Excel-3.xlsx'
-            print(excel_get_all_sheet_names(excel_file_path))
-            print(excel_get_all_sheet_names(test_run_excel_path))
+            print_with_magic_color(excel_get_all_sheet_names(excel_file_path))
+            print_with_magic_color(excel_get_all_sheet_names(test_run_excel_path))
             
             excel_copied_Data=excel_copy_range_from_sheet(test_excel_path, sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6)
-            print(excel_copied_Data)
+            print_with_magic_color(excel_copied_Data)
             excel_copy_paste_range_from_to_sheet(Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6, copiedData=excel_copied_Data)
             excel_split_by_column(excel_path=Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", header=0, columnName="Name")
 
@@ -4279,38 +4288,38 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
             excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
             
-            print('Excel operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
+            print_with_magic_color('Excel operations tested successfully '+show_emoji())
+            print_with_magic_color("____________________________________________________________")
             logging.info('Excel operations tested successfully')
         except Exception as ex:
-            print("Error while testing Excel Operations="+str(ex))
+            print_with_magic_color("Error while testing Excel Operations="+str(ex))
             logging.info("Error while testing Excel Operations="+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing Excel Operations="+str(ex)
             
         message_counter_down_timer("Starting Screen Scraping Operations in (seconds)",3)
 
         try:
-            print()
-            print("Testing screen-scraping functions")
+            print_with_magic_color()
+            print_with_magic_color("Testing screen-scraping functions")
             webbrowser.open('https://sites.google.com/view/clointfusion-hackathon') 
             message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
                 
-            print("Screen-scraping functions tested successfully "+ show_emoji())
-            print("____________________________________________________________")
+            print_with_magic_color("Screen-scraping functions tested successfully "+ show_emoji())
+            print_with_magic_color("____________________________________________________________")
             logging.info("Screen-scraping functions tested successfully")
         except Exception as ex:
-            print('Error while testing screenscraping functions='+str(ex))
+            print_with_magic_color('Error while testing screenscraping functions='+str(ex))
             logging.info('Error while testing screenscraping functions='+str(ex))
             TEST_CASES_STATUS_MESSAGE = 'Error while testing screenscraping functions='+str(ex)
 
         try:
-            print()
-            print("Testing mouse operations")    
+            print_with_magic_color()
+            print_with_magic_color("Testing mouse operations")    
             mouse_move(850,600)
-            print(mouse_get_color_by_position((800,500)))
+            print_with_magic_color(mouse_get_color_by_position((800,500)))
 
             time.sleep(2)
             
@@ -4322,11 +4331,11 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
 
             mouse_click(int(pg.size()[0]/2),int(pg.size()[1]/2)) #Click at center of the screen
 
-            print('Mouse operations tested successfully ' + show_emoji())
-            print("____________________________________________________________")
+            print_with_magic_color('Mouse operations tested successfully ' + show_emoji())
+            print_with_magic_color("____________________________________________________________")
             logging.info('Mouse operations tested successfully')
         except Exception as ex:
-            print('Error in mouse operations='+str(ex))
+            print_with_magic_color('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
             key_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
@@ -4369,8 +4378,8 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
-            print()
-            print("Testing Browser's Helium functions")
+            print_with_magic_color()
+            print_with_magic_color("Testing Browser's Helium functions")
             
             if browser_activate("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
@@ -4390,15 +4399,15 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 pause_program(10)
                 
                 browser_quit_h()
-                print("Tested Browser's Helium functions successfully " + show_emoji())
-                print("____________________________________________________________")
+                print_with_magic_color("Tested Browser's Helium functions successfully " + show_emoji())
+                print_with_magic_color("____________________________________________________________")
                 logging.info("Tested Browser's Helium functions successfully")
 
             else:
                 TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome or Firefox is missing"
 
         except Exception as ex:
-            print("Error while Testing Browser Helium functions="+str(ex))
+            print_with_magic_color("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
             key_press(key_1="ctrl", key_2="w") #to close any open browser
             TEST_CASES_STATUS_MESSAGE = "Error while Testing Browser Helium functions="+str(ex)
@@ -4406,14 +4415,14 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
         
         try:
-            print("____________________________________________________________")
-            print()
-            print("Testing flash message.")
+            print_with_magic_color("____________________________________________________________")
+            print_with_magic_color()
+            print_with_magic_color("Testing flash message.")
             message_pop_up("Testing flash message.")
             message_toast("Testing toast message.")
             logging.info("Flash message tested successfully.")
         except Exception as ex:
-            print("Error while testing Flash message="+str(ex))
+            print_with_magic_color("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
         
@@ -4421,31 +4430,31 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
             mouse_click(pos[0], pos[1])
         except:
-            print("Please click red 'Close' button")
+            print_with_magic_color("Please click red 'Close' button")
 
     except Exception as ex:
-        print("ClointFusion Automated Testing Failed "+str(ex))
+        print_with_magic_color("ClointFusion Automated Testing Failed "+str(ex))
         logging.info("ClointFusion Automated Testing Failed "+str(ex))
         TEST_CASES_STATUS_MESSAGE = "ClointFusion Automated Testing Failed "+str(ex)
         
     finally:
         enable_semi_automatic_mode = False
         _folder_write_text_file(Path(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt')),str(False))
-        print("____________________________________________________________")
-        print("____________________________________________________________")
-        print()
+        print_with_magic_color("____________________________________________________________")
+        print_with_magic_color("____________________________________________________________")
+        print_with_magic_color()
         if TEST_CASES_STATUS_MESSAGE == "":
-            print("ClointFusion Self Testing Completed")
+            print_with_magic_color("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
-            print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
+            print_with_magic_color("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
-            print("____________________________________________________________")
+            print_with_magic_color("____________________________________________________________")
             
             message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
 
         else:
-            print("ClointFusion Self Testing has Failed for few Functions")
-            print(TEST_CASES_STATUS_MESSAGE)
+            print_with_magic_color("ClointFusion Self Testing has Failed for few Functions")
+            print_with_magic_color(TEST_CASES_STATUS_MESSAGE)
             logging.info("ClointFusion Self Testing has Failed for few Functions")
             logging.info(TEST_CASES_STATUS_MESSAGE)
         
@@ -4508,11 +4517,11 @@ def clointfusion_self_test(last_updated_on_month):
                 window['Skip for Now'].update(disabled=True)
                 _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
 
-                print("Starting ClointFusion's Automated Self Testing Module")
-                print('This may take several minutes to complete...')
-                print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
-                print('Please sitback & relax while all the test-cases are run...')
-                print()
+                print_with_magic_color("Starting ClointFusion's Automated Self Testing Module")
+                print_with_magic_color('This may take several minutes to complete...')
+                print_with_magic_color('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
+                print_with_magic_color('Please sitback & relax while all the test-cases are run...')
+                print_with_magic_color()
 
                 _init_cf_quick_test_log_file(temp_current_working_dir)
 
@@ -4560,7 +4569,7 @@ def clointfusion_self_test(last_updated_on_month):
                     try:
                         from ClointFusion import selft
                         resp = selft.ast()
-                        # print(resp.text)
+                        # print_with_magic_color(resp.text)
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
                         sys.exit(0)
@@ -4571,15 +4580,15 @@ def clointfusion_self_test(last_updated_on_month):
         try:
             pg.alert('Error in Clointfusion Self Test = '+str(ex))
         except:
-            print("Error in Clointfusion Self Test = " +str(ex))
+            print_with_magic_color("Error in Clointfusion Self Test = " +str(ex))
 
         exc_type, exc_value, exc_tb = sys.exc_info()
-        print(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
+        print_with_magic_color(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
 
         _rerun_clointfusion_first_run(str(ex))
     finally:
         try:
-            # print('Thank you !')
+            # print_with_magic_color('Thank you !')
 
             if int(last_updated_on_month) != -9 :
                 sys.exit(0)
@@ -4665,7 +4674,7 @@ def update_log_excel_file(message=""):
 
         return True
     except Exception as ex:
-        print("Error in update_log_excel_file="+str(ex))
+        print_with_magic_color("Error in update_log_excel_file="+str(ex))
         return False
 
 class myThread1 (threading.Thread):
@@ -4714,7 +4723,7 @@ def take_error_screenshot(err_str):
         thread1.join()
         thread2.join()
     except Exception as ex:
-        print("Error in take_error_screenshot="+str(ex))
+        print_with_magic_color("Error in take_error_screenshot="+str(ex))
 
 # --------- Self-Test Related Functions Ends ---------
 
@@ -4754,7 +4763,7 @@ if EXECUTE_SELF_TEST_NOW :
     try:
         clointfusion_self_test(last_updated_on_month)
     except Exception as ex:
-        print("Error in Self Test="+str(ex))
+        print_with_magic_color("Error in Self Test="+str(ex))
         _rerun_clointfusion_first_run(str(ex))
 
 else:
@@ -4814,3 +4823,4 @@ else:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
