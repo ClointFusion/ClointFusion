@@ -165,7 +165,6 @@ from loader import dismantle_code
 from loader import compute_hash
 from loader import date_convert_to_US_format
 from loader import download_this_file
-from loader import get_image_from_base64
 from loader import clear_screen
 from loader import print_with_magic_color
 

@@ -53,5 +53,3 @@ setup(
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)
-
-# https://github.com/python/cpython/blob/main/Lib/distutils/dist.py#L247
