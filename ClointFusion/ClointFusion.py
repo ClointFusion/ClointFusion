@@ -4601,11 +4601,11 @@ def clointfusion_self_test(last_updated_on_month):
             # print_with_magic_color('Thank you !')
 
             if int(last_updated_on_month) != -9 :
-                sys.exit(0)
+                sys.exit(1)
             else:
                 window.close()
-        except: 
-            pass
+        except Exception as ex:
+            print(str(ex))
 
 def is_execution_required_today(function_name,execution_type="D",save_todays_date_month=False):
     """
