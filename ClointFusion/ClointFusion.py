@@ -126,24 +126,24 @@ def print_with_magic_color(strMsg="", magic=False):
     Prints the message with colored foreground font
     """
     if magic == False:
-
-        fg_random = random.randint(1,255)
-        while fg_random in [8,range(15,28),22,23,range(51,68),77,range(87,99),114,149,range(231,250)]:
-            fg_random = random.randint(1,255)            
+        fg_random = random.randint(2,255)
+        
+        while fg_random in [8,*range(15,28),22,23,*range(51,68),77,*range(87,99),114,149,*range(231,250)]:
+            fg_random = random.randint(2,255)            
 
         print ('%s %s  %s' % (fg(fg_random), strMsg, attr(1)))
     else:
         for ch in strMsg:
             try:
-                fg_random = random.randint(1,255)
-                while fg_random in [8,range(15,28),22,23,range(51,68),77,range(87,99),114,149,range(231,250)]:
-                    fg_random = random.randint(1,255)
+                fg_random = random.randint(2,255)
+                while fg_random in [8,*range(15,28),22,23,*range(51,68),77,*range(87,99),114,149,*range(231,250)]:
+                    fg_random = random.randint(2,255)
                 print ('%s%s%s' % (fg(fg_random), ch,attr(1)),sep='',end='')
             except:
-                print ('%s' % (fg(1), attr(0)),ch,sep='',end='')
+                print ('%s' % (fg(15), attr(0)),ch,sep='',end='')
         
-        print ()            
-
+    print ()
+          
 def read_semi_automatic_log(key):
     """
     Function to read a value from semi_automatic_log for a given key
@@ -3872,12 +3872,13 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 # --------- Utility Functions ---------
 def ocr_now(img_path=""):
     import base64
+    
     ocr_url = "https://api.clointfusion.com/ocr_now"
     
     with open(img_path, "rb") as image2string:
         converted_string = base64.b64encode(image2string.read())
-        
-    response = requests.post(ocr_url,data={'img_as_base64':converted_string})
+    
+        response = requests.post(ocr_url,data={'img_as_base64':converted_string})
     print(response.text)
 
 def find(function_partial_name=""):
