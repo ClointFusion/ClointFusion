@@ -2380,23 +2380,18 @@ def string_remove_special_characters(inputStr=""):
         outputStr = ''.join(e for e in inputStr if e.isalnum())
         return outputStr  
 
-def string_regex(inputStr_or_lst="",strExpAfter="",strExpBefore="",intIndex=0):
+def string_regex(inputStr="",strExpAfter="",strExpBefore="",intIndex=0):
     """
-    Regex API service call
+    Regex API service call, to search within a given string data
     """
     regex_url = "https://api.clointfusion.com/str_regex"
     try:
-        resp = requests.post(regex_url, data={'str_input':str(inputStr_or_lst).split(" "),'before':strExpBefore, 'after':strExpAfter,'indx':intIndex})
+        resp = requests.post(regex_url, data={'str_input':str(inputStr),'before':strExpBefore, 'after':strExpAfter,'indx':intIndex})
         return resp.text
     except Exception as ex:
         print("Error in string_regex = " + str(ex))
 
 # ---------  String Functions Ends --------- 
-
-
-
-
-
 
 # ---------  Excel Functions --------- 
 
