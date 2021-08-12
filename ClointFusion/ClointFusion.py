@@ -3867,6 +3867,9 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 
 # --------- Utility Functions ---------
 def ocr_now(img_path=""):
+    """
+    Recognize and “read” the text embedded in images using Google's Tesseract-OCR
+    """
     import base64
     
     ocr_url = "https://api.clointfusion.com/ocr_now"

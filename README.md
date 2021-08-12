@@ -291,6 +291,10 @@ You would receive an email with self-test report.
 
     cf.pause_program() : Stops the program for given seconds
 
+    cf.string_regex() : Regex API service call, to search within a given string data
+
+    cf.ocr_now() : Recognize and “read” the text embedded in images using Google's Tesseract-OCR
+
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
 
 # ClointFusion's function works in different modes:
