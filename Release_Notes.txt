@@ -1,3 +1,7 @@
+27) ClointFusion version 0.1.21 to 0.1.24 released on 12-08-2021 05:30 PM
+    1) Bug Fixes
+    2) Enhancements to few functions
+
 26) ClointFusion version 0.1.20 released on 30-07-2021 09:30 AM
     1) Bug Fixes
     2) Enhancements to few functions

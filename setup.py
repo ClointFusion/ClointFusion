@@ -25,6 +25,7 @@ setup(
     keywords='ClointFusion,RPA,Python,Automation,BOT,Software BOT,ROBOT',
     license="BSD",
     install_requires=open('requirements.txt').read().split('\n'),
+    py_modules=['ClointFusion'],
   classifiers=[
     'Development Status :: 4 - Beta',
     'Environment :: Console',
@@ -36,6 +37,10 @@ setup(
     'Framework :: Robot Framework',
     'Programming Language :: Python',
   ],
+    entry_points='''
+        [console_scripts]
+        ClointFusion=ClointFusion:cli
+    ''',
   python_requires='>=3.7, <4',
 
   project_urls={  # Optional

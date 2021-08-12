@@ -331,7 +331,7 @@ def _welcome_to_clointfusion():
     print(f.renderText("ClointFusion Community Edition"))
 
     if c_version != s_version:
-        print('You are using older version of ClointFusion ! Version {} is available'.format(s_version))
+        print('You are using older version of ClointFusion {}, However version {} is available !'.format(c_version,s_version))
         print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
         try:
             os.system("pip install -U ClointFusion")
@@ -4256,9 +4256,12 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print()
             print('Testing keyboard operations')
             message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+
+            add_msg = "Happy 75th Independence Day" #"Performing ClointFusion Self Test for Notepad"
+
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
-                key_write_enter(write_to_window="notepad",text_to_write="Performing ClointFusion Self Test for Notepad")
+                key_write_enter(write_to_window="notepad",text_to_write=add_msg)
                 key_hit_enter(write_to_window="notepad")
                 key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                 key_press("right")
@@ -4268,7 +4271,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 logging.info('Keyboard operations tested successfully')
             elif os_name == linux_os:
                 launch_any_exe_bat_application("gedit") # Ubuntu
-                key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
+                key_write_enter(text_to_write=add_msg)
                 key_hit_enter()
                 key_press(key_1="alt", key_2="f4")
                 subprocess.Popen(f"killall -9 gedit", shell=True,
@@ -4280,7 +4283,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             elif os_name == mac_os:
                 try:
                     launch_any_exe_bat_application("TextEdit") # macOS
-                    key_write_enter(text_to_write="Performing ClointFusion Self Test for Notepad")
+                    key_write_enter(text_to_write=add_msg)
                     key_hit_enter()
                     key_press(key_1="command", key_2="f4")
                     subprocess.Popen('pkill -9 "TextEdit"', shell=True,
@@ -4520,6 +4523,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
+            print("Closing automatically, please wait a moment...")
             message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
             print("____________________________________________________________")
             
