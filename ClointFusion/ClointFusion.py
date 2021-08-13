@@ -1,14 +1,12 @@
 # Project Name: ClointFusion
 # Project Description: A Python based RPA Automation Framework for Desktop GUI, Citrix, Web and basic Excel operations.
 
-
 # Project Structure
 # 1. All imports
 # 2. All global variables
 # 3. All function definitions
 # 4. All test cases
 # 5. All default services
-
 
 # 1. All imports
 # Python Inbuilt Libraries
@@ -234,10 +232,6 @@ def ON_semi_automatic_mode():
 # ---------  Methods Ends ---------
 
 
-
-
-
-
 # ---------  Private Functions ---------
 
 #Windows OS specific packages
@@ -323,7 +317,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.24)"
+    version = "(Version: 0.1.25)"
     welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". {}".format(version)
 
     print_with_magic_color(welcome_msg,magic=True)
@@ -535,7 +529,6 @@ def _extract_filename_from_filepath(strFilePath=""):
         except Exception as ex:
             print("Error in _extract_filename_from_filepath="+str(ex))
 
-
     else:
         print("Please enter the value="+str(strFilePath))    
 
@@ -615,10 +608,6 @@ def get_public_ip():
         return public_ip
 
 # ---------  Private Functions Ends ---------
-
-
-
-
 
 
 # ---------  GUI Functions ---------
