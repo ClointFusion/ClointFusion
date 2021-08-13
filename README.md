@@ -75,7 +75,7 @@ You would receive an email with self-test report.
 
     cf.gui_get_any_input_from_user() : Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.
 
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/GUI_GIF.gif?raw=true" height="400">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
     
 * ## 5 functions on Mouse operations:
 
@@ -103,7 +103,7 @@ You would receive an email with self-test report.
 
     cf.window_close_windows() :  Close the desired window.
 
-    <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/b7377643eb343be31b1f3c1ce8c5c80bec560993/Window_Operations.gif" height="400">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
     
 * ## 5 functions on Window Objects (works only in Windows OS):
 
@@ -233,7 +233,7 @@ You would receive an email with self-test report.
 
     cf.browser_mouse_hover_h() : Performs a Mouse Hover over the Given User Visible Text Element
 
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Browser_Functions.gif?raw=true" height="400">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
 
 * ## 3 functions on Alert Messages:
 
@@ -312,7 +312,7 @@ You would receive an email with self-test report.
 
 # Outlook Email BOT implemented using ClointFusion
 
-<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Outlook%20BOT.gif?raw=true" height="400">
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
 
 # ClointFusion thanks its dependent packages : <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion Thanks!</a>
 
