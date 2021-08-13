@@ -9,7 +9,7 @@
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
 
 # What is ClointFusion ?
-ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI. 
+ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI.
 
 ![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status)             ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
 
@@ -56,10 +56,12 @@ You would receive an email with self-test report.
 ---
 
 ## Now access more than 130 functions (hit ctrl+space in your IDE)
-    You can find and inspect all of ClointFusion's functions using only one function i.e find(). Just pass the partial name of the function.
+    
+        You can find and inspect all of ClointFusion's functions using only one function i.e find(). 
+        Just pass the partial name of the function.
 
-    cf.find(function_partial_name="sort")
-    cf.find(function_partial_name="gui")
+        cf.find("sort")
+        cf.find("gui")
 
 * ## 6 gui functions, to take any input from user:
 

@@ -9,14 +9,14 @@ with open(os.path.join(this_directory, "README.md"), "r") as fh:
     long_description = fh.read()
 
 setup(
-    options={'bdist_wheel':{'universal':True}},
+    # options={'bdist_wheel':{'universal':True}},
     name='ClointFusion',
     author='Mayur Patil',
     author_email = 'mayur@cloint.com',
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.24',
+    version='0.1.26',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -25,7 +25,7 @@ setup(
     keywords='ClointFusion,RPA,Python,Automation,BOT,Software BOT,ROBOT',
     license="BSD",
     install_requires=open('requirements.txt').read().split('\n'),
-    py_modules=['ClointFusion'],
+    # py_modules=['ClointFusion'],
   classifiers=[
     'Development Status :: 4 - Beta',
     'Environment :: Console',
@@ -37,10 +37,11 @@ setup(
     'Framework :: Robot Framework',
     'Programming Language :: Python',
   ],
-    entry_points='''
-        [console_scripts]
-        ClointFusion=ClointFusion:cli
-    ''',
+    entry_points={
+        'console_scripts': [
+            'ClointFusion = ClointFusion.ClointFusion:cli',
+        ],
+    },
   python_requires='>=3.7, <4',
 
   project_urls={  # Optional
@@ -58,3 +59,11 @@ setup(
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)
+
+# setup(
+#     ...,
+#     install_requires=[
+#         "enum34;python_version<'3.4'",
+#         "pywin32 >= 1.0;platform_system=='Windows'",
+#     ],
+# )
