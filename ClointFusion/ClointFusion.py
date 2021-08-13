@@ -58,7 +58,8 @@ from selenium.webdriver.chrome.options import Options
 import chromedriver_binary
 import pyinspect as pi
 from tabloo import show
-from colored import fg, bg, attr
+from colored import fg, attr
+import click
 
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
@@ -102,7 +103,6 @@ s_version = ""
 # 3. All function definitions
 
 # ---------  Methods ---------
-
 def show_emoji(strInput=""):
     """
     Function which prints Emojis
@@ -324,8 +324,8 @@ def _welcome_to_clointfusion():
     f = Figlet(font='small', width=150)
     print(f.renderText("ClointFusion Community Edition"))
 
-    if c_version != s_version:
-        print('You are using older version of ClointFusion {}, However version {} is available !'.format(c_version,s_version))
+    if c_version < s_version:
+        print('You are using version {}, however version {} is available !'.format(c_version,s_version))
         print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
         try:
             os.system("pip install -U ClointFusion")
@@ -334,7 +334,26 @@ def _welcome_to_clointfusion():
                 os.system("pip3 install -U ClointFusion")
             except:
                 print("Please run 'pip install -U ClointFusion'")
-    
+
+@click.command()
+def cli():
+    """ClointFusion CLI"""
+    try:        
+        if os_name == windows_os:
+            from distutils.sysconfig import get_python_lib
+            site_pkg_path = get_python_lib() + "\ClointFusion\start.py"
+            subprocess.call('cmd /K python {}'.format(site_pkg_path), shell=True)
+            
+            # flags = subprocess.CREATE_NEW_CONSOLE
+            # p = subprocess.Popen([sys.executable, site_pkg_path], creationflags=flags)
+            # p.wait()
+
+        elif os_name == linux_os:
+            command = "python3; import ClointFusion as cf"
+            os.system("gnome-terminal -e 'bash -c \"" + command + ";bash\"'")
+    except Exception as ex:
+        print("Sorry, we do not support this feature " + str(ex))
+
 def _set_bot_name(strBotName=""):
     """
     Internal function
