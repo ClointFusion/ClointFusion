@@ -9,7 +9,7 @@
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
 
 # What is ClointFusion ?
-ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI. 
+ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI.
 
 ![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status)             ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
 
@@ -105,7 +105,7 @@ You would receive an email with self-test report.
 
     cf.window_close_windows() :  Close the desired window.
 
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true" height="400">
     
 * ## 5 functions on Window Objects (works only in Windows OS):
 
@@ -235,7 +235,7 @@ You would receive an email with self-test report.
 
     cf.browser_mouse_hover_h() : Performs a Mouse Hover over the Given User Visible Text Element
 
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
+    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true" height="400">
 
 * ## 3 functions on Alert Messages:
 
@@ -314,7 +314,7 @@ You would receive an email with self-test report.
 
 # Outlook Email BOT implemented using ClointFusion
 
-<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
 
 # ClointFusion thanks its dependent packages : <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion Thanks!</a>
 
