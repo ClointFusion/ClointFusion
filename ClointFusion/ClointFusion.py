@@ -317,7 +317,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.25)"
+    version = "(Version: 0.1.26)"
     welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". {}".format(version)
 
     print_with_magic_color(welcome_msg,magic=True)
@@ -342,8 +342,8 @@ def cli():
         if os_name == windows_os:
             from distutils.sysconfig import get_python_lib
             site_pkg_path = get_python_lib() + "\ClointFusion\start.py"
-            subprocess.call('cmd /K python {}'.format(site_pkg_path), shell=True)
-            
+            subprocess.call('python {}'.format(site_pkg_path), shell=True)
+            # subprocess.call('cmd /K python {}'.format(site_pkg_path), shell=True)
             # flags = subprocess.CREATE_NEW_CONSOLE
             # p = subprocess.Popen([sys.executable, site_pkg_path], creationflags=flags)
             # p.wait()
