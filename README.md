@@ -56,10 +56,12 @@ You would receive an email with self-test report.
 ---
 
 ## Now access more than 130 functions (hit ctrl+space in your IDE)
-    You can find and inspect all of ClointFusion's functions using only one function i.e find(). Just pass the partial name of the function.
+    
+        You can find and inspect all of ClointFusion's functions using only one function i.e find(). 
+        Just pass the partial name of the function.
 
-    cf.find(function_partial_name="sort")
-    cf.find(function_partial_name="gui")
+        cf.find("sort")
+        cf.find("gui")
 
 * ## 6 gui functions, to take any input from user:
 
