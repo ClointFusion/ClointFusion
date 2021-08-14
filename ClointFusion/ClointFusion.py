@@ -606,6 +606,7 @@ def get_public_ip():
     except:
         public_ip = str(requests.get('http://ip.42.pl/raw').text)
         return public_ip
+
 class DisableLogger():
     def __enter__(self):
        logging.disable(logging.CRITICAL)
