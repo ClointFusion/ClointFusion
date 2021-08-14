@@ -16,7 +16,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.26',
+    version='0.1.27',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -39,7 +39,7 @@ setup(
   ],
     entry_points={
         'console_scripts': [
-            'ClointFusion = ClointFusion.ClointFusion:cli',
+            'cce = ClointFusion.ClointFusion:cli_cf',
         ],
     },
   python_requires='>=3.7, <4',

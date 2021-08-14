@@ -317,7 +317,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.26)"
+    version = "(Version: 0.1.27)"
     welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". {}".format(version)
 
     print_with_magic_color(welcome_msg,magic=True)
@@ -334,25 +334,6 @@ def _welcome_to_clointfusion():
                 os.system("pip3 install -U ClointFusion")
             except:
                 print("Please run 'pip install -U ClointFusion'")
-
-@click.command()
-def cli():
-    """ClointFusion CLI"""
-    try:        
-        if os_name == windows_os:
-            from distutils.sysconfig import get_python_lib
-            site_pkg_path = get_python_lib() + "\ClointFusion\start.py"
-            subprocess.call('python {}'.format(site_pkg_path), shell=True)
-            # subprocess.call('cmd /K python {}'.format(site_pkg_path), shell=True)
-            # flags = subprocess.CREATE_NEW_CONSOLE
-            # p = subprocess.Popen([sys.executable, site_pkg_path], creationflags=flags)
-            # p.wait()
-
-        elif os_name == linux_os:
-            command = "python3; import ClointFusion as cf"
-            os.system("gnome-terminal -e 'bash -c \"" + command + ";bash\"'")
-    except Exception as ex:
-        print("Sorry, we do not support this feature " + str(ex))
 
 def _set_bot_name(strBotName=""):
     """
@@ -4815,9 +4796,22 @@ def take_error_screenshot(err_str):
 
 # --------- Self-Test Related Functions Ends ---------
 
+# _________ CLI __________
+@click.command()
+def cli_cf():
+    """ClointFusion CLI"""
 
+    from distutils.sysconfig import get_python_lib
+    site_pkg_path = get_python_lib() + "\ClointFusion\start.py"
 
+    try:        
+        if os_name == windows_os:
+            subprocess.call('python {}'.format(site_pkg_path), shell=True)
 
+        elif os_name == linux_os:
+            os.system("gnome-terminal -e 'bash -c \"" + site_pkg_path  + ";bash\"'")
+    except Exception as ex:
+        print("Sorry, we do not support this feature " + str(ex))
 
 # --------- 4. All default services ---------
 
