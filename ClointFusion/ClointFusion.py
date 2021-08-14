@@ -4824,8 +4824,11 @@ def cli_cf():
 _welcome_to_clointfusion()
 _download_cloint_ico_png()
 
-try:    
-    from ClointFusion import selft        
+try: 
+    try:
+        from ClointFusion import selft        
+    except:
+        import selft        
     resp = selft.vst()
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
