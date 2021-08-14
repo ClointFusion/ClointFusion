@@ -177,13 +177,6 @@ except Exception as ex:
     pg.alert("Error while executing pip install -r requirements.txt")
     exc_type, exc_value, exc_tb = sys.exc_info()
     pg.alert(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
-
-# try:
-#     import sourcedefender
-# except Exception as ex:
-#     _load_missing_python_packages_windows(['sourcedefender'])
-#     print(str(ex))
-#     import sourcedefender
     
 # finally:
 #     import ClointFusion_Lite as cfl
@@ -230,7 +223,7 @@ except:
 
 def launch_jupyter(): 
     try:
-        cmd = "pip install --upgrade jupyter_http_over_ws>=0.0.7 && jupyter serverextension enable --py jupyter_http_over_ws"
+        cmd = "pip install --upgrade jupyter_http_over_ws>=0.0.8 && jupyter serverextension enable --py jupyter_http_over_ws"
         # subprocess.call(cmd,stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         os.system(cmd)
 
@@ -349,7 +342,7 @@ def modify_file_as_text(text_file_path, text_to_search, replacement_text):
 def connect_to_local_runtime(user_choice): 
 
     try:
-        
+        # import chromedriver_binary
         if user_choice == "ClointFusion Labs (Public)":
             colab_url = "https://accounts.google.com/signin/v2/identifier?authuser=0&hl=en&continue=https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" #https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb"
             # colab_url = "https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb"
@@ -379,7 +372,7 @@ def connect_to_local_runtime(user_choice):
         chrome_options.add_argument("--disable-application-cache") 
 
         driver = start_chrome(options=chrome_options, url=colab_url)
-
+        
         # kb.press_and_release('win+d')
 
         chrome = gw.getWindowsWithTitle('Google Chrome')[0]
