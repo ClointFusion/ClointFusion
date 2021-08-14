@@ -606,6 +606,11 @@ def get_public_ip():
     except:
         public_ip = str(requests.get('http://ip.42.pl/raw').text)
         return public_ip
+class DisableLogger():
+    def __enter__(self):
+       logging.disable(logging.CRITICAL)
+    def __exit__(self, exit_type, exit_value, exit_traceback):
+       logging.disable(logging.NOTSET)
 
 # ---------  Private Functions Ends ---------
 
@@ -1662,7 +1667,8 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             options.add_experimental_option('prefs', prefs)
 
         try:
-            browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+            with DisableLogger():
+                browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             browser.set_driver(browser_driver)
             if url:
                 browser.go_to(url.lower())
