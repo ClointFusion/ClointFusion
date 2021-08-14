@@ -325,6 +325,9 @@ Participate in our monthly online hackathons & weekly meetups. Click here for mo
 
 Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 
+Note for Contributors/Testers :
+The Tester/Contributor has to place the ClointFusion.py file inside the ClointFusion Folder which is inside the site packages folder for testing the code being contributed or it may cause circular import issue. its not a bug, it is how python modules work in the site packages. either the tester can place the ClointFusion.py in the Site Packages Folder and test or remove all the occurences of 'from ClointFusion' from the ClointFusion.py file.
+
 # Date &#10084;&#65039; with ClointFusion 
 This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
 
