@@ -100,6 +100,8 @@ helium_service_launched=False
 c_version = ""
 s_version = ""
 
+find_api_url = "https://api.clointfusion.com/find"
+
 # 3. All function definitions
 
 # ---------  Methods ---------
@@ -3873,8 +3875,8 @@ def find(function_partial_name=""):
     # Find and inspect python functions
     try:
         if function_partial_name:
-            import ClointFusion as cf
-            return pi.search(cf, name=function_partial_name)
+            response = requests.post(find_api_url,data={'partial_name':function_partial_name})
+            return response.text
         else:
             print("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
