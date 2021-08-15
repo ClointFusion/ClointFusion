@@ -51,11 +51,9 @@ import clipboard
 import helium as browser
 from PIL import Image
 import requests
-from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.options import Options
-import chromedriver_binary
+from webdriver_manager.chrome import ChromeDriverManager
 import pyinspect as pi
 from tabloo import show
 from colored import fg, attr
@@ -608,6 +606,12 @@ def get_public_ip():
     except:
         public_ip = str(requests.get('http://ip.42.pl/raw').text)
         return public_ip
+
+class DisableLogger():
+    def __enter__(self):
+       logging.disable(logging.CRITICAL)
+    def __exit__(self, exit_type, exit_value, exit_traceback):
+       logging.disable(logging.NOTSET)
 
 # ---------  Private Functions Ends ---------
 
@@ -1664,7 +1668,8 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             options.add_experimental_option('prefs', prefs)
 
         try:
-            browser_driver = webdriver.Chrome(options=options)
+            with DisableLogger():
+                browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             browser.set_driver(browser_driver)
             if url:
                 browser.go_to(url.lower())
@@ -1673,29 +1678,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             status = True
             browser.Config.implicit_wait_secs = 120
             helium_service_launched = True
-        except SessionNotCreatedException as ex:
-            try:
-                if os_name == windows_os:
-                    subprocess.call([sys.executable,'-m', 'pip', 'install','--upgrade', '--force-reinstall', 'chromedriver-binary-auto'])
-                elif os_name == mac_os:
-                    subprocess.run(f"sudo pip install --upgrade --force-reinstall chromedriver-binary-auto", shell=True)
-                elif os_name == linux_os:
-                    subprocess.run(f"pip install --upgrade --force-reinstall chromedriver-binary-auto", shell=True)
-
-            except Exception as ex:
-                print("Error while downloading chrome driver suitable for your chrome {}".format(str(ex)))
-            try:
-                browser_driver = webdriver.Chrome(options=options)
-                browser.set_driver(browser_driver)
-                if url:
-                    browser.go_to(url.lower())
-                if not url:
-                    browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
-                status = True
-                browser.Config.implicit_wait_secs = 120
-                helium_service_launched = True
-            except Exception as ex:
-                print(f"Error while browser_re-activation: {str(ex)}")
         except Exception as ex:
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
