@@ -1,3 +1,7 @@
+28) ClointFusion version 0.1.25 to 0.1.27 released on 15-08-2021 08:00 AM
+    1) ChromeDriver issue fixed it better way
+    2) Command Line Interface (CLI) linked to Colab Launcher
+
 27) ClointFusion version 0.1.21 to 0.1.24 released on 12-08-2021 05:30 PM
     1) Bug Fixes
     2) Enhancements to few functions

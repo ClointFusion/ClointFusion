@@ -285,7 +285,11 @@ def _download_cloint_ico_png():
 def _getCurrentVersion():
     global c_version
     try:
-        c_version = os.popen('pip show ClointFusion | findstr "Version"').read()
+        if os_name == windows_os:
+            c_version = os.popen('pip show ClointFusion | findstr "Version"').read()
+        elif os_name == linux_os:
+            c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
+
         c_version = str(c_version).split(":")[1].strip()
     except:
         pass
@@ -316,7 +320,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.27)"
+    version = "(Version: 0.1.28)"
     welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". {}".format(version)
 
     print_with_magic_color(welcome_msg,magic=True)
