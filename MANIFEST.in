@@ -7,3 +7,4 @@ include ClointFusion/__init__.py
 include ClointFusion/ClointFusion.py
 include ClointFusion/*.pyd
 include ClointFusion/*.so
+include ClointFusion/Colab_Launcher.py

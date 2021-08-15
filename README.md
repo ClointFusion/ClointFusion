@@ -316,8 +316,6 @@ You would receive an email with self-test report.
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
 
-# ClointFusion thanks its dependent packages : <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion Thanks!</a>
-
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..
 
@@ -330,6 +328,10 @@ The Tester/Contributor has to place the ClointFusion.py file inside the ClointFu
 
 # Date &#10084;&#65039; with ClointFusion 
 This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
+
+# Aknowledgements
+
+<a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion thanks all its dependent packages for the great contribution, which has made ClointFusion possible !</a>
 
 # Contact us: 
 Drop a mail to ClointFusion@cloint.com

@@ -57,7 +57,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from tabloo import show
 from colored import fg, attr
 import click
+import pyinspect as pi
 
+pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
 # 2. All global variables
@@ -4787,16 +4789,16 @@ def take_error_screenshot(err_str):
 @click.command()
 def cli_cf():
     """ClointFusion CLI"""
-
-    from distutils.sysconfig import get_python_lib
-    site_pkg_path = get_python_lib() + "\ClointFusion\start.py"
-
     try:        
         if os_name == windows_os:
-            subprocess.call('python {}'.format(site_pkg_path), shell=True)
+            subprocess.call('python Colab_Launcher.py', shell=True)
 
         elif os_name == linux_os:
-            os.system("gnome-terminal -e 'bash -c \"" + site_pkg_path  + ";bash\"'")
+            os.system('python3 Colab_Launcher.py')
+
+        else:
+            os.system('python Colab_Launcher.py')
+
     except Exception as ex:
         print("Sorry, we do not support this feature " + str(ex))
 
