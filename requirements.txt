@@ -18,7 +18,6 @@ ImageHash >= 4.2.1
 xlsx2html >= 0.4.0
 python-dateutil>=2.8.2
 pygments>=2.9.0
-pyinspect>= 0.0.8
 pyfiglet
 pillow>= 8.3.1
 tabloo >= 0.0.15

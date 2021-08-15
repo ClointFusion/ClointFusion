@@ -190,12 +190,15 @@ except:
 try:
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
-    from helium import *
+    import helium as browser
+
 except:
     _load_missing_python_packages_windows(['selenium','helium'])
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
-    from helium import *
+    import helium as browser
+
+from webdriver_manager.chrome import ChromeDriverManager
 
 # try:
 #     import ClointFusion
@@ -358,22 +361,19 @@ def connect_to_local_runtime(user_choice):
 
         modify_file_as_text(user_data_path + '\\Default\\Preferences', 'crashed', 'false')
 
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--user-data-dir=' + user_data_path)
-        chrome_options.add_argument("--start-maximized")
-        chrome_options.add_argument('--ignore-certificate-errors')
-        chrome_options.add_argument("--disable-session-crashed-bubble")
-        chrome_options.add_argument("--disable-popup-blocking")
-        chrome_options.add_argument("--disable-notifications")
-        chrome_options.add_argument("--suppress-message-center-popups")
-        chrome_options.add_argument("--disable-translate")
-        chrome_options.add_argument("--no-first-run") 
-        chrome_options.add_argument("--disable-extensions") 
-        chrome_options.add_argument("--disable-application-cache") 
-
-        driver = start_chrome(options=chrome_options, url=colab_url)
+        options = Options()
+        options.add_argument("--start-maximized")
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         
-        # kb.press_and_release('win+d')
+        if os_name == "windows":
+            options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+        elif os_name == "darwin":
+            options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
+        options.add_argument(f"profile-directory=Default")
+        
+        browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        browser.set_driver(browser_driver)
+        browser.go_to(colab_url)
 
         chrome = gw.getWindowsWithTitle('Google Chrome')[0]
         chrome.activate()
@@ -383,21 +383,22 @@ def connect_to_local_runtime(user_choice):
         # kb.press_and_release('esc')
 
         try:
-            wait_until(Text("Code").exists,timeout_secs=6)
+            browser.wait_until(browser.Text("Code").exists,timeout_secs=6)
             
         except :#selenium_wrappers.common.exceptions.TimeoutException:
             try:
-                click(email)
+                browser.click(email)
             except:
-                write(email, into='Email or phone')
+                browser.write(email, into='Email or phone')
 
-            click('Next')
-            time.sleep(0.5)
-            write(passwd, into='Enter your password')
-            click('Next')
+            browser.click('Next')
             time.sleep(0.5)
 
-            wait_until(Text("Code").exists,timeout_secs=240)
+            browser.write(passwd, into='Enter your password')
+            browser.click('Next')
+            time.sleep(0.5)
+
+            browser.wait_until(browser.Text("Code").exists,timeout_secs=240)
 
         # kb.press_and_release('esc')
         # time.sleep(0.2)
@@ -410,23 +411,23 @@ def connect_to_local_runtime(user_choice):
 
         if FIRST_TIME:
             #create short-cut
-            press(CONTROL + 'mh')
+            browser.press(browser.CONTROL + 'mh')
             time.sleep(1)
 
             v = S("//input[@id='pref_shortcut_connectLocal']")
 
-            write('',v)
+            browser.write('',v)
 
-            press(CONTROL + '1')
+            browser.press(browser.CONTROL + '1')
             time.sleep(0.5)
             
-            click("SAVE")
+            browser.click("SAVE")
 
             time.sleep(1)
 
         #use short-cut
 
-        press(CONTROL + '1')
+        browser.press(browser.CONTROL + '1')
         time.sleep(1)
         # pg.alert("HKHR")
 
@@ -457,7 +458,7 @@ def connect_to_local_runtime(user_choice):
             kb.press_and_release('SHIFT+TAB')
             time.sleep(0.5)
 
-        press(ENTER)
+        browser.press(browser.ENTER)
         time.sleep(2)
 
         # try:

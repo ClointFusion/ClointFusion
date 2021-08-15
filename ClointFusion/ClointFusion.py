@@ -54,7 +54,6 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-import pyinspect as pi
 from tabloo import show
 from colored import fg, attr
 import click
@@ -1646,33 +1645,33 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
 
-        options = Options()
-        options.add_argument("--start-maximized")
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        if incognito:
-            options.add_argument("--incognito")
-        if not dummy_browser:
-            if os_name == windows_os:
-                options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-            elif os_name == mac_os:
-                options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
-            options.add_argument(f"profile-directory={profile}")
-        #  Set the download path
-        if files_download_path != '':
-            prefs = {
-                'download.default_directory': files_download_path,
-                "download.prompt_for_download": False,
-                'download.directory_upgrade': True,
-                "safebrowsing.enabled": False
-            }
-            options.add_experimental_option('prefs', prefs)
+            options = Options()
+            options.add_argument("--start-maximized")
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
+            if incognito:
+                options.add_argument("--incognito")
+            if not dummy_browser:
+                if os_name == windows_os:
+                    options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+                elif os_name == mac_os:
+                    options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
+                options.add_argument(f"profile-directory={profile}")
+            #  Set the download path
+            if files_download_path != '':
+                prefs = {
+                    'download.default_directory': files_download_path,
+                    "download.prompt_for_download": False,
+                    'download.directory_upgrade': True,
+                    "safebrowsing.enabled": False
+                }
+                options.add_experimental_option('prefs', prefs)
 
         try:
             with DisableLogger():
                 browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             browser.set_driver(browser_driver)
             if url:
-                browser.go_to(url.lower())
+                browser.go_to(url)
             if not url:
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             status = True
@@ -3858,7 +3857,7 @@ def find(function_partial_name=""):
     try:
         if function_partial_name:
             response = requests.post(find_api_url,data={'partial_name':function_partial_name})
-            return response.text
+            print(response.text)
         else:
             print("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
@@ -4859,7 +4858,6 @@ else:
                 put_text('Please re-run & select the Workspace Folder')
 
     elif not base_dir:
-        # base_dir = gui_get_workspace_path_from_user()
         base_dir = temp_current_working_dir
 
     else:
