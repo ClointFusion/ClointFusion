@@ -1649,26 +1649,26 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
 
-            options = Options()
-            options.add_argument("--start-maximized")
-            options.add_experimental_option('excludeSwitches', ['enable-logging'])
-            if incognito:
-                options.add_argument("--incognito")
-            if not dummy_browser:
-                if os_name == windows_os:
-                    options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-                elif os_name == mac_os:
-                    options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
-                options.add_argument(f"profile-directory={profile}")
-            #  Set the download path
-            if files_download_path != '':
-                prefs = {
-                    'download.default_directory': files_download_path,
-                    "download.prompt_for_download": False,
-                    'download.directory_upgrade': True,
-                    "safebrowsing.enabled": False
-                }
-                options.add_experimental_option('prefs', prefs)
+        options = Options()
+        options.add_argument("--start-maximized")
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        if incognito:
+            options.add_argument("--incognito")
+        if not dummy_browser:
+            if os_name == windows_os:
+                options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+            elif os_name == mac_os:
+                options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
+            options.add_argument(f"profile-directory={profile}")
+        #  Set the download path
+        if files_download_path != '':
+            prefs = {
+                'download.default_directory': files_download_path,
+                "download.prompt_for_download": False,
+                'download.directory_upgrade': True,
+                "safebrowsing.enabled": False
+            }
+            options.add_experimental_option('prefs', prefs)
 
         try:
             with DisableLogger():
