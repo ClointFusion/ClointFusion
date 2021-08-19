@@ -44,6 +44,7 @@ setup(
             'cf = ClointFusion.ClointFusion:cli_cf',
             'cf_vlookup = ClointFusion.ClointFusion:cli_vlookup',
             'cf_st = ClointFusion.ClointFusion:cli_speed_test',
+            'cf_scrape = ClointFusion.ClointFusion:cli_scrape_save_contents_to_notepad',
         ],
     },
   python_requires='>=3.7, <4',

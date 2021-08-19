@@ -679,7 +679,6 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
 
     Default Text: "Please choose the item(s) from "
     """
-
     values = []
     dropdown_list = dropdown_list
 
@@ -696,7 +695,7 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
             if str(enable_semi_automatic_mode).lower() == 'false' :#and existing_value:
                 show_gui = True
                 oldValue = existing_value
-                
+                              
             if show_gui:
                 if multi_select:
                     layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16', text_color='orange')],
@@ -2204,9 +2203,11 @@ def window_activate_and_maximize_windows(windowName=""):
     """
     try:
         if not windowName:
+
             open_win_list = window_get_all_opened_titles_windows()
-            windowName = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)[0]
-            
+
+            windowName = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)
+       
         item,window_found = _window_find_exact_name(windowName)
         if window_found:
             windw = gw.getWindowsWithTitle(item)[0]
@@ -3551,19 +3552,15 @@ def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = Fal
 # --------- Windows Objects Functions Ends ---------
 
 
-
-
-
-
 # --------- Screenscraping Functions ---------
 
-def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",X=0,Y=0): #"Full path to the folder (with double slashes) where notepad is to be stored"
+def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",switch_to_window="",X=0,Y=0): #"Full path to the folder (with double slashes) where notepad is to be stored"
     """
     Copy pastes all the available text on the screen to notepad and saves it.
     """
     try:
         if not folderPathToSaveTheNotepad:
-            folderPathToSaveTheNotepad = gui_get_folder_path_from_user('folder to save notepad contents')
+            folderPathToSaveTheNotepad = output_folder_path
 
         message_counter_down_timer("Screen scraping in (seconds)",3)
         time.sleep(1)
@@ -4818,6 +4815,7 @@ def cli_colab_launcher():
 def cli_dost():
     """ClointFusion CLI for DOST GUI Launcher"""
     try:
+        print("Launching ClointFusion's GUI Builder. Thanks to contribution by Murali, Research Intern@ClointFusion")
         webbrowser.open_new("https://dost.clointfusion.com")        
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
@@ -4835,7 +4833,7 @@ def cli_vlookup():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('You can try below commands:\n1)cce\n2)dost\n3)cf_vlookup\n4)cf_st')    
+    click.echo('You can try below commands:\n1)cce\n2)dost\n3)cf_vlookup\n4)cf_st\n5)cf_scrape')    
 
 # --------- 4. All default services ---------
 
