@@ -4801,17 +4801,15 @@ def cli_speed_test():
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     try:      
-        import site  
-        site_packages = next(p for p in site.getsitepackages() if 'site-packages' in p)
+        try:
+            import site  
+            site_packages = next(p for p in site.getsitepackages() if 'site-packages' in p)
+        except:
+            site_packages = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
 
-        if os_name == windows_os:
-            subprocess.call('python ' + site_packages + '\ClointFusion\Colab_Launcher.py', shell=True)
+        site_packages = site_packages.strip()            
 
-        elif os_name == linux_os:
-            os.system('python3 Colab_Launcher.py')
-
-        else:
-            os.system('python Colab_Launcher.py')
+        subprocess.call('python ' + site_packages + '\ClointFusion\Colab_Launcher.py', shell=True)
 
     except Exception as ex:
         print("Error in cli_colab_launcher " + str(ex))
