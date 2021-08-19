@@ -4785,13 +4785,27 @@ def take_error_screenshot(err_str):
 
 # --------- Self-Test Related Functions Ends ---------
 
+
 # _________ CLI __________
-@click.command()
-def cli_cf():
-    """ClointFusion CLI"""
-    try:        
+
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_speed_test():
+    """CLI for testing internet bandwidth using speedtest.net"""
+    try:
+        print(os.system("speedtest-cli"))
+    except Exception as ex:
+        print("Error in cli_speed_test="+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_colab_launcher():
+    """ClointFusion CLI for Colab Launcher"""
+    try:      
+        import site  
+        site_packages = next(p for p in site.getsitepackages() if 'site-packages' in p)
+
         if os_name == windows_os:
-            subprocess.call('python Colab_Launcher.py', shell=True)
+            subprocess.call('python ' + site_packages + '\ClointFusion\Colab_Launcher.py', shell=True)
 
         elif os_name == linux_os:
             os.system('python3 Colab_Launcher.py')
@@ -4800,7 +4814,30 @@ def cli_cf():
             os.system('python Colab_Launcher.py')
 
     except Exception as ex:
-        print("Sorry, we do not support this feature " + str(ex))
+        print("Error in cli_colab_launcher " + str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_dost():
+    """ClointFusion CLI for DOST GUI Launcher"""
+    try:
+        webbrowser.open_new("https://dost.clointfusion.com")        
+    except Exception as ex:
+        print("Error in cli_dost "+str(ex))
+    
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_vlookup():
+    """ClointFusion CLI for Excel VLookUp"""
+    try:
+        excel_vlook_up()
+    except Exception as ex:
+        print("Error in cli_vlookup="+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option('--message', '-m', multiple=True,help="ClointFusion Command Line Interface's basic command")
+def cli_cf(message):
+    """ClointFusion Command Line Interface's basic command"""
+    click.echo('\n'.join(message))
+    click.echo('You can try below commands:\n1)cce\n2)dost\n3)cf_vlookup\n4)cf_st')    
 
 # --------- 4. All default services ---------
 

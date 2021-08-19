@@ -35,3 +35,4 @@ colored>=1.4.2
 Click>=8.0.1
 urllib3>=1.26.6
 pyinspect>=0.0.8
+speedtest-cli>=2.1.3

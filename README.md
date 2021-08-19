@@ -177,11 +177,7 @@ You would receive an email with self-test report.
 
     cf.excel_vlook_up() : Performs excel_vlook_up on the given excel files for the desired columns. Possible values for how are "inner","left", "right", "outer"
 
-    cf.excel_draw_charts() : Interactive data visualization function, which accepts excel file, X & Y column. Chart types accepted are bar , scatter , pie , sun , histogram , box  , strip. You can pass color column as well, having a boolean value.
-
     cf.excel_describe_data() :  Describe statistical data for the given excel
-
-    cf.excel_drag_drop_pivot_table() : Interactive Drag and Drop Pivot Table Generation
 
     cf.excel_change_corrupt_xls_to_xlsx() : Repair corrupt excel file
 
