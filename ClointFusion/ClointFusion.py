@@ -4859,11 +4859,13 @@ try:
     last_updated_on_month,user_name, user_email = str(resp.text).split('#')
 except:
     last_updated_on_month = 0
-
-today_date_month = datetime.date.today().strftime('%m')
+    user_name = ""
+    user_email = ""
 
 _welcome_to_clointfusion()
 _download_cloint_ico_png()
+
+today_date_month = datetime.date.today().strftime('%m')
 
 if int(last_updated_on_month) != int(today_date_month):
     EXECUTE_SELF_TEST_NOW = True
