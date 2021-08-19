@@ -78,6 +78,9 @@ error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = ""
 
+user_name = ""
+user_email = ""
+
 current_working_dir = os.getcwd()
     
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
@@ -318,12 +321,13 @@ get_current_version_thread.join()
 get_server_version_thread.join()
 
 def _welcome_to_clointfusion():
+    global user_name
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
     version = "(Version: 0.1.28)"
-    welcome_msg = "\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + ". {}".format(version)
+    welcome_msg = f"\nHi {user_name} !!\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
@@ -4841,9 +4845,6 @@ def cli_cf(message):
 # ########################
 # ClointFusion's DEFAULT SERVICES
 
-_welcome_to_clointfusion()
-_download_cloint_ico_png()
-
 try: 
     try:
         from ClointFusion import selft        
@@ -4855,11 +4856,14 @@ except Exception as ex:
     sys.exit(0)
 
 try:
-    last_updated_on_month = resp.text
+    last_updated_on_month,user_name, user_email = str(resp.text).split('#')
 except:
     last_updated_on_month = 0
 
 today_date_month = datetime.date.today().strftime('%m')
+
+_welcome_to_clointfusion()
+_download_cloint_ico_png()
 
 if int(last_updated_on_month) != int(today_date_month):
     EXECUTE_SELF_TEST_NOW = True
