@@ -9,6 +9,7 @@
 # 5. All default services
 
 # 1. All imports
+
 # Python Inbuilt Libraries
 
 import subprocess
@@ -33,7 +34,6 @@ import traceback
 import shutil
 import socket
 import random
-    # External libraries
 from pandas.core.algorithms import mode
 from pywebio.output import put_text
 
@@ -257,7 +257,7 @@ def _load_missing_python_packages_windows():
                 os.system("{} -m pip install --upgrade pip".format(sys.executable))
             
             cmd = "pip install --upgrade {}".format(missing_packages)
-            # print_with_magic_color(cmd)
+            
             os.system(cmd) 
 
     except Exception as ex:
@@ -327,7 +327,12 @@ def _welcome_to_clointfusion():
     """
     from pyfiglet import Figlet
     version = "(Version: 0.1.30)"
-    welcome_msg = f"\nHi {user_name} !!\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
+
+    hour = datetime.datetime.now().hour
+
+    greeting = "Good Morning " if 5<=hour<12 else "Good Afternoon " if hour<18 else "Good Evening "
+
+    welcome_msg = f"\n{greeting} {str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
@@ -336,6 +341,14 @@ def _welcome_to_clointfusion():
     if c_version < s_version:
         print('You are using version {}, however version {} is available !'.format(c_version,s_version))
         print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
+        try:
+            if os_name == windows_os:
+                os.system("python -m pip install --upgrade pip")
+            else:
+                os.system("python3 -m pip install --upgrade pip")
+        except:
+            pass
+
         try:
             os.system("pip install -U ClointFusion")
         except:
@@ -396,8 +409,9 @@ def _init_log_file():
         else:
             excelFileName = "StatusLog.xlsx"
 
-        folder_create(status_log_excel_filepath)
-        
+        if not os.path.exists(status_log_excel_filepath):
+            os.makedirs(status_log_excel_filepath)
+
         status_log_excel_filepath = os.path.join(status_log_excel_filepath,excelFileName)
         status_log_excel_filepath = Path(status_log_excel_filepath)
         
@@ -1159,9 +1173,6 @@ def gui_get_workspace_path_from_user():
 
 
 
-
-
-
 # ---------  Mouse Functions --------- 
     
 def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
@@ -1237,33 +1248,6 @@ def mouse_move(x="",y=""):
     finally:
         return status
 
-def mouse_get_color_by_position(x="",y="", delay=3):
-    """Gets the color by X Y co-ordinates of the screen. Default it takes current mouse position
-
-    Args:
-        x (int): x-coordinate on screen.
-        Eg: 369 or 435, Defaults: ''.
-        y (int): y-coordinate on screen.
-        Eg: 369 or 435, Defaults: ''.
-        delay (int): Time to wait before getting current position
-
-    Returns:
-        bool: If the function is failed return False.
-        string: RGB code of the color
-    """
-    status = False
-    try:
-        time.sleep(delay)
-        if not x or not y:
-            x, y = pg.position()
-        im = pg.screenshot()
-        time.sleep(0.5)
-        x,y = int(x), int(y)
-        status = im.getpixel((x, y))
-    except Exception as ex:
-        print("Error in mouse_get_color_by_position = "+str(ex))
-    finally:
-        return status
 
 def mouse_drag_from_to(x1="",y1="",x2="",y2="",delay=0.5):
     """Clicks and drags from x1 y1 co-ordinates to x2 y2 Co-ordinates on the screen
@@ -1357,10 +1341,6 @@ def mouse_search_snip_return_coordinates_x_y(img="", wait=180):
         return status
 
 # ---------  Mouse Functions Ends --------- 
-
-
-
-
 
 
 # ---------  Keyboard Functions --------- 
@@ -1482,11 +1462,6 @@ def key_hit_enter(write_to_window=""):
 
 # --------- Keyboard Functions Ends --------- 
 
-
-
-
-
-
 # ---------  Message  Functions --------- 
 
 def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds)",start_value=5):
@@ -1534,7 +1509,7 @@ def message_pop_up(strMsg="",delay=3):
         # if not strMsg:
         #     strMsg = gui_get_any_input_from_user("pop-up message")
         sg.popup(strMsg,title='ClointFusion',auto_close_duration=delay, auto_close=True, keep_on_top=True,background_color="white",text_color="black")#,icon=cloint_ico_logo_base64)
-    except Exception as ex:
+    except:
         popup('', [put_html('<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO-New.png">'),
         put_html('<center><h3>' + strMsg + '</h3></center>'),])
 
@@ -1604,10 +1579,6 @@ def message_toast(message,website_url="", file_folder_path=""):
         print("This function works only on Windows OS")
 
 # ---------  Message  Functions Ends ---------
-
-
-
-
 
 
 # ---------  Browser Functions --------- 
@@ -2207,10 +2178,8 @@ def window_activate_and_maximize_windows(windowName=""):
     """
     try:
         if not windowName:
-
             open_win_list = window_get_all_opened_titles_windows()
-
-            windowName = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)
+            windowName = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)[0]
        
         item,window_found = _window_find_exact_name(windowName)
         if window_found:
@@ -2319,11 +2288,6 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
 
 # ---------  Window Operations Functions Ends --------- 
 
-
-
-
-
-
 # ---------  String Functions --------- 
 
 def string_extract_only_alphabets(inputString=""):
@@ -2376,7 +2340,7 @@ def string_regex(inputStr="",strExpAfter="",strExpBefore="",intIndex=0):
         print("Error in string_regex = " + str(ex))
 
 # ---------  String Functions Ends --------- 
-
+ 
 # ---------  Excel Functions --------- 
 
 def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
@@ -2886,33 +2850,6 @@ def excel_convert_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
         errMsg = f"Error in converting file to xlsx format : {str(e)}"
         return errMsg
 
-def excel_apply_template_format_save_to_new(excel_rawdata_file_path='',excel_newfile_path='',rawexcel_sheet_name='Sheet1', usecols='',template_file_path='',template_sheet_name="Sheet1"):
-
-    '''
-        Converts given excel to Template Excel
-        This function uses pandas and just write the required columns to new excel.
-        if you don't know columns, just pass the excel file which have the columns you want it automatically makes 
-        own list and remove other columns.
-    '''
-    try:
-        if type(usecols) == str:
-            usecols = [usecols]
-        if template_file_path:
-            usecols = excel_get_all_header_columns(excel_path=template_file_path,sheet_name=template_sheet_name)
-        elif not template_file_path :
-            df = pd.read_excel(excel_rawdata_file_path, sheet_name=rawexcel_sheet_name,usecols=usecols)
-        if excel_newfile_path:
-            df.to_excel(excel_newfile_path,index=False)
-        else :
-            df.to_excel(excel_rawdata_file_path,index=False)
-        if enable_semi_automatic_mode == False:
-            show(df)
-
-        return True
-    except Exception as e:
-        exception_msg = f"Error in converting given excel to template excel : {str(e)}"
-        return exception_msg
-
 def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21",sheet_name='Sheet1'): # range : "A1:AA"
     '''
         Applies table format to the used range of the given excel.
@@ -2990,7 +2927,7 @@ def excel_convert_to_image(excel_file_path=""):
             ws = wb.Worksheets(1)
                         
             df_row_cnt = pd.read_excel(excel_file_path,engine="openpyxl")
-            row_cnt,col_cnt = df_row_cnt.shape
+            row_cnt, _ = df_row_cnt.shape
             df_row_cnt = ''
             
             win32c = win32com.client.constants
@@ -3393,11 +3330,6 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startco
 # ---------  Excel Functions Ends --------- 
 
 
-
-
-
-
-
 # --------- Windows Objects Functions ---------
 @lru_cache(None)
 def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend='uia'):  
@@ -3564,23 +3496,20 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",switch_to_wind
     """
     try:
         if not folderPathToSaveTheNotepad:
-            folderPathToSaveTheNotepad = output_folder_path
+            folderPathToSaveTheNotepad = gui_get_folder_path_from_user('folder to save notepad contents')
 
         message_counter_down_timer("Screen scraping in (seconds)",3)
+        
         time.sleep(1)
-
         if X == 0 and Y == 0:
             X = pg.size()[0]/2
             Y = pg.size()[1]/2
-        
         pg.click(X,Y)
-        
         time.sleep(0.5)
 
-        # kb.press_and_release("ctrl+a")
         pg.hotkey("ctrl", "a")
         time.sleep(1)
-        # kb.press_and_release("ctrl+c")
+        
         pg.hotkey("ctrl", "c")
         time.sleep(1)
         
@@ -3613,23 +3542,23 @@ def scrape_get_contents_by_search_copy_paste(highlightText=""):
             highlightText = gui_get_any_input_from_user("text to be searched in Citrix environment")
 
         time.sleep(1)
-        # kb.press_and_release("ctrl+f")
+        
         pg.hotkey("ctrl", "f")
         time.sleep(1)
         pg.typewrite(highlightText)
         time.sleep(1)
-        # kb.press_and_release("enter")
+        
         pg.hotkey("enter")
         time.sleep(1)
-        # kb.press_and_release("esc")
+        
         pg.hotkey("esc")
         time.sleep(2)
 
         pg.PAUSE = 2
-        # kb.press_and_release("ctrl+a")
+        
         pg.hotkey("ctrl", "a")
         time.sleep(2)
-        # kb.press_and_release("ctrl+c")
+        
         pg.hotkey("ctrl", "c")
         time.sleep(2)
         
@@ -3647,33 +3576,16 @@ def scrape_get_contents_by_search_copy_paste(highlightText=""):
         return output_lst_newline_removed
     except Exception as ex:
         print("Error in scrape_get_contents_by_search_copy_paste="+str(ex))
-    
-    """
-    Gets the color by X Y co-ordinates of the screen.
-    """
-    try:
-        if not pos:
-            pos1 = gui_get_any_input_from_user("X,Y co-ordinates to get its color. Ex: 200,215")
-            pos = tuple(map(int, pos1.split(',')))
-
-        im = pg.screenshot()
-        time.sleep(0.5)
-        return im.getpixel(pos)    
-    except Exception as ex:
-        print("Error in mouse_get_color_by_position = "+str(ex))
 
 def screen_clear_search(delay=0.2):
     """
     Clears previously found text (crtl+f highlight)
     """
     try:
-        # kb.press_and_release("ctrl+f")
-        pg.hotkey("ctrl", "f")
-        
+        pg.hotkey("ctrl","f")
         time.sleep(delay)
         pg.typewrite("^%#")
         time.sleep(delay)
-        # kb.press_and_release("esc")
         pg.hotkey("esc")
         time.sleep(delay)
     except Exception as ex:
@@ -3689,30 +3601,30 @@ def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='N
             searchText = gui_get_any_input_from_user("Search Text to Highlight (in Citrix Environment)")
 
         time.sleep(0.5)
-        # kb.press_and_release("ctrl+f")
+        
         pg.hotkey("ctrl", "f")
         time.sleep(0.5)
-        # kb.write(searchText)
+        
         pg.write(searchText)
         time.sleep(0.5)
-        # kb.press_and_release("enter")
+        
         pg.hotkey("enter")
         time.sleep(0.5)
-        # kb.press_and_release("esc")
+        
         pg.hotkey("esc")
         time.sleep(0.2)
         if hitEnterKey.lower() == "yes" and shift_tab.lower() == "yes":
-            # kb.press_and_release("tab")
+            
             pg.hotkey("tab")
             time.sleep(0.3)
-            # kb.press_and_release("shift+tab")
+            
             pg.hotkey("shift", "tab")
             time.sleep(0.3)
-            # kb.press_and_release("enter")
+            
             pg.hotkey("enter")
             time.sleep(2)
         elif hitEnterKey.lower() == "yes" and shift_tab.lower() == "no":
-            # kb.press_and_release("enter")
+            
             pg.hotkey("enter")
             time.sleep(2)
         return True
@@ -3730,18 +3642,15 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
         searchText = gui_get_any_input_from_user("search text to Find on screen")
 
     time.sleep(delay)
-    # kb.press_and_release("ctrl+f")
-    pg.hotkey("ctrl", "f")
+    pg.hotkey("ctrl","f")
     time.sleep(delay)
     pg.typewrite(searchText)
     time.sleep(delay)
 
     for i in range(occurance-1):
-        # kb.press_and_release("enter")
         pg.hotkey("enter")
         time.sleep(delay)
 
-    # kb.press_and_release("esc")
     pg.hotkey("esc")
     time.sleep(delay)
 
@@ -3947,82 +3856,6 @@ def dismantle_code(strFunctionName=""):
     except Exception as ex:
        print("Error in dismantle_code="+str(ex)) 
 
-def compute_hash(inputData=""):
-    """
-    Returns the hash of the inputData 
-    """
-    try:
-        from hashlib import sha256
-
-        if not inputData:
-            inputData = gui_get_any_input_from_user('input string to compute Hash')
-
-        return sha256(inputData.encode()).hexdigest()
-    except Exception as ex:
-        print("Error in compute_hash="+str(ex))
-
-def date_convert_to_US_format(input_str=""):
-    """
-    Converts the given date to US date format.
-    """
-    try:
-        if not input_str:
-            input_str = gui_get_any_input_from_user('Date value Ex: 01/01/2021')
-        match = re.search(r'\d{4}-\d{2}-\d{2}', input_str) #1
-        if match == None:
-            match = re.search(r'\d{2}-\d{2}-\d{4}', input_str) #2
-            if match == None:
-                match = re.search(r'\d{2}/\d{2}/\d{4}', input_str) #3
-                if match == None:
-                    match = re.search(r'\d{4}/\d{2}/\d{2}', input_str) #4
-                    if match == None:
-                        match = re.findall(r'(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s\d\d,\s\d{4}',input_str) #5
-                        dt=datetime.datetime.strptime(match[0], '%b %d, %Y').date() #5 Jan 01, 2020
-                    else:    
-                        dt=datetime.datetime.strptime(match.group(), '%Y/%m/%d').date() #4
-                else:
-                    try:
-                        dt=datetime.datetime.strptime(match.group(),'%d/%m/%Y').date() #3
-                    except:
-                        dt=datetime.datetime.strptime(match.group(),'%m/%d/%Y').date() #3
-            else:
-                try:
-                    dt=datetime.datetime.strptime(match.group(), '%d-%m-%Y').date()#2
-                except:
-                    dt=datetime.datetime.strptime(match.group(), '%m-%d-%Y').date()#2
-        else:
-            dt=datetime.datetime.strptime(match.group(), '%Y-%m-%d').date() #1
-        return dt.strftime('%m/%d/%Y')    
-    except Exception as ex:
-        print("Error in date_convert_to_US_format="+str(ex))
-
-def image_diff_hash(img_1,img_2,hash_type='p'):
-    """
-    Image Hashing function to know if two images look nearly identical
-    """
-    try:
-        import imagehash
-        hash_1 = hash_2 = 0
-        if hash_type == 'p': #Perceptual hashing
-            hash_1 = imagehash.phash(Image.open(img_1))
-            hash_2 = imagehash.phash(Image.open(img_2))
-        elif hash_type == 'a': #Average hashing 
-            hash_1 = imagehash.average_hash(Image.open(img_1))
-            hash_2 = imagehash.average_hash(Image.open(img_2))
-        elif hash_type == 'd': #Difference hashing (dHashref)
-            hash_1 = imagehash.dhash(Image.open(img_1))
-            hash_2 = imagehash.dhash(Image.open(img_2))
-        elif hash_type == 'w': #Wavelet hashing
-            hash_1 = imagehash.whash(Image.open(img_1))
-            hash_2 = imagehash.whash(Image.open(img_2))
-        elif hash_type == 'c': #HSV color hashing 
-            hash_1 = imagehash.colorhash(Image.open(img_1))
-            hash_2 = imagehash.colorhash(Image.open(img_2))
-        
-        print("Similarity between {} and {} is : {} ".format(img_1,img_2, 100-(hash_2-hash_1)))
-    except Exception as ex:
-        print("Error in image_diff_hash="+str(ex))
-
 def download_this_file(url=""):
     """
     Downloads a given url file to BOT output folder or Browser's Download folder
@@ -4102,10 +3935,7 @@ def _rerun_clointfusion_first_run(ex):
         pg.alert("Please Re-run..." + str(ex))
     except:
         put_text("Please Re-run..." + str(ex)).show()
-    # _,last_updated_date_file = is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=False)
-    # with open(last_updated_date_file, 'w',encoding="utf-8") as f:
-    #     last_updated_on_date = int(datetime.date.today().strftime('%m')) - 1
-    #     f.write(str(last_updated_on_date))
+
 
 def clointfusion_self_test_cases(user_chosen_test_folder):
     """
@@ -4225,7 +4055,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print(string_remove_special_characters("C!@loin#$tFu*(sion"))
             print(string_extract_only_alphabets(inputString="C1l2o#%^int&*Fus12i5on"))
             print(string_extract_only_numbers("C1l2o3i4n5t6F7u8i9o0n"))
-            print(date_convert_to_US_format("31-01-2021"))
+            
             print('String operations tested successfully '+show_emoji())
             print("____________________________________________________________")
             logging.info('String operations tested successfully')
@@ -4377,8 +4207,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print()
             print("Testing mouse operations")    
             mouse_move(850,600)
-            print(mouse_get_color_by_position((800,500)))
-
+            
             time.sleep(2)
             
             mouse_drag_from_to(600,510,1150,680)
@@ -4623,7 +4452,6 @@ def clointfusion_self_test(last_updated_on_month):
                     except:
                         pg.hotkey('alt','f4')
                     time.sleep(2)
-                    # is_execution_required_today('clointfusion_self_test',execution_type="M",save_todays_date_month=True)
                     
                     try:
                         from ClointFusion import selft
@@ -4656,54 +4484,7 @@ def clointfusion_self_test(last_updated_on_month):
         except Exception as ex:
             print(str(ex))
 
-def is_execution_required_today(function_name,execution_type="D",save_todays_date_month=False):
-    """
-    Function which ensures that a another function which calls this function is executed only once per day.
-    Returns boolean True/False if another function to be executed today or not
-    execution_type = D = Execute only once per day
-    execution_type = M = Execute only once per month
-    """
-    if config_folder_path:
-        last_updated_date_file = os.path.join(config_folder_path,function_name + ".txt")
-    else:
-        last_updated_date_file = os.path.join(current_working_dir,function_name + ".txt")
 
-    last_updated_date_file = Path(last_updated_date_file)
-    
-    EXECUTE_NOW = False
-    last_updated_on_date = ""
-    
-    if save_todays_date_month == False:
-        try:    
-            with open(last_updated_date_file, 'r') as f:
-                last_updated_on_date = str(f.read())
-        except:
-            save_todays_date_month = True
-
-    if save_todays_date_month:
-        with open(last_updated_date_file, 'w',encoding="utf-8") as f:
-            if execution_type == "D":
-                last_updated_on_date = datetime.date.today().strftime('%d')
-            elif execution_type == "M":
-                last_updated_on_date = datetime.date.today().strftime('%m')
-            f.write(str(last_updated_on_date))
-            EXECUTE_NOW = True
-
-    today_date_month = ""
-    if execution_type == "D":
-        today_date_month = str(datetime.date.today().strftime('%d'))
-    elif execution_type == "M":
-        today_date_month = str(datetime.date.today().strftime('%m'))
-
-    if last_updated_on_date != today_date_month:
-        EXECUTE_NOW = True
-
-    try:
-        subprocess.check_call(["attrib","+H", last_updated_date_file]) #hide
-    except:
-        pass
-
-    return EXECUTE_NOW,last_updated_date_file
 
 def update_log_excel_file(message=""):
     """
@@ -4721,14 +4502,6 @@ def update_log_excel_file(message=""):
             message = gui_get_any_input_from_user("message to Update Log file")
 
         df = pd.DataFrame({'Timestamp': [datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")], 'Status':[message]})
-
-        # writer = pd.ExcelWriter(status_log_excel_filepath, engine='openpyxl') # pylint: disable=abstract-class-instantiated
-        # writer.book = load_workbook(status_log_excel_filepath,data_only=True,keep_links=False)
-        # writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        # reader = pd.read_excel(status_log_excel_filepath,engine='openpyxl')        
-        # df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
-        # writer.save()
-
         append_df_to_excel(status_log_excel_filepath, df, index=False,startrow=None,header=None)
 
         return True
@@ -4736,53 +4509,7 @@ def update_log_excel_file(message=""):
         print("Error in update_log_excel_file="+str(ex))
         return False
 
-class myThread1 (threading.Thread):
-    def __init__(self,err_str):
-        threading.Thread.__init__(self)
-        self.err_str = err_str
 
-    def run(self):
-        message_flash(self.err_str)
-
-class myThread2 (threading.Thread):
-    def __init__(self,strFilePath):
-        threading.Thread.__init__(self)
-        self.strFilePath = strFilePath
-
-    def run(self):
-        time.sleep(1)
-        img = pg.screenshot()
-        time.sleep(1)
-
-        dt_tm= str(datetime.datetime.now())    
-    
-        dt_tm = dt_tm.replace(" ","_")
-        dt_tm = dt_tm.replace(":","-")
-        dt_tm = dt_tm.split(".")[0]
-        filePath = self.strFilePath + str(dt_tm)  + ".PNG"
-
-        img.save(str(filePath))
-
-def take_error_screenshot(err_str):
-    """
-    Takes screenshot of an error popup parallely without waiting for the flow of the program.
-    The screenshot will be saved in the log folder for reference.
-
-    Parameters:
-        err_str  (str) : exception.
-    """
-    global error_screen_shots_path
-    try:
-        thread1 = myThread1(err_str)
-        thread2 = myThread2(error_screen_shots_path)
-
-        thread1.start()
-        thread2.start()
-
-        thread1.join()
-        thread2.join()
-    except Exception as ex:
-        print("Error in take_error_screenshot="+str(ex))
 
 # --------- Self-Test Related Functions Ends ---------
 

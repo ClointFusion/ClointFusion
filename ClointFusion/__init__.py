@@ -1,11 +1,12 @@
 from ClointFusion import loader    
 
-# ---------  Libraries Imports | Current Count : 13
+# ---------  Libraries Imports | Current Count : 15
 from loader import pd
 try:
     from loader import pg
 except:
     pass
+
 from loader import clipboard
 from loader import re
 from loader import op
@@ -47,10 +48,9 @@ from loader import message_flash
 from loader import message_toast
 
 
-# ---------  Mouse Functions | Current Count : 5
+# ---------  Mouse Functions | Current Count : 4
 from loader import mouse_click
 from loader import mouse_move
-from loader import mouse_get_color_by_position
 from loader import mouse_drag_from_to
 from loader import mouse_search_snip_return_coordinates_x_y
 
@@ -101,7 +101,7 @@ from loader import string_extract_only_numbers
 from loader import string_remove_special_characters
 
 
-# ---------  Excel Functions | Current Count : 29
+# ---------  Excel Functions | Current Count : 28
 from loader import excel_get_row_column_count
 from loader import excel_copy_range_from_sheet
 from loader import excel_copy_paste_range_from_to_sheet
@@ -117,7 +117,6 @@ from loader import excel_remove_duplicates
 from loader import excel_vlook_up
 from loader import excel_change_corrupt_xls_to_xlsx
 from loader import excel_convert_xls_to_xlsx
-from loader import excel_apply_template_format_save_to_new
 from loader import excel_apply_format_as_table
 from loader import excel_split_on_user_defined_conditions
 from loader import excel_convert_to_image
@@ -158,22 +157,19 @@ from loader import schedule_delete_task_windows
 from loader import email_send_via_desktop_outlook
 
 
-# --------- Utility Functions | Current Count : 10
+# --------- Utility Functions | Current Count : 12
 from loader import find
 from loader import pause_program
 from loader import show_emoji
 from loader import create_batch_file
 from loader import dismantle_code
-from loader import compute_hash
-from loader import date_convert_to_US_format
 from loader import download_this_file
 from loader import clear_screen
 from loader import print_with_magic_color
 from loader import ocr_now
 from loader import string_regex
 
-# --------- Self-Test and ClointFusion Related Functions | Current Count : 4
-from loader import take_error_screenshot
+# --------- Self-Test and ClointFusion Related Functions | Current Count : 3
 from loader import update_log_excel_file
 from loader import ON_semi_automatic_mode
 from loader import OFF_semi_automatic_mode

@@ -55,7 +55,7 @@ You would receive an email with self-test report.
 
 ---
 
-## Now access more than 130 functions (hit ctrl+space in your IDE)
+## Now access more than 100 functions (hit ctrl+space in your IDE)
     
         You can find and inspect all of ClointFusion's functions using only one function i.e find(). 
         Just pass the partial name of the function.
@@ -79,13 +79,11 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
     
-* ## 5 functions on Mouse operations:
+* ## 4 functions on Mouse operations:
 
     cf.mouse_click() : Clicks at the given X Y Co-ordinates on the screen using ingle / double / tripple click(s). Optionally copies selected data to clipboard (works for double / triple clicks)
 
     cf.mouse_move() : Moves the cursor to the given X Y Co-ordinates
-
-    cf.mouse_get_color_by_position() : Gets the color by X Y co-ordinates of the screen
 
     cf.mouse_drag_from_to() : Clicks and drags from X1 Y1 co-ordinates to X2 Y2 Co-ordinates on the screen
 
@@ -93,7 +91,7 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true" height="400">
 
-* ## 5 functions on Window operations (works only in Windows OS):
+* ## 6 functions on Window operations (works only in Windows OS):
 
     cf.window_show_desktop() : Minimizes all the applications and shows Desktop.
 
@@ -105,6 +103,8 @@ You would receive an email with self-test report.
 
     cf.window_close_windows() :  Close the desired window.
 
+    cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
+    
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true" height="400">
     
 * ## 5 functions on Window Objects (works only in Windows OS):
@@ -121,7 +121,7 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Windows_Object_Operation.gif?raw=true" height="400">
 
-* ## 6 functions on Folder operations:
+* ## 8 functions on Folder operations:
 
     cf.folder_read_text_file() : Reads from a given text file and returns entire contents as a single list
 
@@ -141,7 +141,7 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true" height="400">
 
-* ## 21 functions on Excel operations:
+* ## 28 functions on Excel operations:
 
     cf.excel_get_all_sheet_names() : Gives you all names of the sheets in the given excel sheet.
 
@@ -181,6 +181,25 @@ You would receive an email with self-test report.
 
     cf.excel_change_corrupt_xls_to_xlsx() : Repair corrupt excel file
 
+    cf.excel_get_all_header_columns() : Gives you all column header names of the given excel sheet
+
+    cf.excel_convert_to_image() : Returns an Image (PNG) of given Excel
+
+    cf.excel_split_on_user_defined_conditions() : Splits the excel based on user defined row/column conditions
+
+    cf.excel_apply_format_as_table() : Applies table format to the used range of the given excel
+
+    cf.excel_convert_xls_to_xlsx() : Converts given XLS file to XLSX
+
+    cf.isNaN() : Returns TRUE if a given value is NaN False otherwise
+
+    cf.convert_csv_to_excel() : Function to convert CSV to Excel 
+
+    cf.excel_sub_routines() : Excel VBA Macros called from ClointFusion
+
+    cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
+
+
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true" height="400">
 
 * ## 3 functions on Keyboard operations:
@@ -193,7 +212,7 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true" height="400">
 
-* ## 2 functions on Screenscraping operations:
+* ## 5 functions on Screenscraping operations:
 
     cf.scrape_save_contents_to_notepad() : Copy pastes all the available text on the screen to notepad and saves it.
 
@@ -233,7 +252,7 @@ You would receive an email with self-test report.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true" height="400">
 
-* ## 3 functions on Alert Messages:
+* ## 4 functions on Alert Messages:
 
     cf.message_counter_down_timer() : Function to show count-down timer. Default is 5 seconds.
 
@@ -259,8 +278,6 @@ You would receive an email with self-test report.
 
     cf.print_with_magic_color() : Function to color and format terminal output
 
-    cf.launch_any_exe_bat_application() : Launches any exe or batch file or excel file etc.
-
     cf.schedule_create_task_windows() : Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create_batch_file() function before using this function to convert .pyw file to .bat
 
     cf.schedule_delete_task_windows() : Deletes already scheduled task. Asks user to supply task_name used during scheduling the task. You can also perform this action from Windows Task Scheduler.
@@ -273,25 +290,19 @@ You would receive an email with self-test report.
 
     cf.OFF_semi_automatic_mode() : This function sets semi_automatic_mode as False => OFF
 
-    cf.convert_csv_to_excel() : Function to convert CSV to Excel 
-
-    cf.take_error_screenshot() : Takes screenshot of an error popup parallely without waiting for the flow of the program. The screenshot will be saved in the log folder for reference.
-
-    cf.isNaN() : Returns TRUE if a given value is NaN False otherwise
-
-    cf.excel_sub_routines() : Excel VBA Macros called from ClointFusion
-
     cf.email_send_via_desktop_outlook() : Send email using Outlook from Desktop email application
 
     cf.download_this_file() : Downloads a given url file to BOT output folder or Browser's Download folder
-
-    cf.excel_to_colored_html() : Converts given Excel to HTML preserving the Excel format and saves in same folder as .html
 
     cf.pause_program() : Stops the program for given seconds
 
     cf.string_regex() : Regex API service call, to search within a given string data
 
     cf.ocr_now() : Recognize and read the text embedded in images using Google's Tesseract-OCR
+
+    cf.update_log_excel_file() : Given message will be updated in the excel log file of output folder
+
+    cf.create_batch_file() : Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler.
 
     <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
 
@@ -319,8 +330,6 @@ Participate in our monthly online hackathons & weekly meetups. Click here for mo
 
 Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 
-Note for Contributors/Testers :
-The Tester/Contributor has to place the ClointFusion.py file inside the ClointFusion Folder which is inside the site packages folder for testing the code being contributed or it may cause circular import issue. its not a bug, it is how python modules work in the site packages. either the tester can place the ClointFusion.py in the Site Packages Folder and test or remove all the occurences of 'from ClointFusion' from the ClointFusion.py file.
 
 # Date &#10084;&#65039; with ClointFusion 
 This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
