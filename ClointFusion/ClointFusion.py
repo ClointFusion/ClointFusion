@@ -326,7 +326,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.28)"
+    version = "(Version: 0.1.30)"
     welcome_msg = f"\nHi {user_name} !!\nWelcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
     print_with_magic_color(welcome_msg,magic=True)
@@ -4837,7 +4837,7 @@ def cli_vlookup():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('You can try below commands:\n1)cce\n2)dost\n3)cf_vlookup\n4)cf_st\n5)cf_scrape')    
+    click.echo('You can try below commands:\n1)cce\n2)dost\n3)cf_vlookup\n4)cf_st')    
 
 # --------- 4. All default services ---------
 
