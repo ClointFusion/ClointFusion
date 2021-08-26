@@ -2,18 +2,16 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
 | Version | Supported          |
 | ------- | ------------------ |
-| >= 0.0.99   | :white_check_mark: |
-| < 0.0.98   | :x:                |
+| >= 0.1.30   | :white_check_mark: |
+| < 0.1.30   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+WhatsApp Community: https://chat.whatsapp.com/DkY9QKmQkTZIv1CsOVrgWW
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Discord: https://discord.com/invite/tsMBN4PXKH
+
+Email: ClointFusion@cloint.com
+

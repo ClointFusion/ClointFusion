@@ -1,4 +1,4 @@
-30) ClointFusion version 0.1.29 - 0.1.30 released on 26-08-2021 12:10 PM
+30) ClointFusion version 0.1.29 - 0.1.31 released on 26-08-2021 20:00 PM
     1) Minor Enhancements
     2) Bug Fixes
     3) Unnecessary imports removed from requirements.txt
