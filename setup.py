@@ -39,7 +39,7 @@ setup(
   ],
     entry_points={
         'console_scripts': [
-            'cce = ClointFusion.ClointFusion:cli_colab_launcher',
+            'colab = ClointFusion.ClointFusion:cli_colab_launcher',
             'dost = ClointFusion.ClointFusion:cli_dost',
             'cf = ClointFusion.ClointFusion:cli_cf',
             'cf_vlookup = ClointFusion.ClointFusion:cli_vlookup',

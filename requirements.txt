@@ -1,11 +1,11 @@
 wheel >= 0.37.0
-pif >= 0.8.2
+
 PyAutoGUI >= 0.9.53
 PySimpleGUI >= 4.46.0
 clipboard >= 0.0.4
 emoji >= 1.4.2
 helium >= 3.0.7
-keyboard >= 0.13.5
+
 matplotlib >= 3.4.3
 numpy >= 1.21.1
 openpyxl >= 3.0.7

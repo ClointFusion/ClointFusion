@@ -33,7 +33,6 @@ import warnings
 import traceback 
 import shutil
 import socket
-import random
 from pandas.core.algorithms import mode
 from pywebio.output import put_text
 
@@ -127,6 +126,8 @@ def print_with_magic_color(strMsg="", magic=False):
     """
     Prints the message with colored foreground font
     """
+    import random
+    
     if magic == False:
         fg_random = random.randint(2,255)
         
@@ -332,7 +333,7 @@ def _welcome_to_clointfusion():
 
     greeting = "Good Morning " if 5<=hour<12 else "Good Afternoon " if hour<18 else "Good Evening "
 
-    welcome_msg = f"\n{greeting} {str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
+    welcome_msg = f"\n{greeting}{str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
@@ -2146,7 +2147,6 @@ def window_show_desktop():
     """
     try:
         time.sleep(0.5)
-        # kb.press_and_release('win+d')
         pg.hotkey("win","d")
         time.sleep(0.5)
     except Exception as ex:
@@ -4572,6 +4572,8 @@ def cli_cf(message):
 # ########################
 # ClointFusion's DEFAULT SERVICES
 
+_download_cloint_ico_png()
+
 try: 
     try:
         from ClointFusion import selft        
@@ -4590,7 +4592,6 @@ except:
     user_email = ""
 
 _welcome_to_clointfusion()
-_download_cloint_ico_png()
 
 today_date_month = datetime.date.today().strftime('%m')
 
