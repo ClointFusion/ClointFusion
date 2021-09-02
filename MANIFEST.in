@@ -8,3 +8,5 @@ include ClointFusion/ClointFusion.py
 include ClointFusion/*.pyd
 include ClointFusion/*.so
 include ClointFusion/Colab_Launcher.py
+include ClointFusion/BRE_WHM.pyw
+include LICENSE

@@ -44,6 +44,7 @@ setup(
             'cf = ClointFusion.ClointFusion:cli_cf',
             'cf_vlookup = ClointFusion.ClointFusion:cli_vlookup',
             'cf_st = ClointFusion.ClointFusion:cli_speed_test',
+            'whm = ClointFusion.ClointFusion:cli_bre_whm',
         ],
     },
   python_requires='>=3.7, <4',
@@ -57,9 +58,11 @@ setup(
       'Discussion Forum': 'https://github.com/ClointFusion/ClointFusion/discussions',
       'Source Code': 'https://github.com/ClointFusion/ClointFusion/'
   },
+    # package_data={"ClointFusion": ["*.pyd"]},
+    has_ext_modules=lambda: True
 )
 
-# python setup.py build bdist_wheel rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
+# python setup.py build bdist_wheel rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1 --plat-name
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

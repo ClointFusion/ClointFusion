@@ -89,6 +89,7 @@ browser_driver = ""
 cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
 cf_icon_cdt_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON-CDT.ico"))
 cf_logo_file_path = Path(os.path.join(current_working_dir,"Cloint-LOGO.PNG"))
+cf_splash_png_path = Path(os.path.join(current_working_dir,"Splash.PNG"))
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
 
@@ -274,7 +275,7 @@ def _download_cloint_ico_png():
     """
     Internal function to download ClointFusion ICON from GitHub
     """
-    global cf_logo_file_path, cf_icon_file_path
+    global cf_logo_file_path, cf_icon_file_path, cf_splash_png_path, cf_icon_cdt_file_path
     try:
         if not os.path.exists(str(cf_icon_file_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',str(cf_icon_file_path))
@@ -285,6 +286,9 @@ def _download_cloint_ico_png():
         if not os.path.exists(str(cf_logo_file_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',str(cf_logo_file_path))
 
+        if not os.path.exists(str(cf_splash_png_path)):
+            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Splash.png',str(cf_splash_png_path))
+            
     except Exception as ex:
         print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
@@ -383,6 +387,19 @@ def _set_bot_name(strBotName=""):
 
     base_dir = str(base_dir) + "_" + bot_name
     base_dir = Path(base_dir)
+
+def _get_site_packages_path():
+    """
+    Returns Site-Packages Path
+    """
+    try:
+        import site  
+        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+    except:
+        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
+
+    site_packages_path = site_packages_path.strip()  
+    return site_packages_path
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -3666,7 +3683,7 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
 
 # --------- Schedule Functions ---------
 
-def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_mm_24_hr_frmt="11:00"):#*
+def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_mm_24_hr_frmt="11:00"):
     """
     Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create_batch_file() function before using this function to convert .pyw file to .bat
     """
@@ -4069,7 +4086,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Testing keyboard operations')
             message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
 
-            add_msg = "Happy 75th Independence Day" #"Performing ClointFusion Self Test for Notepad"
+            add_msg = "Celebrating One Year of Hackathon ! Register Now : https://tinyurl.com/ClointFusion" #"Performing ClointFusion Self Test for Notepad"
 
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
@@ -4484,8 +4501,6 @@ def clointfusion_self_test(last_updated_on_month):
         except Exception as ex:
             print(str(ex))
 
-
-
 def update_log_excel_file(message=""):
     """
     Given message will be updated in the excel log file.
@@ -4509,7 +4524,26 @@ def update_log_excel_file(message=""):
         print("Error in update_log_excel_file="+str(ex))
         return False
 
+def _add_to_registry(file_path):
+    """
+    Add BRE_WHM to Registry for AutoRun
+    """
+    try:
+        import winreg as reg 
+        address=file_path
+        # key we want to change is HKEY_CURRENT_USER 
+        # key value is Software\Microsoft\Windows\CurrentVersion\Run
 
+        key_value = "Software\Microsoft\Windows\CurrentVersion\Run"
+        
+        open = reg.OpenKey(reg.HKEY_CURRENT_USER,key_value,0,reg.KEY_ALL_ACCESS)
+        
+        reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
+        
+        reg.CloseKey(open)
+        
+    except Exception as ex:
+        print("Error in _add_to_registry="+str(ex))
 
 # --------- Self-Test Related Functions Ends ---------
 
@@ -4529,15 +4563,7 @@ def cli_speed_test():
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     try:      
-        try:
-            import site  
-            site_packages = next(p for p in site.getsitepackages() if 'site-packages' in p)
-        except:
-            site_packages = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
-
-        site_packages = site_packages.strip()            
-
-        subprocess.call('python ' + site_packages + '\ClointFusion\Colab_Launcher.py', shell=True)
+        subprocess.call('python ' + _get_site_packages_path() + '\ClointFusion\Colab_Launcher.py', shell=True)
 
     except Exception as ex:
         print("Error in cli_colab_launcher " + str(ex))
@@ -4560,11 +4586,24 @@ def cli_vlookup():
         print("Error in cli_vlookup="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
+def cli_bre_whm():
+    """ClointFusion CLI for BRE and WHM"""
+    try:
+        import sqlite3
+        connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(config_folder_path),check_same_thread=False)
+        # cursr = connct.cursor()
+        df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
+        print(df)
+
+    except Exception as ex:
+        print("Error in cli_bre_whm="+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('--message', '-m', multiple=True,help="ClointFusion Command Line Interface's basic command")
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('You can try below commands:\n1)colab\n2)dost\n3)cf_vlookup\n4)cf_st')    
+    click.echo('You can try below commands:\n1)colab\n2)dost\n3)cf_vlookup\n4)cf_st\n5)whm')    
 
 # --------- 4. All default services ---------
 
@@ -4658,8 +4697,38 @@ else:
         update_log_excel_file(bot_name +'- BOT initiated')
         _ask_user_semi_automatic_mode()
 
+        try:
+            _folder_write_text_file(Path(os.path.join(current_working_dir,"base_dir.txt")),str(base_dir))
+        except:
+            pass
+
 # ########################
 
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+
+#BOT Recommendation Engine Logic
+bre_whm_config_file_path = os.path.join(config_folder_path,"BRE_WHM.txt")
+bre_whm_config_file_path = Path(bre_whm_config_file_path)
+
+yes_no = ""
+
+try:
+    with open(bre_whm_config_file_path) as f:
+        yes_no = f.read()
+except:
+    pass
+
+if yes_no == '':
+    try:
+        file_path = _get_site_packages_path() + '\ClointFusion\BRE_WHM.pyw'
+        file_path = r"G:\My Drive\Python_BOTs\ClointFusion\ClointFusion\BRE_WHM.pyw"
+        
+        if os_name == windows_os:
+            _add_to_registry(file_path)
+
+        _folder_write_text_file(bre_whm_config_file_path,str('SET'))
+    except:
+        pass
