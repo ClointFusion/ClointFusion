@@ -2204,6 +2204,7 @@ def window_activate_and_maximize_windows(windowName=""):
 
             try:
                 windw.activate()
+                windw.maximize()
             except:
                 windw.minimize()
                 time.sleep(1)
