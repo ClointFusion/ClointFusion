@@ -4590,6 +4590,7 @@ def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
         import sqlite3
+        print(config_folder_path)
         connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
         cursr = connct.cursor()
         df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
@@ -4721,14 +4722,19 @@ try:
 except:
     pass
 
-if yes_no == '':
+if yes_no == "":
     try:
         file_path = _get_site_packages_path() + '\ClointFusion\BRE_WHM.pyw'
         # file_path = r"G:\My Drive\Python_BOTs\ClointFusion\ClointFusion\BRE_WHM.pyw"
         
         if os_name == windows_os:
             _add_to_registry(file_path)
-
-        _folder_write_text_file(bre_whm_config_file_path,str('SET'))
+            
+            if os_name == windows_os:
+                home = str(Path.home())
+                current_user = home.split("\\")[2]
+                shutil.copy2(file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
+                
+        _folder_write_text_file(str(bre_whm_config_file_path),str('SET'))
     except:
         pass
