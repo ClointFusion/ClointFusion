@@ -398,7 +398,7 @@ def _get_site_packages_path():
     except:
         site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
 
-    site_packages_path = site_packages_path.strip()  
+    site_packages_path = str(site_packages_path).strip()  
     return site_packages_path
 
 def _create_status_log_file(xtLogFilePath):
@@ -4590,8 +4590,8 @@ def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
         import sqlite3
-        connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(config_folder_path),check_same_thread=False)
-        # cursr = connct.cursor()
+        connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
+        cursr = connct.cursor()
         df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
         print(df)
 
@@ -4716,7 +4716,7 @@ bre_whm_config_file_path = Path(bre_whm_config_file_path)
 yes_no = ""
 
 try:
-    with open(bre_whm_config_file_path) as f:
+    with open(str(bre_whm_config_file_path)) as f:
         yes_no = f.read()
 except:
     pass
@@ -4724,7 +4724,7 @@ except:
 if yes_no == '':
     try:
         file_path = _get_site_packages_path() + '\ClointFusion\BRE_WHM.pyw'
-        file_path = r"G:\My Drive\Python_BOTs\ClointFusion\ClointFusion\BRE_WHM.pyw"
+        # file_path = r"G:\My Drive\Python_BOTs\ClointFusion\ClointFusion\BRE_WHM.pyw"
         
         if os_name == windows_os:
             _add_to_registry(file_path)

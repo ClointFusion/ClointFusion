@@ -31,9 +31,9 @@ from pynput.keyboard import Listener as KeyboardListener
 last_click = ""
 COUNTER = 1
 
-# print(config_folder_path)
+print(config_folder_path)
 
-connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(config_folder_path),check_same_thread=False)
+connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
 cursr = connct.cursor()
 
 # connct.execute("DROP TABLE SYS_CONFIG")
