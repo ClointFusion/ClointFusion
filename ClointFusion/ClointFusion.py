@@ -188,7 +188,7 @@ def update_semi_automatic_log(key, value):
     """
     try:
         if config_folder_path:
-            bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
+            bot_config_path = os.path.join(config_folder_path,"Config_Files", bot_name + ".xlsx")
             
         else:
             bot_config_path = os.path.join(clointfusion_directory,"Config_Files","First_Run.xlsx")
@@ -481,71 +481,72 @@ def _ask_user_semi_automatic_mode():
     Ask user to 'Enable Semi Automatic Mode'
     """
     try:
-        global enable_semi_automatic_mode
-        values = []
+        # global enable_semi_automatic_mode
+        # values = []
         
-        file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-        file_path = Path(file_path)
-        stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
+        # file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+        # file_path = Path(file_path)
+        # stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
 
-        file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
-        file_path = Path(file_path)
-        enable_semi_automatic_mode = _folder_read_text_file(file_path)
+        # file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
+        # file_path = Path(file_path)
+        # enable_semi_automatic_mode = _folder_read_text_file(file_path)
         
         bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
         bot_config_path = Path(bot_config_path)
+        # pg.alert(bot_config_path)
 
-        if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
+        # if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
 
-            layout = [[sg.Text('Do you want me to store GUI responses & use them next time when you run this BOT ?',text_color='orange',font='Courier 13')],
-                    [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14', focus=True), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
-                    [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
-                    [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Dont_Ask_Again.txt' to False. \n Please find path here: {}".format(Path(os.path.join(config_folder_path, 'Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')]]
+        #     layout = [[sg.Text('Do you want me to store GUI responses & use them next time when you run this BOT ?',text_color='orange',font='Courier 13')],
+        #             [sg.Submit('Yes',bind_return_key=True,button_color=('white','green'),font='Courier 14', focus=True), sg.CloseButton('No', button_color=('white','firebrick'),font='Courier 14')],
+        #             [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
+        #             [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Dont_Ask_Again.txt' to False. \n Please find path here: {}".format(Path(os.path.join(config_folder_path, 'Dont_Ask_Again.txt'))),key='-DND-',visible=False,font='Courier 8')]]
 
-            window = sg.Window('ClointFusion - Enable Semi Automatic Mode ?',layout,return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
+        #     window = sg.Window('ClointFusion - Enable Semi Automatic Mode ?',layout,return_keyboard_events=True,use_default_focus=False,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
             
-            while True:
-                event, values = window.read()
-                if event == '-DONT_ASK_AGAIN-':
-                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                    file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-                    file_path = Path(file_path)
-                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+        #     while True:
+        #         event, values = window.read()
+        #         if event == '-DONT_ASK_AGAIN-':
+        #             stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+        #             file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+        #             file_path = Path(file_path)
+        #             _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
 
-                    if values['-DONT_ASK_AGAIN-']:
-                        window.Element('-DND-').Update(visible=True)
-                    else:
-                        window.Element('-DND-').Update(visible=False)
+        #             if values['-DONT_ASK_AGAIN-']:
+        #                 window.Element('-DND-').Update(visible=True)
+        #             else:
+        #                 window.Element('-DND-').Update(visible=False)
 
-                file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-                file_path = Path(file_path)
-                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+        #         file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+        #         file_path = Path(file_path)
+        #         _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
 
-                if event in (sg.WIN_CLOSED, 'No'): #ask me every time
-                    enable_semi_automatic_mode = False
-                    break
-                elif event == 'Yes': #do not ask me again
-                    enable_semi_automatic_mode = True
-                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                    file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
-                    file_path = Path(file_path)
-                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-                    break
+        #         if event in (sg.WIN_CLOSED, 'No'): #ask me every time
+        #             enable_semi_automatic_mode = False
+        #             break
+        #         elif event == 'Yes': #do not ask me again
+        #             enable_semi_automatic_mode = True
+        #             stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+        #             file_path = os.path.join(config_folder_path, 'Dont_Ask_Again.txt')
+        #             file_path = Path(file_path)
+        #             _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+        #             break
         
-            window.close()
+        #     window.close()
 
-            if not os.path.exists(bot_config_path):
-                df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
-                append_df_to_excel(bot_config_path, df, index=False, startrow=0)
+        if not os.path.exists(bot_config_path):
+            df = pd.DataFrame({'SNO': [],'KEY': [], 'VALUE':[]})
+            append_df_to_excel(bot_config_path, df, index=False, startrow=0)
                 
-            if enable_semi_automatic_mode:
-                print("Semi Automatic Mode is ENABLED "+ show_emoji())
-            else:
-                print("Semi Automatic Mode is DISABLED "+ show_emoji())
+            # if enable_semi_automatic_mode:
+            #     print("Semi Automatic Mode is ENABLED "+ show_emoji())
+            # else:
+            #     print("Semi Automatic Mode is DISABLED "+ show_emoji())
             
-            file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
-            file_path = Path(file_path)
-            _folder_write_text_file(file_path,str(enable_semi_automatic_mode))
+            # file_path = os.path.join(config_folder_path, 'Semi_Automatic_Mode.txt')
+            # file_path = Path(file_path)
+            # _folder_write_text_file(file_path,str(enable_semi_automatic_mode))
     except Exception as ex:
         print("Error in _ask_user_semi_automatic_mode " + str(ex))
 
@@ -934,7 +935,7 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
     except Exception as ex:
         print("Error in gui_get_folder_path_from_user="+str(ex))
 
-def gui_get_any_input_from_user(msgForUser="the value : ",password=False,multi_line=False,mandatory_field=True):   
+def gui_get_any_input_from_user(msgForUser="Please enter : ",password=False,multi_line=False,mandatory_field=True):   
     import cryptocode 
     from pywebio.input import PASSWORD, TEXT, textarea 
 
@@ -4610,10 +4611,12 @@ def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
         import sqlite3
-
-        connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
-        cursr = connct.cursor()
-        df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour Spent,Window_Name as "Window Name" from CFEVENTS GROUP by Window_Name', connct)
+        db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+        print(db_path)
+        connct = sqlite3.connect(db_path,check_same_thread=False)
+        # cursr = connct.cursor()
+        df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
+        df=df[1:]
         print(df)
 
     except Exception as ex:
@@ -4716,7 +4719,7 @@ else:
     _init_log_file()
 
     update_log_excel_file(bot_name +'- BOT initiated')
-    # _ask_user_semi_automatic_mode()
+    _ask_user_semi_automatic_mode()
     enable_semi_automatic_mode = True # By DEFAULT
 
 #BOT Recommendation Engine Logic for Windows OS Only
@@ -4741,3 +4744,12 @@ if c_version < s_version:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+import sqlite3
+db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+print(db_path)
+connct = sqlite3.connect(db_path,check_same_thread=False)
+# cursr = connct.cursor()
+df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
+df=df[1:]
+print(df)    

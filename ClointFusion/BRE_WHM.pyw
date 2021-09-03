@@ -40,7 +40,9 @@ COUNTER = 1
 
 # elevate(show_console=False)
 try:
-    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
 except: #Ask ADMIN Rights if REQUIRED
     if os_name == windows_os:
@@ -219,7 +221,8 @@ def on_click(x, y, button, pressed):
             except:
                 img=img.crop((x-30,y-30,x+30,y+30))
 
-            snip_save_path = str(img_folder_path) + str(COUNTER) + "-" + str(windw) + "-" + str(x) + "_" + str(y) + ".png"
+            snip_save_path = str(img_folder_path) + "\\" + str(COUNTER) + "-" + str(windw) + "-" + str(x) + "_" + str(y) + ".png"
+            
             img.save(snip_save_path)
 
             #capture mini-screenshot
