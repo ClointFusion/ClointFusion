@@ -348,7 +348,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.32)"
+    version = "(Version: 0.1.33)"
 
     hour = datetime.datetime.now().hour
 
@@ -4743,13 +4743,4 @@ if c_version < s_version:
 
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-import sqlite3
-db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-print(db_path)
-connct = sqlite3.connect(db_path,check_same_thread=False)
-# cursr = connct.cursor()
-df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
-df=df[1:]
-print(df)    
+    warnings.filterwarnings("ignore", category=DeprecationWarning)  
