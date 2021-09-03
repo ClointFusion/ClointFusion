@@ -9,32 +9,46 @@ from dateutil import parser
 from pathlib import Path
 import PySimpleGUI as sg
 import traceback
+import platform,socket,re,uuid,json,psutil,logging
+from pynput.mouse import Listener as MouseListener
+from pynput.keyboard import Listener as KeyboardListener
+from elevate import elevate
 
 try:
     import pyautogui as pg
 except:
     print("Unable to import PyAutoGUI. WHM may not work properly")
 
-current_working_dir = os.getcwd()
+os_name = str(platform.system()).lower()
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
 
-with open(Path(os.path.join(current_working_dir,"base_dir.txt"))) as f:
-    base_dir = f.read()
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(os.getlogin())
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(os.getlogin())
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(os.getlogin())
 
-img_folder_path =  os.path.join(base_dir, "Images")
-config_folder_path = os.path.join(base_dir, "Config_Files")
-cf_splash_png_path = Path(os.path.join(current_working_dir,"Splash.PNG"))
-
-import platform,socket,re,uuid,json,psutil,logging
-from pynput.mouse import Listener as MouseListener
-from pynput.keyboard import Listener as KeyboardListener
+img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
+config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
 
 last_click = ""
 COUNTER = 1
 
-# print(config_folder_path)
-
-connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
-cursr = connct.cursor()
+# elevate(show_console=False)
+try:
+    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
+    cursr = connct.cursor()
+except: #Ask ADMIN Rights if REQUIRED
+    if os_name == windows_os:
+        elevate(show_console=False)
+    else:
+        elevate(graphical=False)
+    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
+    cursr = connct.cursor()
 
 # connct.execute("DROP TABLE SYS_CONFIG")
 # connct.execute("DROP TABLE CFEVENTS")
@@ -188,7 +202,7 @@ def on_click(x, y, button, pressed):
             except:
                 windw = "unknown"
 
-            if windw == "":
+            if str(windw).strip() == "":
                 windw = "Desktop"
 
             img=pg.screenshot()

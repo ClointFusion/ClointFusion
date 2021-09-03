@@ -57,6 +57,7 @@ from tabloo import show
 from colored import fg, attr
 import click
 import pyinspect as pi
+from elevate import elevate
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -67,7 +68,6 @@ windows_os = "windows"
 linux_os = "linux"
 mac_os = "darwin"
 
-base_dir = ""
 config_folder_path = ""
 log_path = ""
 img_folder_path = ""
@@ -75,21 +75,29 @@ batch_file_path = ""
 output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
-bot_name = ""
+bot_name = "My_BOT"
 
 user_name = ""
 user_email = ""
-
-current_working_dir = os.getcwd()
-    
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
+
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(os.getlogin())
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(os.getlogin())
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(os.getlogin())
+else:
+    clointfusion_directory = temp_current_working_dir
+
 browser_driver = ""
 
-cf_icon_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON.ico"))
-cf_icon_cdt_file_path = Path(os.path.join(current_working_dir,"Cloint-ICON-CDT.ico"))
-cf_logo_file_path = Path(os.path.join(current_working_dir,"Cloint-LOGO.PNG"))
-cf_splash_png_path = Path(os.path.join(current_working_dir,"Splash.PNG"))
+cf_icon_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON.ico")
+cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
+cf_logo_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-LOGO.PNG")
+cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
+
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
 
@@ -158,7 +166,7 @@ def read_semi_automatic_log(key):
             bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
             bot_config_path = Path(bot_config_path)
         else:
-            bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
+            bot_config_path = os.path.join(clointfusion_directory,"Config_Files","First_Run.xlsx")
             bot_config_path = Path(bot_config_path)
             
             if not os.path.exists(bot_config_path):
@@ -183,7 +191,7 @@ def update_semi_automatic_log(key, value):
             bot_config_path = os.path.join(config_folder_path,bot_name + ".xlsx")
             
         else:
-            bot_config_path = os.path.join(current_working_dir,"First_Run.xlsx")
+            bot_config_path = os.path.join(clointfusion_directory,"Config_Files","First_Run.xlsx")
         
         bot_config_path = Path(bot_config_path)
         
@@ -275,7 +283,16 @@ def _download_cloint_ico_png():
     """
     Internal function to download ClointFusion ICON from GitHub
     """
-    global cf_logo_file_path, cf_icon_file_path, cf_splash_png_path, cf_icon_cdt_file_path
+    try:
+        folder_create(os.path.join(clointfusion_directory,"Logo_Icons")) 
+
+    except: #Ask ADMIN Rights if REQUIRED
+        if os_name == windows_os:
+            elevate(show_console=False)
+        else:
+            elevate(graphical=False)
+        folder_create(os.path.join(clointfusion_directory,"Logo_Icons")) 
+
     try:
         if not os.path.exists(str(cf_icon_file_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',str(cf_icon_file_path))
@@ -331,7 +348,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.31)"
+    version = "(Version: 0.1.32)"
 
     hour = datetime.datetime.now().hour
 
@@ -362,31 +379,31 @@ def _welcome_to_clointfusion():
             except:
                 print("Please run 'pip install -U ClointFusion'")
 
-def _set_bot_name(strBotName=""):
-    """
-    Internal function
-    If a botname is given, it will be used in the log file and in Task Scheduler
-    we can also access the botname variable globally.
+# def _set_bot_name(strBotName=""):
+#     """
+#     Internal function
+#     If a botname is given, it will be used in the log file and in Task Scheduler
+#     we can also access the botname variable globally.
 
-    Parameters :
-        strBotName (str) : Name of the bot
-    """
-    global base_dir
-    global bot_name
+#     Parameters :
+#         strBotName (str) : Name of the bot
+#     """
+#     global clointfusion_directory
+#     global bot_name
 
-    if not strBotName: #if user has not given bot_name
-        bot_name = os.getcwd()
-        try:
-            bot_name = bot_name[bot_name.rindex("\\") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
-        except:
-            bot_name = bot_name[bot_name.rindex("/") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
+#     if not strBotName: #if user has not given bot_name
+#         bot_name = os.getcwd()
+#         try:
+#             bot_name = bot_name[bot_name.rindex("\\") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
+#         except:
+#             bot_name = bot_name[bot_name.rindex("/") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
 
-    else:
-        strBotName = ''.join(e for e in strBotName if e.isalnum()) 
-        bot_name = strBotName
+#     else:
+#         strBotName = ''.join(e for e in strBotName if e.isalnum()) 
+#         bot_name = strBotName
 
-    base_dir = str(base_dir) + "_" + bot_name
-    base_dir = Path(base_dir)
+#     clointfusion_directory = str(clointfusion_directory) + "_" + bot_name
+#     clointfusion_directory = Path(clointfusion_directory)
 
 def _get_site_packages_path():
     """
@@ -422,10 +439,7 @@ def _init_log_file():
     global status_log_excel_filepath
     
     try:
-        if bot_name:
-            excelFileName = str(bot_name) + "-StatusLog.xlsx"
-        else:
-            excelFileName = "StatusLog.xlsx"
+        excelFileName = "StatusLog.xlsx"
 
         if not os.path.exists(status_log_excel_filepath):
             os.makedirs(status_log_excel_filepath)
@@ -1107,85 +1121,85 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
     except Exception as ex:
         print("Error in gui_get_any_file_from_user="+str(ex))
 
-def gui_get_workspace_path_from_user():    
-    """
-    Function to accept Workspace folder path from user using GUI. Returns the folderpath value in string format.
+# def gui_get_workspace_path_from_user():    
+#     """
+#     Function to accept Workspace folder path from user using GUI. Returns the folderpath value in string format.
 
-    """
-    values = []
-    ret_value = ""
-    try:
-        oldValue = ""
-        oldKey = "Please Choose Workspace Folder"
-        show_gui = False
-        existing_value = read_semi_automatic_log(oldKey)
+#     """
+#     values = []
+#     ret_value = ""
+#     try:
+#         oldValue = ""
+#         oldKey = "Please Choose Workspace Folder"
+#         show_gui = False
+#         existing_value = read_semi_automatic_log(oldKey)
 
-        if existing_value is None:
-            show_gui = True
+#         if existing_value is None:
+#             show_gui = True
 
-        if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
-            show_gui = True
-            oldValue = existing_value
+#         if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
+#             show_gui = True
+#             oldValue = existing_value
 
-        if show_gui:
-            layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
-                [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
-                [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
-                [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(current_working_dir) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
-                [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Ask Me Later',button_color=('white','firebrick'))]]
+#         if show_gui:
+#             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
+#                 [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
+#                 [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
+#                 [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(clointfusion_directory) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
+#                 [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Ask Me Later',button_color=('white','firebrick'))]]
 
-            window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
+#             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
             
-            while True:
-                event, values = window.read()
+#             while True:
+#                 event, values = window.read()
 
-                if event == '-DONT_ASK_AGAIN-':
-                    stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+#                 if event == '-DONT_ASK_AGAIN-':
+#                     stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
                     
-                    file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
-                    file_path = Path(file_path)
+#                     file_path = os.path.join(clointfusion_directory, 'Workspace_Dont_Ask_Again.txt')
+#                     file_path = Path(file_path)
                     
-                    _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+#                     _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
                 
-                    if values and values['-DONT_ASK_AGAIN-']:
-                        window['-DND-'](visible=True)
-                    elif values and not values['-DONT_ASK_AGAIN-']:
-                        window['-DND-'](visible=False)
+#                     if values and values['-DONT_ASK_AGAIN-']:
+#                         window['-DND-'](visible=True)
+#                     elif values and not values['-DONT_ASK_AGAIN-']:
+#                         window['-DND-'](visible=False)
                 
-                if event == sg.WIN_CLOSED or event == 'Ask Me Later':
-                    break
-                if event == 'OK':
-                    if values and values['-FOLDER-']:
-                        break
-                    else:
-                        message_pop_up("Please enter the required values")
+#                 if event == sg.WIN_CLOSED or event == 'Ask Me Later':
+#                     break
+#                 if event == 'OK':
+#                     if values and values['-FOLDER-']:
+#                         break
+#                     else:
+#                         message_pop_up("Please enter the required values")
             
-            window.close()
+#             window.close()
             
-            if values and event == 'OK':
-                stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
+#             if values and event == 'OK':
+#                 stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
                 
-                file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
-                file_path = Path(file_path)
+#                 file_path = os.path.join(clointfusion_directory, 'Workspace_Dont_Ask_Again.txt')
+#                 file_path = Path(file_path)
                 
-                _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
+#                 _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
 
-                values['-KEY-'] = oldKey
+#                 values['-KEY-'] = oldKey
 
-                if str(values['-KEY-']) and str(values['-FOLDER-']):
-                    update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
+#                 if str(values['-KEY-']) and str(values['-FOLDER-']):
+#                     update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
             
-                if values is not None:
-                    ret_value = str(values['-FOLDER-']).strip()
+#                 if values is not None:
+#                     ret_value = str(values['-FOLDER-']).strip()
             
-            else:
-                ret_value = None
-        else:
-            ret_value = str(existing_value)
+#             else:
+#                 ret_value = None
+#         else:
+#             ret_value = str(existing_value)
             
-        return ret_value
-    except Exception as ex:
-        print("Error in gui_get_workspace_path_from_user="+str(ex))
+#         return ret_value
+#     except Exception as ex:
+#         print("Error in gui_get_workspace_path_from_user="+str(ex))
 
 # ---------  GUI Functions Ends ---------
 
@@ -1994,7 +2008,8 @@ def folder_create(strFolderPath=""):
             strFolderPath = gui_get_any_input_from_user('folder path to Create folder')
 
         if not os.path.exists(strFolderPath):
-            os.makedirs(strFolderPath)
+            os.makedirs(strFolderPath, exist_ok=True)
+
     except Exception as ex:
         print("Error in folder_create="+str(ex))
 
@@ -2280,7 +2295,10 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
                 win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
                 status = True
             except Exception as ex1:
-                print("launch_any_exe_bat_application"+str(ex1))
+                try:
+                    os.startfile(pathOfExeFile)
+                except Exception as ex2:
+                    print("launch_any_exe_bat_application"+str(ex2))
             
         elif os_name == linux_os:
             try:
@@ -3146,7 +3164,7 @@ def excel_sub_routines():
     try:
         if os_name == windows_os:
             import xlwings as xw
-            cf_excel_rountine_file_path = os.path.join(current_working_dir,"CF_Excel_Routines.xlsb")
+            cf_excel_rountine_file_path = os.path.join(clointfusion_directory,"Misc","CF_Excel_Routines.xlsb")
 
             import win32com.client
             excel = win32com.client.Dispatch("Excel.Application")
@@ -3954,11 +3972,10 @@ def _rerun_clointfusion_first_run(ex):
         put_text("Please Re-run..." + str(ex)).show()
 
 
-def clointfusion_self_test_cases(user_chosen_test_folder):
+def clointfusion_self_test_cases(temp_current_working_dir):
     """
     Main function for Self Test, which is called by GUI
     """
-    global os_name
     global enable_semi_automatic_mode
 
     TEST_CASES_STATUS_MESSAGE = ""
@@ -3968,10 +3985,10 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
     if not os.path.exists(red_close_PNG_1):
         urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/RED-Close_1.PNG',red_close_PNG_1)
 
-    test_folder_path = Path(os.path.join(user_chosen_test_folder,"ClointFusion_Self_Tests"))
+    test_folder_path = Path(os.path.join(temp_current_working_dir,"ClointFusion_Self_Tests"))
     test_run_excel_path = Path(os.path.join(test_folder_path,'Quick_Self_Test_Excel.xlsx'))
-    user_chosen_test_folder = Path(user_chosen_test_folder)
-    test_folder_path = Path(test_folder_path)
+    user_chosen_test_folder = Path(temp_current_working_dir)
+    test_folder_path = Path(test_folder_path)  
     test_run_excel_path = Path(test_run_excel_path)
 
     enable_semi_automatic_mode = True
@@ -3986,24 +4003,24 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         print()
         logging.info('ClointFusion imported successfully')
         try:
-            base_dir = Path(user_chosen_test_folder)
-            folder_create(base_dir) 
-            print('Test folder location {}'.format(base_dir))
-            logging.info('Test folder location {}'.format(base_dir))
+            # base_dir = Path(user_chosen_test_folder)
+            folder_create(user_chosen_test_folder) 
+            print('Test folder location {}'.format(user_chosen_test_folder))
+            logging.info('Test folder location {}'.format(user_chosen_test_folder))
             
-            img_folder_path =  os.path.join(base_dir, "Images")
-            batch_file_path = os.path.join(base_dir, "Batch_File")
-            config_folder_path = os.path.join(base_dir, "Config_Files")
-            output_folder_path = os.path.join(base_dir, "Output")
-            error_screen_shots_path = os.path.join(base_dir, "Error_Screenshots")
+            tmp_img_folder_path =  os.path.join(user_chosen_test_folder, "Images")
+            tmp_batch_file_path = os.path.join(user_chosen_test_folder, "Batch_File")
+            tmp_config_folder_path = os.path.join(user_chosen_test_folder, "Config_Files")
+            tmp_output_folder_path = os.path.join(user_chosen_test_folder, "Output")
+            tmp_error_screen_shots_path = os.path.join(user_chosen_test_folder, "Error_Screenshots")
             
             try:
-                print('Creating sub folders viz. img/batch/config/output/error_screen_shot at {}'.format(base_dir))
-                folder_create(img_folder_path)
-                folder_create(batch_file_path)
-                folder_create(config_folder_path)
-                folder_create(error_screen_shots_path)
-                folder_create(output_folder_path)
+                print('Creating sub folders viz. img/batch/config/output/error_screen_shot at {}'.format(temp_current_working_dir))
+                folder_create(tmp_img_folder_path)
+                folder_create(tmp_batch_file_path)
+                folder_create(tmp_config_folder_path)
+                folder_create(tmp_error_screen_shots_path)
+                folder_create(tmp_output_folder_path)
             except Exception as ex:
                 print('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex))
                 logging.info('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot')
@@ -4021,6 +4038,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
             print('Testing folder operations')
             folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
             folder_create_text_file(test_folder_path, "My Text File")
+            # excel_create_excel_file_in_given_folder(test_run_excel_path)
             excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
             excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-1')
             excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-2')
@@ -4049,6 +4067,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
                 print()
                 print('Testing window based operations')
                 window_show_desktop()
+                
                 launch_any_exe_bat_application(test_run_excel_path)
                 window_minimize_windows('Quick_Self_Test_Excel')
                 window_activate_and_maximize_windows('Quick_Self_Test_Excel')
@@ -4343,7 +4362,7 @@ def clointfusion_self_test_cases(user_chosen_test_folder):
         
     finally:
         enable_semi_automatic_mode = False
-        _folder_write_text_file(Path(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt')),str(False))
+        _folder_write_text_file(Path(os.path.join(clointfusion_directory,"Config_Files",'Running_ClointFusion_Self_Tests.txt')),str(False))
         print("____________________________________________________________")
         print("____________________________________________________________")
         print()
@@ -4420,7 +4439,7 @@ def clointfusion_self_test(last_updated_on_month):
                 window['Start'].update(disabled=True)
                 # window['Close'].update(disabled=True)
                 window['Skip for Now'].update(disabled=True)
-                _folder_write_text_file(os.path.join(current_working_dir,'Running_ClointFusion_Self_Tests.txt'),str(True))
+                _folder_write_text_file(os.path.join(clointfusion_directory,"Config_Files",'Running_ClointFusion_Self_Tests.txt'),str(True))
 
                 print("Starting ClointFusion's Automated Self Testing Module")
                 print('This may take several minutes to complete...')
@@ -4473,7 +4492,7 @@ def clointfusion_self_test(last_updated_on_month):
                     try:
                         from ClointFusion import selft
                         resp = selft.ast()
-                        # print(resp.text)
+                        
                     except Exception as ex:
                         message_pop_up("Active internet connection is required ! {}".format(ex))
                         sys.exit(0)
@@ -4590,10 +4609,10 @@ def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
         import sqlite3
-        print(config_folder_path)
+
         connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
         cursr = connct.cursor()
-        df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
+        df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour Spent,Window_Name as "Window Name" from CFEVENTS GROUP by Window_Name', connct)
         print(df)
 
     except Exception as ex:
@@ -4648,84 +4667,62 @@ if EXECUTE_SELF_TEST_NOW :
         _rerun_clointfusion_first_run(str(ex))
 
 else:
-    file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')   
-    file_path = Path(file_path)
-    stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
+    # file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')   
+    # file_path = Path(file_path)
+    # stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
     
-    if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
-        base_dir = gui_get_workspace_path_from_user()
+    # if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
+    #     base_dir = gui_get_workspace_path_from_user()
 
-    else:
-        base_dir = read_semi_automatic_log("Please Choose Workspace Folder")
+    # else:
+    #     base_dir = read_semi_automatic_log("Please Choose Workspace Folder")
 
-    if not base_dir and stored_do_not_ask_user_preference == False:
-        yes_no = pg.confirm(text='Do you want to enable Workspace selection option ?', title='Workspace is not set properly', buttons=['Yes', 'No'])
+    # if not base_dir and stored_do_not_ask_user_preference == False:
+    #     yes_no = pg.confirm(text='Do you want to enable Workspace selection option ?', title='Workspace is not set properly', buttons=['Yes', 'No'])
 
-        if yes_no == 'Yes':
-            file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
-            file_path = Path(file_path)
-            _folder_write_text_file(file_path,str(True))
-            try:
-                pg.alert('Please re-run & select the Workspace Folder')
-            except:
-                put_text('Please re-run & select the Workspace Folder')
+    #     if yes_no == 'Yes':
+    #         file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
+    #         file_path = Path(file_path)
+    #         _folder_write_text_file(file_path,str(True))
+    #         try:
+    #             pg.alert('Please re-run & select the Workspace Folder')
+    #         except:
+    #             put_text('Please re-run & select the Workspace Folder')
 
-    elif not base_dir:
-        base_dir = temp_current_working_dir
+    # elif not base_dir:
+    #     base_dir = temp_current_working_dir
 
-    else:
-        base_dir = os.path.join(base_dir,"ClointFusion_BOT")
-        base_dir = Path(base_dir)
-        _set_bot_name()
-        folder_create(base_dir) 
+    # else:
+    #     base_dir = os.path.join(base_dir,"ClointFusion_BOT")
+    #     base_dir = Path(base_dir)
+    #     folder_create(base_dir) 
 
-        log_path = Path(os.path.join(base_dir, "Logs"))
-        img_folder_path =  Path(os.path.join(base_dir, "Images")) 
-        batch_file_path = Path(os.path.join(base_dir, "Batch_File")) 
-        config_folder_path = Path(os.path.join(base_dir, "Config_Files")) 
-        output_folder_path = Path(os.path.join(base_dir, "Output")) 
-        error_screen_shots_path = Path(os.path.join(base_dir, "Error_Screenshots"))
-        status_log_excel_filepath = Path(os.path.join(base_dir,"StatusLogExcel"))
+    folder_create(clointfusion_directory) 
+    log_path = Path(os.path.join(clointfusion_directory, "Logs"))
+    img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
+    batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File")) 
+    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files")) 
+    output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
+    error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
+    status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
 
-        folder_create(log_path)
-        folder_create(img_folder_path)
-        folder_create(batch_file_path)
-        folder_create(config_folder_path)
-        folder_create(error_screen_shots_path)
-        folder_create(output_folder_path)
-        _init_log_file()
+    folder_create(log_path)
+    folder_create(img_folder_path)
+    folder_create(batch_file_path)
+    folder_create(config_folder_path)
+    folder_create(error_screen_shots_path)
+    folder_create(output_folder_path)
+    _init_log_file()
 
-        update_log_excel_file(bot_name +'- BOT initiated')
-        _ask_user_semi_automatic_mode()
+    update_log_excel_file(bot_name +'- BOT initiated')
+    # _ask_user_semi_automatic_mode()
+    enable_semi_automatic_mode = True # By DEFAULT
 
-        try:
-            _folder_write_text_file(Path(os.path.join(current_working_dir,"base_dir.txt")),str(base_dir))
-        except:
-            pass
+#BOT Recommendation Engine Logic for Windows OS Only
 
-# ########################
-
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
-#BOT Recommendation Engine Logic
-bre_whm_config_file_path = os.path.join(config_folder_path,"BRE_WHM.txt")
-bre_whm_config_file_path = Path(bre_whm_config_file_path)
-
-yes_no = ""
-
-try:
-    with open(str(bre_whm_config_file_path)) as f:
-        yes_no = f.read()
-except:
-    pass
-
-if yes_no == "":
+if c_version < s_version:
     try:
         file_path = _get_site_packages_path() + '\ClointFusion\BRE_WHM.pyw'
-        # file_path = r"G:\My Drive\Python_BOTs\ClointFusion\ClointFusion\BRE_WHM.pyw"
         
         if os_name == windows_os:
             _add_to_registry(file_path)
@@ -4734,7 +4731,12 @@ if yes_no == "":
                 home = str(Path.home())
                 current_user = home.split("\\")[2]
                 shutil.copy2(file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
-                
-        _folder_write_text_file(str(bre_whm_config_file_path),str('SET'))
+        
     except:
         pass
+
+# ########################
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
