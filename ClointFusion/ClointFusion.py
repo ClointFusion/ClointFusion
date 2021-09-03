@@ -188,7 +188,7 @@ def update_semi_automatic_log(key, value):
     """
     try:
         if config_folder_path:
-            bot_config_path = os.path.join(config_folder_path,"Config_Files", bot_name + ".xlsx")
+            bot_config_path = os.path.join(config_folder_path, bot_name + ".xlsx")
             
         else:
             bot_config_path = os.path.join(clointfusion_directory,"Config_Files","First_Run.xlsx")
@@ -202,11 +202,11 @@ def update_semi_automatic_log(key, value):
             df.loc[row_index,'VALUE'] = value
             df.to_excel(bot_config_path,index=False)
         else:
+            # print(bot_config_path)
             reader = pd.read_excel(bot_config_path,engine='openpyxl')
-            
             df = pd.DataFrame({'SNO': [len(reader)+1], 'KEY': [key], 'VALUE':[value]})
             append_df_to_excel(bot_config_path, df, index=False,startrow=None,header=None)
-
+            
     except Exception as ex:
         print("Error in update_semi_automatic_log="+str(ex))
 
@@ -348,7 +348,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.33)"
+    version = "(Version: 0.1.34)"
 
     hour = datetime.datetime.now().hour
 
@@ -4610,14 +4610,19 @@ def cli_vlookup():
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
+        print("Your Work Hour Report for TODAY:")
         import sqlite3
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-        print(db_path)
         connct = sqlite3.connect(db_path,check_same_thread=False)
         # cursr = connct.cursor()
-        df=pd.read_sql('select MAX(TIME_STAMP)-MIN(TIME_STAMP) as Hour,Window_Name from CFEVENTS GROUP by Window_Name', connct)
+        df=pd.read_sql('select Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) As Integer) as Day, Cast (( JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 As Integer) as Hour,  Window_Name from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date("now")  GROUP by Window_Name', connct)
+        # df=pd.read_sql('select Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) As Integer) as Day, Cast (( JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 As Integer) as Hour,  Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 * 60 As Integer) as Minutes,  Window_Name from CFEVENTS WHERE date(datetime(TIME_STAMP, "unixepoch")) = date("now")  GROUP by Window_Name', connct)
+
         df=df[1:]
         print(df)
+
+        # df = pd.read_sql("SELECT * from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now')",connct)
+        # print(df)
 
     except Exception as ex:
         print("Error in cli_bre_whm="+str(ex))
@@ -4720,7 +4725,7 @@ else:
 
     update_log_excel_file(bot_name +'- BOT initiated')
     _ask_user_semi_automatic_mode()
-    enable_semi_automatic_mode = True # By DEFAULT
+    enable_semi_automatic_mode = False # By DEFAULT
 
 #BOT Recommendation Engine Logic for Windows OS Only
 
@@ -4743,4 +4748,4 @@ if c_version < s_version:
 
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
-    warnings.filterwarnings("ignore", category=DeprecationWarning)  
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
