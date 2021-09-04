@@ -58,8 +58,12 @@ from colored import fg, attr
 import click
 import pyinspect as pi
 from elevate import elevate
+from rich import pretty
+from rich.console import Console
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
+pretty.install()
+console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
 # 2. All global variables
@@ -348,7 +352,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.34)"
+    version = "(Version: 0.1.35)"
 
     hour = datetime.datetime.now().hour
 
@@ -358,7 +362,7 @@ def _welcome_to_clointfusion():
 
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
-    print(f.renderText("ClointFusion Community Edition"))
+    console.print(f.renderText("ClointFusion Community Edition"))
 
     if c_version < s_version:
         print('You are using version {}, however version {} is available !'.format(c_version,s_version))
@@ -372,12 +376,20 @@ def _welcome_to_clointfusion():
             pass
 
         try:
-            os.system("pip install -U ClointFusion")
+            if os_name == windows_os:
+                os.system("pip install -U ClointFusion")
+            else:
+                os.system("pip3 install -U ClointFusion")
         except:
             try:
-                os.system("pip3 install -U ClointFusion")
+                if os_name == windows_os:
+                    elevate(show_console=False)
+                    os.system("pip install -U ClointFusion")
+                else:
+                    elevate(graphical=False)
+                    os.system("pip3 install -U ClointFusion")    
             except:
-                print("Please run 'pip install -U ClointFusion'")
+                print("Please Upgrade ClointFusion")
 
 # def _set_bot_name(strBotName=""):
 #     """
@@ -4610,20 +4622,37 @@ def cli_vlookup():
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
-        print("Your Work Hour Report for TODAY:")
+        style = "bold white on blue"
+        console.print("Your Work Hour Report for TODAY ({}):".format(datetime.datetime.now().strftime('%dth %B,%Y %I:%M:%S %p %A')),style=style,justify='center')
+
+        try:
+            if os_name == windows_os:
+                import ctypes
+                lib = ctypes.windll.kernel32
+                t = lib.GetTickCount64()
+                t = int(str(t)[:-3])
+            else:
+                t = os.popen('uptime -p').read()[:-1]
+
+            mins, sec = divmod(t, 60)
+            hour, mins = divmod(mins, 60)
+            days, hour = divmod(hour, 24)
+
+            console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
+        except:
+            pass
+        
         import sqlite3
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
         connct = sqlite3.connect(db_path,check_same_thread=False)
-        # cursr = connct.cursor()
-        df=pd.read_sql('select Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) As Integer) as Day, Cast (( JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 As Integer) as Hour,  Window_Name from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date("now")  GROUP by Window_Name', connct)
+
+        df=pd.read_sql('select   Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 * 60 As Integer) as Minutes ,Window_Name as "Software/Program"  from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date("now") GROUP by Window_Name order by Minutes DESC', connct)
         # df=pd.read_sql('select Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) As Integer) as Day, Cast (( JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 As Integer) as Hour,  Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 * 60 As Integer) as Minutes,  Window_Name from CFEVENTS WHERE date(datetime(TIME_STAMP, "unixepoch")) = date("now")  GROUP by Window_Name', connct)
 
-        df=df[1:]
-        print(df)
+        console.print(df.to_string(index=False),justify='center')
 
-        # df = pd.read_sql("SELECT * from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now')",connct)
+        # df = pd.read_sql("SELECT TIME_STAMP, Window_Name from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now') order by Window_Name",connct)
         # print(df)
-
     except Exception as ex:
         print("Error in cli_bre_whm="+str(ex))
 
@@ -4632,7 +4661,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('You can try below commands:\n1)colab\n2)dost\n3)cf_vlookup\n4)cf_st\n5)whm')    
+    click.echo('You can try below commands:\n1)colab\n2)dost\n3)cf_vlookup\n4)cf_st\n5)work')    
 
 # --------- 4. All default services ---------
 
@@ -4740,6 +4769,8 @@ if c_version < s_version:
                 home = str(Path.home())
                 current_user = home.split("\\")[2]
                 shutil.copy2(file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
+            else:
+                print("This feature is currently available only for Windows OS")
         
     except:
         pass

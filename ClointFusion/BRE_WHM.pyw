@@ -162,7 +162,7 @@ def on_release(key):
 
         windw = str(windw)
 
-        if windw == "":
+        if str(windw).strip() == "" or str(windw).strip() == "Program Manager":
             windw = "Desktop"        
             
         # GRB color below cursor 
@@ -204,7 +204,7 @@ def on_click(x, y, button, pressed):
             except:
                 windw = "unknown"
 
-            if str(windw).strip() == "":
+            if str(windw).strip() == "" or str(windw).strip() == "Program Manager":
                 windw = "Desktop"
 
             img=pg.screenshot()
@@ -321,6 +321,9 @@ def launch_cf_log_generator_gui_new():
     # item(
     #     'Pause',
     #     lambda icon, item: pause()),
+    item(
+         'About',
+        lambda icon, item: icon.notify("Hi, This is Work Hour Monitor powered by ClointFusion. Just open a command prompt and type 'work' to view the report")),
     item(
         'Exit',
         lambda icon, item: exit(keyboard_listener,mouse_listener)))).run()
