@@ -9,7 +9,7 @@ from dateutil import parser
 from pathlib import Path
 import PySimpleGUI as sg
 import traceback
-import platform,socket,re,uuid,json,psutil,logging
+import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
@@ -65,14 +65,19 @@ sys_config_table = """ CREATE TABLE IF NOT EXISTS SYS_CONFIG (
             hostname TEXT NULL,
             ip_addr TEXT NULL,
             mac_addr TEXT NULL,
-            processor TEXT NULL,
-            RAM TEXT NULL
+            processor TEXT NULL
         ); """
 
 cursr.execute(sys_config_table)
 connct.commit()
 
-cursr.execute("Insert into SYS_CONFIG values(?,?,?,?,?,?,?,?,?,?)", (str(uuid.uuid4()), str(platform.system()), str(platform.release()),str(platform.version()),str(platform.machine()),str(socket.gethostname()),str(socket.gethostbyname(socket.gethostname())),str(':'.join(re.findall('..', '%012x' % uuid.getnode()))),str(platform.processor()),str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB"))
+try:
+    cursr.execute("ALTER TABLE SYS_CONFIG DROP COLUMN RAM")
+    connct.commit()
+except:
+    pass
+
+cursr.execute("Insert into SYS_CONFIG values(?,?,?,?,?,?,?,?,?)", (str(uuid.uuid4()), str(platform.system()), str(platform.release()),str(platform.version()),str(platform.machine()),str(socket.gethostname()),str(socket.gethostbyname(socket.gethostname())),str(':'.join(re.findall('..', '%012x' % uuid.getnode()))),str(platform.processor())))
 connct.commit()
 
 event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
@@ -171,7 +176,7 @@ def on_release(key):
         except:
             rgb_pixels = "N/A"
 
-        cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (str(get_time_stamp()),"Key Press",str(pg.position()[0]),str(pg.position()[1]),str(key),"N/A","N/A",str(get_active_window().replace("*","")),str(rgb_pixels), "N/A"))
+        cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (str(get_time_stamp()),"Key Press",str(pg.position()[0]),str(pg.position()[1]),str(key),"N/A","N/A",str(windw).replace("*",""),str(rgb_pixels), "N/A"))
         connct.commit()
             
     except Exception as ex:
@@ -223,7 +228,10 @@ def on_click(x, y, button, pressed):
 
             snip_save_path = str(img_folder_path) + "\\" + str(COUNTER) + "-" + str(windw) + "-" + str(x) + "_" + str(y) + ".png"
             
-            img.save(snip_save_path)
+            try:
+                img.save(snip_save_path)
+            except:
+                pass
 
             #capture mini-screenshot
             # screenshot_save_path = str(img_folder_path) + str(COUNTER) + "-" + str(windw) + "-" + str(x) + "_" + str(y) + "_SS.png"
@@ -231,9 +239,11 @@ def on_click(x, y, button, pressed):
             #     im = pg.screenshot(screenshot_save_path,region=(pg.position()[0]-150,pg.position()[1]-150,300, 300)) #mini screenshot
             # except:
             #     pass
-
-            cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (get_time_stamp(),"Mouse Click",str(pg.position()[0]),str(pg.position()[1]),"N/A",str(button),str(click_count),str(get_active_window().replace("*","")),str(rgb_pixels),str(snip_save_path)))
-            connct.commit()
+            try:
+                cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (get_time_stamp(),"Mouse Click",str(pg.position()[0]),str(pg.position()[1]),"N/A",str(button),str(click_count),str(windw).replace("*",""),str(rgb_pixels),str(snip_save_path)))
+                connct.commit()
+            except:
+                pass
 
             COUNTER = COUNTER + 1
     except Exception as ex:
@@ -305,28 +315,53 @@ def exit(keyboard_listener,mouse_listener):
     except:
         pass
 
+def _getCurrentVersion():
+    global c_version
+    try:
+        if os_name == windows_os:
+            c_version = os.popen('pip show ClointFusion | findstr "Version"').read()
+        elif os_name == linux_os:
+            c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
+
+        c_version = str(c_version).split(":")[1].strip()
+    except:
+        pass
+
+    return c_version
+
 def launch_cf_log_generator_gui_new():
-    from pystray import Icon as icon, Menu as menu, MenuItem as item
-    from PIL import Image
-    
-    keyboard_listener = KeyboardListener(on_release=on_release)
-    mouse_listener = MouseListener( on_click=on_click)
+    try:
+        from pystray import Icon as icon, Menu as menu, MenuItem as item
+        from PIL import Image
+        import webbrowser
 
-    keyboard_listener.start()
-    mouse_listener.start()
+        keyboard_listener = KeyboardListener(on_release=on_release)
+        mouse_listener = MouseListener( on_click=on_click)
 
-    image = Image.open(cf_splash_png_path)
+        keyboard_listener.start()
+        mouse_listener.start()
 
-    icon('ClointFusion', image, "Made in India with LOVE",menu=menu(
-    # item(
-    #     'Pause',
-    #     lambda icon, item: pause()),
-    item(
-         'About',
-        lambda icon, item: icon.notify("Hi, This is Work Hour Monitor powered by ClointFusion. Just open a command prompt and type 'work' to view the report")),
-    item(
-        'Exit',
-        lambda icon, item: exit(keyboard_listener,mouse_listener)))).run()
+        image = Image.open(cf_splash_png_path)
+        
+        icon('ClointFusion', image, f"ClointFusion, Made in India with LOVE, version : {_getCurrentVersion()}",menu=menu(
+        item(
+            'About',
+            lambda icon, item: webbrowser.open_new("https://sites.google.com/view/clointfusion-hackathon")),
+        item(
+            'Colab',
+            lambda icon, item: webbrowser.open_new("https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb")),
+        item(
+            'Dost GUI',
+            lambda icon, item: webbrowser.open_new("https://dost.clointfusion.com")),
+        item(
+            'Work Report',
+            lambda icon, item: icon.notify("Hi, This is your work hour monitor powered by ClointFusion. Just open a command prompt and type 'work' to view the report")),
+        item(
+            'Exit',
+            lambda icon, item: exit(keyboard_listener,mouse_listener)))).run()
+
+    except Exception as ex:
+        print("Error in launch_cf_log_generator_gui_new="+str(ex))            
 
 try:
     launch_cf_log_generator_gui_new()

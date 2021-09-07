@@ -17,7 +17,10 @@ import os
 import sys
 import platform
 import urllib.request
+
 from datetime import datetime
+from dateutil import parser
+from datetime import timedelta
 import time
 import datetime
 from functools import lru_cache
@@ -33,7 +36,7 @@ import warnings
 import traceback 
 import shutil
 import socket
-from pandas.core.algorithms import mode
+from pandas.core.algorithms import isin, mode
 from pywebio.output import put_text
 
 try:
@@ -4485,7 +4488,6 @@ def clointfusion_self_test(last_updated_on_month):
                     file_contents = 'Unable to read the file'
 
                 if file_contents and file_contents != 'Unable to read the file':
-                    from datetime import timedelta
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
@@ -4622,6 +4624,10 @@ def cli_vlookup():
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
+        import sqlite3
+        from datetime import date
+        from rich.table import Table
+
         style = "bold white on blue"
         console.print("Your Work Hour Report for TODAY ({}):".format(datetime.datetime.now().strftime('%dth %B,%Y %I:%M:%S %p %A')),style=style,justify='center')
 
@@ -4642,14 +4648,139 @@ def cli_bre_whm():
         except:
             pass
         
-        import sqlite3
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
         connct = sqlite3.connect(db_path,check_same_thread=False)
 
-        df=pd.read_sql('select   Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 * 60 As Integer) as Minutes ,Window_Name as "Software/Program"  from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date("now") GROUP by Window_Name order by Minutes DESC', connct)
-        # df=pd.read_sql('select Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) As Integer) as Day, Cast (( JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 As Integer) as Hour,  Cast ((JulianDay(MAX(TIME_STAMP)) - JulianDay(MIN(TIME_STAMP))) * 24 * 60 As Integer) as Minutes,  Window_Name from CFEVENTS WHERE date(datetime(TIME_STAMP, "unixepoch")) = date("now")  GROUP by Window_Name', connct)
+        cursr = connct.cursor()
+        cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
+        connct.commit()
 
-        console.print(df.to_string(index=False),justify='center')
+        df = pd.read_sql("SELECT TIME_STAMP, Window_Name as 'Software/Program' from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now') group by Window_Name order by TIME_STAMP ASC",connct)
+
+        delay_lst = []
+        for ind in df.index:
+            try:
+                current_line_time_stamp = df['TIME_STAMP'][ind]
+                next_line_time_stamp = df['TIME_STAMP'][ind + 1]
+
+                delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
+                delay = int(delay.total_seconds())
+                delay = str(datetime.timedelta(seconds=delay))
+                delay_lst.append(delay)
+            except KeyError:
+                delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
+                delay_lst.append(delay)
+
+        df["Time Spent"] = delay_lst
+        df.drop('TIME_STAMP', axis=1, inplace=True)
+        df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
+        console.print(df.to_string(index=False),justify='left')
+
+        #Print this week's report
+        week_day=datetime.datetime.now().isocalendar()[2]
+        start_date=datetime.datetime.now() - datetime.timedelta(days=week_day)
+        
+        dates = []
+
+        dates=[str((start_date + datetime.timedelta(days=i)).date().strftime("%dth %b, %a")) for i in range(7)]
+        dates_df=[str((start_date + datetime.timedelta(days=i)).date().strftime("%Y-%m-%d")) for i in range(7)]
+
+        df_mc_lst = []
+        df_kp_lst = []
+        min_max_sum_lst = []
+        value_cnt = []
+
+        # dates_df = dates_df[::-1]
+
+        for dt in dates_df:
+            df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
+            df_mc_lst.append(df['CNT'].values[0])
+
+        for dt in dates_df:
+            df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
+            df_kp_lst.append(df['CNT'].values[0])
+
+        for dt in dates_df:
+            df = pd.read_sql('Select MIN(TIME_STAMP) as log_in, MAX(TIME_STAMP) as log_out from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)
+            try:
+                log_in_tm = datetime.datetime.strptime(str(df['log_in'].values[0]),"%Y-%m-%d %H:%M:%S")
+                log_in_tm = datetime.datetime.strftime(log_in_tm,"%H:%M:%S %p")
+                
+                log_out_tm = datetime.datetime.strptime(str(df['log_out'].values[0]),"%Y-%m-%d %H:%M:%S")
+                log_out_tm = datetime.datetime.strftime(log_out_tm,"%H:%M:%S %p")
+                min_max_sum_lst.append(str(log_in_tm) + "," + str(log_out_tm))
+            except:
+                min_max_sum_lst.append("No Data, No Data")
+
+        for dt in dates_df:
+            df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
+                        
+            # df=df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'
+            # df=df.loc[lambda x:x>0]
+            if len(df.Window_Name.value_counts()) > 0:
+                value_cnt.append(str(df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'))
+            else:
+                value_cnt.append("No Data")
+            
+        print()
+        table = Table(title="This Week's Work Report",show_lines=True)
+
+        table.add_column("Date", justify="center", style="cyan", no_wrap=True)
+        table.add_column("Highlights",justify="center",style="magenta")
+        table.add_column("Details",justify="left",style="bold yellow")
+        
+        for i in reversed(range(7)):
+            table.add_row(dates[i],"In=" + str(min_max_sum_lst[i]).split(",")[0] + ", Clicks="+str(df_mc_lst[i]) + ", Key Stokes=" + str(df_kp_lst[i]) + ", Out=" + str(min_max_sum_lst[i]).split(",")[1],value_cnt[i])
+
+        console.print(table,justify='center')
+
+        #Print last week's report
+        dates = []
+        df_mc_lst = []
+        df_kp_lst = []
+        today = date.today()
+        for i in range(3,10):
+            dates.append(parser.parse(str(today - timedelta(days=i))).strftime("%dth %b, %a"))
+            dates_df.append(parser.parse(str(today - timedelta(days=i))).strftime("%Y-%m-%d"))
+
+        # print()            
+        # console.print("Last Week",style="bold white",justify='center',crop=False)            
+        # console.print(last_week_lst[::-1],justify='center')
+
+        for dt in dates_df:
+            df_mc = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
+            df_mc_lst.append(df_mc['CNT'].values[0])
+
+        for dt in dates_df:
+            df_kp = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
+            df_kp_lst.append(df_kp['CNT'].values[0])
+
+        print()
+        table = Table(title="Last Week's Work Report",show_lines=True)
+
+        table.add_column("Date", justify="center", style="cyan", no_wrap=True)
+        table.add_column("Highlights",justify="center",style="cyan")
+        # console.print(dates,justify='center')
+
+        for i in range(7):
+            table.add_row(dates[i],"Clicks="+str(df_mc_lst[i]) + ", Key Stokes=" + str(df_kp_lst[i]))
+
+        #Print last week's report
+        dates = []
+        df_mc_lst = []
+        df_kp_lst = []
+        today = date.today()
+        for i in range(3,10):
+            dates.append(parser.parse(str(today - timedelta(days=i))).strftime("%dth %b, %a"))
+            dates_df.append(parser.parse(str(today - timedelta(days=i))).strftime("%Y-%m-%d"))
+
+
+        # dates_df = dates_df[::-1]
+        console.print(table,justify='center')
+
+
+        console.print("All data is being stored locally on your own Computer and is in your Control.",style=style,justify='center',crop=False)
+        print()
 
         # df = pd.read_sql("SELECT TIME_STAMP, Window_Name from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now') order by Window_Name",connct)
         # print(df)
