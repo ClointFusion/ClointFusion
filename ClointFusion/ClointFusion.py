@@ -355,7 +355,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.35)"
+    version = "(Version: 0.1.36)"
 
     hour = datetime.datetime.now().hour
 
@@ -4122,7 +4122,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print('Testing keyboard operations')
             message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
 
-            add_msg = "Celebrating One Year of Hackathon ! Register Now : https://tinyurl.com/ClointFusion" #"Performing ClointFusion Self Test for Notepad"
+            add_msg = f"Hi {user_name},\nClointFusion is celebrating One Year of Hackathon ! Motivate your friends to register Now : https://tinyurl.com/ClointFusion" #"Performing ClointFusion Self Test for Notepad"
 
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
@@ -4597,8 +4597,11 @@ def cli_speed_test():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
-    try:      
-        subprocess.call('python ' + _get_site_packages_path() + '\ClointFusion\Colab_Launcher.py', shell=True)
+    try:   
+        try:   
+            subprocess.call('python ' + f'{_get_site_packages_path()}' + '\ClointFusion\Colab_Launcher.py', shell=True)
+        except:
+            subprocess.call('python3 ' + f'{_get_site_packages_path()}' + '\ClointFusion\Colab_Launcher.py', shell=True)                        
 
     except Exception as ex:
         print("Error in cli_colab_launcher " + str(ex))
@@ -4643,8 +4646,10 @@ def cli_bre_whm():
             mins, sec = divmod(t, 60)
             hour, mins = divmod(mins, 60)
             days, hour = divmod(hour, 24)
-
+            
+            console.print('_' * 20,justify='center')  # Underscore
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
+            
         except:
             pass
         
@@ -4674,7 +4679,9 @@ def cli_bre_whm():
         df["Time Spent"] = delay_lst
         df.drop('TIME_STAMP', axis=1, inplace=True)
         df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
-        console.print(df.to_string(index=False),justify='left')
+        df.style.set_properties(subset=['Software/Program'], **{'width': '500px'})
+        df.style.set_properties(subset=['Time Spent'], **{'width': '50px'})
+        console.print(df.to_string(index=False),justify='center')
 
         #Print this week's report
         week_day=datetime.datetime.now().isocalendar()[2]
@@ -4682,7 +4689,7 @@ def cli_bre_whm():
         
         dates = []
 
-        dates=[str((start_date + datetime.timedelta(days=i)).date().strftime("%dth %b, %a")) for i in range(7)]
+        dates=[str((start_date + datetime.timedelta(days=i)).date().strftime("%dth %b, %A")) for i in range(7)]
         dates_df=[str((start_date + datetime.timedelta(days=i)).date().strftime("%Y-%m-%d")) for i in range(7)]
 
         df_mc_lst = []
@@ -4722,15 +4729,15 @@ def cli_bre_whm():
             else:
                 value_cnt.append("No Data")
             
-        print()
+        console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
         table = Table(title="This Week's Work Report",show_lines=True)
 
-        table.add_column("Date", justify="center", style="cyan", no_wrap=True)
-        table.add_column("Highlights",justify="center",style="magenta")
+        table.add_column("Date", justify="center", style="bold cyan", width=8)
+        table.add_column("Highlights",justify="center",style="bold magenta",width=20)
         table.add_column("Details",justify="left",style="bold yellow")
         
         for i in reversed(range(7)):
-            table.add_row(dates[i],"In=" + str(min_max_sum_lst[i]).split(",")[0] + ", Clicks="+str(df_mc_lst[i]) + ", Key Stokes=" + str(df_kp_lst[i]) + ", Out=" + str(min_max_sum_lst[i]).split(",")[1],value_cnt[i])
+            table.add_row(dates[i],"In=" + str(min_max_sum_lst[i]).split(",")[0] + "\nClicks="+str(df_mc_lst[i]) + "\nKey Stokes=" + str(df_kp_lst[i]) + "\nOut=" + str(min_max_sum_lst[i]).split(",")[1],value_cnt[i])
 
         console.print(table,justify='center')
 
@@ -4738,6 +4745,8 @@ def cli_bre_whm():
         dates = []
         df_mc_lst = []
         df_kp_lst = []
+        value_cnt = []
+
         today = date.today()
         for i in range(3,10):
             dates.append(parser.parse(str(today - timedelta(days=i))).strftime("%dth %b, %a"))
@@ -4755,15 +4764,23 @@ def cli_bre_whm():
             df_kp = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
             df_kp_lst.append(df_kp['CNT'].values[0])
 
-        print()
+        for dt in dates_df:
+            df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
+                        
+            if len(df.Window_Name.value_counts()) > 0:
+                value_cnt.append(str(df['Window_Name'].describe()))
+            else:
+                value_cnt.append("No Data")            
+
+        console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
         table = Table(title="Last Week's Work Report",show_lines=True)
 
-        table.add_column("Date", justify="center", style="cyan", no_wrap=True)
-        table.add_column("Highlights",justify="center",style="cyan")
-        # console.print(dates,justify='center')
+        table.add_column("Date", justify="center", style="bold cyan", no_wrap=True)
+        table.add_column("Highlights",justify="center",style="bold blue")
+        table.add_column("Details",justify="left",style="bold yellow")
 
         for i in range(7):
-            table.add_row(dates[i],"Clicks="+str(df_mc_lst[i]) + ", Key Stokes=" + str(df_kp_lst[i]))
+            table.add_row(dates[i],"Clicks="+str(df_mc_lst[i]) + "\nKey Stokes=" + str(df_kp_lst[i]), str(value_cnt[i]))
 
         #Print last week's report
         dates = []
@@ -4785,6 +4802,7 @@ def cli_bre_whm():
         # df = pd.read_sql("SELECT TIME_STAMP, Window_Name from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now') order by Window_Name",connct)
         # print(df)
     except Exception as ex:
+        print("You may need to restart your computer !")
         print("Error in cli_bre_whm="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4894,8 +4912,12 @@ if c_version < s_version:
         file_path = _get_site_packages_path() + '\ClointFusion\BRE_WHM.pyw'
         
         if os_name == windows_os:
-            _add_to_registry(file_path)
-            
+            try:
+                _add_to_registry(file_path)
+            except:
+                elevate(show_console=False)
+                _add_to_registry(file_path)
+
             if os_name == windows_os:
                 home = str(Path.home())
                 current_user = home.split("\\")[2]
@@ -4911,3 +4933,5 @@ if c_version < s_version:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+# cli_bre_whm()    
