@@ -4821,5 +4821,3 @@ if c_version < s_version:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-cli_bre_whm()    
