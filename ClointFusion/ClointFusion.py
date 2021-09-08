@@ -394,32 +394,6 @@ def _welcome_to_clointfusion():
             except:
                 print("Please Upgrade ClointFusion")
 
-# def _set_bot_name(strBotName=""):
-#     """
-#     Internal function
-#     If a botname is given, it will be used in the log file and in Task Scheduler
-#     we can also access the botname variable globally.
-
-#     Parameters :
-#         strBotName (str) : Name of the bot
-#     """
-#     global clointfusion_directory
-#     global bot_name
-
-#     if not strBotName: #if user has not given bot_name
-#         bot_name = os.getcwd()
-#         try:
-#             bot_name = bot_name[bot_name.rindex("\\") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
-#         except:
-#             bot_name = bot_name[bot_name.rindex("/") + 1 : ] #Assumption that user has given proper folder name and so taking it as BOT name
-
-#     else:
-#         strBotName = ''.join(e for e in strBotName if e.isalnum()) 
-#         bot_name = strBotName
-
-#     clointfusion_directory = str(clointfusion_directory) + "_" + bot_name
-#     clointfusion_directory = Path(clointfusion_directory)
-
 def _get_site_packages_path():
     """
     Returns Site-Packages Path
@@ -4630,7 +4604,8 @@ def cli_bre_whm():
         import sqlite3
         from datetime import date
         from rich.table import Table
-
+        from pivottablejs import pivot_ui
+        
         style = "bold white on blue"
         console.print("Your Work Hour Report for TODAY ({}):".format(datetime.datetime.now().strftime('%dth %B,%Y %I:%M:%S %p %A')),style=style,justify='center')
 
@@ -4660,29 +4635,6 @@ def cli_bre_whm():
         cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
         connct.commit()
 
-        df = pd.read_sql("SELECT TIME_STAMP, Window_Name as 'Software/Program' from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now') group by Window_Name order by TIME_STAMP ASC",connct)
-
-        delay_lst = []
-        for ind in df.index:
-            try:
-                current_line_time_stamp = df['TIME_STAMP'][ind]
-                next_line_time_stamp = df['TIME_STAMP'][ind + 1]
-
-                delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
-                delay = int(delay.total_seconds())
-                delay = str(datetime.timedelta(seconds=delay))
-                delay_lst.append(delay)
-            except KeyError:
-                delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
-                delay_lst.append(delay)
-
-        df["Time Spent"] = delay_lst
-        df.drop('TIME_STAMP', axis=1, inplace=True)
-        df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
-        df.style.set_properties(subset=['Software/Program'], **{'width': '500px'})
-        df.style.set_properties(subset=['Time Spent'], **{'width': '50px'})
-        console.print(df.to_string(index=False),justify='center')
-
         #Print this week's report
         week_day=datetime.datetime.now().isocalendar()[2]
         start_date=datetime.datetime.now() - datetime.timedelta(days=week_day)
@@ -4696,8 +4648,6 @@ def cli_bre_whm():
         df_kp_lst = []
         min_max_sum_lst = []
         value_cnt = []
-
-        # dates_df = dates_df[::-1]
 
         for dt in dates_df:
             df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
@@ -4722,8 +4672,6 @@ def cli_bre_whm():
         for dt in dates_df:
             df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
                         
-            # df=df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'
-            # df=df.loc[lambda x:x>0]
             if len(df.Window_Name.value_counts()) > 0:
                 value_cnt.append(str(df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'))
             else:
@@ -4741,66 +4689,36 @@ def cli_bre_whm():
 
         console.print(table,justify='center')
 
-        #Print last week's report
-        dates = []
-        df_mc_lst = []
-        df_kp_lst = []
-        value_cnt = []
+        #Charts       
+        df = pd.read_sql("SELECT DISTINCT(DATE(TIME_STAMP)),TIME_STAMP, Event_Name,Window_Name as 'Software/Program' from CFEVENTS group by Window_Name order by TIME_STAMP ASC",connct)
 
-        today = date.today()
-        for i in range(3,10):
-            dates.append(parser.parse(str(today - timedelta(days=i))).strftime("%dth %b, %a"))
-            dates_df.append(parser.parse(str(today - timedelta(days=i))).strftime("%Y-%m-%d"))
+        delay_lst = []
+        for ind in df.index:
+            try:
+                current_line_time_stamp = df['TIME_STAMP'][ind]
+                next_line_time_stamp = df['TIME_STAMP'][ind + 1]
 
-        # print()            
-        # console.print("Last Week",style="bold white",justify='center',crop=False)            
-        # console.print(last_week_lst[::-1],justify='center')
+                delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
+                delay = int(delay.total_seconds())
+                delay = str(datetime.timedelta(seconds=delay))
+                delay_lst.append(delay)
+            except KeyError:
+                delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
+                delay_lst.append(delay)
 
-        for dt in dates_df:
-            df_mc = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
-            df_mc_lst.append(df_mc['CNT'].values[0])
+        df["Time Spent"] = delay_lst
+        df.drop('TIME_STAMP', axis=1, inplace=True)
+        df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
 
-        for dt in dates_df:
-            df_kp = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
-            df_kp_lst.append(df_kp['CNT'].values[0])
-
-        for dt in dates_df:
-            df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
-                        
-            if len(df.Window_Name.value_counts()) > 0:
-                value_cnt.append(str(df['Window_Name'].describe()))
-            else:
-                value_cnt.append("No Data")            
+        pivot_ui(df)
+        webbrowser.open_new_tab('pivottablejs.html')
 
         console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
         table = Table(title="Last Week's Work Report",show_lines=True)
 
-        table.add_column("Date", justify="center", style="bold cyan", no_wrap=True)
-        table.add_column("Highlights",justify="center",style="bold blue")
-        table.add_column("Details",justify="left",style="bold yellow")
-
-        for i in range(7):
-            table.add_row(dates[i],"Clicks="+str(df_mc_lst[i]) + "\nKey Stokes=" + str(df_kp_lst[i]), str(value_cnt[i]))
-
-        #Print last week's report
-        dates = []
-        df_mc_lst = []
-        df_kp_lst = []
-        today = date.today()
-        for i in range(3,10):
-            dates.append(parser.parse(str(today - timedelta(days=i))).strftime("%dth %b, %a"))
-            dates_df.append(parser.parse(str(today - timedelta(days=i))).strftime("%Y-%m-%d"))
-
-
-        # dates_df = dates_df[::-1]
-        console.print(table,justify='center')
-
-
         console.print("All data is being stored locally on your own Computer and is in your Control.",style=style,justify='center',crop=False)
         print()
 
-        # df = pd.read_sql("SELECT TIME_STAMP, Window_Name from CFEVENTS WHERE DATE(datetime(TIME_STAMP)) = date('now') order by Window_Name",connct)
-        # print(df)
     except Exception as ex:
         print("You may need to restart your computer !")
         print("Error in cli_bre_whm="+str(ex))
@@ -4854,36 +4772,6 @@ if EXECUTE_SELF_TEST_NOW :
         _rerun_clointfusion_first_run(str(ex))
 
 else:
-    # file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')   
-    # file_path = Path(file_path)
-    # stored_do_not_ask_user_preference = _folder_read_text_file(file_path)
-    
-    # if stored_do_not_ask_user_preference is None or str(stored_do_not_ask_user_preference).lower() == 'false':
-    #     base_dir = gui_get_workspace_path_from_user()
-
-    # else:
-    #     base_dir = read_semi_automatic_log("Please Choose Workspace Folder")
-
-    # if not base_dir and stored_do_not_ask_user_preference == False:
-    #     yes_no = pg.confirm(text='Do you want to enable Workspace selection option ?', title='Workspace is not set properly', buttons=['Yes', 'No'])
-
-    #     if yes_no == 'Yes':
-    #         file_path = os.path.join(current_working_dir, 'Workspace_Dont_Ask_Again.txt')
-    #         file_path = Path(file_path)
-    #         _folder_write_text_file(file_path,str(True))
-    #         try:
-    #             pg.alert('Please re-run & select the Workspace Folder')
-    #         except:
-    #             put_text('Please re-run & select the Workspace Folder')
-
-    # elif not base_dir:
-    #     base_dir = temp_current_working_dir
-
-    # else:
-    #     base_dir = os.path.join(base_dir,"ClointFusion_BOT")
-    #     base_dir = Path(base_dir)
-    #     folder_create(base_dir) 
-
     folder_create(clointfusion_directory) 
     log_path = Path(os.path.join(clointfusion_directory, "Logs"))
     img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
@@ -4909,7 +4797,7 @@ else:
 
 if c_version < s_version:
     try:
-        file_path = _get_site_packages_path() + '\ClointFusion\BRE_WHM.pyw'
+        file_path = f'{_get_site_packages_path()}' + '\ClointFusion\BRE_WHM.pyw'
         
         if os_name == windows_os:
             try:
@@ -4934,4 +4822,4 @@ with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-# cli_bre_whm()    
+cli_bre_whm()    

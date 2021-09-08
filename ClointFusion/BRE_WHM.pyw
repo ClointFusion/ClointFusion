@@ -228,7 +228,8 @@ def on_click(x, y, button, pressed):
             except:
                 img=img.crop((x-30,y-30,x+30,y+30))
 
-            snip_save_path = str(img_folder_path) + "\\" + str(COUNTER) + "-" + str(windw) + "-" + str(x) + "_" + str(y) + ".png"
+            outputStr = ''.join(e for e in windw if e.isalnum())
+            snip_save_path = str(img_folder_path) + "\\" + str(COUNTER) + "-" + str(outputStr) + "-" + str(x) + "_" + str(y) + ".PNG"
             
             try:
                 img.save(snip_save_path)
@@ -369,13 +370,3 @@ try:
     launch_cf_log_generator_gui_new()
 except Exception as ex:
     pg.alert(ex)
-
-# statement = '''SELECT * FROM CFEVENTS'''
-# cursr.execute(statement)
-
-# output = cursr.fetchall()
-# for row in output:
-#     print(row)
-# import pandas as pd
-# df=pd.read_sql('select TIME_STAMP,Window_Name from CFEVENTS', connct)
-# print(df)
