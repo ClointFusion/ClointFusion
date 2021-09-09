@@ -3909,6 +3909,9 @@ def download_this_file(url=""):
     except Exception as ex:
         print("Error in download_this_file="+str(ex))
 
+def convert_to_path(input_string=""):
+    return Path(input_string)
+
 def clear_screen():
     """
     Clears Python Interpreter Terminal Window Screen

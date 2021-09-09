@@ -167,6 +167,7 @@ from loader import download_this_file
 from loader import clear_screen
 from loader import print_with_magic_color
 from loader import ocr_now
+from loader import convert_to_path
 from loader import string_regex
 
 # --------- Self-Test and ClointFusion Related Functions | Current Count : 3
