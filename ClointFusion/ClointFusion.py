@@ -4691,7 +4691,7 @@ def cli_bre_whm():
 
         console.print(table,justify='center')
 
-        #Charts       
+        # Charts       
         df = pd.read_sql("SELECT DISTINCT(DATE(TIME_STAMP)),TIME_STAMP, Event_Name,Window_Name as 'Software/Program' from CFEVENTS group by Window_Name order by TIME_STAMP ASC",connct)
 
         delay_lst = []
@@ -4702,18 +4702,23 @@ def cli_bre_whm():
 
                 delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
                 delay = int(delay.total_seconds())
+            
                 delay = str(datetime.timedelta(seconds=delay))
                 delay_lst.append(delay)
-            except KeyError:
-                delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
-                delay_lst.append(delay)
+            except Exception:
+                # delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
+                delay_lst.append("No Data")
 
         df["Time Spent"] = delay_lst
         df.drop('TIME_STAMP', axis=1, inplace=True)
         df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
 
-        pivot_ui(df)
-        webbrowser.open_new_tab('pivottablejs.html')
+        print()
+        yes_no = console.input("Would you like to see [bold red]detailed report (Y/N) [/] ?")
+
+        if yes_no in ["Yes", "y", "Y","yes"]:
+            pivot_ui(df,rows=["(DATE(TIME_STAMP))"], cols=['Time Spent','Software/Program','Event_Name'])
+            webbrowser.open_new_tab('pivottablejs.html')
 
         console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
         table = Table(title="Last Week's Work Report",show_lines=True)
