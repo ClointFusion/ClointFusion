@@ -3777,22 +3777,24 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 
 # --------- Email Functions Ends ---------
 
-
-
 # --------- Utility Functions ---------
 def ocr_now(img_path=""):
     """
     Recognize and “read” the text embedded in images using Google's Tesseract-OCR
     """
-    import base64
-    
-    ocr_url = "https://api.clointfusion.com/ocr_now"
-    
-    with open(img_path, "rb") as image2string:
-        converted_string = base64.b64encode(image2string.read())
-    
-        response = requests.post(ocr_url,data={'img_as_base64':converted_string})
-    print(response.text)
+    try:
+        import base64
+        
+        ocr_url = "https://api.clointfusion.com/ocr_now"
+        
+        with open(img_path, "rb") as image2string:
+            converted_string = base64.b64encode(image2string.read())
+        
+            response = requests.post(ocr_url,data={'img_as_base64':converted_string})
+        
+        return response.text
+    except Exception as ex:
+        return "Error in ocr_now" + str(ex)
 
 def find(function_partial_name=""):
     # Find and inspect python functions
