@@ -332,6 +332,27 @@ def _getCurrentVersion():
 
     return c_version
 
+def _get_site_packages_path():
+    """
+    Returns Site-Packages Path
+    """
+    import subprocess
+    try:
+        import site  
+        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+    except:
+        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
+
+    site_packages_path = str(site_packages_path).strip()  
+    return str(site_packages_path)
+
+def call_dost_client():
+    try:
+        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py"
+        os.system(cmd)
+    except Exception as ex :
+        print("Error in call_dost_client" + str(ex))
+
 def launch_cf_log_generator_gui_new():
     try:
         from pystray import Icon as icon, Menu as menu, MenuItem as item
@@ -354,8 +375,8 @@ def launch_cf_log_generator_gui_new():
             'Colab',
             lambda icon, item: webbrowser.open_new("https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb")),
         item(
-            'Dost GUI',
-            lambda icon, item: webbrowser.open_new("https://dost.clointfusion.com")),
+            'Dost Client',
+            lambda icon, item: call_dost_client()),           
         item(
             'Work Report',
             lambda icon, item: icon.notify("Hi, This is your work hour monitor powered by ClointFusion. Just open a command prompt and type 'work' to view the report")),

@@ -4588,10 +4588,9 @@ def cli_dost():
     try:
         print("Launching ClointFusion's GUI Builder. Thanks to contribution by Murali, Research Intern@ClointFusion")
         webbrowser.open_new("https://dost.clointfusion.com")        
-
-        # subprocess.call("python ClointFusion\DOST_HELPER\dost_main.py", shell=True)
-        subprocess.call("python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py", shell=True)
+        os.system("python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py")
     except Exception as ex:
+
         print("Error in cli_dost "+str(ex))
     
 @click.command(context_settings=CONTEXT_SETTINGS)

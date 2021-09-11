@@ -25,9 +25,7 @@ ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion i
 
 # ClointFusion is now supported in Windows / Ubuntu / macOS !
 
-1. Please install Python 3.9.6 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.5 64 Bit</a>
-
-    Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
+1. Please install Python 3.9.7 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.7 64 Bit</a>. Windows users may refer to these steps : <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
 2. It is recommended to run ClointFusion in a Virtual Environment.
 Please refer these steps to create one, as per your OS: <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment" target="_blank">Creating a virtual environment in Windows / Mac / Ubuntu</a>
