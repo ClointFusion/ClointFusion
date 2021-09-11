@@ -355,7 +355,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.36)"
+    version = "(Version: 0.1.37)"
 
     hour = datetime.datetime.now().hour
 
@@ -4588,6 +4588,9 @@ def cli_dost():
     try:
         print("Launching ClointFusion's GUI Builder. Thanks to contribution by Murali, Research Intern@ClointFusion")
         webbrowser.open_new("https://dost.clointfusion.com")        
+
+        # subprocess.call("python ClointFusion\DOST_HELPER\dost_main.py", shell=True)
+        subprocess.call('python ' + f'{_get_site_packages_path()}' + '\ClointFusion\DOST_HELPER\dost_main.py', shell=True)
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
     

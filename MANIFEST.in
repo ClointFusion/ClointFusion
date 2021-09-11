@@ -10,3 +10,4 @@ include ClointFusion/*.so
 include ClointFusion/Colab_Launcher.py
 include ClointFusion/BRE_WHM.pyw
 include LICENSE
+include ClointFusion/DOST_HELPER/*
