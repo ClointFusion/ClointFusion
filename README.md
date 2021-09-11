@@ -15,9 +15,9 @@ ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion i
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) ![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
 
-# Test Drive ClointFusion on Google Colabs
+# Build BOT using DOST: <a href="http://dost.clointfusion.com" target="_blank">Blockly based BOT Builder</a>
 
-<a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
+# Test Drive ClointFusion on Google Colabs: <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
 
 ## Click here for <a href="https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt" target="_blank"> Release Notes</a>
 
