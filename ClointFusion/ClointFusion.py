@@ -405,7 +405,7 @@ def _get_site_packages_path():
         site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
 
     site_packages_path = str(site_packages_path).strip()  
-    return site_packages_path
+    return str(site_packages_path)
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -4575,9 +4575,9 @@ def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     try:   
         try:   
-            subprocess.call('python ' + f'{_get_site_packages_path()}' + '\ClointFusion\Colab_Launcher.py', shell=True)
+            subprocess.call("python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)
         except:
-            subprocess.call('python3 ' + f'{_get_site_packages_path()}' + '\ClointFusion\Colab_Launcher.py', shell=True)                        
+            subprocess.call("python3 " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)                        
 
     except Exception as ex:
         print("Error in cli_colab_launcher " + str(ex))
@@ -4590,7 +4590,7 @@ def cli_dost():
         webbrowser.open_new("https://dost.clointfusion.com")        
 
         # subprocess.call("python ClointFusion\DOST_HELPER\dost_main.py", shell=True)
-        subprocess.call('python ' + f'{_get_site_packages_path()}' + '\ClointFusion\DOST_HELPER\dost_main.py', shell=True)
+        subprocess.call("python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py", shell=True)
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
     
@@ -4807,7 +4807,7 @@ else:
 
 if c_version < s_version:
     try:
-        file_path = f'{_get_site_packages_path()}' + '\ClointFusion\BRE_WHM.pyw'
+        file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
         
         if os_name == windows_os:
             try:
