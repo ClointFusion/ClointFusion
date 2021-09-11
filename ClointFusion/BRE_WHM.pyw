@@ -348,7 +348,7 @@ def _get_site_packages_path():
 
 def call_dost_client():
     try:
-        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py"
+        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.pyw"
         os.system(cmd)
     except Exception as ex :
         print("Error in call_dost_client" + str(ex))
