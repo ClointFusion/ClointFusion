@@ -1,3 +1,6 @@
+33) ClointFusion version 0.1.37 released on 12-09-2021 17:00 PM
+    1) Basic Version of DOST Helper / Client Added as a Tray Menu
+
 32) ClointFusion version 0.1.35 - 0.1.36 released on 08-09-2021 20:30 PM
     1) PSTRAY added
     2) WORK HOUR Monitor Feature Added
