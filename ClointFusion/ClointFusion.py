@@ -355,7 +355,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.37)"
+    version = "(Version: 0.1.38)"
 
     hour = datetime.datetime.now().hour
 
@@ -4574,6 +4574,7 @@ def cli_speed_test():
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     try:   
+        print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion")
         try:   
             subprocess.call("python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)
         except:
@@ -4586,9 +4587,9 @@ def cli_colab_launcher():
 def cli_dost():
     """ClointFusion CLI for DOST GUI Launcher"""
     try:
-        print("Launching ClointFusion's GUI Builder. Thanks to contribution by Murali, Research Intern@ClointFusion")
+        print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion")
         webbrowser.open_new("https://dost.clointfusion.com")        
-        os.system("python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py")
+        # os.system("python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.py")
     except Exception as ex:
 
         print("Error in cli_dost "+str(ex))
