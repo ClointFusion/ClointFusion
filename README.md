@@ -1,3 +1,19 @@
+<!-- Custom CSS -->
+<style>
+figure img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+figcaption {
+    color: white;
+    font-style: italic;
+    padding: 2px;
+    text-align: center;
+}
+</style>
+
+<!-- Main Content Starts Here -->
 
 ## Welcome to <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO-New.png" height="30"> , Made in India with &#10084;&#65039; 
 
@@ -15,15 +31,23 @@ ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion i
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) ![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
 
-# Build BOT using DOST: <a href="http://dost.clointfusion.com" target="_blank">Blockly based BOT Builder</a>
+<br>
 
-# Test Drive ClointFusion on Google Colabs: <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
+## Build BOT using DOST: <a href="http://dost.clointfusion.com" target="_blank">Blockly based BOT Builder</a>
 
-## Click here for <a href="https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt" target="_blank"> Release Notes</a>
+<br>
+
+## Test Drive ClointFusion on Google Colabs: <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
+
+<br>
+
+> Click here for <a href="https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt" target="_blank"> Release Notes</a>
+
+<br>
 
 # Installation on your local computer
 
-# ClointFusion is now supported in Windows / Ubuntu / macOS !
+## ClointFusion is now supported in Windows / Ubuntu / macOS !
 
 1. Please install Python 3.9.7 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.7 64 Bit</a>. Windows users may refer to these steps | <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
@@ -42,21 +66,20 @@ pip install -U ClointFusion
 import ClointFusion as cf
 ```
 
-PS: Ubuntu users: May need to install some additional packages:
+***PS: `Ubuntu` users: May need to install some additional packages:***
 
 ```
-sudo apt-get install -y python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib
+sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib
 ```
 
+# ClointFusion First Run Setup:
 
----
-# ClointFusion First Run Setup: 
+When importing ClointFusion for the first time, you'd likely to be prompted with `ClointFusion Automated Selftest`, a tool designes and developed to check the compatibility of ClointFusion with your PC settings & configurations. On a successful event, you'll recieve an email with self-test report.
+<!-- 
 First time, when you import ClointFusion, you would be prompted to run ClointFusions's Automated Selftest, to check whether all functions of ClointFusion are compatible with your computer settings & configurations. 
-You would receive an email with self-test report.
+You would receive an email with self-test report. -->
 
----
-
-**Now access more than 100 functions (hit ctrl+space in your IDE)**
+## **Now access more than 100 functions (hit ctrl+space in your IDE)**
     
 You can find and inspect all of ClointFusion's functions using only one function i.e., `find()`. Just pass the partial name of the function.
 
@@ -76,9 +99,14 @@ cf.find("gui")
 | cf.gui_get_folder_path_from_user() | Generic function to accept folder path from user using GUI. Returns the folderpath value in string format. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
+<figcaption >
+    GUI Functions gif</figcaption>
+</figure>
 
----
+----
+
 * ## 4 functions on Mouse operations:
 
 | Function | Description |
@@ -89,8 +117,13 @@ cf.find("gui")
 | cf.mouse_search_snip_return_coordinates_x_y() | Searches the given image on the screen and returns its center of X Y co-ordinates. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true" height="400">
----
+<figcaption >
+    Mouse Operations gif</figcaption>
+</figure>
+
+----
 
 * ## 6 functions on Window operations (works only in Windows OS):
 
@@ -104,7 +137,13 @@ cf.find("gui")
 | cf.launch_any_exe_bat_application() | Launches any exe or batch file or excel file etc. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true" height="400">
+<figcaption >
+    Window Operations gif</figcaption>
+</figure>
+
+---
     
 * ## 5 functions on Window Objects (works only in Windows OS):
 
@@ -117,7 +156,13 @@ cf.find("gui")
 | cf.win_obj_get_text() | Read text from windows object element. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Windows_Object_Operation.gif?raw=true" height="400">
+<figcaption >
+    Windows Objects gif</figcaption>
+</figure>
+
+----
 
 * ## 8 functions on Folder operations:
 
@@ -133,7 +178,13 @@ cf.find("gui")
 |cf.file_get_json_details() | Returns all the details of the given section in a dictionary |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true" height="400">
+<figcaption >
+    Folder Operations gif</figcaption>
+</figure>
+
+----
 
 * ## 28 functions on Excel operations:
 
@@ -169,7 +220,13 @@ cf.find("gui")
 | cf.excel_to_colored_html() | Converts given Excel to HTML preserving the Excel format and saves in same folder as .html |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true" height="400">
+<figcaption >
+    Excel Operations gif</figcaption>
+</figure>
+
+----
 
 * ## 3 functions on Keyboard operations:
 
@@ -180,7 +237,11 @@ cf.find("gui")
 | cf.key_write_enter() | Writes/Types the given text and press enter (by default) or tab key. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true" height="400">
+<figcaption >
+    Keyboard Operations gif</figcaption>
+</figure>
 
 ---
 * ## 5 functions on Screenscraping operations:
@@ -194,7 +255,11 @@ cf.find("gui")
 | cf.find_text_on_screen() | Clears previous search and finds the provided text on screen. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true" height="400">
+<figcaption >
+    Screenscraping Operations gif</figcaption>
+</figure>
 
 ---
 * ## 11 functions on Browser operations:
@@ -214,7 +279,11 @@ cf.find("gui")
 | cf.browser_mouse_hover_h() | Performs a Mouse Hover over the Given User Visible Text Element | 
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true" height="400">
+<figcaption >
+    Browser Operations gif</figcaption>
+</figure>
 
 ----
 * ## 4 functions on Alert Messages:
@@ -226,7 +295,8 @@ cf.find("gui")
 | cf.message_flash() | Specified msg will popup for a specified duration of time with OK button. |
 | cf.message_toast() | Function for displaying Windows 10 Toast Notifications. Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification. |
 
----
+----
+
 * ## 3 functions on String Operations: 
 
 | Function | Description |
@@ -236,7 +306,11 @@ cf.find("gui")
 | cf.string_extract_only_numbers() | Returns only numbers from given input string |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true" height="400">
+<figcaption >
+    String Operations gif</figcaption>
+</figure>
 
 ----
 * ## Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
@@ -260,27 +334,47 @@ cf.find("gui")
 | cf.create_batch_file() | Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler. |
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
+<figcaption >
+    Miscellaneous Functions gif</figcaption>
+</figure>
 
-# ClointFusion's function works in different modes:
-1) If you pass all the required parameters, function works silently. So, this is expert (Non-GUI) mode. This mode gives you more control over the function's parameters.
+<!-- # ClointFusion's function works in different modes: -->
+# ClointFusion's Semi Automatic Mode
 
-2) If you do not pass any parameter, GUI would pop-up asking you the required parameters. Next time, when you run the BOT, based upon your configuration, which you get to choose at the beginning of BOT run:
+1. If you pass all the required parameters, function works silently. So, this is expert (Non-GUI) mode. This mode gives you more control over the function's parameters.
+2. If you do not pass any parameter, GUI would pop-up asking you the required parameters. Next time, when you run the BOT, based upon your configuration, which you get to choose at the beginning of BOT run:
+    -  If `Semi-Automatic mode` is OFF, GUI would pop-up again, showing you the previous entries, allowing you to modify the parameters.
+    -  If `Semi-Automatic mode` in ON, BOT works silently taking your previous GUI entries.
+    - Toggle `Semi-Automatic mode` by using the following command
 
-        A) If Semi-Automatic mode is OFF, GUI would pop-up again, showing you the previous entries, allowing you to modify the parameters.
+    ```
+    cf.ON_semi_automatic_mode   # To turn ON semi automatic mode
+    cf.OFF_semi_automatic_mode  # To turn OFF semi automatic mode
+    ```
 
-        B) If Semi-Automatic mode in ON, BOT works silently taking your previous GUI entries.
+3. GUI Mode is for beginners. Anytime, if you are not getting how to use the function, just call an empty function (without parameters) and GUI would pop-up asking you for required parameters.
 
-    GUI Mode is for beginners. Anytime, if you are not getting how to use the function, just call an empty function (without parameters) and GUI would pop-up asking you for required parameters.
-    
-    <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true" height="400">    
 
+<br>    
+<figure>
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true" height="400">    
+<figcaption >
+Semi Automatic Mode</figcaption>
+</figure>
 <br>
 
 # Outlook Email BOT implemented using ClointFusion
 
 <br>
+<figure>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
+<figcaption >
+    Working of Outlook BOT</figcaption>
+</figure>
+
+<br>
 
 # We love your contribution
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..
@@ -289,13 +383,18 @@ Participate in our monthly online hackathons & weekly meetups. Click here for mo
 
 Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 
+<br>
 
 # Date &#10084;&#65039; with ClointFusion 
 This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
 
 # Aknowledgements
 
-<a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion thanks all its dependent packages for the great contribution, which has made ClointFusion possible !</a>
+ClointFusion thanks to all it's dependent packages for the great contribution, which made ClointFusion possible!
+
+Please find all the dependencies [here](https://openbase.com/python/ClointFusion/dependencies) 
+<!-- 
+<a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion thanks all its dependent packages for the great contribution, which has made ClointFusion possible !</a> -->
 
 # Maintainer: 
 Fharook Shaik, Intern@ClointFusion. Please reach him at: fharookshaik.5@gmail.com
