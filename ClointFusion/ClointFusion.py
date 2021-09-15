@@ -4574,7 +4574,7 @@ def cli_speed_test():
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     try:   
-        print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion")
+        print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion\n")
         try:   
             subprocess.call("python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)
         except:
