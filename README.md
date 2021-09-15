@@ -297,5 +297,8 @@ This an initiative for fast track entry into our growing workforce. For more det
 
 <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion thanks all its dependent packages for the great contribution, which has made ClointFusion possible !</a>
 
+# Maintainer: 
+Fharook Shaik, Intern@ClointFusion. Please reach him at: fharookshaik.5@gmail.com
+
 # Contact us: 
 Drop a mail to ClointFusion@cloint.com

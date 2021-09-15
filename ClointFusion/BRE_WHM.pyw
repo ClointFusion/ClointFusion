@@ -346,6 +346,13 @@ def _get_site_packages_path():
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
 
+def call_colab_launcher():
+    try:
+        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py"
+        os.system(cmd)
+    except Exception as ex :
+        print("Error in call_dost_client" + str(ex))
+
 def call_dost_client():
     try:
         cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.pyw"
@@ -372,8 +379,9 @@ def launch_cf_log_generator_gui_new():
             'About',
             lambda icon, item: webbrowser.open_new("https://sites.google.com/view/clointfusion-hackathon")),
         item(
-            'Colab',
-            lambda icon, item: webbrowser.open_new("https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb")),
+            'Colab Launcher',
+             lambda icon, item: call_colab_launcher()),           
+            # lambda icon, item: webbrowser.open_new("https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb")),
         item(
             'Dost Client',
             lambda icon, item: call_dost_client()),           
