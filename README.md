@@ -1,5 +1,5 @@
 <!-- Custom CSS -->
-<style>
+<!-- <style>
 figure img {
   display: block;
   margin-left: auto;
@@ -11,7 +11,7 @@ figcaption {
     padding: 2px;
     text-align: center;
 }
-</style>
+</style> -->
 
 <!-- Main Content Starts Here -->
 
@@ -99,7 +99,7 @@ cf.find("gui")
 | cf.gui_get_folder_path_from_user() | Generic function to accept folder path from user using GUI. Returns the folderpath value in string format. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
 <figcaption >
     GUI Functions gif</figcaption>
@@ -117,7 +117,7 @@ cf.find("gui")
 | cf.mouse_search_snip_return_coordinates_x_y() | Searches the given image on the screen and returns its center of X Y co-ordinates. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true" height="400">
 <figcaption >
     Mouse Operations gif</figcaption>
@@ -137,7 +137,7 @@ cf.find("gui")
 | cf.launch_any_exe_bat_application() | Launches any exe or batch file or excel file etc. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true" height="400">
 <figcaption >
     Window Operations gif</figcaption>
@@ -156,7 +156,7 @@ cf.find("gui")
 | cf.win_obj_get_text() | Read text from windows object element. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Windows_Object_Operation.gif?raw=true" height="400">
 <figcaption >
     Windows Objects gif</figcaption>
@@ -178,7 +178,7 @@ cf.find("gui")
 |cf.file_get_json_details() | Returns all the details of the given section in a dictionary |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true" height="400">
 <figcaption >
     Folder Operations gif</figcaption>
@@ -220,7 +220,7 @@ cf.find("gui")
 | cf.excel_to_colored_html() | Converts given Excel to HTML preserving the Excel format and saves in same folder as .html |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true" height="400">
 <figcaption >
     Excel Operations gif</figcaption>
@@ -237,7 +237,7 @@ cf.find("gui")
 | cf.key_write_enter() | Writes/Types the given text and press enter (by default) or tab key. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true" height="400">
 <figcaption >
     Keyboard Operations gif</figcaption>
@@ -255,7 +255,7 @@ cf.find("gui")
 | cf.find_text_on_screen() | Clears previous search and finds the provided text on screen. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true" height="400">
 <figcaption >
     Screenscraping Operations gif</figcaption>
@@ -279,7 +279,7 @@ cf.find("gui")
 | cf.browser_mouse_hover_h() | Performs a Mouse Hover over the Given User Visible Text Element | 
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true" height="400">
 <figcaption >
     Browser Operations gif</figcaption>
@@ -306,7 +306,7 @@ cf.find("gui")
 | cf.string_extract_only_numbers() | Returns only numbers from given input string |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true" height="400">
 <figcaption >
     String Operations gif</figcaption>
@@ -334,7 +334,7 @@ cf.find("gui")
 | cf.create_batch_file() | Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler. |
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true" height="400">    
 <figcaption >
     Miscellaneous Functions gif</figcaption>
@@ -358,7 +358,7 @@ cf.find("gui")
 
 
 <br>    
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true" height="400">    
 <figcaption >
 Semi Automatic Mode</figcaption>
@@ -368,7 +368,7 @@ Semi Automatic Mode</figcaption>
 # Outlook Email BOT implemented using ClointFusion
 
 <br>
-<figure>
+<figure style="text-align: center">
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
 <figcaption >
     Working of Outlook BOT</figcaption>
