@@ -14,7 +14,8 @@ from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
-from Bol import greet_user, bol_main
+from Bol import *
+# from Bol import greet_user, bol_main
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 
