@@ -160,7 +160,7 @@ def bol_main():
             speak("Have a nice day ! ")
             break
 
-        elif "blockly" in query:
+        elif "dost" in query:
             cf.browser_activate('http://dost.clointfusion.com')
 
         elif "close google chrome" in query:
