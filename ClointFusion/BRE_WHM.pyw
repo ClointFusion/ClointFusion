@@ -14,6 +14,8 @@ from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
+from Bol import greet_user, bol_main
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 
 try:
@@ -360,6 +362,13 @@ def call_dost_client():
     except Exception as ex :
         print("Error in call_dost_client" + str(ex))
 
+def call_bol():
+    try:
+        greet_user()
+        bol_main()
+    except Exception as ex:
+        print("Error in call_bol " + str(ex))
+
 def launch_cf_log_generator_gui_new():
     try:
         from pystray import Icon as icon, Menu as menu, MenuItem as item
@@ -380,8 +389,11 @@ def launch_cf_log_generator_gui_new():
             lambda icon, item: webbrowser.open_new("https://sites.google.com/view/clointfusion-hackathon")),
         item(
             'Colab Launcher',
-             lambda icon, item: call_colab_launcher()),           
+            lambda icon, item: call_colab_launcher()),           
             # lambda icon, item: webbrowser.open_new("https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb")),
+        item(
+            'Bol (Talk)',
+            lambda icon, item: call_bol()),
         item(
             'Dost Client',
             lambda icon, item: call_dost_client()),           

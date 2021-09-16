@@ -1,3 +1,7 @@
+34) ClointFusion version 0.1.38 released on 16-09-2021 18:30 PM
+    1) Added new feature Bol (Talk) 
+    2) Bug Fixes and Enhancements
+
 33) ClointFusion version 0.1.37 released on 12-09-2021 17:00 PM
     1) Basic Version of DOST Helper / Client Added as a Tray Menu
 
