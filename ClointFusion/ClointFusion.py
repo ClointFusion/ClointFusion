@@ -4808,23 +4808,18 @@ else:
 if c_version < s_version:
     try:
         bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
-        bol_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\Bol.py'
-        
         if os_name == windows_os:
             try:
                 _add_to_registry(bre_file_path)
             except:
                 elevate(show_console=False)
                 _add_to_registry(bre_file_path)
-
             if os_name == windows_os:
                 home = str(Path.home())
                 current_user = str(home.split("\\")[2])
                 shutil.copy2(bre_file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
-                shutil.copy2(bol_file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
             else:
                 print("This feature is currently available only for Windows OS")
-        
     except:
         pass
 
