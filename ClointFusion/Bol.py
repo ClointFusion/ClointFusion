@@ -36,23 +36,34 @@ except:
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
+r = sr.Recognizer()
+energy_threshold = [3000]
 
 def speak(audio):
     engine.say(audio)   
     engine.runAndWait()
 
 def command():
-    r = sr.Recognizer()
+    print("Listening...")
     while True:
         with sr.Microphone() as source:
-            print("Listening...")
+            r.dynamic_energy_threshold = True
+            if r.energy_threshold in energy_threshold or r.energy_threshold <= sorted(energy_threshold)[-1]:
+                r.energy_threshold = sorted(energy_threshold)[-1]
+            else:
+                energy_threshold.append(r.energy_threshold)
+            r.pause_threshold = 0.8
+            r.adjust_for_ambient_noise(source)
+
             audio=r.listen(source)
-            try:    
+            try:
                 query = r.recognize_google(audio)
                 print(f"You Said : {query}")
                 return query
                 break
-            except:
+            except sr.UnknownValueError:
+                pass
+            except sr.RequestError as e:
                 print("Try Again")
 
 def play_on_youtube():
@@ -66,11 +77,19 @@ def send_WA_MSG():
     speak("OK...")
     speak("Whats the message")
     msg = command().lower() ## takes user command 
-    speak("Got it, whom to send, please say mobile number without country code")
-    num = command().lower() ## takes user command 
-    speak("Sending message now, please wait a moment")
-
-    kit.sendwhatmsg_instantly(phone_no=f"+91{num}",message=str(msg),wait_time=25, tab_close=True, close_time=5)
+    if msg not in ["exit", "cancel", "stop"]:
+        speak("Got it, whom to send, please say mobile number without country code")
+    else:
+        speak("Sending message is cancelled.")
+        return
+    num = command().lower() ## takes user command
+    if num not in ["exit", "cancel", "stop"]:
+        speak("Sending message now, please wait a moment")
+        
+        kit.sendwhatmsg_instantly(phone_no=f"+91{num}",message=str(msg),wait_time=25, tab_close=True, close_time=5)
+    else:
+        speak("Sending message is cancelled.")
+        return
 
 def google_search():
     speak("OK...")
@@ -86,13 +105,37 @@ def greet_user():
     choices = ["Hey...", "Hi...", "Hello...", "Dear..."]
     greeting = random.choice(choices) + str(cf.user_name) + "..." + greeting + "..."
     speak(greeting + "How can i assist you ?")
-    queries = ["you can ask my name..","current time..","global news..","send whatsapp to someone","Send gmail..", "play youtube video...","search in google..."]
+    queries = ["my name..","current time..","global news..","send whatsapp to someone","Send gmail..", "play youtube video...","search in google..."]
     speak("You can ask..")
     choices=random.sample(queries,len(queries))
     speak(choices)
     speak('To quit, you can say exit...quit..bye..stop')
 
+def options():
+    queries = ["current time..","global news..","send whatsapp to someone","Send gmail..", "play youtube video...","search in google..."]
+    speak("Try saying..")
+    choices=random.sample(queries,len(queries))
+    speak(choices)
+    speak('To quit, you can say exit...quit..bye..stop')
+
+def trndnews(): 
+    url = "http://newsapi.org/v2/top-headlines?country=in&apiKey=59ff055b7c754a10a1f8afb4583ef1ab"
+    page = requests.get(url).json()
+    article = page["articles"]
+    results = [ar["title"] for ar in article]
+    for i in range(len(results)): 
+        print(i + 1, results[i])
+    speak("Here are the top trending news....!!")
+    speak("Do yo want me to read!!!")
+    reply = command().lower()
+    reply = str(reply)
+    if reply == "yes":
+        speak(results)
+    else:
+        speak('ok!!!!')
+
 def bol_main():
+    qurey_no = 5
 
     while True:
         query = command().lower() ## takes user command 
@@ -136,24 +179,6 @@ def bol_main():
 
         ### news
         elif 'news' in query:
-                def trndnews(): 
-                    url = "http://newsapi.org/v2/top-headlines?country=in&apiKey=59ff055b7c754a10a1f8afb4583ef1ab"
-                    page = requests.get(url).json() 
-                    article = page["articles"] 
-                    results = [] 
-                    for ar in article: 
-                        results.append(ar["title"]) 
-                    for i in range(len(results)): 
-                        print(i + 1, results[i]) 
-                    speak("here are the top trending news....!!")
-                    speak("Do yo want me to read!!!")
-                    reply = command().lower()
-                    reply = str(reply)
-                    if reply == "yes":
-                        speak(results)
-                    else:
-                        speak('ok!!!!')
-                        pass
                 trndnews() 
 
         elif any(x in query for x in ["bye","quit","stop","exit"]):
@@ -167,4 +192,7 @@ def bol_main():
             cf.browser_quit_h()
 
         else:
-            speak("I don't understand what you are saying")
+            qurey_no += 1
+            
+            if qurey_no % 6 == 1:
+                options()
