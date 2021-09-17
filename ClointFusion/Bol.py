@@ -16,7 +16,6 @@ try:
 except:
     sys_version = str(sys.version[0:6]).strip()
     
-    py_audio_file = ""
     if "3.7" in sys_version :
         cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp37-cp37m-win_amd64.whl?raw=true"
     elif "3.8" in sys_version :
@@ -70,17 +69,17 @@ def play_on_youtube():
     speak("OK...")
     speak("Which video ?")
     video_name = command().lower() ## takes user command 
-    speak("Opening YouTube now, please wait a moment")
+    speak("Opening YouTube now, please wait a moment...")
     kit.playonyt(video_name)
 
 def send_WA_MSG():
     speak("OK...")
-    speak("Whats the message")
+    speak("Whats the message ?")
     msg = command().lower() ## takes user command 
     if msg not in ["exit", "cancel", "stop"]:
         speak("Got it, whom to send, please say mobile number without country code")
     else:
-        speak("Sending message is cancelled.")
+        speak("Sending message is cancelled...")
         return
     num = command().lower() ## takes user command
     if num not in ["exit", "cancel", "stop"]:
@@ -88,14 +87,14 @@ def send_WA_MSG():
         
         kit.sendwhatmsg_instantly(phone_no=f"+91{num}",message=str(msg),wait_time=25, tab_close=True, close_time=5)
     else:
-        speak("Sending message is cancelled.")
+        speak("Sending message is cancelled...")
         return
 
 def google_search():
     speak("OK...")
-    speak("Whats to search")
+    speak("What to search ?")
     msg = command().lower() ## takes user command 
-    speak("Searching in Gooogle now, please wait a moment")
+    speak("Searching in Gooogle now, please wait a moment...")
 
     kit.search(msg)
 
@@ -104,19 +103,19 @@ def greet_user():
     greeting = "Good Morning...." if 5<=hour<12 else "Good Afternoon....." if hour<18 else "Good Evening...."
     choices = ["Hey...", "Hi...", "Hello...", "Dear..."]
     greeting = random.choice(choices) + str(cf.user_name) + "..." + greeting + "..."
-    speak(greeting + "How can i assist you ?")
+    speak(greeting + "How can i assist you ?...")
     queries = ["my name..","current time..","global news..","send whatsapp to someone","Send gmail..", "play youtube video...","search in google..."]
     speak("You can ask..")
     choices=random.sample(queries,len(queries))
     speak(choices)
-    speak('To quit, you can say exit...quit..bye..stop')
+    speak('To quit, you can say exit...quit..bye..stop...')
 
 def options():
-    queries = ["current time..","global news..","send whatsapp to someone","Send gmail..", "play youtube video...","search in google..."]
-    speak("Try saying..")
+    queries = ["current time..","global news..","send whatsapp to someone...","Send gmail..", "play youtube video...","search in google..."]
+    speak("Try saying...")
     choices=random.sample(queries,len(queries))
     speak(choices)
-    speak('To quit, you can say exit...quit..bye..stop')
+    speak('To quit, you can say exit...quit..bye..stop...')
 
 def trndnews(): 
     url = "http://newsapi.org/v2/top-headlines?country=in&apiKey=59ff055b7c754a10a1f8afb4583ef1ab"
@@ -154,28 +153,28 @@ def bol_main():
                 query = query.replace('who is',"")
                 speak(wikipedia.summary(query,2))
             except:
-                speak("Please use a complete word")
+                speak("Please use a complete word...")
 
         #Send WA MSG
         elif any(x in query for x in ["send whatsapp","whatsapp","whatsapp message"]): 
             try:
                 send_WA_MSG()
             except:
-                speak("Sorry, i am experiencing some issues, please try later")
+                speak("Sorry, i am experiencing some issues, please try later...")
 
         #Play YouTube Video
         elif any(x in query for x in ["youtube","play video","video song","youtube video"]): 
             try:
                 play_on_youtube()
             except:
-                speak("Sorry, i am experiencing some issues, please try later")
+                speak("Sorry, i am experiencing some issues, please try later...")
 
         #Search in Google
         elif any(x in query for x in ["google search","search in google"]): 
             try:
                 google_search()
             except:
-                speak("Sorry, i am experiencing some issues, please try later")
+                speak("Sorry, i am experiencing some issues, please try later...")
 
         ### news
         elif 'news' in query:

@@ -14,8 +14,7 @@ from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
-from Bol import *
-# from Bol import greet_user, bol_main
+from Bol import greet_user, bol_main
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 
@@ -30,11 +29,11 @@ linux_os = "linux"
 mac_os = "darwin"
 
 if os_name == windows_os:
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(os.getlogin())
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
 elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(os.getlogin())
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
 elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(os.getlogin())
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
 
 img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
 config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))

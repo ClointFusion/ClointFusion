@@ -90,11 +90,11 @@ temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 
 if os_name == windows_os:
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(os.getlogin())
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
 elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(os.getlogin())
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
 elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(os.getlogin())
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
 else:
     clointfusion_directory = temp_current_working_dir
 
@@ -4807,19 +4807,21 @@ else:
 
 if c_version < s_version:
     try:
-        file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
+        bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
+        bol_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\Bol.py'
         
         if os_name == windows_os:
             try:
-                _add_to_registry(file_path)
+                _add_to_registry(bre_file_path)
             except:
                 elevate(show_console=False)
-                _add_to_registry(file_path)
+                _add_to_registry(bre_file_path)
 
             if os_name == windows_os:
                 home = str(Path.home())
-                current_user = home.split("\\")[2]
-                shutil.copy2(file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
+                current_user = str(home.split("\\")[2])
+                shutil.copy2(bre_file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
+                shutil.copy2(bol_file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
             else:
                 print("This feature is currently available only for Windows OS")
         
