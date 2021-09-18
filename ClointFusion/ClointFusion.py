@@ -4079,7 +4079,6 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 print('Testing window based operations')
                 window_show_desktop()
                 
-                launch_any_exe_bat_application(test_run_excel_path)
                 window_minimize_windows('Quick_Self_Test_Excel')
                 window_activate_and_maximize_windows('Quick_Self_Test_Excel')
                 window_close_windows('Quick_Self_Test_Excel')
