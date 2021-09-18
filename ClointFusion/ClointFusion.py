@@ -4328,7 +4328,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
 
                 browser_mouse_click_h(element="RPA",double_click=True)
                 
-                browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/p[5]/a/img'))
+                browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[3]/a/img'))
                 
                 pause_program(10)
                 
