@@ -195,3 +195,6 @@ def bol_main():
             
             if qurey_no % 6 == 1:
                 options()
+
+greet_user()
+bol_main()

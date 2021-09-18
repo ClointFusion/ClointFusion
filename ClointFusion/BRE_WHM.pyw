@@ -14,7 +14,6 @@ from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
-from Bol import greet_user, bol_main
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 
@@ -364,8 +363,8 @@ def call_dost_client():
 
 def call_bol():
     try:
-        greet_user()
-        bol_main()
+        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Bol.py"
+        os.system(cmd)
     except Exception as ex:
         print("Error in call_bol " + str(ex))
 
