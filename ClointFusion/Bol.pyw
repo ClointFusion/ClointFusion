@@ -1,5 +1,6 @@
 import os
 import random
+import webbrowser
 import requests
 import datetime
 import sys
@@ -47,11 +48,12 @@ elif cf.os_name == "darwin":
     clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
 
 def speak(audio):
+    print(audio)
     engine.say(audio)   
     engine.runAndWait()
 
 def command():
-    print("Listening...")
+    print("\nListening...")
     # cf.message_pop_up("listening",1)
     while True:
         with sr.Microphone() as source:
@@ -235,6 +237,18 @@ def bol_main():
         elif "dost" in query:
             try:
                 cf.browser_activate('http://dost.clointfusion.com')
+            except:
+                pass
+
+        elif "open visual studio" in query:
+            try:
+                cf.launch_any_exe_bat_application("code")
+            except:
+                pass
+
+        elif "launch zoom meeting" in query:
+            try:
+                webbrowser.open_new_tab("https://us02web.zoom.us/j/85905538540?pwd=b0ZaV3c2bC9zK3I1QXNjYjJ3Q0tGdz09")
             except:
                 pass
 

@@ -373,7 +373,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.39)"
+    version = "(Version: 0.1.40)"
 
     hour = datetime.datetime.now().hour
 
@@ -4553,7 +4553,7 @@ def update_log_excel_file(message=""):
         print("Error in update_log_excel_file="+str(ex))
         return False
 
-def _add_to_registry(file_path):
+def _update_registry(file_path):
     """
     Add BRE_WHM to Registry for AutoRun
     """
@@ -4564,14 +4564,15 @@ def _add_to_registry(file_path):
         # key value is Software\Microsoft\Windows\CurrentVersion\Run
 
         key_value = "Software\Microsoft\Windows\CurrentVersion\Run"
-        
         open = reg.OpenKey(reg.HKEY_CURRENT_USER,key_value,0,reg.KEY_ALL_ACCESS)
-        
-        reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
-        
+
+        # key = reg.OpenKey(reg.HKEY_CURRENT_USER, key_value, 0, reg.KEY_ALL_ACCESS)        
+        # reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
+
+        reg.DeleteValue(open, 'ClointFusion')
         reg.CloseKey(open)
     except Exception as ex:
-        print("Error in _add_to_registry="+str(ex))
+        pass
 
 # --------- Self-Test Related Functions Ends ---------
 
@@ -4822,7 +4823,7 @@ else:
 
 #BOT Recommendation Engine Logic for Windows OS Only
 
-if c_version < s_version:
+# if c_version < s_version:
     try:
         if os_name == windows_os:        
             bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
@@ -4833,10 +4834,10 @@ if c_version < s_version:
             short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
 
             try:
-                _add_to_registry(short_cut_path)
+                _update_registry(short_cut_path)
             except:
                 elevate(show_console=False)
-                _add_to_registry(short_cut_path)
+                _update_registry(short_cut_path)
 
             _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
                 

@@ -1,3 +1,7 @@
+
+35) ClointFusion version 0.1.39 to 0.1.40 released on 18-09-2021 11:30 AM
+    1) Bug Fixes and Enhancements
+
 34) ClointFusion version 0.1.38 released on 16-09-2021 18:30 PM
     1) Added new feature Bol (Talk) 
     2) Bug Fixes and Enhancements
