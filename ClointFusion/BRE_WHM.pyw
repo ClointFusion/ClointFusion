@@ -14,13 +14,9 @@ from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
+import pyautogui as pg
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
-
-try:
-    import pyautogui as pg
-except:
-    print("Unable to import PyAutoGUI. WHM may not work properly")
 
 os_name = str(platform.system()).lower()
 windows_os = "windows"
@@ -363,7 +359,7 @@ def call_dost_client():
 
 def call_bol():
     try:
-        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Bol.py"
+        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Bol.pyw"
         os.system(cmd)
     except Exception as ex:
         print("Error in call_bol " + str(ex))

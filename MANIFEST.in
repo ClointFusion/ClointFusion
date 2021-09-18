@@ -9,6 +9,6 @@ include ClointFusion/*.pyd
 include ClointFusion/*.so
 include ClointFusion/Colab_Launcher.py
 include ClointFusion/BRE_WHM.pyw
-include ClointFusion/Bol.py
+include ClointFusion/Bol.pyw
 include LICENSE
 include ClointFusion/DOST_HELPER/*

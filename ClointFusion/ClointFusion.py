@@ -260,7 +260,7 @@ def _load_missing_python_packages_windows():
     """
     Installs Windows OS specific python packages
     """       
-    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes","xlwings","win10toast-click"] 
+    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes","xlwings","win10toast-click","winshell"] 
     try:
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
@@ -285,6 +285,20 @@ if os_name == windows_os:
 
     from unicodedata import name
     import pygetwindow as gw 
+
+def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
+    if os_name == windows_os:
+        try:    
+            import winshell
+            from win32com.client import Dispatch
+
+            shell = Dispatch('WScript.Shell')
+            shortcut = shell.CreateShortCut(short_cut_path) # Path to be saved (shortcut)
+            shortcut.Targetpath = target_file_path # The shortcut target file or folder
+            shortcut.WorkingDirectory = work_dir # The parent folder of your file
+            shortcut.save()
+        except Exception as ex:
+            print("Error in _create_short_cut" + str(ex))
 
 def _download_cloint_ico_png():    
     """
@@ -312,7 +326,11 @@ def _download_cloint_ico_png():
 
         if not os.path.exists(str(cf_splash_png_path)):
             urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Splash.png',str(cf_splash_png_path))
-            
+
+        #BOL related Audio files
+        if not os.path.exists(str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))):
+            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/applause.wav',(str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
+
     except Exception as ex:
         print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
 
@@ -4552,7 +4570,6 @@ def _add_to_registry(file_path):
         reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
         
         reg.CloseKey(open)
-        
     except Exception as ex:
         print("Error in _add_to_registry="+str(ex))
 
@@ -4807,21 +4824,26 @@ else:
 
 if c_version < s_version:
     try:
-        bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
-        if os_name == windows_os:
+        if os_name == windows_os:        
+            bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
+            bre_file_folder = f"{_get_site_packages_path()}" + '\ClointFusion'
+
+            current_user = str(str(Path.home()).split("\\")[2])
+
+            short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
+
             try:
-                _add_to_registry(bre_file_path)
+                _add_to_registry(short_cut_path)
             except:
                 elevate(show_console=False)
-                _add_to_registry(bre_file_path)
-            if os_name == windows_os:
-                home = str(Path.home())
-                current_user = str(home.split("\\")[2])
-                shutil.copy2(bre_file_path,r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user))
-            else:
-                print("This feature is currently available only for Windows OS")
-    except:
-        pass
+                _add_to_registry(short_cut_path)
+
+            _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
+                
+        else:
+            print("This feature is currently available only for Windows OS")
+    except Exception as ex:
+        print(str(ex))
 
 # ########################
 
