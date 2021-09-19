@@ -3704,10 +3704,6 @@ def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared
 # --------- Screenscraping Functions Ends ---------
 
 
-
-
-
-
 # --------- Schedule Functions ---------
 
 def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_mm_24_hr_frmt="11:00"):
