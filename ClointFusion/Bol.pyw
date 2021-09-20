@@ -337,6 +337,18 @@ def bol_main():
             choices=random.sample(choices,len(choices))
             speak(choices[0])            
 
+        elif any(x in query for x in ["shutdown my","tunr off"]):
+            try:
+                speak('Do you want to Shutdown ? Are you sure ?')
+                yes_no = command().lower() ## takes user command 
+                if yes_no in ["yes", "yah", "ok"]:
+                    speak("OK, Shutting down your machine")
+
+                    os.system('shutdown -s')
+                
+            except:
+                pass
+
         else:
             qurey_no += 1
             

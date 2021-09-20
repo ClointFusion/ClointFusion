@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 import os
-import setuptools
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.40',
+    version='0.1.41',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -1,6 +1,6 @@
 wheel >= 0.37.0
 PyAutoGUI >= 0.9.53
-PySimpleGUI >= 4.46.0
+PySimpleGUI >= 4.47.0
 clipboard >= 0.0.4
 emoji >= 1.4.2
 helium >= 3.0.7

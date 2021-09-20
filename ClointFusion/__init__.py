@@ -20,6 +20,7 @@ from loader import traceback
 from loader import logging
 from loader import user_name
 from loader import user_email
+from loader import webbrowser
 
 # ---------  Variables Imports | Current Count : 8
 from loader import batch_file_path
@@ -173,3 +174,7 @@ from loader import string_regex
 from loader import update_log_excel_file
 from loader import ON_semi_automatic_mode
 from loader import OFF_semi_automatic_mode
+
+# Voice Interface
+from loader import speak
+from loader import command
