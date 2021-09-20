@@ -48,7 +48,7 @@ elif cf.os_name == "linux":
 elif cf.os_name == "darwin":
     clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
 
-def speak(audio):
+def text_to_speech(audio):
     if type(audio) is list:
         print(' '.join(audio))
     else:
@@ -57,7 +57,7 @@ def speak(audio):
     engine.say(audio)   
     engine.runAndWait()
 
-def command():
+def speech_to_text():
     print("\nListening...")
     # cf.message_pop_up("listening",1)
     while True:
@@ -116,35 +116,35 @@ def _play_sound(music_file_path=""):
         print("Unable to play sound" + str(ex))
 
 def play_on_youtube():
-    speak("OK...")
-    speak("Which video ?")
-    video_name = command().lower() ## takes user command 
-    speak("Opening YouTube now, please wait a moment...")
+    text_to_speech("OK...")
+    text_to_speech("Which video ?")
+    video_name = speech_to_text().lower() ## takes user speech_to_text 
+    text_to_speech("Opening YouTube now, please wait a moment...")
     kit.playonyt(video_name)
 
 def send_WA_MSG():
-    speak("OK...")
-    speak("Whats the message ?")
-    msg = command().lower() ## takes user command 
+    text_to_speech("OK...")
+    text_to_speech("Whats the message ?")
+    msg = speech_to_text().lower() ## takes user speech_to_text 
     if msg not in ["exit", "cancel", "stop"]:
-        speak("Got it, whom to send, please say mobile number without country code")
+        text_to_speech("Got it, whom to send, please say mobile number without country code")
     else:
-        speak("Sending message is cancelled...")
+        text_to_speech("Sending message is cancelled...")
         return
-    num = command().lower() ## takes user command
+    num = speech_to_text().lower() ## takes user speech_to_text
     if num not in ["exit", "cancel", "stop"]:
-        speak("Sending message now, please wait a moment")
+        text_to_speech("Sending message now, please wait a moment")
         
         kit.sendwhatmsg_instantly(phone_no=f"+91{num}",message=str(msg),wait_time=25, tab_close=True, close_time=5)
     else:
-        speak("Sending message is cancelled...")
+        text_to_speech("Sending message is cancelled...")
         return
 
 def google_search():
-    speak("OK...")
-    speak("What to search ?")
-    msg = command().lower() ## takes user command 
-    speak("Searching in Gooogle now, please wait a moment...")
+    text_to_speech("OK...")
+    text_to_speech("What to search ?")
+    msg = speech_to_text().lower() ## takes user speech_to_text 
+    text_to_speech("Searching in Gooogle now, please wait a moment...")
 
     kit.search(msg)
 
@@ -153,22 +153,22 @@ def greet_user():
     greeting = " Good Morning ; " if 5<=hour<12 else " Good Afternoon ; " if hour<18 else " Good Evening ;"
     choices = ["Hey ! ", "Hi ! ", "Hello ! ", "Dear ! "]
     greeting = random.choice(choices) + str(cf.user_name) + ';' + greeting
-    speak(greeting + " How can i assist you ?!")
+    text_to_speech(greeting + " How can i assist you ?!")
     queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,']
-    speak("You can ask..")
+    text_to_speech("You can ask..")
     choices=random.sample(queries,len(queries))
-    speak(choices)
-    speak('To quit, you can say ; bye ; quit ; exit.')
+    text_to_speech(choices)
+    text_to_speech('To quit, you can say ; bye ; quit ; exit.')
 
 def error_try_later():
-    speak("Sorry, i am experiencing some issues, please try later...")
+    text_to_speech("Sorry, i am experiencing some issues, please try later...")
 
 def options():
     queries = ["my name,","current time,","global news,","send whatsapp to someone,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,']
-    speak("Try saying...")
+    text_to_speech("Try saying...")
     choices=random.sample(queries,len(queries))
-    speak(choices)
-    speak('To quit, you can say ; bye ; quit ; exit.')
+    text_to_speech(choices)
+    text_to_speech('To quit, you can say ; bye ; quit ; exit.')
 
 def trndnews(): 
     url = "http://newsapi.org/v2/top-headlines?country=in&apiKey=59ff055b7c754a10a1f8afb4583ef1ab"
@@ -177,37 +177,37 @@ def trndnews():
     results = [ar["title"] for ar in article]
     for i in range(len(results)): 
         print(i + 1, results[i])
-    speak("Here are the top trending news....!!")
-    speak("Do yo want me to read!!!")
-    reply = command().lower()
+    text_to_speech("Here are the top trending news....!!")
+    text_to_speech("Do yo want me to read!!!")
+    reply = speech_to_text().lower()
     reply = str(reply)
     if reply == "yes":
-        speak(results)
+        text_to_speech(results)
     else:
-        speak('ok!!!!')
+        text_to_speech('ok!!!!')
 
 def bol_main():
     qurey_no = 5
 
     while True:
-        query = command().lower() ## takes user command 
+        query = speech_to_text().lower() ## takes user speech_to_text 
         print("Listening...")
         
         if 'name' in query:
-            speak("I am ClointFusion's BOL....")
+            text_to_speech("I am ClointFusion's BOL....")
 
         ### time
         elif 'time' in query:
             time = datetime.datetime.now().strftime('%I:%M %p')
-            speak("It's " + str(time))
+            text_to_speech("It's " + str(time))
         
         ### celebrity
         elif 'who is' in query:
             try:
                 query = query.replace('who is',"")
-                speak(wikipedia.summary(query,2))
+                text_to_speech(wikipedia.summary(query,2))
             except:
-                speak("Please use a complete word...")
+                text_to_speech("Please use a complete word...")
 
         #Send WA MSG
         elif any(x in query for x in ["send whatsapp","whatsapp","whatsapp message"]): 
@@ -257,7 +257,7 @@ def bol_main():
             _play_sound((str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
 
         elif any(x in query for x in ["bye","quit","stop","exit"]):
-            speak("Have a nice day ! ")
+            text_to_speech("Have a nice day ! ")
             break
 
         elif "dost" in query:
@@ -274,8 +274,8 @@ def bol_main():
 
         elif any(x in query for x in ["open application","launch application","launch app","open app"]):
             try:
-                speak('OK, which application to open?')
-                app_name = command().lower() ## takes user command 
+                text_to_speech('OK, which application to open?')
+                app_name = speech_to_text().lower() ## takes user speech_to_text 
                 cf.launch_any_exe_bat_application(app_name)
             except:
                 pass
@@ -283,8 +283,8 @@ def bol_main():
         #Switch to window
         elif any(x in query for x in ["switch window","toggle window","activate window","maximize window"]): 
             try:
-                speak('OK, whats the window name?')
-                windw_name = command().lower() ## takes user command 
+                text_to_speech('OK, whats the window name?')
+                windw_name = speech_to_text().lower() ## takes user speech_to_text 
                 cf.window_activate_and_maximize_windows(windw_name)
             except:
                 error_try_later()
@@ -292,8 +292,8 @@ def bol_main():
         #Search in window / browser
         elif any(x in query for x in ["find on screen","search on screen", "locate on screen"]): 
             try:
-                speak('OK, what to find ?')
-                query = command().lower() ## takes user command 
+                text_to_speech('OK, what to find ?')
+                query = speech_to_text().lower() ## takes user speech_to_text 
                 cf.find_text_on_screen(searchText=query,delay=0.1, occurance=1,isSearchToBeCleared=False)
             except:
                 error_try_later()
@@ -306,16 +306,16 @@ def bol_main():
 
         elif any(x in query for x in ["minimize window","minimize application"]):
             try:
-                speak('OK, which window to minimize?')
-                windw_name = command().lower() ## takes user command 
+                text_to_speech('OK, which window to minimize?')
+                windw_name = speech_to_text().lower() ## takes user speech_to_text 
                 cf.window_minimize_windows(windw_name)
             except:
                 pass 
 
         elif any(x in query for x in ["close application","close window"]):
             try:
-                speak('OK, which application to close?')
-                app_name = command().lower() ## takes user command 
+                text_to_speech('OK, which application to close?')
+                app_name = speech_to_text().lower() ## takes user speech_to_text 
                 cf.window_close_windows(app_name)
             except:
                 pass
@@ -335,14 +335,14 @@ def bol_main():
         elif any(x in query for x in ["thanks","thank you"]):
             choices = ["You're welcome","You're very welcome.","That's all right.","No problem.","No worries.","Don't mention it.","It's my pleasure.","My pleasure.","Glad to help.","Sure!",""]
             choices=random.sample(choices,len(choices))
-            speak(choices[0])            
+            text_to_speech(choices[0])            
 
         elif any(x in query for x in ["shutdown my","tunr off"]):
             try:
-                speak('Do you want to Shutdown ? Are you sure ?')
-                yes_no = command().lower() ## takes user command 
+                text_to_speech('Do you want to Shutdown ? Are you sure ?')
+                yes_no = speech_to_text().lower() ## takes user speech_to_text 
                 if yes_no in ["yes", "yah", "ok"]:
-                    speak("OK, Shutting down your machine")
+                    text_to_speech("OK, Shutting down your machine")
 
                     os.system('shutdown -s')
                 

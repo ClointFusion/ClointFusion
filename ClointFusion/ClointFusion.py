@@ -4818,7 +4818,7 @@ else:
 
 #BOT Recommendation Engine Logic for Windows OS Only
 
-# if c_version < s_version:
+if c_version < s_version:
     try:
         if os_name == windows_os:        
             bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'

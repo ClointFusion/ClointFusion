@@ -176,5 +176,5 @@ from loader import ON_semi_automatic_mode
 from loader import OFF_semi_automatic_mode
 
 # Voice Interface
-from loader import speak
-from loader import command
+from loader import text_to_speech
+from loader import speech_to_text
