@@ -211,7 +211,7 @@ def on_click(x, y, button, pressed):
             if str(windw).strip() == "" or str(windw).strip() == "Program Manager":
                 windw = "Desktop"
 
-            img=pg.screenshot()
+            # img=pg.screenshot()
 
                 #GRB color below cursor 
             try:
@@ -220,18 +220,20 @@ def on_click(x, y, button, pressed):
                 rgb_pixels = "N/A"
 
                 #snip image
-            try:
-                img=img.crop((x-40,y-40,x+40,y+40))
-            except:
-                img=img.crop((x-30,y-30,x+30,y+30))
+            # try:
+            #     img=img.crop((x-40,y-40,x+40,y+40))
+            # except:
+            #     img=img.crop((x-30,y-30,x+30,y+30))
 
-            outputStr = ''.join(e for e in windw if e.isalnum())
-            snip_save_path = str(img_folder_path) + "\\" + str(COUNTER) + "-" + str(outputStr) + "-" + str(x) + "_" + str(y) + ".PNG"
+            # outputStr = ''.join(e for e in windw if e.isalnum())
+            # snip_save_path = str(img_folder_path) + "\\" + str(COUNTER) + "-" + str(outputStr) + "-" + str(x) + "_" + str(y) + ".PNG"
             
-            try:
-                img.save(snip_save_path)
-            except:
-                pass
+            snip_save_path = ""
+
+            # try:
+            #     # img.save(snip_save_path)
+            # except:
+            #     pass
 
             #capture mini-screenshot
             # screenshot_save_path = str(img_folder_path) + str(COUNTER) + "-" + str(windw) + "-" + str(x) + "_" + str(y) + "_SS.png"
