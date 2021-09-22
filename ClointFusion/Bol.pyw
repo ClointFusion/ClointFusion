@@ -12,6 +12,7 @@ import pywhatkit as kit
 import ClointFusion as cf
 from pathlib import Path
 import subprocess
+from PIL import Image
 
 #Install pyaudio
 try:
@@ -56,6 +57,13 @@ def text_to_speech(audio):
 
     engine.say(audio)   
     engine.runAndWait()
+
+def error_try_later():
+    text_to_speech("Sorry, i am experiencing some issues, please try later...")
+
+def shuffle_return_one_option(lst_options=[]):
+    random.shuffle(lst_options)
+    return str(lst_options[0])
 
 def speech_to_text():
     print("\nListening...")
@@ -150,25 +158,32 @@ def google_search():
 
 def greet_user():
     hour = datetime.datetime.now().hour
-    greeting = " Good Morning ; " if 5<=hour<12 else " Good Afternoon ; " if hour<18 else " Good Evening ;"
+    greeting = " Good Morning ! " if 5<=hour<12 else " Good Afternoon !! " if hour<18 else " Good Evening !"
     choices = ["Hey ! ", "Hi ! ", "Hello ! ", "Dear ! "]
-    greeting = random.choice(choices) + str(cf.user_name) + ';' + greeting
+    greeting = random.choice(choices) + str(cf.user_name) + '!!' + greeting
     text_to_speech(greeting + " How can i assist you ?!")
-    queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,']
-    text_to_speech("You can ask..")
-    choices=random.sample(queries,len(queries))
-    text_to_speech(choices)
-    text_to_speech('To quit, you can say ; bye ; quit ; exit.')
 
-def error_try_later():
-    text_to_speech("Sorry, i am experiencing some issues, please try later...")
+    queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,']
+    text_to_speech("Try saying...")
+    random.shuffle(queries)
+    choices=queries[1:4]
+
+    text_to_speech(choices)
+    quit_options=['bye','quit','exit']
+    random.shuffle(quit_options)
+    text_to_speech('To quit, just say {}'.format(quit_options[0]))
 
 def options():
-    queries = ["my name,","current time,","global news,","send whatsapp to someone,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,']
+    queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,']
+    
     text_to_speech("Try saying...")
-    choices=random.sample(queries,len(queries))
+    random.shuffle(queries)
+    choices=queries[1:3]
     text_to_speech(choices)
-    text_to_speech('To quit, you can say ; bye ; quit ; exit.')
+
+    quit_options=['bye','quit','exit']
+    random.shuffle(quit_options)
+    text_to_speech('To quit, just say {}'.format(quit_options[0]))
 
 def trndnews(): 
     url = "http://newsapi.org/v2/top-headlines?country=in&apiKey=59ff055b7c754a10a1f8afb4583ef1ab"
@@ -186,8 +201,25 @@ def trndnews():
     else:
         text_to_speech('ok!!!!')
 
+def capture_photo(ocr=False):
+    try:
+        subprocess.run('start microsoft.windows.camera:', shell=True)
+
+        if ocr:
+            time.sleep(4)
+        else:
+            time.sleep(1)
+
+        img=cf.pg.screenshot()
+        time.sleep(1)
+        
+        img.save(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))                    
+        subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
+    except Exception as ex:
+        print("Error in capture_photo " + str(ex))
+
 def bol_main():
-    qurey_no = 5
+    query_num = 5
 
     while True:
         query = speech_to_text().lower() ## takes user speech_to_text 
@@ -332,12 +364,54 @@ def bol_main():
             except:
                 pass
 
+        elif any(x in query for x in ["take pic","take selfie","take a pic","take a selfie"]):
+            try:
+                smile_say=["OK, Smile Please !","OK, Please look at the Camera !","OK, Say Cheese !","OK, Sit up straight !"]
+
+                text_to_speech(shuffle_return_one_option(smile_say))
+
+                capture_photo()
+                text_to_speech("Thanks, I saved your photo. Do you want me to open ?")
+                yes_no = speech_to_text().lower() ## takes user speech_to_text 
+                if yes_no in ["yes", "yah", "ok"]:
+                    cf.launch_any_exe_bat_application(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))
+                else:
+                    pass
+            except:
+                error_try_later()
+
+        elif 'ocr' in query:
+            try:
+                ocr_say=["OK, Let me scan !","OK, Going to scan now","Please show me the image"]
+
+                text_to_speech(shuffle_return_one_option(ocr_say))
+
+                capture_photo(ocr=True)
+
+                ocr_img_path = Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG"))
+
+                imageObject = Image.open(ocr_img_path)
+
+                corrected_image = imageObject.transpose(Image.FLIP_LEFT_RIGHT)
+
+                corrected_image.save(ocr_img_path)
+
+                text_to_speech(shuffle_return_one_option(["OK, performing OCR now","Give me a moment","abracadabra","Hang on"]))
+
+                ocr_result = cf.ocr_now(ocr_img_path)
+                print(ocr_result)
+                text_to_speech(ocr_result)
+
+            except Exception as ex:
+                print("Error in OCR " + str(ex))
+                error_try_later()
+
         elif any(x in query for x in ["thanks","thank you"]):
             choices = ["You're welcome","You're very welcome.","That's all right.","No problem.","No worries.","Don't mention it.","It's my pleasure.","My pleasure.","Glad to help.","Sure!",""]
-            choices=random.sample(choices,len(choices))
-            text_to_speech(choices[0])            
+            
+            text_to_speech(shuffle_return_one_option(choices))            
 
-        elif any(x in query for x in ["shutdown my","tunr off"]):
+        elif any(x in query for x in ["shutdown my","turn off","switch off"]):
             try:
                 text_to_speech('Do you want to Shutdown ? Are you sure ?')
                 yes_no = speech_to_text().lower() ## takes user speech_to_text 
@@ -347,12 +421,12 @@ def bol_main():
                     os.system('shutdown -s')
                 
             except:
-                pass
+                error_try_later()
 
         else:
-            qurey_no += 1
+            query_num += 1
             
-            if qurey_no % 6 == 1:
+            if query_num % 6 == 1:
                 options()
 
 greet_user()
