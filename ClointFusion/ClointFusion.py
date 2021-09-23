@@ -63,11 +63,22 @@ import pyinspect as pi
 from elevate import elevate
 from rich import pretty
 from rich.console import Console
+import random
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
+
+#Bol Related
+import speech_recognition as sr
+import pyttsx3
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+engine.setProperty('voice', voices[voice_male_female].id)
+r = sr.Recognizer()
+energy_threshold = [3000]
 
 # 2. All global variables
 os_name = str(platform.system()).lower()
@@ -254,6 +265,28 @@ def ON_semi_automatic_mode():
 
 
 # ---------  Private Functions ---------
+def _install_pyaudio_windows():
+    #Install pyaudio
+    try:
+        import pyaudio
+    except:
+        sys_version = str(sys.version[0:6]).strip()
+        
+        if "3.7" in sys_version :
+            cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp37-cp37m-win_amd64.whl?raw=true"
+        elif "3.8" in sys_version :
+            cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp38-cp38-win_amd64.whl?raw=true"
+        elif "3.9" in sys_version :
+            cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp39-cp39-win_amd64.whl?raw=true"
+
+        time.sleep(5)
+
+        try:
+            os.system("pip install " + cmd)
+        except:
+            print("Please install appropriate driver from : https://github.com/ClointFusion/Image_ICONS_GIFs/tree/main/Wheels")
+
+        import pyaudio
 
 #Windows OS specific packages
 def _load_missing_python_packages_windows():
@@ -282,6 +315,7 @@ def _load_missing_python_packages_windows():
 
 if os_name == windows_os:
     _load_missing_python_packages_windows()
+    _install_pyaudio_windows()
 
     from unicodedata import name
     import pygetwindow as gw 
@@ -373,7 +407,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.41)"
+    version = "(Version: 0.1.42)"
 
     hour = datetime.datetime.now().hour
 
@@ -3934,6 +3968,48 @@ def clear_screen():
       os.system(command)
     except:
         pass
+
+def text_to_speech(audio):
+    """
+    Text to Speech using Google's Generic API
+    """
+    if type(audio) is list:
+        print(' '.join(audio))
+    else:
+        print(str(audio))
+
+    engine.say(audio)   
+    engine.runAndWait()
+
+def speech_to_text():
+    """
+    Speech to Text 
+    """
+    while True:
+        with sr.Microphone() as source:
+            r.dynamic_energy_threshold = True
+            if r.energy_threshold in energy_threshold or r.energy_threshold <= sorted(energy_threshold)[-1]:
+                r.energy_threshold = sorted(energy_threshold)[-1]
+            else:
+                energy_threshold.append(r.energy_threshold)
+
+            r.pause_threshold = 0.6
+
+            r.adjust_for_ambient_noise(source)
+
+            audio=r.listen(source)
+            try:
+                query = r.recognize_google(audio)
+                print(f"You Said : {query}")
+                
+                clear_screen()
+                print("ClointFusion Bol is here to help you")
+                return query
+                break
+            except sr.UnknownValueError:
+                pass
+            except sr.RequestError as e:
+                print("Try Again")    
 
 # --------- Utility Functions Ends ---------
 
