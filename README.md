@@ -87,7 +87,7 @@ cf.find("gui")
 
 ----
 
-* ## 4 functions on Mouse operations:
+* ## 4 functions on Mouse Operations:
 
 | Function | Description |
 | -------- | ----------- |
@@ -101,7 +101,7 @@ cf.find("gui")
 
 ----
 
-* ## 6 functions on Window operations (works only in Windows OS):
+* ## 6 functions on Window Operations (works only in Windows OS):
 
 | Function | Description |
 | -------- | ----------- |
@@ -132,7 +132,7 @@ cf.find("gui")
 
 ----
 
-* ## 8 functions on Folder operations:
+* ## 8 functions on Folder Operations:
 
 | Function | Description |
 | -------- | ----------- |
@@ -150,7 +150,7 @@ cf.find("gui")
 
 ----
 
-* ## 28 functions on Excel operations:
+* ## 28 functions on Excel Operations:
 
 | Function | Description |
 | -------- | ----------- |
@@ -188,7 +188,7 @@ cf.find("gui")
 
 ----
 
-* ## 3 functions on Keyboard operations:
+* ## 3 functions on Keyboard Operations:
 
 | Function | Description |
 | -------- | ----------- |
@@ -201,7 +201,7 @@ cf.find("gui")
 
 ----
 
-* ## 5 functions on Screenscraping operations:
+* ## 5 functions on Screenscraping Operations:
 
 | Function | Description |
 | -------- | ----------- |
@@ -216,7 +216,7 @@ cf.find("gui")
 
 ----
 
-* ## 11 functions on Browser operations:
+* ## 11 functions on Browser Operations:
 
 | Function | Description |
 | -------- | ----------- |
