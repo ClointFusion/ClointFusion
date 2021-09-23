@@ -44,6 +44,10 @@ voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[2].id)
 r = sr.Recognizer()
 energy_threshold = [3000]
+console = Console()
+
+queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,']
+latest_queries = ['launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,']
 
 if cf.os_name == "windows":
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
@@ -177,7 +181,6 @@ def welcome(nth):
     else:
         pass
     
-
 def suggest(suggestions):
     queries = suggestions
     text_to_speech("Try saying...")
@@ -199,7 +202,6 @@ def help():
 
 def options(total=5, latest=3):
     remaining = [q for q in queries if q not in latest_queries]
-
     custom_list = []
     latest_done = False
     try :
