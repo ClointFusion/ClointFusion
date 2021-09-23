@@ -360,7 +360,7 @@ def call_colab_launcher():
 
 def call_dost_client():
     try:
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_HELPER\dost_main.pyw"'
+        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
         # cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.pyw"
         os.system(cmd)
     except Exception as ex :
