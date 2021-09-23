@@ -41,7 +41,8 @@ except:
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[2].id)
+voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+engine.setProperty('voice', voices[voice_male_female].id)
 r = sr.Recognizer()
 energy_threshold = [3000]
 console = Console()
@@ -169,7 +170,7 @@ def welcome(nth):
     hour = datetime.datetime.now().hour
     greeting = " Good Morning ! " if 5<=hour<12 else " Good Afternoon !! " if hour<18 else " Good Evening !"
     choices = ["Hey ! ", "Hi ! ", "Hello ! ", "Dear ! "]
-    greeting = random.choice(choices) + str(cf.user_name) + '!!' + greeting
+    greeting = random.choice(choices) + str(cf.user_name) + ' !!' + greeting
     text_to_speech(greeting + " How can i assist you ?!")
     
     if nth == 1:
@@ -322,7 +323,8 @@ def bol_main():
                 _play_sound((str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
 
             elif any(x in query for x in ["bye","quit","stop","exit"]):
-                text_to_speech("Have a nice day ! ")
+                exit_say_choices=["Have a good day! ","Have an awesome day!","I hope your day is great!","Today will be the best!","Have a splendid day!","Have a nice day!","Have a pleasant day!"]
+                text_to_speech(shuffle_return_one_option(exit_say_choices))
                 break
 
             elif "dost" in query:
