@@ -347,21 +347,29 @@ def _get_site_packages_path():
 
 def call_colab_launcher():
     try:
-        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py"
+        # Template
+        # cmd = f'python "{path}"'
+        
+        # Earlier used command
+        # cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py"
+
+        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"'
         os.system(cmd)
     except Exception as ex :
         print("Error in call_dost_client" + str(ex))
 
 def call_dost_client():
     try:
-        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.pyw"
+        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
+        # cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\DOST_HELPER\dost_main.pyw"
         os.system(cmd)
     except Exception as ex :
         print("Error in call_dost_client" + str(ex))
 
 def call_bol():
     try:
-        cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Bol.pyw"
+        # cmd = "python " + f'{_get_site_packages_path()}' + "\ClointFusion\Bol.pyw"
+        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
         print("Error in call_bol " + str(ex))
