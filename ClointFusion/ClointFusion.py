@@ -407,7 +407,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.42)"
+    version = "(Version: 0.1.43)"
 
     hour = datetime.datetime.now().hour
 
