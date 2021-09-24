@@ -1,383 +1,459 @@
-Welcome to <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.png" height="30"> , Made in India with &#10084;&#65039;
-==============================================================================================================================================================
+Welcome to  ClointFusion, Made in India with ❤️
+----------------------------------
 
-<img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/CCE.PNG">
-========================================================================================
-
-Description:
-============
+Description
+===========
 
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
 
 What is ClointFusion ?
 ======================
 
-ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man’s RPA using AI. 
+ClointFusion is a company registered at Vadodara, Gujarat, India.
+ClointFusion is our home-grown Python based RPA platform for Software
+BOT development. We are working towards Common Man's RPA using AI.
 
-Welcome to ClointFusion, Made in India with &#10084;&#65039; 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|PyPI| |PyPI - License| |PyPI - Status| |ClointFusion| |PyPI -
+Downloads| |Libraries.io SourceRank| |PyPI - Format| |GitHub
+contributors| |GitHub last commit|
 
-![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status) ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
+|GitHub Repo stars| |Twitter URL| |YouTube Channel Subscribers| |Twitter
+Follow|
 
-![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) ![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
+Build BOT using DOST : Blockly based BOT Builder : https://dost.clointfusion.com
+-----------------------------------------------
 
-Test Drive ClointFusion on Google Colabs
-========================================
+Test Drive ClointFusion on Google Colabs: https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb
+------------------------------------------
 
-<a href='https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb' target="_blank"><img src='https://colab.research.google.com/assets/colab-badge.svg' alt="Open In Colab\"/></a>
-================================================================================================================================================================================================================================
+    Click here for Release Notes : https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt
 
 Installation on your local computer
 ===================================
 
 ClointFusion is now supported in Windows / Ubuntu / macOS !
-===========================================================
+-----------------------------------------------------------
 
-1. Please install Python 3.8.5 with 64 bit: Python 3.8.5 64 Bit
+#. Please install Python 3.9.7 with 64 bit: Python 3.9.7 64 Bit. Windows
+   users may refer to these steps \| Install ClointFusion in Windows
+   Operating System: https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae
 
-2. It is recommended to run ClointFusion in a Virtual Environment.
-   Please refer these steps to create one, as per your OS: Creating a
+#. | It is recommended to run ClointFusion in a Virtual Environment.
+   | Please refer these steps to create one, as per your OS: Creating a
    virtual environment in Windows / Mac / Ubuntu
 
-3. Install ClointFusion by executing this package in command promt (with
+#. Install ClointFusion by executing this package in command promt (with
    Admin rights):
 
-pip install --upgrade ClointFusion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
 
-4. Open a new file in your favorite Python IDE and type:
+    pip install -U ClointFusion
 
-import ClointFusion as cf
-~~~~~~~~~~~~~~~~~~~~~~~~~
+#. Open a new file in your favorite Python IDE and type:
 
-PS: Ubuntu users: May need to install some additional packages: 
-1) sudo apt-get install python3-tk python3-dev
-2) sudo apt-get install -y fonts-symbola
-3) sudo apt-get install scrot 
-4) sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
-5) sudo apt-get install libgirepository1.0-dev
-6) sudo apt-get install python3-apt
-7) sudo apt-get install  python3-xlib
+::
 
-Now access more than 130 functions (hit ctrl+space in your IDE)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    import ClointFusion as cf
+
+***PS: ``Ubuntu`` users may need to install some additional packages:***
+
+::
+
+    sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib
+
+ClointFusion First Run Setup:
+=============================
+
+| When importing ClointFusion for the first time, you'd likely to be
+prompted with ``ClointFusion Automated Selftest``, a tool designes and
+developed to check the compatibility of ClointFusion with your PC
+settings & configurations. On a successful event, you'll recieve an
+email with self-test report.
+| 
+
+**Now access more than 100 functions (hit ctrl+space in your IDE)**
+-------------------------------------------------------------------
+
+You can find and inspect all of ClointFusion's functions using only one
+function i.e., ``find()``. Just pass the partial name of the function.
+
+::
+
+    cf.find("sort")
+    cf.find("gui")
 
 -  6 gui functions, to take any input from user:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.gui\_get\_any\_file\_from\_user() : Generic function to accept
-   file path from user using GUI. Returns the filepath value in string
-   format.Default allows all files.
-
-   cf.gui\_get\_consent\_from\_user() : Generic function to get consent
-   from user using GUI. Returns the string 'yes' or 'no'
-
-   cf.gui\_get\_dropdownlist\_values\_from\_user() : Generic function to
-   accept one of the drop-down value from user using GUI. Returns all
-   chosen values in list format.
-
-   cf.gui\_get\_excel\_sheet\_header\_from\_user() : Generic function to
-   accept excel path, sheet name and header from user using GUI. Returns
-   all these values in disctionary format.
-
-   cf.gui\_get\_folder\_path\_from\_user() : Generic function to accept
-   folder path from user using GUI. Returns the folderpath value in
-   string format.
-
-   cf.gui\_get\_any\_input\_from\_user() : Generic function to accept
-   any input (text / numeric) from user using GUI. Returns the value in
-   string format.
-
--  8 functions on Mouse operations:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.mouse\_click() : Clicks at the given X Y Co-ordinates on the
-   screen using ingle / double / tripple click(s). Optionally copies
-   selected data to clipboard (works for double / triple clicks)
-
-   cf.mouse\_move() : Moves the cursor to the given X Y Co-ordinates
-
-   cf.mouse\_get\_color\_by\_position() : Gets the color by X Y
-   co-ordinates of the screen
-
-   cf.mouse\_drag\_from\_to() : Clicks and drags from X1 Y1 co-ordinates
-   to X2 Y2 Co-ordinates on the screen
-
-   cf.mouse\_search\_snip\_return\_coordinates\_x\_y() : Searches the
-   given image on the screen and returns its center of X Y co-ordinates.
-
-   cf.mouse\_search\_snips\_return\_coordinates\_x\_y() : Searches the
-   given set of images on the screen and returns its center of X Y
-   co-ordinates of FIRST OCCURANCE
-
-   cf.mouse\_search\_snip\_return\_coordinates\_box() : Searches the
-   given image on the screen and returns the 4 bounds co-ordinates
-   (x,y,w,h)
-
-   cf.mouse\_find\_highlight\_click() : Searches the given text on the
-   screen, highlights and clicks it
-
--  5 functions on Window operations (works only in Windows OS):
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.window\_show\_desktop() : Minimizes all the applications and shows
-   Desktop.
-
-   cf.window\_get\_all\_opened\_titles\_windows() : Gives the title of
-   all the existing (open) windows.
-
-   cf.window\_activate\_and\_maximize\_windows() : Activates and
-   maximizes the desired window.
-
-   cf.window\_minimize\_windows() : Activates and minimizes the desired
-   window.
-
-   cf.window\_close\_windows() : Close the desired window.
-
--  6 functions on Folder operations:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.folder\_read\_text\_file() : Reads from a given text file and
-   returns entire contents as a single list
-
-   cf.folder\_write\_text\_file() : Writes given contents to a text file
-
-   cf.folder\_create() : while making leaf directory if any
-   intermediate-level directory is missing, folder\_create() method will
-   create them all.
-
-   cf.folder\_create\_text\_file() : Creates Text file in the given
-   path.
-
-   cf.folder\_get\_all\_filenames\_as\_list() : Get all the files of the
-   given folder in a list.
-
-   cf.folder\_delete\_all\_files() : Deletes all the files of the given
-   folder
-
--  20 functions on Excel operations:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.excel\_get\_all\_sheet\_names() : Gives you all names of the
-   sheets in the given excel sheet.
-
-   cf.excel\_create\_cf.excel\_file\_in\_given\_folder()
-
-   cf.excel\_if\_value\_exists() : Check if a given value exists in
-   given excel. Returns True / False
-
-   cf.excel\_create\_file()
-
-   cf.excel\_copy\_paste\_range\_from\_to\_sheet() : Pastes the copied
-   data in specific range of the given excel sheet.
-
-   cf.excel\_get\_row\_column\_count() : Gets the row and coloumn count
-   of the provided excel sheet.
-
-   cf.excel\_copy\_range\_from\_sheet() : Copies the specific range from
-   the provided excel sheet and returns copied data as a list
-
-   cf.excel\_split\_by\_column() : Splits the excel file by Column Name
-
-   cf.excel\_split\_the\_file\_on\_row\_count() : Splits the excel file
-   as per given row limit
-
-   cf.excel\_merge\_all\_files() : Merges all the excel files in the
-   given folder
-
-   cf.excel\_drop\_columns() : Drops the desired column from the given
-   excel file
-
-   cf.excel\_sort\_columns() : A function which takes excel full path to
-   excel and column names on which sort is to be performed
-
-   cf.excel\_clear\_sheet() : Clears the contents of given excel files
-   keeping header row intact
-
-   cf.excel\_set\_single\_cell() : Writes the given text to the desired
-   column/cell number for the given excel file
-
-   cf.excel\_get\_single\_cell() : Gets the text from the desired
-   column/cell number of the given excel file
-
-   cf.excel\_remove\_duplicates() : Drops the duplicates from the
-   desired Column of the given excel file
-
-   cf.excel\_vlook\_up() : Performs excel\_vlook\_up on the given excel
-   files for the desired columns. Possible values for how are
-   "inner","left", "right", "outer"
-
-   cf.excel\_draw\_charts() : Interactive data visualization function,
-   which accepts excel file, X & Y column. Chart types accepted are bar
-   , scatter , pie , sun , histogram , box , strip. You can pass color
-   column as well, having a boolean value.
-
-   cf.excel\_clean\_data() : Cleans our data from lowercase /
-   remove\_digits / remove\_diacritics / remove\_stopwords /
-   remove\_whitespace
-
-   cf.excel\_describe\_data() : Describe statistical data for the given
-   excel
-
--  3 functions on Keyboard operations:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.key\_hit\_enter() : Enter key will be pressed once.
-
-   cf.key\_press() : Emulates the given keystrokes.
-
-   cf.key\_write\_enter() : Writes/Types the given text and press enter
-   (by default) or tab key.
-
--  2 functions on Screenscraping operations:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.scrape\_save\_contents\_to\_notepad : Copy pastes all the
-   available text on the screen to notepad and saves it.
-
-   cf.scrape\_get\_contents\_by\_search\_copy\_paste : Gets the focus on
-   the screen by searching given text using crtl+f and performs
-   copy/paste of all data. Useful in Citrix applications. This is useful
-   in Citrix applications
-
--  12 functions on Browser operations:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.browser\_get\_html\_text() : Function to get HTML text without
-   tags using Beautiful soup
-
-   cf.browser\_get\_html\_tabular\_data\_from\_website() : Web Scrape
-   HTML Tables : Gets Website Table Data Easily as an Excel using
-   Pandas. Just pass the URL of Website having HTML Tables.
-
-   cf.browser\_navigate\_h() : Navigates to Specified URL.
-
-   cf.browser\_write\_h() : Write a string on the given element.
-
-   cf.browser\_mouse\_click\_h() : Click on the given element.
-
-   cf.browser\_mouse\_double\_click\_h() : Doubleclick on the given
-   element.
-
-   cf.browser\_locate\_element\_h() : Find the element by Xpath, id or
-   css selection.
-
-   cf.browser\_locate\_elements\_h() : Find the elements by Xpath, id or
-   css selection.
-
-   cf.browser\_wait\_until\_h() : Wait until a specific element is
-   found.
-
-   cf.browser\_refresh\_page\_h() : Refresh the page.
-
-   cf.browser\_quit\_h() : Close the Helium browser.
-
-   cf.browser\_hit\_enter\_h() : Hits enter KEY using Browser Helium
-   Functions
-
--  3 functions on Alert Messages:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   cf.message\_counter\_down\_timer() : Function to show count-down
-   timer. Default is 5 seconds.
-
-   cf.message\_pop\_up() : Specified message will popup on the screen
-   for a specified duration of time.
-
-   cf.message\_flash() : Specified msg will popup for a specified
-   duration of time with OK button.
+   ---------------------------------------------
+
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| Function                                          | Description                                                                                                                         |
++===================================================+=====================================================================================================================================+
+| cf.gui\_get\_any\_input\_from\_user()             | Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.                      |
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| cf.gui\_get\_any\_file\_from\_user()              | Generic function to accept file path from user using GUI. Returns the filepath value in string format.Default allows all files.     |
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| cf.gui\_get\_consent\_from\_user()                | Generic function to get consent from user using GUI. Returns the string 'yes' or 'no'                                               |
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| cf.gui\_get\_dropdownlist\_values\_from\_user()   | Generic function to accept one of the drop-down value from user using GUI. Returns all chosen values in list format.                |
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| cf.gui\_get\_excel\_sheet\_header\_from\_user()   | Generic function to accept excel path, sheet name and header from user using GUI. Returns all these values in disctionary format.   |
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| cf.gui\_get\_folder\_path\_from\_user()           | Generic function to accept folder path from user using GUI. Returns the folderpath value in string format.                          |
++---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  4 functions on Mouse Operations:
+   --------------------------------
+
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Function                                              | Description                                                                                                                                                                   |
++=======================================================+===============================================================================================================================================================================+
+| cf.mouse\_click()                                     | Clicks at the given X Y Co-ordinates on the screen using ingle / double / tripple click(s). Optionally copies selected data to clipboard (works for double / triple clicks)   |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.mouse\_move()                                      | Moves the cursor to the given X Y Co-ordinates                                                                                                                                |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.mouse\_drag\_from\_to()                            | Clicks and drags from X1 Y1 co-ordinates to X2 Y2 Co-ordinates on the screen                                                                                                  |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.mouse\_search\_snip\_return\_coordinates\_x\_y()   | Searches the given image on the screen and returns its center of X Y co-ordinates.                                                                                            |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  6 functions on Window Operations (works only in Windows OS):
+   ------------------------------------------------------------
+
++--------------------------------------------------+-------------------------------------------------------+
+| Function                                         | Description                                           |
++==================================================+=======================================================+
+| cf.window\_show\_desktop()                       | Minimizes all the applications and shows Desktop.     |
++--------------------------------------------------+-------------------------------------------------------+
+| cf.window\_get\_all\_opened\_titles\_windows()   | Gives the title of all the existing (open) windows.   |
++--------------------------------------------------+-------------------------------------------------------+
+| cf.window\_activate\_and\_maximize\_windows()    | Activates and maximizes the desired window.           |
++--------------------------------------------------+-------------------------------------------------------+
+| cf.window\_minimize\_windows()                   | Activates and minimizes the desired window.           |
++--------------------------------------------------+-------------------------------------------------------+
+| cf.window\_close\_windows()                      | Close the desired window.                             |
++--------------------------------------------------+-------------------------------------------------------+
+| cf.launch\_any\_exe\_bat\_application()          | Launches any exe or batch file or excel file etc.     |
++--------------------------------------------------+-------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  5 functions on Window Objects (works only in Windows OS):
+   ---------------------------------------------------------
+
++------------------------------------+--------------------------------------------------------------------+
+| Function                           | Description                                                        |
++====================================+====================================================================+
+| cf.win\_obj\_open\_app()           | Open any windows application.                                      |
++------------------------------------+--------------------------------------------------------------------+
+| cf.win\_obj\_get\_all\_objects()   | Print or Save all the windows object elements of an application.   |
++------------------------------------+--------------------------------------------------------------------+
+| cf.win\_obj\_mouse\_click()        | Simulate high level mouse clicks on windows object elements.       |
++------------------------------------+--------------------------------------------------------------------+
+| cf.win\_obj\_key\_press()          | Simulate high level Keypress on windows object elements.           |
++------------------------------------+--------------------------------------------------------------------+
+| cf.win\_obj\_get\_text()           | Read text from windows object element.                             |
++------------------------------------+--------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  8 functions on Folder Operations:
+   ---------------------------------
+
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| Function                                     | Description                                                                                                                 |
++==============================================+=============================================================================================================================+
+| cf.folder\_read\_text\_file()                | Reads from a given text file and returns entire contents as a single list                                                   |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.folder\_write\_text\_file()               | Writes given contents to a text file                                                                                        |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.folder\_create()                          | When you are making leaf directory, if any intermediate-level directory is missing, folder\_create() method creates them.   |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.folder\_create\_text\_file()              | Creates text file in the given path.                                                                                        |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.folder\_get\_all\_filenames\_as\_list()   | Get all the files of the given folder in a list.                                                                            |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.folder\_delete\_all\_files()              | Deletes all the files of the given folder                                                                                   |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.file\_rename()                            | Renames the given file name to new file name with same extension.                                                           |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+| cf.file\_get\_json\_details()                | Returns all the details of the given section in a dictionary                                                                |
++----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  28 functions on Excel Operations:
+   ---------------------------------
+
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| Function                                             | Description                                                                                                                                |
++======================================================+============================================================================================================================================+
+| cf.excel\_get\_all\_sheet\_names()                   | Gives you all names of the sheets in the given excel sheet.                                                                                |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_create\_excel\_file\_in\_given\_folder()   | Creates an excel file in the desired folder with desired filename                                                                          |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_if\_value\_exists()                        | Check if a given value exists in given excel. Returns True / False                                                                         |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_create\_file()                             | Create a Excel file in fullPathToTheFile with filename.                                                                                    |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_copy\_paste\_range\_from\_to\_sheet()      | Pastes the copied data in specific range of the given excel sheet.                                                                         |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_get\_row\_column\_count()                  | Gets the row and coloumn count of the provided excel sheet.                                                                                |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_copy\_range\_from\_sheet()                 | Copies the specific range from the provided excel sheet and returns copied data as a list                                                  |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_split\_by\_column()                        | Splits the excel file by Column Name                                                                                                       |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_split\_the\_file\_on\_row\_count()         | Splits the excel file as per given row limit                                                                                               |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_merge\_all\_files()                        | Merges all the excel files in the given folder                                                                                             |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_drop\_columns()                            | Drops the desired column from the given excel file                                                                                         |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_sort\_columns()                            | A function which takes excel full path to excel and column names on which sort is to be performed                                          |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_clear\_sheet()                             | Clears the contents of given excel files keeping header row intact                                                                         |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_set\_single\_cell()                        | Writes the given text to the desired column/cell number for the given excel file                                                           |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_get\_single\_cell()                        | Gets the text from the desired column/cell number of the given excel file                                                                  |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_remove\_duplicates()                       | Drops the duplicates from the desired Column of the given excel file                                                                       |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_vlook\_up()                                | Performs excel\_vlook\_up on the given excel files for the desired columns. Possible values for how are "inner","left", "right", "outer"   |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_describe\_data()                           | Describe statistical data for the given excel                                                                                              |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_change\_corrupt\_xls\_to\_xlsx()           | Repair corrupt excel file                                                                                                                  |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_get\_all\_header\_columns()                | Gives you all column header names of the given excel sheet                                                                                 |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_convert\_to\_image()                       | Returns an Image (PNG) of given Excel                                                                                                      |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_split\_on\_user\_defined\_conditions()     | Splits the excel based on user defined row/column conditions                                                                               |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_apply\_format\_as\_table()                 | Applies table format to the used range of the given excel                                                                                  |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_convert\_xls\_to\_xlsx()                   | Converts given XLS file to XLSX                                                                                                            |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.isNaN()                                           | Returns TRUE if a given value is NaN False otherwise                                                                                       |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.convert\_csv\_to\_excel()                         | Function to convert CSV to Excel                                                                                                           |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_sub\_routines()                            | Excel VBA Macros called from ClointFusion                                                                                                  |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.excel\_to\_colored\_html()                        | Converts given Excel to HTML preserving the Excel format and saves in same folder as .html                                                 |
++------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  3 functions on Keyboard Operations:
+   -----------------------------------
+
++--------------------------+------------------------------------------------------------------------+
+| Function                 | Description                                                            |
++==========================+========================================================================+
+| cf.key\_hit\_enter()     | Enter key will be pressed once.                                        |
++--------------------------+------------------------------------------------------------------------+
+| cf.key\_press()          | Emulates the given keystrokes.                                         |
++--------------------------+------------------------------------------------------------------------+
+| cf.key\_write\_enter()   | Writes/Types the given text and press enter (by default) or tab key.   |
++--------------------------+------------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  5 functions on Screenscraping Operations:
+   -----------------------------------------
+
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Function                                              | Description                                                                                                                                                                   |
++=======================================================+===============================================================================================================================================================================+
+| cf.scrape\_save\_contents\_to\_notepad()              | Copy pastes all the available text on the screen to notepad and saves it.                                                                                                     |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.scrape\_get\_contents\_by\_search\_copy\_paste()   | Gets the focus on the screen by searching given text using crtl+f and performs copy/paste of all data. Useful in Citrix applications. This is useful in Citrix applications   |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.screen\_clear\_search()                            | Clears previously found text (crtl+f highlight)                                                                                                                               |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.search\_highlight\_tab\_enter\_open()              | Searches for a text on screen using crtl+f and hits enter. This function is useful in Citrix environment.                                                                     |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.find\_text\_on\_screen()                           | Clears previous search and finds the provided text on screen.                                                                                                                 |
++-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  11 functions on Browser Operations:
+   -----------------------------------
+
++------------------------------------+-------------------------------------------------------------------+
+| Function                           | Description                                                       |
++====================================+===================================================================+
+| cf.browser\_activate()             | Function to launch browser and start the session.                 |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_navigate\_h()          | Navigates to Specified URL.                                       |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_write\_h()             | Write a string on the given element.                              |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_mouse\_click\_h()      | Click on the given element.                                       |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_locate\_element\_h()   | Find the element by Xpath, id or css selection.                   |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_wait\_until\_h()       | Wait until a specific element is found.                           |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_refresh\_page\_h()     | Refresh the page.                                                 |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_quit\_h()              | Close the Helium browser.                                         |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_hit\_enter\_h()        | Hits enter KEY using Browser Helium Functions                     |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_key\_press\_h()        | Type text using Browser Helium Functions and press hot keys       |
++------------------------------------+-------------------------------------------------------------------+
+| cf.browser\_mouse\_hover\_h()      | Performs a Mouse Hover over the Given User Visible Text Element   |
++------------------------------------+-------------------------------------------------------------------+
+
+| 
+| 
+
+--------------
+
+-  4 functions on Alert Messages:
+   ------------------------------
+
++--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Function                             | Description                                                                                                                                                          |
++======================================+======================================================================================================================================================================+
+| cf.message\_counter\_down\_timer()   | Function to show count-down timer. Default is 5 seconds.                                                                                                             |
++--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.message\_pop\_up()                | Specified message will popup on the screen for a specified duration of time.                                                                                         |
++--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.message\_flash()                  | Specified msg will popup for a specified duration of time with OK button.                                                                                            |
++--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.message\_toast()                  | Function for displaying Windows 10 Toast Notifications. Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.   |
++--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+--------------
 
 -  3 functions on String Operations:
+   ---------------------------------
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++--------------------------------------------+--------------------------------------------------+
+| Function                                   | Description                                      |
++============================================+==================================================+
+| cf.string\_remove\_special\_characters()   | Removes all the special character.               |
++--------------------------------------------+--------------------------------------------------+
+| cf.string\_extract\_only\_alphabets()      | Returns only alphabets from given input string   |
++--------------------------------------------+--------------------------------------------------+
+| cf.string\_extract\_only\_numbers()        | Returns only numbers from given input string     |
++--------------------------------------------+--------------------------------------------------+
 
-   cf.string\_remove\_special\_characters() : Removes all the special
-   character.
+| 
+| 
 
-   cf.string\_extract\_only\_alphabets() : Returns only alphabets from
-   given input string
-
-   cf.string\_extract\_only\_numbers() : Returns only numbers from given
-   input string
+--------------
 
 -  Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
+   ----------------------------------------------------------------------------------------------
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Function                                  | Description                                                                                                                                                                                            |
++===========================================+========================================================================================================================================================================================================+
+| cf.clear\_screen()                        | Clears Python Interpreter Terminal Window Screen                                                                                                                                                       |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.print\_with\_magic\_color()            | Function to color and format terminal output                                                                                                                                                           |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.schedule\_create\_task\_windows()      | Schedules (weekly & daily options as of now) the current BOT (.bat) using Windows Task Scheduler. Please call create\_batch\_file() function before using this function to convert .pyw file to .bat   |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.schedule\_delete\_task\_windows()      | Deletes already scheduled task. Asks user to supply task\_name used during scheduling the task. You can also perform this action from Windows Task Scheduler.                                          |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.show\_emoji()                          | Function which prints Emojis                                                                                                                                                                           |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.dismantle\_code()                      | This functions dis-assembles given function and shows you column-by-column summary to explain the output of disassembled bytecode.                                                                     |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.ON\_semi\_automatic\_mode()            | This function sets semi\_automatic\_mode as True => ON                                                                                                                                                 |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.OFF\_semi\_automatic\_mode()           | This function sets semi\_automatic\_mode as False => OFF                                                                                                                                               |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.email\_send\_via\_desktop\_outlook()   | Send email using Outlook from Desktop email application                                                                                                                                                |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.download\_this\_file()                 | Downloads a given url file to BOT output folder or Browser's Download folder                                                                                                                           |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.pause\_program()                       | Stops the program for given seconds                                                                                                                                                                    |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.string\_regex()                        | Regex API service call, to search within a given string data                                                                                                                                           |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.ocr\_now()                             | Recognize and read the text embedded in images using Google's Tesseract-OCR                                                                                                                            |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.update\_log\_excel\_file()             | Given message will be updated in the excel log file of output folder                                                                                                                                   |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cf.create\_batch\_file()                  | Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler.                                                                               |
++-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-   cf.launch\_any\_exe\_bat\_application() : Launches any exe or batch
-   file or excel file etc.
+| 
+| 
 
-   cf.launch\_website\_h() : Internal function to launch browser.
+.. raw:: html
 
-   cf.schedule\_create\_task\_windows() : Schedules (weekly & daily
-   options as of now) the current BOT (.bat) using Windows Task
-   Scheduler. Please call create\_batch\_file() function before using
-   this function to convert .pyw file to .bat
+   <!-- # ClointFusion's function works in different modes: -->
 
-   cf.schedule\_delete\_task\_windows() : Deletes already scheduled
-   task. Asks user to supply task\_name used during scheduling the task.
-   You can also perform this action from Windows Task Scheduler.
+ClointFusion's Semi Automatic Mode
+==================================
 
-   cf.show\_emoji() : Function which prints Emojis
-
-   cf.message\_counter\_down\_timer() : Function to show count-down
-   timer. Default is 5 seconds.
-
-   cf.get\_long\_lat() : Function takes zip\_code as input (int) and
-   returns longitude, latitude, state, city, county.
-
-   cf.dismantle\_code() : This functions dis-assembles given function
-   and shows you column-by-column summary to explain the output of
-   disassembled bytecode.
-
-   cf.ON\_semi\_automatic\_mode() : This function sets
-   semi\_automatic\_mode as True => ON
-
-   cf.OFF\_semi\_automatic\_mode() : This function sets
-   semi\_automatic\_mode as False => OFF
-
-   cf.camera\_capture\_image() : turn ON camera & take photo
-
-   cf.convert\_csv\_to\_excel() : Function to convert CSV to Excel
-
-   cf.capture\_snip\_now() : Captures the snip and stores in Image
-   Folder of the BOT by giving continous numbering
-
-   cf.take\_error\_screenshot() : Takes screenshot of an error popup
-   parallely without waiting for the flow of the program. The screenshot
-   will be saved in the log folder for reference.
-
-   cf.find\_text\_on\_screen() : Clears previous search and finds the
-   provided text on screen.
-
-   cf.word\_cloud\_from\_url() : Function to create word cloud from a
-   given website
-
-ClointFusion's function works in different modes:
-=================================================
-
-1) If you pass all the required parameters, function works silently. So,
+#. If you pass all the required parameters, function works silently. So,
    this is expert (Non-GUI) mode. This mode gives you more control over
    the function's parameters.
+#. If you do not pass any parameter, GUI would pop-up asking you the
+   required parameters. Next time, when you run the BOT, based upon your
+   configuration, which you get to choose at the beginning of BOT run:
 
-2) If you do not pass any parameter, GUI would pop-up asking you the required parameters. Next time, when you run the BOT, based upon your configuration, which you get to choose at the beginning of BOT run:
+   -  If ``Semi-Automatic mode`` is OFF, GUI would pop-up again, showing
+      you the previous entries, allowing you to modify the parameters.
+   -  If ``Semi-Automatic mode`` in ON, BOT works silently taking your
+      previous GUI entries.
+   -  Toggle ``Semi-Automatic mode`` by using the following command
 
-       A) If Semi-Automatic mode is OFF, GUI would pop-up again, showing you the previous entries, allowing you to modify the parameters.
+   ::
 
-       B) If Semi-Automatic mode in ON, BOT works silently taking your previous GUI entries.
+       cf.ON_semi_automatic_mode   # To turn ON semi automatic mode
+       cf.OFF_semi_automatic_mode  # To turn OFF semi automatic mode
 
-   GUI Mode is for beginners. Anytime, if you are not getting how to use
+#. GUI Mode is for beginners. Anytime, if you are not getting how to use
    the function, just call an empty function (without parameters) and
    GUI would pop-up asking you for required parameters.
+
+| 
+| 
+
+Outlook Email BOT implemented using ClointFusion
+================================================
+
+| 
+| 
 
 We love your contribution
 =========================
@@ -387,12 +463,49 @@ Contribute by giving a star / writing article on ClointFusion / feedback
 many more ways as you please..
 
 Participate in our monthly online hackathons & weekly meetups. Click
-here for more details: https://sites.google.com/view/clointfusion-hackathon
+here for more details:
+https://sites.google.com/view/clointfusion-hackathon
 
 Please visit our GitHub repository:
 https://github.com/ClointFusion/ClointFusion
+
+Date ❤️ with ClointFusion
+=========================
+
+This an initiative for fast track entry into our growing workforce. For
+more details, please visit: https://lnkd.in/gh_r9YB
+
+Aknowledgements
+===============
+
+ClointFusion thanks to all it's dependent packages for the great
+contribution, which made ClointFusion possible!
+
+| Please find all the dependencies
+`here <https://openbase.com/python/ClointFusion/dependencies>`__
+| 
+
+ReadMe File Maintainer:
+=======================
+
+Fharook Shaik, Intern@ClointFusion. Please reach him at:
+fharookshaik.5@gmail.com
 
 Contact us:
 ===========
 
 Drop a mail to ClointFusion@cloint.com
+
+.. |PyPI| image:: https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version
+.. |PyPI - License| image:: https://img.shields.io/pypi/l/ClointFusion?label=License
+.. |PyPI - Status| image:: https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status
+.. |ClointFusion| image:: https://snyk.io/advisor/python/ClointFusion/badge.svg
+.. |PyPI - Downloads| image:: https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads
+.. |Libraries.io SourceRank| image:: https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion
+.. |PyPI - Format| image:: https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format
+.. |GitHub contributors| image:: https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors
+.. |GitHub last commit| image:: https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit
+.. |GitHub Repo stars| image:: https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social
+.. |Twitter URL| image:: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion
+.. |YouTube Channel Subscribers| image:: https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social
+.. |Twitter Follow| image:: https://img.shields.io/twitter/follow/ClointFusion?style=social
