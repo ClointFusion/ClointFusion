@@ -29,7 +29,8 @@ elif cf.os_name == "darwin":
     clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
 
 def error_try_later():
-    cf.text_to_speech("Sorry, i am experiencing some issues, please try later...")
+    error_choices=["Whoops, please try again","Mea Culpa, please try again","Sorry, i am experiencing some issues,  please try again","Apologies, please try again"]
+    cf.text_to_speech(shuffle_return_one_option(error_choices))
 
 def shuffle_return_one_option(lst_options=[]):
     random.shuffle(lst_options)
@@ -74,7 +75,7 @@ def play_on_youtube():
     cf.text_to_speech("Opening YouTube now, please wait a moment...")
     kit.playonyt(video_name)
 
-def send_WA_MSG():
+def call_Send_WA_MSG():
     cf.text_to_speech("OK...")
     cf.text_to_speech("Whats the message ?")
     msg = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
@@ -127,11 +128,11 @@ def suggest(suggestions):
     random.shuffle(quit_options)
     cf.text_to_speech('To quit, just say {}'.format(quit_options[0]))
 
-def help():
-    cf.text_to_speech("Here are all the commands i support currently.")
-    print("All commands")
+def call_help():
+    cf.text_to_speech(shuffle_return_one_option(["I support these commands","Here are the commands i support currently."]))
+    print("All commands:")
     print(queries)
-    cf.text_to_speech("Try some latest commands.")
+    cf.text_to_speech(shuffle_return_one_option(["Try some latest commands:","Try something new:"]))
     print("Latest commands")
     print(latest_queries)
     print("\n")
@@ -185,7 +186,7 @@ def capture_photo(ocr=False):
     except Exception as ex:
         print("Error in capture_photo " + str(ex))
 
-def read_screen():
+def call_read_screen():
     try:
         cf.text_to_speech('Window Name to read?')
         windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
@@ -208,230 +209,221 @@ def read_screen():
         print("Error in capture_photo " + str(ex))
 
 
+def call_name():
+    name_choices = ["I am ClointFusion's BOL!", "This is Bol!", "Hi, I am ClointFusion's Bol!","Hey, this is Bol!"]
+    cf.text_to_speech(shuffle_return_one_option(name_choices))
+
+def call_time():
+    time = datetime.datetime.now().strftime('%I:%M %p')
+    cf.text_to_speech("It's " + str(time))
+
+def call_wiki(query):
+    try:
+        cf.text_to_speech(wikipedia.summary(query,2))
+    except:
+        cf.text_to_speech("Please use a complete word...")
+
+def call_ocr():
+    try:
+        ocr_say=["OK, Let me scan !","OK, Going to scan now","Please show me the image"]
+
+        cf.text_to_speech(shuffle_return_one_option(ocr_say))
+
+        capture_photo(ocr=True)
+
+        ocr_img_path = Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG"))
+
+        imageObject = Image.open(ocr_img_path)
+
+        corrected_image = imageObject.transpose(Image.FLIP_LEFT_RIGHT)
+
+        corrected_image.save(ocr_img_path)
+
+        cf.text_to_speech(shuffle_return_one_option(["OK, performing OCR now","Give me a moment","abracadabra","Hang on"]))
+
+        ocr_result = cf.ocr_now(ocr_img_path)
+        print(ocr_result)
+        cf.text_to_speech(ocr_result)
+
+    except Exception as ex:
+        print("Error in OCR " + str(ex))
+        error_try_later()
+
+def call_camera():
+    try:
+        subprocess.run('start microsoft.windows.camera:', shell=True)
+    except:
+        os.startfile('microsoft.windows.camera:')
+
+def call_any_app():
+    cf.text_to_speech('OK, which application to open?')
+    app_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    cf.launch_any_exe_bat_application(app_name)
+
+def call_switch_wndw():
+    cf.text_to_speech('OK, whats the window name?')
+    windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    cf.window_activate_and_maximize_windows(windw_name)
+
+def call_find_on_screen():
+    cf.text_to_speech('OK, what to find ?')
+    query = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    cf.find_text_on_screen(searchText=query,delay=0.1, occurance=1,isSearchToBeCleared=False)
+
+def call_minimize_wndw():
+    cf.text_to_speech('OK, which window to minimize?')
+    windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    cf.window_minimize_windows(windw_name)
+
+def call_close_app():
+    cf.text_to_speech('OK, which application to close?')
+    app_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    cf.window_close_windows(app_name)
+
+def call_take_selfie():
+    smile_say=["OK, Smile Please !","OK, Please look at the Camera !","OK, Say Cheese !","OK, Sit up straight !"]
+
+    cf.text_to_speech(shuffle_return_one_option(smile_say))
+
+    capture_photo()
+    cf.text_to_speech("Thanks, I saved your photo. Do you want me to open ?")
+    yes_no = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    if yes_no in ["yes", "yah", "ok"]:
+        cf.launch_any_exe_bat_application(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))
+    else:
+        pass
+
+def call_thanks():
+    choices = ["You're welcome","You're very welcome.","That's all right.","No problem.","No worries.","Don't mention it.","It's my pleasure.","My pleasure.","Glad to help.","Sure!",""]
+    cf.text_to_speech(shuffle_return_one_option(choices))   
+
+def call_shut_pc():
+    cf.text_to_speech('Do you want to Shutdown ? Are you sure ?')
+    yes_no = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+    if yes_no in ["yes", "yah", "ok"]:
+        cf.text_to_speech("OK, Shutting down your machine in a minute")
+        os.system('shutdown -s')
+
 def bol_main():
     query_num = 5
     with console.status("Listening...\n") as status:
         while True:
             query = cf.speech_to_text().lower() ## takes user cf.speech_to_text
             
-            if 'name' in query:
-                cf.text_to_speech("I am ClointFusion's BOL....")
+            try:
+                if 'name' in query:
+                    call_name()
 
-            ### time
-            elif 'time' in query:
-                time = datetime.datetime.now().strftime('%I:%M %p')
-                cf.text_to_speech("It's " + str(time))
-            
-            elif any(x in query for x in ["help","commands", "list of commands", "what can you do",]):
-                help()
-            
-            ### celebrity
-            elif 'who is' in query:
-                try:
+                elif 'time' in query:
+                    call_time()
+                
+                elif any(x in query for x in ["help","commands", "list of commands", "what can you do",]):
+                    call_help()
+                
+                elif 'who is' in query:
                     query = query.replace('who is',"")
-                    cf.text_to_speech(wikipedia.summary(query,2))
-                except:
-                    cf.text_to_speech("Please use a complete word...")
+                    call_wiki(query)
 
-            #Send WA MSG
-            elif any(x in query for x in ["send whatsapp","whatsapp","whatsapp message"]): 
-                try:
-                    send_WA_MSG()
-                except:
-                    error_try_later()
-
-            #Play YouTube Video
-            elif any(x in query for x in ["youtube","play video","video song","youtube video"]): 
-                try:
+                #Send WA MSG
+                elif any(x in query for x in ["send whatsapp","whatsapp","whatsapp message"]): 
+                    call_Send_WA_MSG()
+                    
+                #Play YouTube Video
+                elif any(x in query for x in ["youtube","play video","video song","youtube video"]): 
                     play_on_youtube()
-                except:
-                    error_try_later()
-
-            #Search in Google
-            elif any(x in query for x in ["google search","search in google"]): 
-                try:
+                    
+                #Search in Google
+                elif any(x in query for x in ["google search","search in google"]): 
                     google_search()
-                except:
-                    error_try_later()
-
-            #Open gmail
-            elif any(x in query for x in ["gmail","email"]): 
-                try:
+                    
+                #Open gmail
+                elif any(x in query for x in ["gmail","email"]): 
                     webbrowser.open_new_tab("http://mail.google.com")
-                except:
-                    error_try_later()
+                    
+                #open camera
+                elif any(x in query for x in ["launch camera","open camera"]): 
+                    call_camera()
 
-            #open camera
-            elif any(x in query for x in ["launch camera","open camera"]): 
-                try:
-                    subprocess.run('start microsoft.windows.camera:', shell=True)
-                except:
-                    os.startfile('microsoft.windows.camera:')
+                ### close camera
+                elif any(x in query for x in ["close camera"]): 
+                    subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
 
-            ### close camera
-            elif any(x in query for x in ["close camera"]): 
-                subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
+                ### news
+                elif 'news' in query:
+                    trndnews() 
 
-            ### news
-            elif 'news' in query:
-                trndnews() 
+                #Clap
+                elif any(x in query for x in ["clap","applause","shout","whistle"]):
+                    _play_sound((str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
 
-            #Clap
-            elif any(x in query for x in ["clap","applause","shout","whistle"]):
-                _play_sound((str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
+                elif any(x in query for x in ["bye","quit","stop","exit"]):
+                    exit_say_choices=["Have a good day! ","Have an awesome day!","I hope your day is great!","Today will be the best!","Have a splendid day!","Have a nice day!","Have a pleasant day!"]
+                    cf.text_to_speech(shuffle_return_one_option(exit_say_choices))
+                    break
 
-            elif any(x in query for x in ["bye","quit","stop","exit"]):
-                exit_say_choices=["Have a good day! ","Have an awesome day!","I hope your day is great!","Today will be the best!","Have a splendid day!","Have a nice day!","Have a pleasant day!"]
-                cf.text_to_speech(shuffle_return_one_option(exit_say_choices))
-                break
-
-            elif "dost" in query:
-                try:
-                    cf.browser_activate('http://dost.clointfusion.com')
-                except:
-                    pass
-
-            elif any(x in query for x in ["open notepad","launch notepad"]):
-                try:
-                    cf.launch_any_exe_bat_application("notepad")
-                except:
-                    pass
-
-            elif any(x in query for x in ["open application","launch application","launch app","open app"]):
-                try:
-                    cf.text_to_speech('OK, which application to open?')
-                    app_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    cf.launch_any_exe_bat_application(app_name)
-                except:
-                    pass
-
-            #Switch to window
-            elif any(x in query for x in ["switch window","toggle window","activate window","maximize window"]): 
-                try:
-                    cf.text_to_speech('OK, whats the window name?')
-                    windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    cf.window_activate_and_maximize_windows(windw_name)
-                except:
-                    error_try_later()
-
-            #Search in window / browser
-            elif any(x in query for x in ["find on screen","search on screen", "locate on screen"]): 
-                try:
-                    cf.text_to_speech('OK, what to find ?')
-                    query = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    cf.find_text_on_screen(searchText=query,delay=0.1, occurance=1,isSearchToBeCleared=False)
-                except:
-                    error_try_later()
-
-            elif any(x in query for x in ["minimize all","minimize window","show desktop"]):
-                try:
-                    cf.window_show_desktop()
-                except:
-                    pass              
-
-            elif any(x in query for x in ["minimize window","minimize application"]):
-                try:
-                    cf.text_to_speech('OK, which window to minimize?')
-                    windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    cf.window_minimize_windows(windw_name)
-                except:
-                    pass 
-
-            elif any(x in query for x in ["close application","close window"]):
-                try:
-                    cf.text_to_speech('OK, which application to close?')
-                    app_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    cf.window_close_windows(app_name)
-                except:
-                    pass
-
-            elif any(x in query for x in ["launch meeting","zoom meeting"]):
-                try:
-                    webbrowser.open_new_tab("https://us02web.zoom.us/j/85905538540?pwd=b0ZaV3c2bC9zK3I1QXNjYjJ3Q0tGdz09")
-                except:
-                    pass
-
-            elif "close google chrome" in query:
-                try:
-                    cf.browser_quit_h()
-                except:
-                    pass
-
-            elif any(x in query for x in ["take pic","take selfie","take a pic","take a selfie"]):
-                try:
-                    smile_say=["OK, Smile Please !","OK, Please look at the Camera !","OK, Say Cheese !","OK, Sit up straight !"]
-
-                    cf.text_to_speech(shuffle_return_one_option(smile_say))
-
-                    capture_photo()
-                    cf.text_to_speech("Thanks, I saved your photo. Do you want me to open ?")
-                    yes_no = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    if yes_no in ["yes", "yah", "ok"]:
-                        cf.launch_any_exe_bat_application(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))
-                    else:
+                elif "dost" in query:
+                    try:
+                        cf.browser_activate('http://dost.clointfusion.com')
+                    except:
                         pass
-                except:
-                    error_try_later()
 
-            elif any(x in query for x in ["clear screen","clear","clear terminal","clean", "clean terminal","clean screen",]):
-                try:
+                elif any(x in query for x in ["open notepad","launch notepad"]):
+                    cf.launch_any_exe_bat_application("notepad")
+                    
+                elif any(x in query for x in ["open application","launch application","launch app","open app"]):
+                    call_any_app()
+                  
+                #Switch to window
+                elif any(x in query for x in ["switch window","toggle window","activate window","maximize window"]): 
+                    call_switch_wndw()
+
+                #Search in window / browser
+                elif any(x in query for x in ["find on screen","search on screen", "locate on screen"]): 
+                    call_find_on_screen()
+                
+                elif any(x in query for x in ["minimize all","minimize window","show desktop"]):
+                    cf.window_show_desktop()
+                    
+                elif any(x in query for x in ["minimize window","minimize application"]):
+                    call_minimize_wndw()
+
+                elif any(x in query for x in ["close application","close window"]):
+                    call_close_app()
+
+                elif any(x in query for x in ["launch meeting","zoom meeting"]):
+                    webbrowser.open_new_tab("https://us02web.zoom.us/j/85905538540?pwd=b0ZaV3c2bC9zK3I1QXNjYjJ3Q0tGdz09")
+
+                elif "close google chrome" in query:
+                    cf.browser_quit_h()
+
+                elif any(x in query for x in ["take pic","take selfie","take a pic","take a selfie"]):
+                    call_take_selfie()
+
+                elif any(x in query for x in ["clear screen","clear","clear terminal","clean", "clean terminal","clean screen",]):
                     cf.clear_screen()
                     print("ClointFusion Bol is here to help.")
-                except Exception as ex:
-                    print("Error in clearing " + str(ex))
-                    error_try_later()
-            
-            elif 'ocr' in query:
-                try:
-                    ocr_say=["OK, Let me scan !","OK, Going to scan now","Please show me the image"]
-
-                    cf.text_to_speech(shuffle_return_one_option(ocr_say))
-
-                    capture_photo(ocr=True)
-
-                    ocr_img_path = Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG"))
-
-                    imageObject = Image.open(ocr_img_path)
-
-                    corrected_image = imageObject.transpose(Image.FLIP_LEFT_RIGHT)
-
-                    corrected_image.save(ocr_img_path)
-
-                    cf.text_to_speech(shuffle_return_one_option(["OK, performing OCR now","Give me a moment","abracadabra","Hang on"]))
-
-                    ocr_result = cf.ocr_now(ocr_img_path)
-                    print(ocr_result)
-                    cf.text_to_speech(ocr_result)
-
-                except Exception as ex:
-                    print("Error in OCR " + str(ex))
-                    error_try_later()
-
-            elif any(x in query for x in ["read the screen","read screen","screen to text"]):
-                read_screen()
-            
-            elif any(x in query for x in ["thanks","thank you"]):
-                choices = ["You're welcome","You're very welcome.","That's all right.","No problem.","No worries.","Don't mention it.","It's my pleasure.","My pleasure.","Glad to help.","Sure!",""]
                 
-                cf.text_to_speech(shuffle_return_one_option(choices))            
+                elif 'ocr' in query:
+                    call_ocr()
 
-            elif any(x in query for x in ["shutdown my","turn off","switch off"]):
-                try:
-                    cf.text_to_speech('Do you want to Shutdown ? Are you sure ?')
-                    yes_no = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
-                    if yes_no in ["yes", "yah", "ok"]:
-                        cf.text_to_speech("OK, Shutting down your machine")
+                elif any(x in query for x in ["read the screen","read screen","screen to text"]):
+                    call_read_screen()
+                
+                elif any(x in query for x in ["thanks","thank you"]):
+                    call_thanks()
 
-                        os.system('shutdown -s')
-                    
-                except:
-                    error_try_later()
+                elif any(x in query for x in ["shutdown my","turn off","switch off"]):
+                    call_shut_pc()
+                        
+                else:
+                    query_num += 1
+                
+                    if query_num % 6 == 1:
+                        options()
 
-            else:
-                query_num += 1
-            
-                if query_num % 6 == 1:
-                    options()
+            except:
+                error_try_later()
+
 
 bol_config = clointfusion_directory + "\Config_Files\_bol.txt"
 

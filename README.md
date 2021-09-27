@@ -334,7 +334,7 @@ Please find all the dependencies [here](https://openbase.com/python/ClointFusion
 <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion thanks all its dependent packages for the great contribution, which has made ClointFusion possible !</a> -->
 
 # ReadMe File Maintainer: 
-Fharook Shaik, Intern@ClointFusion. Please reach him at: fharookshaik.5@gmail.com
+Fharook Shaik, Intern@ClointFusion. Please connect with him at: https://www.linkedin.com/in/fharook-shaik-7a757b181
 
 # Contact us: 
 Drop a mail to ClointFusion@cloint.com

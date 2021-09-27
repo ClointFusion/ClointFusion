@@ -1,8 +1,8 @@
 Welcome to  ClointFusion, Made in India with ❤️
 ===============================================
 
-Description
-===========
+Description:
+============
 
 Cloint India Pvt. Ltd - Python functions for Automation (RPA)
 
@@ -19,13 +19,12 @@ contributors| |GitHub last commit|
 
 |GitHub Repo stars| |Twitter URL| |YouTube Channel Subscribers| |Twitter
 Follow|
-Build BOT using DOST : `Blockly based BOT Builder`_ : 
-=====================================================
+
+Build BOT using DOST with No Coding by just drag & drop : `Blockly based BOT Builder`_ 
 
 .. _Blockly based BOT Builder: https://dost.clointfusion.com
 
-`Test Drive ClointFusion on Google Colabs`_ : 
-=============================================
+`Test Drive ClointFusion on Google Colabs`_ 
 
 .. _Test Drive ClointFusion on Google Colabs: https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb
    
@@ -35,7 +34,6 @@ Installation on your local computer
 ===================================
 
 ClointFusion is now supported in Windows / Ubuntu / macOS !
-===========================================================
 
 #. Please install Python 3.9.7 with 64 bit: Python 3.9.7 64 Bit. Windows
    users may refer to these steps to Install ClointFusion in Windows
@@ -77,8 +75,8 @@ function i.e. ``find()``. Just pass the partial name of the function.
     cf.find("sort")
     cf.find("gui")
 
--  6 gui functions, to take any input from user:
-   ---------------------------------------------
+
+6 gui functions, to take any input from user:
 
 +---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                          | Description                                                                                                                         |
@@ -98,10 +96,8 @@ function i.e. ``find()``. Just pass the partial name of the function.
 
 .. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/66c1dcb6ec6a32785f96e873fd6d6cdd33e66f0b/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f46756e6374696f6e732532304c69676874253230474946732f6775695f66756e6374696f6e2e6769663f7261773d74727565
 
---------------
 
--  4 functions on Mouse Operations:
-   --------------------------------
+4 functions on Mouse Operations:
 
 +-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                              | Description                                                                                                                                                                   |
@@ -115,13 +111,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.mouse\_search\_snip\_return\_coordinates\_x\_y()   | Searches the given image on the screen and returns its center of X Y co-ordinates.                                                                                            |
 +-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/d3b8eb6c9a011158c6a6bdb2630512a9b22fcafa/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f4d6f7573655f4f7065726174696f6e732e6769663f7261773d74727565
 
---------------
-
--  6 functions on Window Operations (works only in Windows OS):
-   ------------------------------------------------------------
+6 functions on Window Operations (works only in Windows OS):
 
 +--------------------------------------------------+-------------------------------------------------------+
 | Function                                         | Description                                           |
@@ -139,13 +131,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.launch\_any\_exe\_bat\_application()          | Launches any exe or batch file or excel file etc.     |
 +--------------------------------------------------+-------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/bb89fdfa4911bfd629739b6702e74dd6d701775d/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f46756e6374696f6e732532304c69676874253230474946732f57696e646f77204f7065726174696f6e732e6769663f7261773d74727565
 
---------------
-
--  5 functions on Window Objects (works only in Windows OS):
-   ---------------------------------------------------------
+5 functions on Window Objects (works only in Windows OS):
 
 +------------------------------------+--------------------------------------------------------------------+
 | Function                           | Description                                                        |
@@ -161,13 +149,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.win\_obj\_get\_text()           | Read text from windows object element.                             |
 +------------------------------------+--------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/e3ee83b298b248b219903b53b4c8eb476f8fadd7/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f57696e646f77735f4f626a6563745f4f7065726174696f6e2e6769663f7261773d74727565 
 
---------------
-
--  8 functions on Folder Operations:
-   ---------------------------------
+8 functions on Folder Operations:
 
 +----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
 | Function                                     | Description                                                                                                                 |
@@ -189,13 +173,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.file\_get\_json\_details()                | Returns all the details of the given section in a dictionary                                                                |
 +----------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/9001e5c6067646aaf25f14e2ec0104eabbeb75ce/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f466f6c6465725f4f7065726174696f6e732e6769663f7261773d74727565
 
---------------
-
--  28 functions on Excel Operations:
-   ---------------------------------
+28 functions on Excel Operations: 
 
 +------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                             | Description                                                                                                                                |
@@ -257,13 +237,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.excel\_to\_colored\_html()                        | Converts given Excel to HTML preserving the Excel format and saves in same folder as .html                                                 |
 +------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/fbce770c272c29a3be96c9b514c55ac2e8f47a57/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f457863656c5f4f7065726174696f6e732e6769663f7261773d74727565
 
---------------
-
--  3 functions on Keyboard Operations:
-   -----------------------------------
+3 functions on Keyboard Operations:
 
 +--------------------------+------------------------------------------------------------------------+
 | Function                 | Description                                                            |
@@ -275,13 +251,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.key\_write\_enter()   | Writes/Types the given text and press enter (by default) or tab key.   |
 +--------------------------+------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/f7681d2c8bd0ab61ba7daf0a495fadb6bc793345/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f4b425f4f7065726174696f6e732e6769663f7261773d74727565
 
---------------
-
--  5 functions on Screenscraping Operations:
-   -----------------------------------------
+5 functions on Screenscraping Operations:
 
 +-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                              | Description                                                                                                                                                                   |
@@ -297,13 +269,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.find\_text\_on\_screen()                           | Clears previous search and finds the provided text on screen.                                                                                                                 |
 +-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/a2c418b0981d64c335f53e3edf7733ec63098189/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f53637265656e5f5363726170696e672e6769663f7261773d74727565
 
---------------
-
--  11 functions on Browser Operations:
-   -----------------------------------
+11 functions on Browser Operations:
 
 +------------------------------------+-------------------------------------------------------------------+
 | Function                           | Description                                                       |
@@ -331,13 +299,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.browser\_mouse\_hover\_h()      | Performs a Mouse Hover over the Given User Visible Text Element   |
 +------------------------------------+-------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/380c464f648851b4f2b8341e9acfeab795fcc3b5/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f46756e6374696f6e732532304c69676874253230474946732f62726f777365725f66756e6374696f6e732e6769663f7261773d74727565
 
---------------
-
--  4 functions on Alert Messages:
-   ------------------------------
+4 functions on Alert Messages:
 
 +--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                             | Description                                                                                                                                                          |
@@ -351,10 +315,6 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.message\_toast()                  | Function for displaying Windows 10 Toast Notifications. Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.   |
 +--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
---------------
-
--  3 functions on String Operations:
-   ---------------------------------
 
 +--------------------------------------------+--------------------------------------------------+
 | Function                                   | Description                                      |
@@ -366,13 +326,9 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.string\_extract\_only\_numbers()        | Returns only numbers from given input string     |
 +--------------------------------------------+--------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/8a1bc0ab7e6aad709dc93aff808a82dd4dbe8720/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f537472696e675f4f7065726174696f6e732e6769663f7261773d74727565
 
---------------
-
--  Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
-   ----------------------------------------------------------------------------------------------
+Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 
 +-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                  | Description                                                                                                                                                                                            |
@@ -408,8 +364,7 @@ function i.e. ``find()``. Just pass the partial name of the function.
 | cf.create\_batch\_file()                  | Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler.                                                                               |
 +-------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/dad0de25fe44b5e0f684acb33522877b870ef5bd/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f6d697363616c6c616e656f75732e6769663f7261773d74727565
 
 .. raw:: html
 
@@ -440,12 +395,15 @@ ClointFusion's Semi Automatic Mode
    the function, just call an empty function (without parameters) and
    GUI would pop-up asking you for required parameters.
 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/5fb9cab11ed15cfaee79f1651a7135fd457ef96f/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f4175746f5f53656d695f4175746f2e6769663f7261773d74727565
 
-Outlook Email BOT implemented using ClointFusion
-================================================
+Outlook Email BOT implemented using ClointFusion:
+
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/f0086f006a6d19c392f0a4c4024647cbbbd8fcab/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f46756e6374696f6e732532304c69676874253230474946732f476d61696c5f616e645f4f75746c6f6f6b5f424f542e6769663f7261773d74727565
+
  
-We love your contribution
-=========================
+We love your contribution !
+===========================
 
 Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation /
 many more ways as you please..
@@ -454,13 +412,13 @@ Participate in our monthly online hackathons & weekly meetups. Click here for mo
 
 Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 
-Date ❤️ with ClointFusion
-=========================
+Date ❤️ with ClointFusion:
+==========================
 
 This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
 
-Aknowledgements
-===============
+Aknowledgements:
+================
 
 ClointFusion thanks to all it's dependent packages for the great contribution, which made ClointFusion possible!
 
@@ -470,7 +428,7 @@ ClointFusion thanks to all it's dependent packages for the great contribution, w
 ReadMe File Maintainer:
 =======================
 
-Fharook Shaik, Intern@ClointFusion. Please reach him at: fharookshaik.5@gmail.com
+Fharook Shaik, Research Intern@ClointFusion. Please connect with him at: https://www.linkedin.com/in/fharook-shaik-7a757b181
 
 Contact us:
 ===========
