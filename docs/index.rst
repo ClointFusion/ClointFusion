@@ -1,5 +1,5 @@
 Welcome to  ClointFusion, Made in India with ❤️
-----------------------------------
+===============================================
 
 Description
 ===========
@@ -19,31 +19,31 @@ contributors| |GitHub last commit|
 
 |GitHub Repo stars| |Twitter URL| |YouTube Channel Subscribers| |Twitter
 Follow|
+Build BOT using DOST : `Blockly based BOT Builder`_ : 
+=====================================================
 
-Build BOT using DOST : Blockly based BOT Builder : https://dost.clointfusion.com
------------------------------------------------
+.. _Blockly based BOT Builder: https://dost.clointfusion.com
 
-Test Drive ClointFusion on Google Colabs: https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb
-------------------------------------------
+`Test Drive ClointFusion on Google Colabs`_ : 
+=============================================
 
+.. _Test Drive ClointFusion on Google Colabs: https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb
+   
     Click here for Release Notes : https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt
 
 Installation on your local computer
 ===================================
 
 ClointFusion is now supported in Windows / Ubuntu / macOS !
------------------------------------------------------------
+===========================================================
 
 #. Please install Python 3.9.7 with 64 bit: Python 3.9.7 64 Bit. Windows
-   users may refer to these steps \| Install ClointFusion in Windows
+   users may refer to these steps to Install ClointFusion in Windows
    Operating System: https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae
 
-#. | It is recommended to run ClointFusion in a Virtual Environment.
-   | Please refer these steps to create one, as per your OS: Creating a
-   virtual environment in Windows / Mac / Ubuntu
+#. It is recommended to run ClointFusion in a Virtual Environment. Please refer these steps to create one, as per your OS: Creating a    virtual environment in Windows / Mac / Ubuntu
 
-#. Install ClointFusion by executing this package in command promt (with
-   Admin rights):
+#. Install ClointFusion by executing this package in command promt (with Admin rights):
 
 ::
 
@@ -55,7 +55,7 @@ ClointFusion is now supported in Windows / Ubuntu / macOS !
 
     import ClointFusion as cf
 
-***PS: ``Ubuntu`` users may need to install some additional packages:***
+**PS: Ubuntu users may need to install some additional packages:**
 
 ::
 
@@ -64,18 +64,13 @@ ClointFusion is now supported in Windows / Ubuntu / macOS !
 ClointFusion First Run Setup:
 =============================
 
-| When importing ClointFusion for the first time, you'd likely to be
-prompted with ``ClointFusion Automated Selftest``, a tool designes and
-developed to check the compatibility of ClointFusion with your PC
-settings & configurations. On a successful event, you'll recieve an
-email with self-test report.
-| 
+When importing ClointFusion for the first time, you'd likely to be prompted with **ClointFusion Automated Selftest**, a tool designes and developed to check the compatibility of ClointFusion with your PC settings & configurations. On a successful event, you'll recieve an email with self-test report.
 
 **Now access more than 100 functions (hit ctrl+space in your IDE)**
--------------------------------------------------------------------
+===================================================================
 
 You can find and inspect all of ClointFusion's functions using only one
-function i.e., ``find()``. Just pass the partial name of the function.
+function i.e. ``find()``. Just pass the partial name of the function.
 
 ::
 
@@ -101,8 +96,7 @@ function i.e., ``find()``. Just pass the partial name of the function.
 | cf.gui\_get\_folder\_path\_from\_user()           | Generic function to accept folder path from user using GUI. Returns the folderpath value in string format.                          |
 +---------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
 
-| 
-| 
+.. image:: https://warehouse-camo.ingress.cmh1.psfhosted.org/66c1dcb6ec6a32785f96e873fd6d6cdd33e66f0b/68747470733a2f2f6769746875622e636f6d2f436c6f696e74467573696f6e2f496d6167655f49434f4e535f474946732f626c6f622f6d61696e2f46756e6374696f6e732532304c69676874253230474946732f6775695f66756e6374696f6e2e6769663f7261773d74727565
 
 --------------
 
@@ -446,50 +440,37 @@ ClointFusion's Semi Automatic Mode
    the function, just call an empty function (without parameters) and
    GUI would pop-up asking you for required parameters.
 
-| 
-| 
 
 Outlook Email BOT implemented using ClointFusion
 ================================================
-
-| 
-| 
-
+ 
 We love your contribution
 =========================
 
-Contribute by giving a star / writing article on ClointFusion / feedback
-/ report issues / bug fixes / feature enhancement / add documentation /
+Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation /
 many more ways as you please..
 
-Participate in our monthly online hackathons & weekly meetups. Click
-here for more details:
-https://sites.google.com/view/clointfusion-hackathon
+Participate in our monthly online hackathons & weekly meetups. Click here for more details: https://sites.google.com/view/clointfusion-hackathon
 
-Please visit our GitHub repository:
-https://github.com/ClointFusion/ClointFusion
+Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
 
 Date ❤️ with ClointFusion
 =========================
 
-This an initiative for fast track entry into our growing workforce. For
-more details, please visit: https://lnkd.in/gh_r9YB
+This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
 
 Aknowledgements
 ===============
 
-ClointFusion thanks to all it's dependent packages for the great
-contribution, which made ClointFusion possible!
+ClointFusion thanks to all it's dependent packages for the great contribution, which made ClointFusion possible!
 
-| Please find all the dependencies
-`here <https://openbase.com/python/ClointFusion/dependencies>`__
-| 
+| Please find all the dependencies `here <https://openbase.com/python/ClointFusion/dependencies>`
+
 
 ReadMe File Maintainer:
 =======================
 
-Fharook Shaik, Intern@ClointFusion. Please reach him at:
-fharookshaik.5@gmail.com
+Fharook Shaik, Intern@ClointFusion. Please reach him at: fharookshaik.5@gmail.com
 
 Contact us:
 ===========
