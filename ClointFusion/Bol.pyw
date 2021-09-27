@@ -18,8 +18,8 @@ import pyaudio
 
 console = Console()
 
-queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,']
-latest_queries = ['launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,']
+queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,', 'commands,', 'read screen,','help,',]
+latest_queries = ['launch zoom meeting,','switch window,','locate on screen,','take selfie,','read screen,',]
 
 if cf.os_name == "windows":
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
@@ -184,6 +184,29 @@ def capture_photo(ocr=False):
         subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
     except Exception as ex:
         print("Error in capture_photo " + str(ex))
+
+def read_screen():
+    try:
+        cf.text_to_speech('Window Name to read?')
+        windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+        cf.window_show_desktop()
+        cf.window_activate_and_maximize_windows(windw_name)
+        time.sleep(2)
+        img=cf.pg.screenshot()
+        img.save(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))
+        # OCR process
+        ocr_img_path = Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG"))
+        cf.text_to_speech(shuffle_return_one_option(["OK, performing OCR now","Give me a moment","abracadabra","Hang on"]))
+        ocr_result = cf.ocr_now(ocr_img_path)
+        print(ocr_result)
+
+        cf.text_to_speech("Do you want me to read?")
+        yes_no = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
+        if yes_no in ["yes", "yah", "ok"]:
+            cf.text_to_speech(ocr_result)
+    except Exception as ex:
+        print("Error in capture_photo " + str(ex))
+
 
 def bol_main():
     query_num = 5
@@ -384,6 +407,9 @@ def bol_main():
                     print("Error in OCR " + str(ex))
                     error_try_later()
 
+            elif any(x in query for x in ["read the screen","read screen","screen to text"]):
+                read_screen()
+            
             elif any(x in query for x in ["thanks","thank you"]):
                 choices = ["You're welcome","You're very welcome.","That's all right.","No problem.","No worries.","Don't mention it.","It's my pleasure.","My pleasure.","Glad to help.","Sure!",""]
                 
