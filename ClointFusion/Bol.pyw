@@ -28,6 +28,20 @@ elif cf.os_name == "linux":
 elif cf.os_name == "darwin":
     clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
 
+def _get_site_packages_path():
+    """
+    Returns Site-Packages Path
+    """
+    import subprocess
+    try:
+        import site  
+        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+    except:
+        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
+
+    site_packages_path = str(site_packages_path).strip()  
+    return str(site_packages_path)
+
 def error_try_later():
     error_choices=["Whoops, please try again","Mea Culpa, please try again","Sorry, i am experiencing some issues,  please try again","Apologies, please try again"]
     cf.text_to_speech(shuffle_return_one_option(error_choices))
@@ -321,40 +335,57 @@ def bol_main():
                     call_help()
                 
                 elif 'who is' in query:
+                    status.update("Processing...\n")
                     query = query.replace('who is',"")
                     call_wiki(query)
+                    status.update("Listening...\n")
 
                 #Send WA MSG
-                elif any(x in query for x in ["send whatsapp","whatsapp","whatsapp message"]): 
+                elif any(x in query for x in ["send whatsapp","whatsapp","whatsapp message"]):
+                    status.update("Processing...\n")
                     call_Send_WA_MSG()
+                    status.update("Listening...\n")
                     
                 #Play YouTube Video
-                elif any(x in query for x in ["youtube","play video","video song","youtube video"]): 
+                elif any(x in query for x in ["youtube","play video","video song","youtube video"]):
+                    status.update("Processing...\n")
                     play_on_youtube()
-                    
+                    status.update("Listening...\n")
                 #Search in Google
                 elif any(x in query for x in ["google search","search in google"]): 
+                    status.update("Processing...\n")
                     google_search()
+                    status.update("Listening...\n")
                     
                 #Open gmail
                 elif any(x in query for x in ["gmail","email"]): 
+                    status.update("Processing...\n")
                     webbrowser.open_new_tab("http://mail.google.com")
+                    status.update("Listening...\n")
                     
                 #open camera
                 elif any(x in query for x in ["launch camera","open camera"]): 
+                    status.update("Processing...\n")
                     call_camera()
+                    status.update("Listening...\n")
 
                 ### close camera
                 elif any(x in query for x in ["close camera"]): 
+                    status.update("Processing...\n")
                     subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
+                    status.update("Listening...\n")
 
                 ### news
                 elif 'news' in query:
+                    status.update("Processing...\n")
                     trndnews() 
+                    status.update("Listening...\n")
 
                 #Clap
                 elif any(x in query for x in ["clap","applause","shout","whistle"]):
+                    status.update("Processing...\n")
                     _play_sound((str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["bye","quit","stop","exit"]):
                     exit_say_choices=["Have a good day! ","Have an awesome day!","I hope your day is great!","Today will be the best!","Have a splendid day!","Have a nice day!","Have a pleasant day!"]
@@ -363,63 +394,96 @@ def bol_main():
 
                 elif "dost" in query:
                     try:
-                        cf.browser_activate('http://dost.clointfusion.com')
+                        status.update("Processing...\n")
+                        status.stop()
+                        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
+                        os.system(cmd)
+                        status.start()
+                        status.update("Listening...\n")
                     except:
                         pass
 
                 elif any(x in query for x in ["open notepad","launch notepad"]):
+                    status.update("Processing...\n")
                     cf.launch_any_exe_bat_application("notepad")
+                    status.update("Listening...\n")
                     
                 elif any(x in query for x in ["open application","launch application","launch app","open app"]):
+                    status.update("Processing...\n")
                     call_any_app()
+                    status.update("Listening...\n")
                   
                 #Switch to window
                 elif any(x in query for x in ["switch window","toggle window","activate window","maximize window"]): 
+                    status.update("Processing...\n")
                     call_switch_wndw()
+                    status.update("Listening...\n")
 
                 #Search in window / browser
                 elif any(x in query for x in ["find on screen","search on screen", "locate on screen"]): 
+                    status.update("Processing...\n")
                     call_find_on_screen()
+                    status.update("Listening...\n")
                 
                 elif any(x in query for x in ["minimize all","minimize window","show desktop"]):
+                    status.update("Processing...\n")
                     cf.window_show_desktop()
+                    status.update("Listening...\n")
                     
                 elif any(x in query for x in ["minimize window","minimize application"]):
+                    status.update("Processing...\n")
                     call_minimize_wndw()
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["close application","close window"]):
+                    status.update("Processing...\n")
                     call_close_app()
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["launch meeting","zoom meeting"]):
+                    status.update("Processing...\n")
                     webbrowser.open_new_tab("https://us02web.zoom.us/j/85905538540?pwd=b0ZaV3c2bC9zK3I1QXNjYjJ3Q0tGdz09")
+                    status.update("Listening...\n")
 
                 elif "close google chrome" in query:
+                    status.update("Processing...\n")
                     cf.browser_quit_h()
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["take pic","take selfie","take a pic","take a selfie"]):
+                    status.update("Processing...\n")
                     call_take_selfie()
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["clear screen","clear","clear terminal","clean", "clean terminal","clean screen",]):
+                    status.update("Processing...\n")
                     cf.clear_screen()
                     print("ClointFusion Bol is here to help.")
                 
                 elif 'ocr' in query:
+                    status.update("Processing...\n")
                     call_ocr()
 
                 elif any(x in query for x in ["read the screen","read screen","screen to text"]):
+                    status.update("Processing...\n")
                     call_read_screen()
+                    status.update("Listening...\n")
                 
                 elif any(x in query for x in ["thanks","thank you"]):
+                    status.update("Processing...\n")
                     call_thanks()
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["shutdown my","turn off","switch off"]):
+                    status.update("Processing...\n")
                     call_shut_pc()
-                        
+                    status.update("Listening...\n")
+                    
                 else:
                     query_num += 1
                 
                     if query_num % 6 == 1:
-                        options()
+                        options(3, 2)
 
             except:
                 error_try_later()
