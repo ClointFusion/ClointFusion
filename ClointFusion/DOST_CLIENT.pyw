@@ -130,6 +130,7 @@ linux_os = "linux"
 mac_os = "darwin"
 start = True
 found = False
+script = True
 
 # website = "http://localhost:3000"
 website = "https://dost.clointfusion.com"
@@ -153,30 +154,26 @@ web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False
 browser.set_driver(web_driver)
 
 with console.status("DOST client running...\n") as status:
-  while True:
-    if not found:
-      try:
-        run_btn = browser.find_all(browser.S('//*[@id="cf_run"]'))
-        if run_btn:
-          if start:
-            web_driver.execute_script(
-								'localStorage.setItem("client", true)')
-            start = False
-          found = run_btn[0]
-      except WebDriverException:
-        break
-
-    if found:
-      try:
-        browser.wait_until(browser.Text("Running Program..").exists)
-        if browser.Text("Running Program...").exists:
-          browser.wait_until(lambda: not browser.Text("Running Program..").exists())
-          status.update("Running the bot...\n")
-          while run_program(website):
-            continue
-          status.update("DOST client running...\n")
-          found = False
-      except TimeoutException:
-        found = False
-      except WebDriverException:
-        break
+	while start:
+		try:
+			if not found:
+				run_btn = browser.find_all(browser.S('//*[@id="cf_run"]'))
+				if run_btn:
+					if script:
+						web_driver.execute_script('localStorage.setItem("client", true)')
+						script = False
+					found = run_btn[0]
+			if found:
+				browser.wait_until(browser.Text("Running Program..").exists)
+				if browser.Text("Running Program...").exists:
+					browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+					status.update("Running the bot...\n")
+					while run_program(website):
+						continue
+					status.update("DOST client running...\n")
+					found = False
+		except TimeoutException:
+				found = False
+		except WebDriverException:
+				browser.kill_browser()
+				start = False
