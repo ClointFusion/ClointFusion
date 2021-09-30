@@ -8,7 +8,7 @@ with open(os.path.join(this_directory, "README.md"), "r") as fh:
     long_description = fh.read()
 
 setup(
-    # options={'bdist_wheel':{'universal':True}},
+    options={'bdist_wheel':{'universal':True}},
     name='ClointFusion',
     author='Mayur Patil',
     author_email = 'mayur@cloint.com',
