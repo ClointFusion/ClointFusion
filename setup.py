@@ -61,7 +61,9 @@ setup(
     has_ext_modules=lambda: True
 )
 
+# python -m pip install --upgrade pip setuptools wheel
 # python setup.py build bdist_wheel --universal rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
+
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

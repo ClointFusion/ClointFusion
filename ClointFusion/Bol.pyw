@@ -325,7 +325,7 @@ def bol_main():
             query = cf.speech_to_text().lower() ## takes user cf.speech_to_text
             
             try:
-                if 'name' in query:
+                if any(x in query for x in ["name","bol"]):
                     call_name()
 
                 elif 'time' in query:
