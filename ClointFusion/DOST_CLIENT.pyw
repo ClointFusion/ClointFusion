@@ -12,22 +12,6 @@ from rich.text import Text
 from rich import print
 from rich.console import Console
 
-console = Console()
-os_name = str(platform.system()).lower()
-windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
-
-# UUID KEY
-os_name = str(platform.system()).lower()
-if os_name == windows_os:
-    uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
-else:
-    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
-
-clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-temp_code = clointfusion_directory + "\Config_Files\dost_code.py"
-
 class DisableLogger():
     def __enter__(self):
        logging.disable(logging.CRITICAL)
@@ -35,10 +19,9 @@ class DisableLogger():
        logging.disable(logging.NOTSET)
 
 
-def browser_activate(url="", files_download_path='', dummy_browser=True, open_in_background=False, incognito=False,
+def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
     """Function to launch browser and start the session.
-
     Args:
         url (str, optional): Website you want to visit. Defaults to "".
         files_download_path (str, optional): Path to which the files need to be downloaded.
@@ -51,7 +34,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         Defaults: False.
         profile (str, optional): By default it opens the 'Default' profile. 
         Eg : Profile 1, Profile 2
-
     Returns:
         bool: Whether the function is successful or failed.
     """
@@ -107,9 +89,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             browser.Config.implicit_wait_secs = 120
         except Exception as ex:
-            print(f"Error while browser_activate: {str(ex)}")
+            print(f'Error while browser_activate: {ex}')
     except Exception as ex:
-        print("Error in launch_website_h = " + str(ex))
+        print(f'Error in launch_website_h: {ex}')
         browser.kill_browser()
     finally:
         return browser_driver
@@ -119,21 +101,13 @@ def clear_screen():
     Clears Python Interpreter Terminal Window Screen
     """
     try:
-      command = 'clear'
-      if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
-        command = 'cls'
-      os.system(command)
+        command = 'cls' if os.name in ('nt', 'dos') else 'clear'
+        os.system(command)
     except:
         pass
 
-
-web_driver = browser_activate(url=f"dost.clointfusion.com/cf_id/{uuid}", dummy_browser=False, clear_previous_instances=True)
-browser.set_driver(web_driver)
-
-found = False
-
-def run_program():
-  code = requests.get(f"https://dost.clointfusion.com/cf_id_get/{uuid}").json()["code"]
+def run_program(website):
+  code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
   try:
     with open(temp_code, 'w') as fp:
         fp.write(code + "\n" + r"print('\n')")
@@ -149,17 +123,45 @@ def exe_code(path):
   return False
 
 
+console = Console()
+os_name = str(platform.system()).lower()
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+start = True
+found = False
+
+# website = "http://localhost:3000"
+website = "https://dost.clointfusion.com"
+# UUID KEY
+os_name = str(platform.system()).lower()
+if os_name == windows_os:
+    uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
+else:
+    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
+
+clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+temp_code = clointfusion_directory + "\Config_Files\dost_code.py"
+
+
 text = Text("Welcome to DOST,")
 text.stylize("bold magenta")
 text.append(" you drag and drop, we do the rest. Happy Automation")
 console.print(text)
 
+web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, clear_previous_instances=True)
+browser.set_driver(web_driver)
+
 with console.status("DOST client running...\n") as status:
-  while (True):
+  while True:
     if not found:
       try:
         run_btn = browser.find_all(browser.S('//*[@id="cf_run"]'))
         if run_btn:
+          if start:
+            web_driver.execute_script(
+								'localStorage.setItem("client", true)')
+            start = False
           found = run_btn[0]
       except WebDriverException:
         break
@@ -167,14 +169,14 @@ with console.status("DOST client running...\n") as status:
     if found:
       try:
         browser.wait_until(browser.Text("Running Program..").exists)
-        if browser.Text("Running Program..").exists:
+        if browser.Text("Running Program...").exists:
           browser.wait_until(lambda: not browser.Text("Running Program..").exists())
-          while run_program():
+          status.update("Running the bot...\n")
+          while run_program(website):
             continue
+          status.update("DOST client running...\n")
           found = False
       except TimeoutException:
         found = False
       except WebDriverException:
         break
-  
-  
