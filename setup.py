@@ -46,7 +46,7 @@ setup(
             'work = ClointFusion.ClointFusion:cli_bre_whm',
         ],
     },
-  python_requires='>=3.7, <4',
+  python_requires='>=3.8, <4',
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
@@ -58,7 +58,6 @@ setup(
       'Source Code': 'https://github.com/ClointFusion/ClointFusion/'
   },
     # package_data={"ClointFusion": ["*.pyd"]},
-    has_ext_modules=lambda: True
 )
 
 # python -m pip install --upgrade pip setuptools wheel
