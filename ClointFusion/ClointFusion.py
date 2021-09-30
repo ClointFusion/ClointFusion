@@ -3983,8 +3983,11 @@ def text_to_speech(audio):
 
 def speech_to_text():
     """
-    Speech to Text 
+    Speech to Text using Google's Generic API
     """
+    bol_url = "https://api.clointfusion.com/update_bol"
+    from cfu import system_uuid
+
     while True:
         with sr.Microphone() as source:
             r.dynamic_energy_threshold = True
@@ -3998,8 +4001,16 @@ def speech_to_text():
             r.adjust_for_ambient_noise(source)
 
             audio=r.listen(source)
+
             try:
                 query = r.recognize_google(audio)
+
+                try:
+                    resp = requests.post(bol_url, data={'user_uuid':str(system_uuid),'user_cmd':str(query)})
+                    print(resp.text)
+                except Exception as ex:
+                    print(str(ex))
+
                 print(f"You Said : {query}")
                 
                 clear_screen()

@@ -1,3 +1,8 @@
+37) ClointFusion version 0.1.45 released on 01-10-2021 11:30 AM
+    1) RST file updated for https://readthedocs.org/projects/clointfusion
+    2) BOL UI Updated - Murali
+    3) DOST Enhancements
+
 36) ClointFusion version 0.1.40 to 0.1.44 released on 23-09-2021 11:30 PM
     1) DOST Working in Browser using Client
     2) Bol got new features
