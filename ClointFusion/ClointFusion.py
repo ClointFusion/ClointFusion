@@ -70,15 +70,7 @@ pretty.install()
 console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
-#Bol Related
-import speech_recognition as sr
-import pyttsx3
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-engine.setProperty('voice', voices[voice_male_female].id)
-r = sr.Recognizer()
-energy_threshold = [3000]
+
 
 # 2. All global variables
 os_name = str(platform.system()).lower()
@@ -102,6 +94,15 @@ temp_current_working_dir = Path(temp_current_working_dir)
 
 if os_name == windows_os:
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+        #Bol Related
+    import speech_recognition as sr
+    import pyttsx3
+    engine = pyttsx3.init('sapi5')
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
 elif os_name == linux_os:
     clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
 elif os_name == mac_os:
