@@ -64,21 +64,15 @@ from elevate import elevate
 from rich import pretty
 from rich.console import Console
 import random
+import speech_recognition as sr
+import pyttsx3
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END        
 
-#Bol Related
-import speech_recognition as sr
-import pyttsx3
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-engine.setProperty('voice', voices[voice_male_female].id)
-r = sr.Recognizer()
-energy_threshold = [3000]
+
 
 # 2. All global variables
 os_name = str(platform.system()).lower()
@@ -94,6 +88,7 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = "My_BOT"
+first_run = True
 
 user_name = ""
 user_email = ""
@@ -118,6 +113,20 @@ cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Spla
 
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
+
+first_run_config = clointfusion_directory + "\Config_Files\_firstrun.txt"
+
+try:
+    if os.path.exists(first_run_config):
+        with open(first_run_config, 'r') as fp:
+            nth = fp.readlines()[0]
+            if nth == "False":
+                first_run = False
+    else:
+        with open(first_run_config, 'w') as fp:
+            fp.write("False")
+except:
+    pass
 
 enable_semi_automatic_mode = False # Default is to GUI Mode
 Browser_Service_Started = False
@@ -313,12 +322,57 @@ def _load_missing_python_packages_windows():
     except Exception as ex:
         print("Error in _load_missing_python_packages_windows="+str(ex))
 
+#Linux OS specific packages
+def _load_missing_python_packages_linux():
+    """
+    Installs Linux OS specific python packages
+    """       
+    list_of_required_packages = ["comtypes"]
+    
+    additional_ubuntu_packages = "sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib espeak ffmpeg libespeak1 python-pyaudio python3-pyaudio"
+    try:
+        os.system(additional_ubuntu_packages) 
+        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
+        installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
+        missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
+        if missing_packages:
+            print_with_magic_color("{} package(s) are missing".format(missing_packages)) 
+            
+            if "comtypes" in missing_packages:
+                os.system("sudo {} -m pip install comtypes==1.1.7".format(sys.executable))
+            else:
+                os.system("sudo {} -m pip install --upgrade pip".format(sys.executable))
+            
+            cmd = "sudo pip3 install --upgrade {}".format(missing_packages)
+            
+            os.system(cmd) 
+
+    except Exception as ex:
+        print("Error in _load_missing_python_packages_linux="+str(ex))
+
 if os_name == windows_os:
     _load_missing_python_packages_windows()
     _install_pyaudio_windows()
+        #Bol Related
+    engine = pyttsx3.init('sapi5')
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
 
     from unicodedata import name
-    import pygetwindow as gw 
+    import pygetwindow as gw
+
+elif os_name == linux_os:
+    _load_missing_python_packages_linux()
+        #Bol Related
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
 
 def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
     if os_name == windows_os:
@@ -4908,7 +4962,7 @@ else:
 
 #BOT Recommendation Engine Logic for Windows OS Only
 
-if c_version < s_version:
+if c_version < s_version or first_run:
     try:
         if os_name == windows_os:        
             bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
