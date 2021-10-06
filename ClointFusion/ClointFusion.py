@@ -353,8 +353,9 @@ def _load_missing_python_packages_linux():
         print("Error in _load_missing_python_packages_linux="+str(ex))
 
 if os_name == windows_os:
-    _load_missing_python_packages_windows()
-    _install_pyaudio_windows()
+    if first_run:
+        _load_missing_python_packages_windows()
+        _install_pyaudio_windows()
         #Bol Related
     engine = pyttsx3.init('sapi5')
     voices = engine.getProperty('voices')
@@ -367,7 +368,8 @@ if os_name == windows_os:
     import pygetwindow as gw
 
 elif os_name == linux_os:
-    _load_missing_python_packages_linux()
+    if first_run:
+        _load_missing_python_packages_linux()
         #Bol Related
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
