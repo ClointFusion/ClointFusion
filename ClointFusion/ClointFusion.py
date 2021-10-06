@@ -329,7 +329,7 @@ def _load_missing_python_packages_linux():
     """       
     list_of_required_packages = ["comtypes"]
     
-    additional_ubuntu_packages = "sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib espeak ffmpeg libespeak1 python-pyaudio python3-pyaudio"
+    additional_ubuntu_packages = "sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib espeak ffmpeg libespeak1 python-pyaudio python3-pyaudio xsel"
     try:
         os.system(additional_ubuntu_packages) 
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
