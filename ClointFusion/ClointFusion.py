@@ -1756,6 +1756,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        if os_name == linux_os:
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-dev-shm-usage') 
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
