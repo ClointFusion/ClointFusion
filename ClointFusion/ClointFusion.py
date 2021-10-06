@@ -4378,9 +4378,9 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print("Testing screen-scraping functions")
             
             browser_activate('https://sites.google.com/view/clointfusion-hackathon')
-            
+
             message_counter_down_timer("Waiting for page to load in (seconds)",5)
-            
+
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
                 
