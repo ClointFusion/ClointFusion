@@ -4376,10 +4376,9 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         try:
             print()
             print("Testing screen-scraping functions")
-            if os_name == linux_os:
-                browser_activate('https://sites.google.com/view/clointfusion-hackathon')
-            else:
-                webbrowser.open('https://sites.google.com/view/clointfusion-hackathon')
+            
+            browser_activate('https://sites.google.com/view/clointfusion-hackathon')
+            
             message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
