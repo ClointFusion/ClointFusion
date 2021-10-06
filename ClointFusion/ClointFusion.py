@@ -329,9 +329,10 @@ def _load_missing_python_packages_linux():
     """       
     list_of_required_packages = ["comtypes"]
     
-    additional_ubuntu_packages = "sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib espeak ffmpeg libespeak1 python-pyaudio python3-pyaudio"
+    additional_ubuntu_packages = "sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib espeak ffmpeg libespeak1 python-pyaudio python3-pyaudio xsel"
     try:
-        os.system(additional_ubuntu_packages) 
+        os.system(additional_ubuntu_packages)
+        os.system("xhost +SI:localuser:root")
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
         missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
@@ -1756,6 +1757,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        if os_name == linux_os:
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-dev-shm-usage') 
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
@@ -4372,9 +4376,11 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         try:
             print()
             print("Testing screen-scraping functions")
-            webbrowser.open('https://sites.google.com/view/clointfusion-hackathon') 
-            message_counter_down_timer("Waiting for page to load in (seconds)",5)
             
+            browser_activate('https://sites.google.com/view/clointfusion-hackathon')
+
+            message_counter_down_timer("Waiting for page to load in (seconds)",5)
+
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
                 
