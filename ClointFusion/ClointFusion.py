@@ -333,6 +333,7 @@ def _load_missing_python_packages_linux():
     try:
         os.system(additional_ubuntu_packages)
         os.system("xhost +SI:localuser:root")
+        os.system(f"xhost +SI:localuser:{str(os.getlogin())}")
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
         missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
@@ -4416,48 +4417,14 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             key_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
-        # Closing Browsers
-        browsers = ["firefox", "chrome", "brave"]
-        if os_name == windows_os:
-            subprocess.Popen(f"taskkill /im {browsers[0]}.exe /f", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"taskkill /im {browsers[1]}.exe /f", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"taskkill /im {browsers[2]}.exe /f", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            
-        elif os_name == linux_os:
-            subprocess.Popen(f"killall -9 {browsers[0]}", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"killall -9 {browsers[1]}", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"killall -9 {browsers[2]}", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            
-        elif os_name == mac_os: 
-            subprocess.Popen('pkill -9 "Google Chrome"', shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen('pkill -9 "Firefox"', shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen('pkill -9 "Brave"', shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            
+  
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
             print()
             print("Testing Browser's Helium functions")
             
-            if browser_activate("https://pypi.org"):
+            if browser_navigate_h("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
 
@@ -4480,7 +4447,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 logging.info("Tested Browser's Helium functions successfully")
 
             else:
-                TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome or Firefox is missing"
+                TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome is missing"
 
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
@@ -4503,8 +4470,9 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
         
         try:
-            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
-            mouse_click(pos[0], pos[1])
+            if os_name == windows_os:
+                pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+                mouse_click(pos[0], pos[1])
         except:
             print("Please click red 'Close' button")
 
@@ -4573,22 +4541,27 @@ def clointfusion_self_test(last_updated_on_month):
             if event == 'Skip for Now':
                 try:
                     pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
+                    message_toast("ClointFusion Self-Test is Skipped")
                 except:
                     put_text("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
 
-                if int(last_updated_on_month) != -9:
-                    try:
-                        from ClointFusion import selft
-                        resp = selft.sfn()
-                        last_updated_on_month = -9
-                    except Exception as ex:
-                        message_pop_up("Active internet connection is required ! {}".format(ex))
-                        sys.exit(0)
+                # if int(last_updated_on_month) != -9:
+                #     try:
+                #         from ClointFusion import selft
+                #         resp = selft.sfn()
+                #         last_updated_on_month = -9
+                #     except Exception as ex:
+                #         message_pop_up("Active internet connection is required ! {}".format(ex))
+                #         sys.exit(0)
 
-                message_toast("ClointFusion Self-Test is Skipped")
+                
                 break
 
             if event == 'Start':
+                try:
+                    browser_quit_h()
+                except:
+                    pass
                 window['Start'].update(disabled=True)
                 # window['Close'].update(disabled=True)
                 window['Skip for Now'].update(disabled=True)
@@ -4756,6 +4729,18 @@ def cli_dost():
         os.system(cmd)
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_bol():
+    """ClointFusion CLI for DOST GUI Launcher"""
+    try:
+        print("Launching ClointFusion powered Virtual Assistant : Bol\n")
+        
+        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
+        os.system(cmd)
+    except Exception as ex:
+        print("Error in cli_bol "+str(ex))
+
     
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_vlookup():
