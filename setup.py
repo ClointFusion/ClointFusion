@@ -40,6 +40,7 @@ setup(
         'console_scripts': [
             'colab = ClointFusion.ClointFusion:cli_colab_launcher',
             'dost = ClointFusion.ClointFusion:cli_dost',
+            'bol = ClointFusion.ClointFusion:cli_bol',
             'cf = ClointFusion.ClointFusion:cli_cf',
             'cf_vlookup = ClointFusion.ClointFusion:cli_vlookup',
             'cf_st = ClointFusion.ClointFusion:cli_speed_test',

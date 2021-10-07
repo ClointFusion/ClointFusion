@@ -333,6 +333,7 @@ def _load_missing_python_packages_linux():
     try:
         os.system(additional_ubuntu_packages)
         os.system("xhost +SI:localuser:root")
+        os.system(f"xhost +SI:localuser:{str(os.getlogin())}")
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
         missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
@@ -352,8 +353,9 @@ def _load_missing_python_packages_linux():
         print("Error in _load_missing_python_packages_linux="+str(ex))
 
 if os_name == windows_os:
-    _load_missing_python_packages_windows()
-    _install_pyaudio_windows()
+    if first_run:
+        _load_missing_python_packages_windows()
+        _install_pyaudio_windows()
         #Bol Related
     engine = pyttsx3.init('sapi5')
     voices = engine.getProperty('voices')
@@ -366,7 +368,8 @@ if os_name == windows_os:
     import pygetwindow as gw
 
 elif os_name == linux_os:
-    _load_missing_python_packages_linux()
+    if first_run:
+        _load_missing_python_packages_linux()
         #Bol Related
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
@@ -1750,7 +1753,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == linux_os:
                 try:
-                    subprocess.call('killall chrome', shell=True)
+                    subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
 
@@ -4410,47 +4413,14 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print('Mouse operations tested successfully ' + show_emoji())
             print("____________________________________________________________")
             logging.info('Mouse operations tested successfully')
+            browser_quit_h()
         except Exception as ex:
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
             key_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE = 'Error in mouse operations='+str(ex)
         
-        # Closing Browsers
-        browsers = ["firefox", "chrome", "brave"]
-        if os_name == windows_os:
-            subprocess.Popen(f"taskkill /im {browsers[0]}.exe /f", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"taskkill /im {browsers[1]}.exe /f", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"taskkill /im {browsers[2]}.exe /f", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            
-        elif os_name == linux_os:
-            subprocess.Popen(f"killall -9 {browsers[0]}", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"killall -9 {browsers[1]}", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen(f"killall -9 {browsers[2]}", shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            
-        elif os_name == mac_os: 
-            subprocess.Popen('pkill -9 "Google Chrome"', shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen('pkill -9 "Firefox"', shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            subprocess.Popen('pkill -9 "Brave"', shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-            
+  
         message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
         try:
@@ -4480,7 +4450,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 logging.info("Tested Browser's Helium functions successfully")
 
             else:
-                TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome or Firefox is missing"
+                TEST_CASES_STATUS_MESSAGE = "Helium package's Compatible Chrome is missing"
 
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
@@ -4503,8 +4473,9 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
         
         try:
-            pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
-            mouse_click(pos[0], pos[1])
+            if os_name == windows_os:
+                pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+                mouse_click(pos[0], pos[1])
         except:
             print("Please click red 'Close' button")
 
@@ -4569,23 +4540,26 @@ def clointfusion_self_test(last_updated_on_month):
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
                 window['Skip for Now'].update(disabled=False)
+                if os_name  == linux_os:
+                    clear_screen()
                 
             if event == 'Skip for Now':
                 try:
                     pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
+                    message_toast("ClointFusion Self-Test is Skipped")
                 except:
                     put_text("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
 
-                if int(last_updated_on_month) != -9:
-                    try:
-                        from ClointFusion import selft
-                        resp = selft.sfn()
-                        last_updated_on_month = -9
-                    except Exception as ex:
-                        message_pop_up("Active internet connection is required ! {}".format(ex))
-                        sys.exit(0)
+                # if int(last_updated_on_month) != -9:
+                #     try:
+                #         from ClointFusion import selft
+                #         resp = selft.sfn()
+                #         last_updated_on_month = -9
+                #     except Exception as ex:
+                #         message_pop_up("Active internet connection is required ! {}".format(ex))
+                #         sys.exit(0)
 
-                message_toast("ClointFusion Self-Test is Skipped")
+                
                 break
 
             if event == 'Start':
@@ -4629,7 +4603,8 @@ def clointfusion_self_test(last_updated_on_month):
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                     from ClointFusion import selft
                     selft.gf(os_hn_ip, time_taken, file_contents)
-                    message_counter_down_timer("Closing browser (in seconds)",15)
+                    clear_screen()
+                    message_counter_down_timer("Closing browser (in seconds)",10)
                     window['Close'].update(disabled=True)
                     
                     #Ensure to close all browser if left open by this self test
@@ -4637,8 +4612,12 @@ def clointfusion_self_test(last_updated_on_month):
                     
                     try:
                         key_press(key_1="alt", key_2="f4")
+                        
                     except:
-                        pg.hotkey('alt','f4')
+                        if os_name == linux_os:
+                            subprocess.call('sudo pkill -9', shell=True)
+                        else:
+                            pg.hotkey('alt','f4')
                     time.sleep(2)
                     
                     try:
@@ -4756,6 +4735,18 @@ def cli_dost():
         os.system(cmd)
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_bol():
+    """ClointFusion CLI for DOST GUI Launcher"""
+    try:
+        print("Launching ClointFusion powered Virtual Assistant : Bol\n")
+        
+        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
+        os.system(cmd)
+    except Exception as ex:
+        print("Error in cli_bol "+str(ex))
+
     
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_vlookup():
