@@ -4615,7 +4615,7 @@ def clointfusion_self_test(last_updated_on_month):
                         
                     except:
                         if os_name == linux_os:
-                            subprocess.call('killall chrome', shell=True)
+                            subprocess.call('sudo pkill -9', shell=True)
                         else:
                             pg.hotkey('alt','f4')
                     time.sleep(2)
