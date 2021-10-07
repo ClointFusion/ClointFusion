@@ -180,12 +180,7 @@ except Exception as ex:
     
 # finally:
 #     import ClointFusion_Lite as cfl
-    
-try:
-    import chromedriver_binary
-except:
-    _load_missing_python_packages_windows(['chromedriver-binary-auto'])
-    import chromedriver_binary
+
 
 try:
     from selenium import webdriver
@@ -213,13 +208,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 #         sys.exit(0)
 
 try:
-    import keyboard as kb
+    # import keyboard as kb
     import PySimpleGUI as sg
     import pygetwindow as gw
     sg.theme('Dark') # for PySimpleGUI FRONT END        
 except:
-    _load_missing_python_packages_windows(['keyboard','PySimpleGUI','PyGetWindow'])
-    import keyboard as kb
+    # _load_missing_python_packages_windows(['keyboard','PySimpleGUI','PyGetWindow'])
+    _load_missing_python_packages_windows(['PySimpleGUI','PyGetWindow'])
+    # import keyboard as kb
     import PySimpleGUI as sg
     import pygetwindow as gw
     sg.theme('Dark') # for PySimpleGUI FRONT END        
@@ -436,26 +432,34 @@ def connect_to_local_runtime(user_choice):
 
         if FIRST_TIME:
             
-            kb.press_and_release('SHIFT+TAB')
+            
+            # kb.press_and_release('SHIFT+TAB')
+            pg.hotkey('SHIFT', 'TAB')
             time.sleep(0.5)
-            kb.press_and_release('SHIFT+TAB')
+            # kb.press_and_release('SHIFT+TAB')
+            pg.hotkey('SHIFT', 'TAB')
             time.sleep(0.5)
-            kb.press_and_release('SHIFT+TAB')
+            # kb.press_and_release('SHIFT+TAB')
+            pg.hotkey('SHIFT', 'TAB')
             time.sleep(0.5)
-
-            kb.write("http://localhost:8888")
+            pg.write("http://localhost:8888")
+            # kb.write("http://localhost:8888")
             time.sleep(2)
 
         # click("CONNECT")
-            kb.press_and_release('TAB')
+            # kb.press_and_release('TAB')
+            pg.hotkey('TAB')
+            
             time.sleep(0.5)
             # pg.alert(1)
-            kb.press_and_release('TAB')
+            # kb.press_and_release('TAB')
+            pg.hotkey('TAB')
             time.sleep(0.5)
             # pg.alert(2)
 
         else:
-            kb.press_and_release('SHIFT+TAB')
+            # kb.press_and_release('SHIFT+TAB')
+            pg.hotkey('SHIFT', 'TAB')
             time.sleep(0.5)
 
         browser.press(browser.ENTER)
