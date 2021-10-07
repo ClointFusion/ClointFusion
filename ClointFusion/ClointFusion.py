@@ -1753,7 +1753,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == linux_os:
                 try:
-                    subprocess.call('killall chrome', shell=True)
+                    subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
 
@@ -4413,6 +4413,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print('Mouse operations tested successfully ' + show_emoji())
             print("____________________________________________________________")
             logging.info('Mouse operations tested successfully')
+            browser_quit_h()
         except Exception as ex:
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
@@ -4426,7 +4427,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print()
             print("Testing Browser's Helium functions")
             
-            if browser_navigate_h("https://pypi.org"):
+            if browser_activate("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
 
@@ -4539,6 +4540,8 @@ def clointfusion_self_test(last_updated_on_month):
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
                 window['Skip for Now'].update(disabled=False)
+                if os_name  == linux_os:
+                    clear_screen()
                 
             if event == 'Skip for Now':
                 try:
@@ -4560,10 +4563,6 @@ def clointfusion_self_test(last_updated_on_month):
                 break
 
             if event == 'Start':
-                try:
-                    browser_quit_h()
-                except:
-                    pass
                 window['Start'].update(disabled=True)
                 # window['Close'].update(disabled=True)
                 window['Skip for Now'].update(disabled=True)
@@ -4604,7 +4603,8 @@ def clointfusion_self_test(last_updated_on_month):
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                     from ClointFusion import selft
                     selft.gf(os_hn_ip, time_taken, file_contents)
-                    message_counter_down_timer("Closing browser (in seconds)",15)
+                    clear_screen()
+                    message_counter_down_timer("Closing browser (in seconds)",10)
                     window['Close'].update(disabled=True)
                     
                     #Ensure to close all browser if left open by this self test
@@ -4612,8 +4612,12 @@ def clointfusion_self_test(last_updated_on_month):
                     
                     try:
                         key_press(key_1="alt", key_2="f4")
+                        
                     except:
-                        pg.hotkey('alt','f4')
+                        if os_name == linux_os:
+                            subprocess.call('killall chrome', shell=True)
+                        else:
+                            pg.hotkey('alt','f4')
                     time.sleep(2)
                     
                     try:
