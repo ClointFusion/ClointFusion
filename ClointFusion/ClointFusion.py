@@ -376,19 +376,6 @@ elif os_name == linux_os:
     r = sr.Recognizer()
     energy_threshold = [3000]
 
-def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
-    if os_name == windows_os:
-        try:    
-            import winshell
-            from win32com.client import Dispatch
-
-            shell = Dispatch('WScript.Shell')
-            shortcut = shell.CreateShortCut(short_cut_path) # Path to be saved (shortcut)
-            shortcut.Targetpath = target_file_path # The shortcut target file or folder
-            shortcut.WorkingDirectory = work_dir # The parent folder of your file
-            shortcut.save()
-        except Exception as ex:
-            print("Error in _create_short_cut" + str(ex))
 
 def _download_cloint_ico_png():    
     """
@@ -457,6 +444,56 @@ get_server_version_thread.start()
 get_current_version_thread.join()
 get_server_version_thread.join()
 
+def _get_site_packages_path():
+    """
+    Returns Site-Packages Path
+    """
+    try:
+        import site  
+        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+    except:
+        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
+
+    site_packages_path = str(site_packages_path).strip()  
+    return str(site_packages_path)
+
+
+def _update_registry(file_path):
+    """
+    Add BRE_WHM to Registry for AutoRun
+    """
+    try:
+        import winreg as reg 
+        address=file_path
+        # key we want to change is HKEY_CURRENT_USER 
+        # key value is Software\Microsoft\Windows\CurrentVersion\Run
+
+        key_value = "Software\Microsoft\Windows\CurrentVersion\Run"
+        open = reg.OpenKey(reg.HKEY_CURRENT_USER,key_value,0,reg.KEY_ALL_ACCESS)
+
+        # key = reg.OpenKey(reg.HKEY_CURRENT_USER, key_value, 0, reg.KEY_ALL_ACCESS)        
+        # reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
+
+        reg.DeleteValue(open, 'ClointFusion')
+        reg.CloseKey(open)
+    except Exception as ex:
+        pass
+
+def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
+    if os_name == windows_os:
+        try:    
+            import winshell
+            from win32com.client import Dispatch
+
+            shell = Dispatch('WScript.Shell')
+            shortcut = shell.CreateShortCut(short_cut_path) # Path to be saved (shortcut)
+            shortcut.Targetpath = target_file_path # The shortcut target file or folder
+            shortcut.WorkingDirectory = work_dir # The parent folder of your file
+            shortcut.save()
+        except Exception as ex:
+            print("Error in _create_short_cut" + str(ex))
+
+
 def _welcome_to_clointfusion():
     global user_name
     """
@@ -477,6 +514,9 @@ def _welcome_to_clointfusion():
 
     if c_version < s_version:
         EXECUTE_SELF_TEST_NOW = True
+        with open(first_run_config, 'w') as fp:
+                fp.write("True")
+                first_run = True
         print('You are using version {}, however version {} is available !'.format(c_version,s_version))
         print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
         try:
@@ -503,22 +543,40 @@ def _welcome_to_clointfusion():
             except:
                 print("Please Upgrade ClointFusion")
     else:
-        EXECUTE_SELF_TEST_NOW = False                
+        EXECUTE_SELF_TEST_NOW = False
+    
+    try:
+        if EXECUTE_SELF_TEST_NOW or first_run:
+            try:
+                clointfusion_self_test(last_updated_on_month)
+            except Exception as ex:
+                print("Error in Self Test="+str(ex))
+                _rerun_clointfusion_first_run(str(ex))
+            
+            # BOT Recommendation Engine Logic for Windows OS Only
+            
+            if os_name == windows_os:
+                bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
+                bre_file_folder = f"{_get_site_packages_path()}" + '\ClointFusion'
+
+                current_user = str(str(Path.home()).split("\\")[2])
+
+                short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
+
+                try:
+                    _update_registry(short_cut_path)
+                except:
+                    elevate(show_console=False)
+                    _update_registry(short_cut_path)
+
+                _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
+            else:
+                print("This feature is currently available only for Windows OS")
+    except Exception as ex:
+        print(str(ex))            
     
     return EXECUTE_SELF_TEST_NOW
 
-def _get_site_packages_path():
-    """
-    Returns Site-Packages Path
-    """
-    try:
-        import site  
-        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
-    except:
-        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
-
-    site_packages_path = str(site_packages_path).strip()  
-    return str(site_packages_path)
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -4494,6 +4552,8 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         print("____________________________________________________________")
         print()
         if TEST_CASES_STATUS_MESSAGE == "":
+            with open(first_run_config, 'w') as fp:
+                fp.write("False")
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
@@ -4676,27 +4736,6 @@ def update_log_excel_file(message=""):
     except Exception as ex:
         print("Error in update_log_excel_file="+str(ex))
         return False
-
-def _update_registry(file_path):
-    """
-    Add BRE_WHM to Registry for AutoRun
-    """
-    try:
-        import winreg as reg 
-        address=file_path
-        # key we want to change is HKEY_CURRENT_USER 
-        # key value is Software\Microsoft\Windows\CurrentVersion\Run
-
-        key_value = "Software\Microsoft\Windows\CurrentVersion\Run"
-        open = reg.OpenKey(reg.HKEY_CURRENT_USER,key_value,0,reg.KEY_ALL_ACCESS)
-
-        # key = reg.OpenKey(reg.HKEY_CURRENT_USER, key_value, 0, reg.KEY_ALL_ACCESS)        
-        # reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
-
-        reg.DeleteValue(open, 'ClointFusion')
-        reg.CloseKey(open)
-    except Exception as ex:
-        pass
 
 # --------- Self-Test Related Functions Ends ---------
 
@@ -4925,22 +4964,17 @@ except Exception as ex:
     sys.exit(0)
 
 try:
-    last_updated_on_month,user_name, user_email = str(resp.text).split('#')
+    last_updated_on_month, user_name, user_email = str(resp.text).split('#')
 except:
     last_updated_on_month = 0
-    user_name = ""
+    user_name = str(os.getlogin())
     user_email = ""
 
 EXECUTE_SELF_TEST_NOW = _welcome_to_clointfusion()
 
-if EXECUTE_SELF_TEST_NOW :
-    try:
-        clointfusion_self_test(last_updated_on_month)
-    except Exception as ex:
-        print("Error in Self Test="+str(ex))
-        _rerun_clointfusion_first_run(str(ex))
 
-else:
+
+if not EXECUTE_SELF_TEST_NOW:
     folder_create(clointfusion_directory) 
     log_path = Path(os.path.join(clointfusion_directory, "Logs"))
     img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
@@ -4961,31 +4995,6 @@ else:
     update_log_excel_file(bot_name +'- BOT initiated')
     _ask_user_semi_automatic_mode()
     enable_semi_automatic_mode = False # By DEFAULT
-
-#BOT Recommendation Engine Logic for Windows OS Only
-
-if c_version < s_version or first_run:
-    try:
-        if os_name == windows_os:        
-            bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
-            bre_file_folder = f"{_get_site_packages_path()}" + '\ClointFusion'
-
-            current_user = str(str(Path.home()).split("\\")[2])
-
-            short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
-
-            try:
-                _update_registry(short_cut_path)
-            except:
-                elevate(show_console=False)
-                _update_registry(short_cut_path)
-
-            _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
-                
-        else:
-            print("This feature is currently available only for Windows OS")
-    except Exception as ex:
-        print(str(ex))
 
 # ########################
 
