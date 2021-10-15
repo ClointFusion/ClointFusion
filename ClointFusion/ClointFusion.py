@@ -2748,7 +2748,7 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
     except Exception as ex:
         print("Error in excel_drop_columns="+str(ex))
 
-def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToBeSorted=None,secondColumnToBeSorted=None,thirdColumnToBeSorted=None,firstColumnSortType=True,secondColumnSortType=True,thirdColumnSortType=True):#*
+def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToBeSorted=None,secondColumnToBeSorted=None,thirdColumnToBeSorted=None,firstColumnSortType=True,secondColumnSortType=True,thirdColumnSortType=True, view_excel=False):#*
     """
     A function which takes excel full path to excel and column names on which sort is to be performed
 
@@ -2769,7 +2769,7 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
                 firstColumnToBeSorted = usecols[0]
         df=pd.read_excel(excel_path,sheet_name=sheet_name, header=header,engine='openpyxl')
 
-        if enable_semi_automatic_mode == False:
+        if view_excel:
             show(df)
 
         if thirdColumnToBeSorted is not None and secondColumnToBeSorted is not None and firstColumnToBeSorted is not None:
@@ -2891,7 +2891,7 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
     except Exception as ex:
         print("Error in excel_remove_duplicates="+str(ex))
 
-def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepath_2="", sheet_name_2 = 'Sheet1', header_2 = 0, Output_path="", OutputExcelFileName="", match_column_name="",how='left'):#*
+def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepath_2="", sheet_name_2 = 'Sheet1', header_2 = 0, Output_path="", OutputExcelFileName="", match_column_name="",how='left', view_excel=False):#*
     """
     Performs excel_vlook_up on the given excel files for the desired columns. Possible values for how are "inner","left", "right", "outer"
     """
@@ -2911,7 +2911,7 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
 
         df = pd.merge(df1, df2, on= match_column_name, how = how)
 
-        if enable_semi_automatic_mode == False:
+        if view_excel:
             show(df)
 
         output_file_path = ""
@@ -3016,7 +3016,7 @@ def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21"
         excel_instance.Quit()
         raise Exception("Given Excel already has a table")
 
-def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',column_name='',condition_strings=None,output_dir=''):
+def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',column_name='',condition_strings=None,output_dir='',view_excel=False):
     '''
         Splits the excel based on user defined row/column conditions
         Just give the column name and row condition which you want split your  excel.
@@ -3030,7 +3030,7 @@ def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',c
             folder_create(output_dir)
         df = pd.read_excel(excel_file_path,sheet_name=sheet_name)
 
-        if enable_semi_automatic_mode == False:
+        if view_excel:
             show(df)
 
         if condition_strings == None:
@@ -3237,7 +3237,7 @@ def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
     except Exception as ex:
         print("Error in excel_get_all_header_columns="+str(ex))
 
-def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
+def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0,view_excel=False):
     """
     Describe statistical data for the given excel
     """
@@ -3247,7 +3247,7 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0):
             
         df = pd.read_excel(excel_path, sheet_name=sheet_name, header=header,engine='openpyxl')
 
-        if enable_semi_automatic_mode == False:
+        if view_excel:
             show(df)
         #user_option_lst = ['Numerical','String','Both']
 
