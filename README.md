@@ -53,7 +53,7 @@ import ClointFusion as cf
 ***PS: `Ubuntu` users may need to install some additional packages:***
 
 ```
-sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib
+sudo apt-get install python3-tk python3-dev
 ```
 
 # ClointFusion First Run Setup:
