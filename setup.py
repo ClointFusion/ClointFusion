@@ -15,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='0.1.46',
+    version='1.0.0',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -26,7 +26,7 @@ setup(
     install_requires=open('requirements.txt').read().split('\n'),
     # py_modules=['ClointFusion'],
   classifiers=[
-    'Development Status :: 4 - Beta',
+    'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
     'Intended Audience :: Developers',      
     'Topic :: Software Development :: Build Tools',
@@ -47,7 +47,7 @@ setup(
             'work = ClointFusion.ClointFusion:cli_bre_whm',
         ],
     },
-  python_requires='>=3.8, <4',
+  python_requires='>=3.8, <3.10',
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
@@ -67,11 +67,3 @@ setup(
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)
-
-# setup(
-#     ...,
-#     install_requires=[
-#         "enum34;python_version<'3.4'",
-#         "pywin32 >= 1.0;platform_system=='Windows'",
-#     ],
-# )

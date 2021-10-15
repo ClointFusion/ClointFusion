@@ -33,7 +33,7 @@ import webbrowser
 import logging
 import tempfile
 import warnings
-import traceback 
+import traceback
 import shutil
 import socket
 from pandas.core.algorithms import isin, mode
@@ -70,9 +70,7 @@ import pyttsx3
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 console = Console()
-sg.theme('Dark') # for PySimpleGUI FRONT END        
-
-
+sg.theme('Dark') # for PySimpleGUI FRONT END
 
 # 2. All global variables
 os_name = str(platform.system()).lower()
@@ -465,7 +463,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.46)"
+    version = "(Version: 1.0.0)"
 
     hour = datetime.datetime.now().hour
 
@@ -478,6 +476,7 @@ def _welcome_to_clointfusion():
     console.print(f.renderText("ClointFusion Community Edition"))
 
     if c_version < s_version:
+        EXECUTE_SELF_TEST_NOW = True
         print('You are using version {}, however version {} is available !'.format(c_version,s_version))
         print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
         try:
@@ -503,6 +502,10 @@ def _welcome_to_clointfusion():
                     os.system("pip3 install -U ClointFusion")    
             except:
                 print("Please Upgrade ClointFusion")
+    else:
+        EXECUTE_SELF_TEST_NOW = False                
+    
+    return EXECUTE_SELF_TEST_NOW
 
 def _get_site_packages_path():
     """
@@ -4919,14 +4922,7 @@ except:
     user_name = ""
     user_email = ""
 
-_welcome_to_clointfusion()
-
-today_date_month = datetime.date.today().strftime('%m')
-
-if int(last_updated_on_month) != int(today_date_month):
-    EXECUTE_SELF_TEST_NOW = True
-else:
-    EXECUTE_SELF_TEST_NOW = False
+EXECUTE_SELF_TEST_NOW = _welcome_to_clointfusion()
 
 if EXECUTE_SELF_TEST_NOW :
     try:
