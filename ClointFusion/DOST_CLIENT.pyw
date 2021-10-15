@@ -60,8 +60,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
 
         options = Options()
         options.add_argument("--start-maximized")
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        options.add_experimental_option('excludeSwitches', ['enable-automation'])
+        options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
