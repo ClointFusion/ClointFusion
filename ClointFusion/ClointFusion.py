@@ -4750,7 +4750,16 @@ def cli_bol():
     except Exception as ex:
         print("Error in cli_bol "+str(ex))
 
-    
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_whm():
+    """ClointFusion CLI for WHM Launcher"""
+    try:
+        cmd = f'pythonw "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
+        os.system(cmd)
+        print("WHM is now running..\n")
+    except Exception as ex:
+        print("Error in cli_whm "+str(ex))
+
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_vlookup():
     """ClointFusion CLI for Excel VLookUp"""
