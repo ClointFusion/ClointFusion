@@ -495,12 +495,12 @@ def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
 
 
 def _welcome_to_clointfusion():
-    global user_name
+    global user_name, first_run
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.0.0)"
+    version = "(Version: 1.0.1)"
 
     hour = datetime.datetime.now().hour
 
