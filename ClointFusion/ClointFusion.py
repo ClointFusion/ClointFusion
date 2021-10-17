@@ -4317,9 +4317,9 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 browser_hit_enter_h()
 
                 try:
-                    browser_mouse_click_h("ClointFusion 0.1.")
+                    browser_mouse_click_h("ClointFusion")
                 except:
-                    browser_mouse_click_h("ClointFusion 0")
+                    browser_mouse_click_h("ClointFusion")
                 
                 key_press("browserstop")
 
