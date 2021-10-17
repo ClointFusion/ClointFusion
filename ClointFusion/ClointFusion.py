@@ -4891,6 +4891,8 @@ if FIRST_RUN == "True" and os_name == windows_os:
 
 if EXECUTE_SELF_TEST_NOW or SELF_TEST == "True":
     try:
+        cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'True' where ID = 1")
+        connct.commit()
         clointfusion_self_test(last_updated_on_month)
         cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
         connct.commit()
