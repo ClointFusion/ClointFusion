@@ -4528,12 +4528,8 @@ def clointfusion_self_test(last_updated_on_month):
     finally:
         try:
             if last_updated_on_month == 2 :
-                print("win")
                 window.close()
-                
             else:
-                print("sys")
-                browser_activate("sys")
                 sys.exit(1)
         except Exception as ex:
             print(str(ex))
@@ -4892,6 +4888,7 @@ if EXECUTE_SELF_TEST_NOW or SELF_TEST == "True":
         pass
     except Exception as ex:
         print("Error in Self Test="+str(ex))
+        _rerun_clointfusion_first_run(str(ex))
 else:
     folder_create(clointfusion_directory) 
     log_path = Path(os.path.join(clointfusion_directory, "Logs"))
