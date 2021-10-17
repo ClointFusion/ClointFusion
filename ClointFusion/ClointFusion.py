@@ -19,6 +19,7 @@ import os
 import sys
 import platform
 import urllib.request
+import sqlite3
 
 from datetime import datetime
 from dateutil import parser
@@ -46,6 +47,11 @@ try:
 except:
     from pywebio.output import popup, put_html
 
+try:
+    from ClointFusion import selft
+except:
+    import selft
+    
 import pandas as pd
 import PySimpleGUI as sg
 import openpyxl as op
@@ -4374,13 +4380,19 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         print()
         if TEST_CASES_STATUS_MESSAGE == "":
             config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-            import sqlite3
+            
             db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
             
             connct = sqlite3.connect(db_file_path,check_same_thread=False)
             cursr = connct.cursor()
             cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
             connct.commit()
+            try:
+                selft.ast()
+            except Exception as ex:
+                message_pop_up("Active internet connection is required ! {}".format(ex))
+                sys.exit(0)
+                    
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
@@ -4425,7 +4437,7 @@ def clointfusion_self_test(last_updated_on_month):
             event, _ = window.read()
 
             if event == 'SSO':
-                from ClointFusion import selft
+                
                 selft.sso()
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
@@ -4440,15 +4452,7 @@ def clointfusion_self_test(last_updated_on_month):
                 except:
                     put_text("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
 
-                # if int(last_updated_on_month) != -9:
-                #     try:
-                #         from ClointFusion import selft
-                #         resp = selft.sfn()
-                #         last_updated_on_month = -9
-                #     except Exception as ex:
-                #         message_pop_up("Active internet connection is required ! {}".format(ex))
-                #         sys.exit(0)
-
+                last_updated_on_month = 2
                 
                 break
 
@@ -4487,11 +4491,11 @@ def clointfusion_self_test(last_updated_on_month):
                 except:
                     file_contents = 'Unable to read the file'
 
-                if file_contents and file_contents != 'Unable to read the file':
+                if file_contents != 'Unable to read the file':
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-                    from ClointFusion import selft
+                    
                     selft.gf(os_hn_ip, time_taken, file_contents)
                     clear_screen()
                     message_counter_down_timer("Closing browser (in seconds)",10)
@@ -4510,14 +4514,6 @@ def clointfusion_self_test(last_updated_on_month):
                             pg.hotkey('alt','f4')
                     time.sleep(2)
                     
-                    try:
-                        from ClointFusion import selft
-                        resp = selft.ast()
-                        
-                    except Exception as ex:
-                        message_pop_up("Active internet connection is required ! {}".format(ex))
-                        sys.exit(0)
-                    
                 break        
                     
     except Exception as ex:
@@ -4528,16 +4524,17 @@ def clointfusion_self_test(last_updated_on_month):
 
         exc_type, exc_value, exc_tb = sys.exc_info()
         print(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
-
         _rerun_clointfusion_first_run(str(ex))
     finally:
         try:
-            # print('Thank you !')
-
-            if int(last_updated_on_month) != -9 :
-                sys.exit(1)
-            else:
+            if last_updated_on_month == 2 :
+                print("win")
                 window.close()
+                
+            else:
+                print("sys")
+                browser_activate("sys")
+                sys.exit(1)
         except Exception as ex:
             print(str(ex))
 
@@ -4638,7 +4635,6 @@ def cli_vlookup():
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
     try:
-        import sqlite3
         from datetime import date
         from rich.table import Table
         from pivottablejs import pivot_ui
@@ -4792,11 +4788,8 @@ get_server_version_thread.join()
 
 _download_cloint_ico_png()
 
-try: 
-    try:
-        from ClointFusion import selft        
-    except:
-        import selft        
+
+try:      
     resp = selft.vst()
 except Exception as ex:
     message_pop_up("Active internet connection is required ! {}".format(ex))
@@ -4805,15 +4798,13 @@ except Exception as ex:
 try:
     last_updated_on_month, user_name, user_email = str(resp.text).split('#')
 except:
-    last_updated_on_month = 0
+    last_updated_on_month = "0"
     user_name = str(os.getlogin())
     user_email = ""
-
 
 # elevate(show_console=False)
 try:
     config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-    import sqlite3
     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
     
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
@@ -4873,7 +4864,6 @@ elif os_name == linux_os:
     energy_threshold = [3000]
 
 EXECUTE_SELF_TEST_NOW = _welcome_to_clointfusion()
-     
 
 if FIRST_RUN == "True" and os_name == windows_os:
     bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
@@ -4893,15 +4883,15 @@ if FIRST_RUN == "True" and os_name == windows_os:
     cursr.execute("UPDATE CFTRIGGERS set FIRST_RUN = 'False' where ID = 1")
     connct.commit()
 
-
 if EXECUTE_SELF_TEST_NOW or SELF_TEST == "True":
     try:
         cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'True' where ID = 1")
         connct.commit()
+        selft.sfn()
         clointfusion_self_test(last_updated_on_month)
+        pass
     except Exception as ex:
         print("Error in Self Test="+str(ex))
-        _rerun_clointfusion_first_run(str(ex))
 else:
     folder_create(clointfusion_directory) 
     log_path = Path(os.path.join(clointfusion_directory, "Logs"))
