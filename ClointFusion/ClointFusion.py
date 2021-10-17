@@ -1,7 +1,9 @@
 # Project Name: ClointFusion
 # Project Description: A Python based RPA Automation Framework for Desktop GUI, Citrix, Web and basic Excel operations.
+# Code Authors: Mayur Patil, Murali M V P
+# Code Contributors: Avinash, Fharook
 
-# Project Structure
+# Code Structure
 # 1. All imports
 # 2. All global variables
 # 3. All function definitions
@@ -86,7 +88,8 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = "My_BOT"
-first_run = True
+FIRST_RUN = ""
+SELF_TEST = ""
 
 user_name = ""
 user_email = ""
@@ -111,20 +114,6 @@ cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Spla
 
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
-
-first_run_config = clointfusion_directory + "\Config_Files\_firstrun.txt"
-
-try:
-    if os.path.exists(first_run_config):
-        with open(first_run_config, 'r') as fp:
-            nth = fp.readlines()[0]
-            if nth == "False":
-                first_run = False
-    else:
-        with open(first_run_config, 'w') as fp:
-            fp.write("False")
-except:
-    pass
 
 enable_semi_automatic_mode = False # Default is to GUI Mode
 Browser_Service_Started = False
@@ -350,33 +339,6 @@ def _load_missing_python_packages_linux():
     except Exception as ex:
         print("Error in _load_missing_python_packages_linux="+str(ex))
 
-if os_name == windows_os:
-    if first_run:
-        _load_missing_python_packages_windows()
-        _install_pyaudio_windows()
-        #Bol Related
-    engine = pyttsx3.init('sapi5')
-    voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
-    r = sr.Recognizer()
-    energy_threshold = [3000]
-
-    from unicodedata import name
-    import pygetwindow as gw
-
-elif os_name == linux_os:
-    if first_run:
-        _load_missing_python_packages_linux()
-        #Bol Related
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
-    r = sr.Recognizer()
-    energy_threshold = [3000]
-
-
 def _download_cloint_ico_png():    
     """
     Internal function to download ClointFusion ICON from GitHub
@@ -434,15 +396,6 @@ def _getServerVersion():
         pass
 
     return s_version
-    
-get_current_version_thread = threading.Thread(target=_getCurrentVersion, name="GetCurrentVersion")
-get_current_version_thread.start()
-
-get_server_version_thread = threading.Thread(target=_getServerVersion, name="GetServerVersion")
-get_server_version_thread.start()
-
-get_current_version_thread.join()
-get_server_version_thread.join()
 
 def _get_site_packages_path():
     """
@@ -456,7 +409,6 @@ def _get_site_packages_path():
 
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
-
 
 def _update_registry(file_path):
     """
@@ -493,7 +445,6 @@ def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
         except Exception as ex:
             print("Error in _create_short_cut" + str(ex))
 
-
 def _welcome_to_clointfusion():
     global user_name, first_run
     """
@@ -514,9 +465,8 @@ def _welcome_to_clointfusion():
 
     if c_version < s_version:
         EXECUTE_SELF_TEST_NOW = True
-        with open(first_run_config, 'w') as fp:
-                fp.write("True")
-                first_run = True
+
+
         print('You are using version {}, however version {} is available !'.format(c_version,s_version))
         print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
         try:
@@ -544,39 +494,8 @@ def _welcome_to_clointfusion():
                 print("Please Upgrade ClointFusion")
     else:
         EXECUTE_SELF_TEST_NOW = False
-    
-    try:
-        if EXECUTE_SELF_TEST_NOW or first_run:
-            try:
-                clointfusion_self_test(last_updated_on_month)
-            except Exception as ex:
-                print("Error in Self Test="+str(ex))
-                _rerun_clointfusion_first_run(str(ex))
-            
-            # BOT Recommendation Engine Logic for Windows OS Only
-            
-            if os_name == windows_os:
-                bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
-                bre_file_folder = f"{_get_site_packages_path()}" + '\ClointFusion'
 
-                current_user = str(str(Path.home()).split("\\")[2])
-
-                short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
-
-                try:
-                    _update_registry(short_cut_path)
-                except:
-                    elevate(show_console=False)
-                    _update_registry(short_cut_path)
-
-                _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
-            else:
-                print("This feature is currently available only for Windows OS")
-    except Exception as ex:
-        print(str(ex))            
-    
     return EXECUTE_SELF_TEST_NOW
-
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -1282,88 +1201,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
     except Exception as ex:
         print("Error in gui_get_any_file_from_user="+str(ex))
 
-# def gui_get_workspace_path_from_user():    
-#     """
-#     Function to accept Workspace folder path from user using GUI. Returns the folderpath value in string format.
-
-#     """
-#     values = []
-#     ret_value = ""
-#     try:
-#         oldValue = ""
-#         oldKey = "Please Choose Workspace Folder"
-#         show_gui = False
-#         existing_value = read_semi_automatic_log(oldKey)
-
-#         if existing_value is None:
-#             show_gui = True
-
-#         if str(enable_semi_automatic_mode).lower() == 'false' and existing_value:
-#             show_gui = True
-#             oldValue = existing_value
-
-#         if show_gui:
-#             layout = [[sg.Text("ClointFusion - Set Yourself Free for Better Work", font='Courier 16',text_color='orange')],
-#                 [sg.Text(text=oldKey,font=('Courier 12'),text_color='yellow'),sg.Input(default_text=oldValue ,key='-FOLDER-', enable_events=True), sg.FolderBrowse()],
-#                 [sg.Checkbox('Do not ask me again', key='-DONT_ASK_AGAIN-',default=True, text_color='yellow',enable_events=True)],
-#                 [sg.Text("To see this message again, goto 'Config_Files' folder of your BOT and change 'Workspace_Dont_Ask_Again.txt' to False. \n Please find file path here: {}".format(Path(clointfusion_directory) / 'Workspace_Dont_Ask_Again.txt'),key='-DND-',visible=False,font='Courier 8')],
-#                 [sg.Submit('OK',button_color=('white','green'),bind_return_key=True, focus=True),sg.CloseButton('Ask Me Later',button_color=('white','firebrick'))]]
-
-#             window = sg.Window('ClointFusion',layout, return_keyboard_events=True,use_default_focus=True,disable_close=False,element_justification='c',keep_on_top=True,finalize=True,icon=cf_icon_file_path)
-            
-#             while True:
-#                 event, values = window.read()
-
-#                 if event == '-DONT_ASK_AGAIN-':
-#                     stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                    
-#                     file_path = os.path.join(clointfusion_directory, 'Workspace_Dont_Ask_Again.txt')
-#                     file_path = Path(file_path)
-                    
-#                     _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-                
-#                     if values and values['-DONT_ASK_AGAIN-']:
-#                         window['-DND-'](visible=True)
-#                     elif values and not values['-DONT_ASK_AGAIN-']:
-#                         window['-DND-'](visible=False)
-                
-#                 if event == sg.WIN_CLOSED or event == 'Ask Me Later':
-#                     break
-#                 if event == 'OK':
-#                     if values and values['-FOLDER-']:
-#                         break
-#                     else:
-#                         message_pop_up("Please enter the required values")
-            
-#             window.close()
-            
-#             if values and event == 'OK':
-#                 stored_do_not_ask_user_preference = values['-DONT_ASK_AGAIN-']
-                
-#                 file_path = os.path.join(clointfusion_directory, 'Workspace_Dont_Ask_Again.txt')
-#                 file_path = Path(file_path)
-                
-#                 _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
-
-#                 values['-KEY-'] = oldKey
-
-#                 if str(values['-KEY-']) and str(values['-FOLDER-']):
-#                     update_semi_automatic_log(str(values['-KEY-']).strip(),str(values['-FOLDER-']).strip())
-            
-#                 if values is not None:
-#                     ret_value = str(values['-FOLDER-']).strip()
-            
-#             else:
-#                 ret_value = None
-#         else:
-#             ret_value = str(existing_value)
-            
-#         return ret_value
-#     except Exception as ex:
-#         print("Error in gui_get_workspace_path_from_user="+str(ex))
-
-# ---------  GUI Functions Ends ---------
-
+# ---------  GUI Functions Ends---------
 
 
 # ---------  Mouse Functions --------- 
@@ -1440,7 +1278,6 @@ def mouse_move(x="",y=""):
         print("Error in mouse_move="+str(ex))
     finally:
         return status
-
 
 def mouse_drag_from_to(x1="",y1="",x2="",y2="",delay=0.5):
     """Clicks and drags from x1 y1 co-ordinates to x2 y2 Co-ordinates on the screen
@@ -1654,6 +1491,7 @@ def key_hit_enter(write_to_window=""):
         return status
 
 # --------- Keyboard Functions Ends --------- 
+
 
 # ---------  Message  Functions --------- 
 
@@ -2116,10 +1954,6 @@ def browser_quit_h():
 # ---------  Browser Functions Ends --------- 
 
 
-
-
-
-
 # ---------  Folder Functions ---------
 
 def folder_read_text_file(txt_file_path=""):
@@ -2331,10 +2165,6 @@ def file_get_json_details(path_of_json_file='',section=''):
 # ---------  Folder Functions Ends ---------
 
 
-
-
-
-
 # ---------  Window Operations Functions --------- 
 
 def window_show_desktop():
@@ -2488,6 +2318,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
 
 # ---------  Window Operations Functions Ends --------- 
 
+
 # ---------  String Functions --------- 
 
 def string_extract_only_alphabets(inputString=""):
@@ -2541,6 +2372,7 @@ def string_regex(inputStr="",strExpAfter="",strExpBefore="",intIndex=0):
 
 # ---------  String Functions Ends --------- 
  
+
 # ---------  Excel Functions --------- 
 
 def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
@@ -3900,10 +3732,6 @@ def schedule_delete_task_windows():
 # --------- Schedule Functions Ends ---------
 
 
-
-
-
-
 # --------- Email Functions ---------
 
 def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody="",embedImgPath="",attachmentFilePath=""):
@@ -3946,6 +3774,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
         print("Error in email_send_via_desktop_outlook="+str(ex))
 
 # --------- Email Functions Ends ---------
+
 
 # --------- Utility Functions ---------
 def ocr_now(img_path=""):
@@ -4147,10 +3976,6 @@ def speech_to_text():
 # --------- Utility Functions Ends ---------
 
 
-
-
-
-
 # --------- Self-Test and ClointFusion Related Functions ---------
 
 def _init_cf_quick_test_log_file(log_path_arg):
@@ -4186,7 +4011,6 @@ def _rerun_clointfusion_first_run(ex):
         pg.alert("Please Re-run..." + str(ex))
     except:
         put_text("Please Re-run..." + str(ex)).show()
-
 
 def clointfusion_self_test_cases(temp_current_working_dir):
     """
@@ -4492,10 +4316,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
 
-                try:
-                    browser_mouse_click_h("ClointFusion 0.1.")
-                except:
-                    browser_mouse_click_h("ClointFusion 0")
+                browser_navigate_h('https://pypi.org/project/ClointFusion/')
                 
                 key_press("browserstop")
 
@@ -4552,8 +4373,14 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         print("____________________________________________________________")
         print()
         if TEST_CASES_STATUS_MESSAGE == "":
-            with open(first_run_config, 'w') as fp:
-                fp.write("False")
+            config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+            import sqlite3
+            db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+            
+            connct = sqlite3.connect(db_file_path,check_same_thread=False)
+            cursr = connct.cursor()
+            cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
+            connct.commit()
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
@@ -4740,7 +4567,7 @@ def update_log_excel_file(message=""):
 # --------- Self-Test Related Functions Ends ---------
 
 
-# _________ CLI __________
+# --------- CLI Commands ---------
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4945,11 +4772,23 @@ def cli_cf(message):
     click.echo('\n'.join(message))
     click.echo('You can try below commands:\n1)colab\n2)dost\n3)cf_vlookup\n4)cf_st\n5)work')    
 
+# --------- CLI Commands Ends ---------
+
+
 # --------- 4. All default services ---------
 
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
+
+get_current_version_thread = threading.Thread(target=_getCurrentVersion, name="GetCurrentVersion")
+get_current_version_thread.start()
+
+get_server_version_thread = threading.Thread(target=_getServerVersion, name="GetServerVersion")
+get_server_version_thread.start()
+
+get_current_version_thread.join()
+get_server_version_thread.join()
 
 _download_cloint_ico_png()
 
@@ -4970,16 +4809,105 @@ except:
     user_name = str(os.getlogin())
     user_email = ""
 
+
+# elevate(show_console=False)
+try:
+    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+    import sqlite3
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+    cursr = connct.cursor()
+except: #Ask ADMIN Rights if REQUIRED
+    if os_name == windows_os:
+        elevate(show_console=False)
+    else:
+        elevate(graphical=False)
+    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
+    cursr = connct.cursor()
+
+try:
+    cursr.execute('''CREATE TABLE CFTRIGGERS
+         (ID INT PRIMARY KEY     NOT NULL,
+         FIRST_RUN           TEXT    NOT NULL,
+         BOL            INT     NOT NULL,
+         SELF_TEST        TEXT);''')
+    cursr.execute("INSERT INTO CFTRIGGERS (ID,FIRST_RUN,BOL,SELF_TEST) \
+      VALUES (1, 'True', 1, 'True')");
+    connct.commit()
+except sqlite3.OperationalError:
+    pass
+except Exception as ex :
+    print(f"Exception: {ex}")
+
+
+data = cursr.execute("SELECT first_run,self_test from CFTRIGGERS")
+for row in data:
+   FIRST_RUN =  row[0]
+   SELF_TEST =  row[1]
+
+if os_name == windows_os:
+    if FIRST_RUN == "True":
+        _load_missing_python_packages_windows()
+        _install_pyaudio_windows()
+        #Bol Related
+    engine = pyttsx3.init('sapi5')
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
+
+    from unicodedata import name
+    import pygetwindow as gw
+
+elif os_name == linux_os:
+    if FIRST_RUN == "True":
+        _load_missing_python_packages_linux()
+        #Bol Related
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
+
 EXECUTE_SELF_TEST_NOW = _welcome_to_clointfusion()
+     
+
+if FIRST_RUN == "True" and os_name == windows_os:
+    bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
+    bre_file_folder = f"{_get_site_packages_path()}" + '\ClointFusion'
+
+    current_user = str(str(Path.home()).split("\\")[2])
+
+    short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
+
+    try:
+        _update_registry(short_cut_path)
+    except:
+        elevate(show_console=False)
+        _update_registry(short_cut_path)
+
+    _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
+    cursr.execute("UPDATE CFTRIGGERS set FIRST_RUN = 'False' where ID = 1")
+    connct.commit()
 
 
-
-if not EXECUTE_SELF_TEST_NOW:
+if EXECUTE_SELF_TEST_NOW or SELF_TEST == "True":
+    try:
+        cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'True' where ID = 1")
+        connct.commit()
+        clointfusion_self_test(last_updated_on_month)
+    except Exception as ex:
+        print("Error in Self Test="+str(ex))
+        _rerun_clointfusion_first_run(str(ex))
+else:
     folder_create(clointfusion_directory) 
     log_path = Path(os.path.join(clointfusion_directory, "Logs"))
     img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
-    batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File")) 
-    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files")) 
+    batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
+    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
     output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
     error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
     status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))

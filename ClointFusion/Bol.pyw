@@ -222,7 +222,6 @@ def call_read_screen():
     except Exception as ex:
         print("Error in capture_photo " + str(ex))
 
-
 def call_name():
     name_choices = ["I am ClointFusion's BOL!", "This is Bol!", "Hi, I am ClointFusion's Bol!","Hey, this is Bol!"]
     cf.text_to_speech(shuffle_return_one_option(name_choices))
@@ -489,21 +488,44 @@ def bol_main():
                 error_try_later()
 
 
-bol_config = clointfusion_directory + "\Config_Files\_bol.txt"
+# elevate(show_console=False)
+try:
+    import sqlite3
+    from elevate import elevate
+    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files")) 
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+    cursr = connct.cursor()
+except: #Ask ADMIN Rights if REQUIRED
+    if cf.os_name == "windows":
+        elevate(show_console=False)
+    else:
+        elevate(graphical=False)
+    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
+    cursr = connct.cursor()
 
 try:
-    if os.path.exists(bol_config):
-        with open(bol_config, 'r') as fp:
-            nth = fp.readline(1)
-        with open(bol_config, 'w') as fp:
-            fp.write(str(int(nth) + 1))
-        welcome(int(nth))
-    else:
-        with open(bol_config, 'w') as fp:
-            fp.write("1")
-            welcome(1)
-except:
+    cursr.execute('''CREATE TABLE CFTRIGGERS
+         (ID INT PRIMARY KEY     NOT NULL,
+         FIRST_RUN           TEXT    NOT NULL,
+         BOL            INT     NOT NULL,
+         SELF_TEST        TEXT);''')
+    cursr.execute("INSERT INTO CFTRIGGERS (ID,FIRST_RUN,BOL,SELF_TEST) \
+      VALUES (1, 'True', 1, 'True')");
+    connct.commit()
+except sqlite3.OperationalError:
     pass
+except Exception as ex :
+    print(f"Exception: {ex}")
 
+
+data = cursr.execute("SELECT bol from CFTRIGGERS where ID = 1")
+for row in data:
+   run =  row[0]
+
+welcome(run)
+cursr.execute("UPDATE CFTRIGGERS set bol = bol+1 where ID = 1")
+connct.commit()
 
 bol_main()
