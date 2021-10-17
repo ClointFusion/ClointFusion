@@ -4316,10 +4316,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
 
-                try:
-                    browser_mouse_click_h("ClointFusion")
-                except:
-                    browser_mouse_click_h("ClointFusion")
+                browser_navigate_h('https://pypi.org/project/ClointFusion/')
                 
                 key_press("browserstop")
 
@@ -4376,6 +4373,14 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         print("____________________________________________________________")
         print()
         if TEST_CASES_STATUS_MESSAGE == "":
+            config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+            import sqlite3
+            db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+            
+            connct = sqlite3.connect(db_file_path,check_same_thread=False)
+            cursr = connct.cursor()
+            cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
+            connct.commit()
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
@@ -4894,8 +4899,6 @@ if EXECUTE_SELF_TEST_NOW or SELF_TEST == "True":
         cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'True' where ID = 1")
         connct.commit()
         clointfusion_self_test(last_updated_on_month)
-        cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
-        connct.commit()
     except Exception as ex:
         print("Error in Self Test="+str(ex))
         _rerun_clointfusion_first_run(str(ex))
