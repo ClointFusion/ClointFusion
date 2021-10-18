@@ -95,7 +95,6 @@ error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = "My_BOT"
 FIRST_RUN = ""
-SELF_TEST = ""
 
 user_name = ""
 user_email = ""
@@ -416,40 +415,39 @@ def _get_site_packages_path():
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
 
-def _update_registry(file_path):
-    """
-    Add BRE_WHM to Registry for AutoRun
-    """
+def _update_version(c_version,s_version):
+    print('You are using version {}, however version {} is available !'.format(c_version,s_version))
+    print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
     try:
-        import winreg as reg 
-        address=file_path
-        # key we want to change is HKEY_CURRENT_USER 
-        # key value is Software\Microsoft\Windows\CurrentVersion\Run
-
-        key_value = "Software\Microsoft\Windows\CurrentVersion\Run"
-        open = reg.OpenKey(reg.HKEY_CURRENT_USER,key_value,0,reg.KEY_ALL_ACCESS)
-
-        # key = reg.OpenKey(reg.HKEY_CURRENT_USER, key_value, 0, reg.KEY_ALL_ACCESS)        
-        # reg.SetValueEx(open,"ClointFusion",0,reg.REG_SZ,address)
-
-        reg.DeleteValue(open, 'ClointFusion')
-        reg.CloseKey(open)
-    except Exception as ex:
+        if os_name == windows_os:
+            os.system("python -m pip install --upgrade pip")
+        else:
+            os.system("python3 -m pip install --upgrade pip")
+    except:
         pass
 
-def _create_short_cut(short_cut_path="",target_file_path="",work_dir=""):
-    if os_name == windows_os:
-        try:    
-            import winshell
-            from win32com.client import Dispatch
+    try:
+        if os_name == windows_os:
+            os.system("pip install -U ClointFusion")
+        else:
+            os.system("pip3 install -U ClointFusion")
+    except:
+        try:
+            if os_name == windows_os:
+                elevate(show_console=False)
+                os.system("pip install -U ClointFusion")
+            else:
+                elevate(graphical=False)
+                os.system("pip3 install -U ClointFusion")    
+        except:
+            print("Please Upgrade ClointFusion")
 
-            shell = Dispatch('WScript.Shell')
-            shortcut = shell.CreateShortCut(short_cut_path) # Path to be saved (shortcut)
-            shortcut.Targetpath = target_file_path # The shortcut target file or folder
-            shortcut.WorkingDirectory = work_dir # The parent folder of your file
-            shortcut.save()
-        except Exception as ex:
-            print("Error in _create_short_cut" + str(ex))
+def _perform_self_test():
+    try:
+        clointfusion_self_test("0")
+    except Exception as ex:
+        print("Error in Self Test="+str(ex))
+        _rerun_clointfusion_first_run()
 
 def _welcome_to_clointfusion():
     global user_name, first_run
@@ -469,39 +467,16 @@ def _welcome_to_clointfusion():
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
 
-    if c_version < s_version:
-        EXECUTE_SELF_TEST_NOW = True
-
-
-        print('You are using version {}, however version {} is available !'.format(c_version,s_version))
-        print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
-        try:
-            if os_name == windows_os:
-                os.system("python -m pip install --upgrade pip")
-            else:
-                os.system("python3 -m pip install --upgrade pip")
-        except:
-            pass
-
-        try:
-            if os_name == windows_os:
-                os.system("pip install -U ClointFusion")
-            else:
-                os.system("pip3 install -U ClointFusion")
-        except:
-            try:
-                if os_name == windows_os:
-                    elevate(show_console=False)
-                    os.system("pip install -U ClointFusion")
-                else:
-                    elevate(graphical=False)
-                    os.system("pip3 install -U ClointFusion")    
-            except:
-                print("Please Upgrade ClointFusion")
-    else:
-        EXECUTE_SELF_TEST_NOW = False
-
-    return EXECUTE_SELF_TEST_NOW
+    try:
+        if c_version < s_version:
+            _update_version(c_version, s_version)
+            selft.sfn()
+            _perform_self_test()
+            return True
+        else:
+            return True
+    except:
+        return False
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -4387,12 +4362,6 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             cursr = connct.cursor()
             cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
             connct.commit()
-            try:
-                selft.ast()
-            except Exception as ex:
-                message_pop_up("Active internet connection is required ! {}".format(ex))
-                sys.exit(0)
-                    
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
@@ -4444,7 +4413,7 @@ def clointfusion_self_test(last_updated_on_month):
                 window['Skip for Now'].update(disabled=False)
                 if os_name  == linux_os:
                     clear_screen()
-                
+
             if event == 'Skip for Now':
                 try:
                     pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
@@ -4453,7 +4422,6 @@ def clointfusion_self_test(last_updated_on_month):
                     put_text("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
 
                 last_updated_on_month = 2
-                
                 break
 
             if event == 'Start':
@@ -4784,55 +4752,6 @@ get_server_version_thread.join()
 
 _download_cloint_ico_png()
 
-
-try:      
-    resp = selft.vst()
-except Exception as ex:
-    message_pop_up("Active internet connection is required ! {}".format(ex))
-    sys.exit(0)
-
-try:
-    last_updated_on_month, user_name, user_email = str(resp.text).split('#')
-except:
-    last_updated_on_month = "0"
-    user_name = str(os.getlogin())
-    user_email = ""
-
-# elevate(show_console=False)
-try:
-    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-    
-    connct = sqlite3.connect(db_file_path,check_same_thread=False)
-    cursr = connct.cursor()
-except: #Ask ADMIN Rights if REQUIRED
-    if os_name == windows_os:
-        elevate(show_console=False)
-    else:
-        elevate(graphical=False)
-    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
-    cursr = connct.cursor()
-
-try:
-    cursr.execute('''CREATE TABLE CFTRIGGERS
-         (ID INT PRIMARY KEY     NOT NULL,
-         FIRST_RUN           TEXT    NOT NULL,
-         BOL            INT     NOT NULL,
-         SELF_TEST        TEXT);''')
-    cursr.execute("INSERT INTO CFTRIGGERS (ID,FIRST_RUN,BOL,SELF_TEST) \
-      VALUES (1, 'True', 1, 'True')");
-    connct.commit()
-except sqlite3.OperationalError:
-    pass
-except Exception as ex :
-    print(f"Exception: {ex}")
-
-
-data = cursr.execute("SELECT first_run,self_test from CFTRIGGERS")
-for row in data:
-   FIRST_RUN =  row[0]
-   SELF_TEST =  row[1]
-
 if os_name == windows_os:
     if FIRST_RUN == "True":
         _load_missing_python_packages_windows()
@@ -4859,37 +4778,9 @@ elif os_name == linux_os:
     r = sr.Recognizer()
     energy_threshold = [3000]
 
-EXECUTE_SELF_TEST_NOW = _welcome_to_clointfusion()
+CONTINUE = _welcome_to_clointfusion()
 
-if FIRST_RUN == "True" and os_name == windows_os:
-    bre_file_path = f"{_get_site_packages_path()}" + '\ClointFusion\BRE_WHM.pyw'
-    bre_file_folder = f"{_get_site_packages_path()}" + '\ClointFusion'
-
-    current_user = str(str(Path.home()).split("\\")[2])
-
-    short_cut_path = r"C:\Users\{}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup".format(current_user) + "\CF_Tray.lnk"
-
-    try:
-        _update_registry(short_cut_path)
-    except:
-        elevate(show_console=False)
-        _update_registry(short_cut_path)
-
-    _create_short_cut(short_cut_path,bre_file_path,bre_file_folder)
-    cursr.execute("UPDATE CFTRIGGERS set FIRST_RUN = 'False' where ID = 1")
-    connct.commit()
-
-if EXECUTE_SELF_TEST_NOW or SELF_TEST == "True":
-    try:
-        cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'True' where ID = 1")
-        connct.commit()
-        selft.sfn()
-        clointfusion_self_test(last_updated_on_month)
-        pass
-    except Exception as ex:
-        print("Error in Self Test="+str(ex))
-        _rerun_clointfusion_first_run(str(ex))
-else:
+if CONTINUE:
     folder_create(clointfusion_directory) 
     log_path = Path(os.path.join(clointfusion_directory, "Logs"))
     img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
