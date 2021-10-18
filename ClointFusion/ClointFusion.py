@@ -4362,6 +4362,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             cursr = connct.cursor()
             cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
             connct.commit()
+            selft.ast()
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
