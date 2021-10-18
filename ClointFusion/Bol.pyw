@@ -278,6 +278,45 @@ def call_switch_wndw():
     windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
     cf.window_activate_and_maximize_windows(windw_name)
 
+def call_social_media():
+    #opens all social media links of ClointFusion
+    try:
+        webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://twitter.com/ClointFusion")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
+    except:
+        pass
+
+
+
 def call_find_on_screen():
     cf.text_to_speech('OK, what to find ?')
     query = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
@@ -462,6 +501,11 @@ def bol_main():
                 elif 'ocr' in query:
                     status.update("Processing...\n")
                     call_ocr()
+
+                elif any(x in query for x in ["social media"]):
+                    status.update("Processing...\n")
+                    call_social_media()
+                    status.update("Listening...\n")
 
                 elif any(x in query for x in ["read the screen","read screen","screen to text"]):
                     status.update("Processing...\n")
