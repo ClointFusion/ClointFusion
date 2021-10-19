@@ -315,7 +315,20 @@ def call_social_media():
     except:
         pass
 
+    try:
+        webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
+    except:
+        pass
 
+    try:
+        webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
+    except:
+        pass
+
+    try:
+        webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
+    except:
+        pass
 
 def call_find_on_screen():
     cf.text_to_speech('OK, what to find ?')
