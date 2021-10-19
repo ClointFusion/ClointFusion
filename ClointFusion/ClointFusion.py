@@ -4330,6 +4330,13 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             message_pop_up("Testing flash message.")
             message_toast("Testing toast message.")
             logging.info("Flash message tested successfully.")
+            config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+            db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+            connct = sqlite3.connect(db_file_path,check_same_thread=False)
+            cursr = connct.cursor()
+            cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
+            connct.commit()
+            selft.ast()
         except Exception as ex:
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
@@ -4354,15 +4361,6 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         print("____________________________________________________________")
         print()
         if TEST_CASES_STATUS_MESSAGE == "":
-            config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-            
-            db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-            
-            connct = sqlite3.connect(db_file_path,check_same_thread=False)
-            cursr = connct.cursor()
-            cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
-            connct.commit()
-            selft.ast()
             print("ClointFusion Self Testing Completed")
             logging.info("ClointFusion Self Testing Completed")
             print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
