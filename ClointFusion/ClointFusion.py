@@ -96,7 +96,7 @@ status_log_excel_filepath = ""
 bot_name = "My_BOT"
 FIRST_RUN = ""
 
-user_name = ""
+user_name = str(selft.vst().text).split('#')[1]
 user_email = ""
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
@@ -3513,6 +3513,9 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",switch_to_wind
 
         message_counter_down_timer("Screen scraping in (seconds)",3)
         
+        if switch_to_window:
+            window_activate_and_maximize_windows(switch_to_window)
+        
         time.sleep(1)
         if X == 0 and Y == 0:
             X = pg.size()[0]/2
@@ -4059,7 +4062,6 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print('Testing folder operations')
             folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
             folder_create_text_file(test_folder_path, "My Text File")
-            # excel_create_excel_file_in_given_folder(test_run_excel_path)
             excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
             excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-1')
             excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-2')
@@ -4088,11 +4090,14 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 print()
                 print('Testing window based operations')
                 window_show_desktop()
-                
+                launch_any_exe_bat_application(test_run_excel_path)
+                time.sleep(5)
                 window_minimize_windows('Quick_Self_Test_Excel')
+                time.sleep(5)
                 window_activate_and_maximize_windows('Quick_Self_Test_Excel')
-                window_close_windows('Quick_Self_Test_Excel')
+                time.sleep(5)
                 print(window_get_all_opened_titles_windows())
+                window_close_windows('Quick_Self_Test_Excel')
                 print('Window based operations tested successfully '+show_emoji())
                 print("____________________________________________________________")
                 logging.info('Window based operations tested successfully')
@@ -4111,7 +4116,6 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print(string_remove_special_characters("C!@loin#$tFu*(sion"))
             print(string_extract_only_alphabets(inputString="C1l2o#%^int&*Fus12i5on"))
             print(string_extract_only_numbers("C1l2o3i4n5t6F7u8i9o0n"))
-            
             print('String operations tested successfully '+show_emoji())
             print("____________________________________________________________")
             logging.info('String operations tested successfully')
@@ -4247,12 +4251,9 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print("Testing screen-scraping functions")
             
             browser_activate('https://sites.google.com/view/clointfusion-hackathon')
-
-            message_counter_down_timer("Waiting for page to load in (seconds)",5)
-
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-            scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
-                
+            scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
+
             print("Screen-scraping functions tested successfully "+ show_emoji())
             print("____________________________________________________________")
             logging.info("Screen-scraping functions tested successfully")
