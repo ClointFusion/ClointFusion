@@ -22,7 +22,6 @@ import urllib.request
 import sqlite3
 
 from datetime import datetime
-from PySimpleGUI.PySimpleGUI import B
 from dateutil import parser
 from datetime import timedelta
 import time
@@ -4334,7 +4333,6 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             if os_name == windows_os:
                 try:
                     window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
-                    
                 except:
                     pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
                     mouse_click(pos[0], pos[1])
