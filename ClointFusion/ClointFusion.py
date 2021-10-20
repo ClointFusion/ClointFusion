@@ -427,7 +427,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.0.2)"
+    version = "(Version: 1.0.3)"
 
     hour = datetime.datetime.now().hour
 
@@ -3483,7 +3483,10 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",switch_to_wind
         message_counter_down_timer("Screen scraping in (seconds)",3)
         
         if switch_to_window:
-            window_activate_and_maximize_windows(switch_to_window)
+            if os_name == windows_os:
+                window_activate_and_maximize_windows(switch_to_window)
+            elif os_name == linux_os:
+                mouse_click(100,100)
         
         time.sleep(1)
         if X == 0 and Y == 0:
