@@ -94,9 +94,8 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = "My_BOT"
-FIRST_RUN = ""
 
-user_name, user_email = selft.get_details()
+user_name, user_email, FIRST_RUN = selft.get_details()
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 
@@ -4442,7 +4441,6 @@ def clointfusion_self_test(last_updated_on_month):
                     message_counter_down_timer("Closing browser (in seconds)",10)
                     browser.set_driver(driver)
                     browser_quit_h()
-                    window['Close'].update(disabled=True)
                     
                     #Ensure to close all browser if left open by this self test
                     time.sleep(2)
