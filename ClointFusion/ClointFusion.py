@@ -4276,7 +4276,7 @@ def clointfusion_self_test_cases(temp_current_working_dir):
 
                 browser_mouse_click_h(element="RPA",double_click=True)
                 
-                browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[3]/a/img'))
+                browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                 
                 pause_program(10)
                 
@@ -4309,6 +4309,11 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
         
+        try:
+            text_to_speech("This is Bol, your self-test is successful.")
+            text_to_speech("To activate me, type 'bol' in command prompt.")
+        except Exception as ex:
+            print("Error while Testing text_to_speech function="+str(ex))
         
             
 
