@@ -22,6 +22,7 @@ import urllib.request
 import sqlite3
 
 from datetime import datetime
+from PySimpleGUI.PySimpleGUI import B
 from dateutil import parser
 from datetime import timedelta
 import time
@@ -96,8 +97,7 @@ status_log_excel_filepath = ""
 bot_name = "My_BOT"
 FIRST_RUN = ""
 
-user_name = str(selft.vst().text).split('#')[1]
-user_email = ""
+user_name, user_email = selft.get_details()
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 
@@ -415,32 +415,6 @@ def _get_site_packages_path():
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
 
-def _update_version(c_version,s_version):
-    print('You are using version {}, however version {} is available !'.format(c_version,s_version))
-    print_with_magic_color('\nUpgrading to latest version...Please wait a moment...\n')
-    try:
-        if os_name == windows_os:
-            os.system("python -m pip install --upgrade pip")
-        else:
-            os.system("python3 -m pip install --upgrade pip")
-    except:
-        pass
-
-    try:
-        if os_name == windows_os:
-            os.system("pip install -U ClointFusion")
-        else:
-            os.system("pip3 install -U ClointFusion")
-    except:
-        try:
-            if os_name == windows_os:
-                elevate(show_console=False)
-                os.system("pip install -U ClointFusion")
-            else:
-                elevate(graphical=False)
-                os.system("pip3 install -U ClointFusion")    
-        except:
-            print("Please Upgrade ClointFusion")
 
 def _perform_self_test():
     try:
@@ -466,17 +440,14 @@ def _welcome_to_clointfusion():
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
+    
+    status = selft.verify_version(c_version, s_version)
 
-    try:
-        if c_version < s_version:
-            _update_version(c_version, s_version)
-            selft.sfn()
-            _perform_self_test()
-            return True
-        else:
-            return True
-    except:
-        return False
+    if status:
+        if os_name == windows_os:
+            os.system('python -c "import ClointFusion"')
+        elif os_name == linux_os:
+            os.system('sudo python3 -c "import ClointFusion"')
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -3921,7 +3892,7 @@ def speech_to_text():
     Speech to Text using Google's Generic API
     """
     bol_url = "https://api.clointfusion.com/update_bol"
-    from cfu import system_uuid
+    system_uuid = selft.get_uuid()
 
     while True:
         with sr.Microphone() as source:
@@ -3987,7 +3958,7 @@ def _init_cf_quick_test_log_file(log_path_arg):
         print("ERROR in _init_log_file="+str(ex))
     finally:
         host_ip = socket.gethostbyname(socket.gethostname()) 
-        logging.info("{} ClointFusion Self Testing initiated".format(os_name))
+        logging.info("{} ClointFusion Self Testing initiated for version {}".format(str(os_name).title(), s_version))
         logging.info("{}/{}".format(host_ip,str(get_public_ip())))
 
 def _rerun_clointfusion_first_run(ex):
@@ -4331,24 +4302,14 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             message_pop_up("Testing flash message.")
             message_toast("Testing toast message.")
             logging.info("Flash message tested successfully.")
-            config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-            db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-            connct = sqlite3.connect(db_file_path,check_same_thread=False)
-            cursr = connct.cursor()
-            cursr.execute("UPDATE CFTRIGGERS set SELF_TEST = 'False' where ID = 1")
-            connct.commit()
-            selft.ast()
+
         except Exception as ex:
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE = "Error while testing Flash message="+str(ex)
         
-        try:
-            if os_name == windows_os:
-                pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
-                mouse_click(pos[0], pos[1])
-        except:
-            print("Please click red 'Close' button")
+        
+            
 
     except Exception as ex:
         print("ClointFusion Automated Testing Failed "+str(ex))
@@ -4370,7 +4331,15 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             print("____________________________________________________________")
             
             message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
-
+            if os_name == windows_os:
+                try:
+                    window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
+                    
+                except:
+                    pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+                    mouse_click(pos[0], pos[1])
+            else:
+                print("Please click red 'Close' button")
         else:
             print("ClointFusion Self Testing has Failed for few Functions")
             print(TEST_CASES_STATUS_MESSAGE)
@@ -4464,23 +4433,24 @@ def clointfusion_self_test(last_updated_on_month):
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                     
-                    selft.gf(os_hn_ip, time_taken, file_contents)
+                    driver = selft.gf(os_hn_ip, time_taken, file_contents)
+                    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+                    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+                    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+                    cursr = connct.cursor()
+                    cursr.execute("UPDATE CFVALUES set SELF_TEST = 'False' where ID = 1")
+                    connct.commit()
                     clear_screen()
                     message_counter_down_timer("Closing browser (in seconds)",10)
+                    browser.set_driver(driver)
+                    browser_quit_h()
                     window['Close'].update(disabled=True)
                     
                     #Ensure to close all browser if left open by this self test
                     time.sleep(2)
+                    selft.ast()
+                    last_updated_on_month = 3
                     
-                    try:
-                        key_press(key_1="alt", key_2="f4")
-                        
-                    except:
-                        if os_name == linux_os:
-                            subprocess.call('sudo pkill -9', shell=True)
-                        else:
-                            pg.hotkey('alt','f4')
-                    time.sleep(2)
                     
                 break        
                     
@@ -4497,6 +4467,12 @@ def clointfusion_self_test(last_updated_on_month):
         try:
             if last_updated_on_month == 2 :
                 window.close()
+            elif last_updated_on_month == 3:
+                if os_name == windows_os:
+                        os.system('python -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
+                elif os_name == linux_os:
+                    os.system('sudo python3 -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
+                time.sleep(2)
             else:
                 sys.exit(1)
         except Exception as ex:
