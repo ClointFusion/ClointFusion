@@ -336,5 +336,5 @@ Please find all the dependencies [here](https://openbase.com/python/ClointFusion
 # ReadMe File Maintainer: 
 Fharook Shaik, Intern@ClointFusion. Please connect with him at: https://www.linkedin.com/in/fharook-shaik-7a757b181
 
-# Contact us: 
+# Do you need help in building BOTs ? Contact us: 
 Drop a mail to ClointFusion@cloint.com
