@@ -15,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='1.0.5',
+    version='0.1.47',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -26,7 +26,7 @@ setup(
     install_requires=open('requirements.txt').read().split('\n'),
     # py_modules=['ClointFusion'],
   classifiers=[
-    'Development Status :: 5 - Production/Stable',
+    'Development Status :: 4 - Beta',
     'Environment :: Console',
     'Intended Audience :: Developers',      
     'Topic :: Software Development :: Build Tools',

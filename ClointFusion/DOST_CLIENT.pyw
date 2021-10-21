@@ -11,7 +11,6 @@ import helium as browser
 from rich.text import Text
 from rich import print
 from rich.console import Console
-
 class DisableLogger():
     def __enter__(self):
        logging.disable(logging.CRITICAL)
@@ -147,33 +146,34 @@ temp_code = clointfusion_directory + "\Config_Files\dost_code.py"
 
 text = Text("Welcome to DOST,")
 text.stylize("bold magenta")
-text.append(" you drag and drop, we do the rest. Happy Automation")
+text.append(" you drag and drop, we do the rest. Happy Automation!")
 console.print(text)
 
 web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, clear_previous_instances=True)
 browser.set_driver(web_driver)
 
 with console.status("DOST client running...\n") as status:
-	while start:
-		try:
-			if not found:
-				run_btn = browser.find_all(browser.S('//*[@id="cf_run"]'))
-				if run_btn:
-					if script:
-						web_driver.execute_script('localStorage.setItem("client", true)')
-						script = False
-					found = run_btn[0]
-			if found:
-				browser.wait_until(browser.Text("Running Program..").exists)
-				if browser.Text("Running Program...").exists:
-					browser.wait_until(lambda: not browser.Text("Running Program..").exists())
-					status.update("Running the bot...\n")
-					while run_program(website):
-						continue
-					status.update("DOST client running...\n")
-					found = False
-		except TimeoutException:
-				found = False
-		except WebDriverException:
-				browser.kill_browser()
-				start = False
+    while start:
+        try:
+            if not found:
+                run_btn = browser.find_all(browser.S('//*[@id="cf_run"]'))
+                    
+                if run_btn:
+                    if script:
+                        web_driver.execute_script('localStorage.setItem("client", true)')
+                        script = False
+                    found = run_btn[0]
+            if found:
+                browser.wait_until(browser.Text("Running Program..").exists)
+                if browser.Text("Running Program...").exists:
+                    browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+                    status.update("Running your bot...\n")
+                    while run_program(website):
+                        continue
+                    status.update("DOST client running...\n")
+                    found = False
+        except TimeoutException:
+            found = False
+        except WebDriverException:
+            browser.kill_browser()
+            start = False
