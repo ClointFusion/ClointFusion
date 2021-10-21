@@ -413,6 +413,43 @@ def _get_site_packages_path():
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
 
+def _update_version(c_version,s_version):
+    print('You are using version {}, however different version {} is available !'.format(c_version,s_version))
+    print('\nUpgrading to latest version...Please wait a moment...\n')
+    try:
+        if os_name == windows_os:
+            os.system("python -m pip install --upgrade pip")
+        else:
+            os.system("sudo python3 -m pip install --upgrade pip")
+    except:
+        pass
+
+    try:
+        if os_name == windows_os:
+            os.system("pip install -U ClointFusion --user --force-reinstall")
+        else:
+            os.system("sudo pip3 install -U ClointFusion")
+    except:
+        try:
+            if os_name == windows_os:
+                elevate(show_console=False)
+                os.system("pip install -U ClointFusion --force-reinstall")
+            else:
+                elevate(graphical=False)
+                os.system("pip3 install -U ClointFusion")    
+        except:
+            print("Please Upgrade ClointFusion")
+
+def verify_version(c_version, s_version):
+    try:
+        if c_version != s_version:
+            _update_version(c_version, s_version)
+            selft.sfn()
+            return True
+        else:
+            return False
+    except:
+        return False
 
 def _perform_self_test():
     try:
@@ -427,7 +464,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 0.1.47)"
+    version = "(Version: 1.0.6)"
 
     hour = datetime.datetime.now().hour
 
@@ -439,7 +476,7 @@ def _welcome_to_clointfusion():
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
     
-    status = selft.verify_version(c_version, s_version)
+    status = verify_version(c_version, s_version)
 
     if status:
         if os_name == windows_os:
