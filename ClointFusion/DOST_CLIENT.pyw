@@ -11,6 +11,7 @@ import helium as browser
 from rich.text import Text
 from rich import print
 from rich.console import Console
+from ClointFusion import selft
 class DisableLogger():
     def __enter__(self):
        logging.disable(logging.CRITICAL)
@@ -20,26 +21,9 @@ class DisableLogger():
 
 def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
-    """Function to launch browser and start the session.
-    Args:
-        url (str, optional): Website you want to visit. Defaults to "".
-        files_download_path (str, optional): Path to which the files need to be downloaded.
-        Defaults: ''.
-        dummy_browser (bool, optional): If it is false Default profile is opened. 
-        Defaults: True.
-        incognito (bool, optional): Opens the browser in incognito mode. 
-        Defaults: False.
-        clear_previous_instances (bool, optional): If true all the opened chrome instances are closed. 
-        Defaults: False.
-        profile (str, optional): By default it opens the 'Default' profile. 
-        Eg : Profile 1, Profile 2
-    Returns:
-        bool: Whether the function is successful or failed.
-    """
-    status = False
-    browser_driver = ''
+    """ This function is used to activate the browser.  """
     try:
-        # To clear previous instances of chrome
+    # To clear previous instances of chrome
         if clear_previous_instances:
             if os_name == windows_os:
                 try:
@@ -53,13 +37,16 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == linux_os:
                 try:
-                    subprocess.call('killall chrome', shell=True)
+                    subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
 
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
+        if os_name == linux_os:
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-dev-shm-usage') 
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
@@ -77,7 +64,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 "safebrowsing.enabled": False
             }
             options.add_experimental_option('prefs', prefs)
-
         try:
             with DisableLogger():
                 browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
@@ -88,9 +74,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             browser.Config.implicit_wait_secs = 120
         except Exception as ex:
-            print(f'Error while browser_activate: {ex}')
+            print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
-        print(f'Error in launch_website_h: {ex}')
+        print("Error in launch_website_h = " + str(ex))
         browser.kill_browser()
     finally:
         return browser_driver
@@ -131,15 +117,12 @@ start = True
 found = False
 script = True
 
-# website = "http://localhost:3000"
 website = "https://dost.clointfusion.com"
 # UUID KEY
-os_name = str(platform.system()).lower()
-if os_name == windows_os:
-    uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
-else:
-    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
-
+try:
+    uuid = selft.get_uuid()
+except:
+    print("UUID not found")
 clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
 temp_code = clointfusion_directory + "\Config_Files\dost_code.py"
 
@@ -157,7 +140,6 @@ with console.status("DOST client running...\n") as status:
         try:
             if not found:
                 run_btn = browser.find_all(browser.S('//*[@id="cf_run"]'))
-                    
                 if run_btn:
                     if script:
                         web_driver.execute_script('localStorage.setItem("client", true)')
@@ -175,6 +157,9 @@ with console.status("DOST client running...\n") as status:
         except TimeoutException:
             found = False
         except WebDriverException:
+            browser.kill_browser()
+            start = False
+        except IndexError:
             browser.kill_browser()
             start = False
         except Exception as ex:
