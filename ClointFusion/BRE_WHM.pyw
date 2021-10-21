@@ -15,6 +15,12 @@ from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
 import pyautogui as pg
+from win10toast_click import ToastNotifier 
+import requests
+import threading
+import schedule
+
+toaster = ToastNotifier()
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 
@@ -33,6 +39,7 @@ elif os_name == mac_os:
 img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
 config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
 cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
+cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
 
 last_click = ""
 COUNTER = 1
@@ -317,6 +324,16 @@ def exit(keyboard_listener,mouse_listener):
     except:
         pass
 
+def _getServerVersion():
+    global s_version
+    try:
+        response = requests.get(f'https://pypi.org/pypi/ClointFusion/json')
+        s_version = response.json()['info']['version']
+    except Warning:
+        pass
+
+    return s_version
+
 def _getCurrentVersion():
     global c_version
     try:
@@ -330,6 +347,16 @@ def _getCurrentVersion():
         pass
 
     return c_version
+
+def get_versions():
+    get_current_version_thread = threading.Thread(target=_getCurrentVersion, name="GetCurrentVersion")
+    get_current_version_thread.start()
+
+    get_server_version_thread = threading.Thread(target=_getServerVersion, name="GetServerVersion")
+    get_server_version_thread.start()
+
+    get_current_version_thread.join()
+    get_server_version_thread.join()
 
 def _get_site_packages_path():
     """
@@ -404,7 +431,25 @@ def launch_cf_log_generator_gui_new():
     except Exception as ex:
         print("Error in launch_cf_log_generator_gui_new="+str(ex))            
 
+def show_toast_notification_if_new_version_is_available():
+    if os_name == windows_os:
+
+        if c_version < s_version:
+            toaster.show_toast(
+                "ClointFusion", 
+                "New version {} is avaiable now ! Click to update".format(s_version), 
+                icon_path=cf_icon_cdt_file_path,
+                duration=None,
+                threaded=True, 
+                callback_on_click=lambda: os.system('cf') # click notification to run function 
+            )
+
 try:
     launch_cf_log_generator_gui_new()
 except Exception as ex:
     pg.alert(ex)
+
+schedule.every().hour.do(show_toast_notification_if_new_version_is_available)
+while True:
+    schedule.run_pending()
+    time.sleep(60) #Check Every minute
