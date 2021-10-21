@@ -1596,7 +1596,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
 
         options = Options()
         options.add_argument("--start-maximized")
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
         if os_name == linux_os:
             options.add_argument('--no-sandbox')
             options.add_argument('--disable-dev-shm-usage') 
@@ -1625,7 +1625,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             if url:
                 browser.go_to(url)
             if not url:
-                browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
+                browser.go_to("https://dost.clointfusion.com")
             status = True
             browser.Config.implicit_wait_secs = 120
             helium_service_launched = True
@@ -3956,13 +3956,14 @@ def _rerun_clointfusion_first_run(ex):
     except:
         put_text("Please Re-run..." + str(ex)).show()
 
-def clointfusion_self_test_cases(temp_current_working_dir):
+def clointfusion_self_test_cases(temp_current_working_dir, start_time):
     """
     Main function for Self Test, which is called by GUI
     """
     global enable_semi_automatic_mode
 
     TEST_CASES_STATUS_MESSAGE = ""
+    SUCCESS = False
 
     red_close_PNG_1 = temp_current_working_dir / "RED-Close_1.PNG"
 
@@ -4296,17 +4297,37 @@ def clointfusion_self_test_cases(temp_current_working_dir):
                 print("Error in cli_bre_whm")
                 logging.info("Error in cli_bre_whm")
                 TEST_CASES_STATUS_MESSAGE  += "Error in CLI work"
+            else:
+                try:
+                    print("Tested WORK successfully " + show_emoji())
+                    logging.info("Tested WORK command successfully")
+                except:
+                    pass
+                    
 
             #Test dost
             reqs = subprocess.check_output('dost')
             time.sleep(5)
+            
             window_close_windows("Build BOT with Zero Coding - Google Chrome")
+            
 
             if "Error" in str(reqs):
                 print("Error in cli_dost")
                 logging.info("Error in cli_dost")
                 TEST_CASES_STATUS_MESSAGE  += "Error in CLI dost"
-            
+                try:
+                    window_close_windows("Build BOT with Zero Coding - Google Chrome")
+                except:
+                    pass            
+            else:
+                try:
+                    print("Tested DOST successfully " + show_emoji())
+                    logging.info("Tested DOST command successfully")
+                    window_close_windows("Build BOT with Zero Coding - Google Chrome")
+                except:
+                    pass
+
         except Exception as ex:
             print("Error while Testing CLIs")
             logging.info("Error while Testing CLIs")
@@ -4328,13 +4349,62 @@ def clointfusion_self_test_cases(temp_current_working_dir):
             TEST_CASES_STATUS_MESSAGE  += "Error while testing Flash message="+str(ex)
         
         try:
+            print("____________________________________________________________")
+            print()
             text_to_speech("This is Bol, your self-test is successful.")
             text_to_speech("To activate me, type 'bol' in command prompt.")
         except Exception as ex:
             print("Error while Testing text_to_speech function="+str(ex))
             logging.info("Error while Testing text_to_speech function="+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while Testing text_to_speech function="+str(ex)
-        
+            
+        try:
+            _folder_write_text_file(Path(os.path.join(clointfusion_directory,"Config_Files",'Running_ClointFusion_Self_Tests.txt')),str(False))
+            print("____________________________________________________________")
+            print("____________________________________________________________")
+            print()
+            if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
+                print("ClointFusion Self Testing Completed")
+                logging.info("ClointFusion Self Testing Completed")
+                print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
+                print("Closing automatically, please wait a moment...")
+                message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
+                print("____________________________________________________________")
+                
+                message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
+            
+            file_contents = ''
+            try:
+                with open(log_path,encoding="utf-8") as f:
+                    file_contents = f.readlines()
+                
+                time_taken= timedelta(seconds=time.monotonic()  - start_time)
+            
+                os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
+                
+                driver = selft.gf(os_hn_ip, time_taken, file_contents)
+                
+                db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+                connct = sqlite3.connect(db_file_path,check_same_thread=False)
+                cursr = connct.cursor()
+                cursr.execute("UPDATE CFVALUES set SELF_TEST = 'False' where ID = 1")
+                connct.commit()
+                clear_screen()
+                message_counter_down_timer("Closing browser (in seconds)",10)
+                browser.set_driver(driver)
+                browser_quit_h()
+                
+                #Ensure to close all browser if left open by this self test
+                time.sleep(2)
+                selft.ast()
+                SUCCESS = True
+            except:
+                file_contents = 'Unable to read the file'
+                TEST_CASES_STATUS_MESSAGE += "Unable to read log file"
+        except Exception as ex:
+            print("ClointFusion Automated Testing Failed "+str(ex))
+            logging.info("ClointFusion Automated Testing Failed "+str(ex))
+            TEST_CASES_STATUS_MESSAGE  += "ClointFusion Automated Testing Failed "+str(ex)
     except Exception as ex:
         print("ClointFusion Automated Testing Failed "+str(ex))
         logging.info("ClointFusion Automated Testing Failed "+str(ex))
@@ -4342,34 +4412,24 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         
     finally:
         enable_semi_automatic_mode = False
-        _folder_write_text_file(Path(os.path.join(clointfusion_directory,"Config_Files",'Running_ClointFusion_Self_Tests.txt')),str(False))
-        print("____________________________________________________________")
-        print("____________________________________________________________")
-        print()
-        if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
-            print("ClointFusion Self Testing Completed")
-            logging.info("ClointFusion Self Testing Completed")
-            print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
-            print("Closing automatically, please wait a moment...")
-            message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
-            print("____________________________________________________________")
-            
-            message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
-            if os_name == windows_os:
-                try:
-                    window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
-                except:
-                    pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
-                    mouse_click(pos[0], pos[1])
-            else:
-                print("Please click red 'Close' button")
+        
+        if os_name == windows_os:
+            try:
+                window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
+            except:
+                pos = mouse_search_snip_return_coordinates_x_y(str(red_close_PNG_1),wait=5)
+                mouse_click(pos[0], pos[1])
         else:
+            print("Please click red 'Close' button")
+        
+        if not str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
             print("ClointFusion Self Testing has Failed for few Functions")
             print(TEST_CASES_STATUS_MESSAGE)
             logging.info("ClointFusion Self Testing has Failed for few Functions")
-            logging.info(TEST_CASES_STATUS_MESSAGE)
+            logging.info(TEST_CASES_STATUS_MESSAGE)        
         
-        return TEST_CASES_STATUS_MESSAGE
+        
+        return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
 def clointfusion_self_test(last_updated_on_month):
     global os_name, log_path
@@ -4384,7 +4444,7 @@ def clointfusion_self_test(last_updated_on_month):
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
                 [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
-                [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False if int(last_updated_on_month) == -9 else True, tooltip=  'Click this button to skip Self-Test' if int(last_updated_on_month) == -9 else 'Sign-In with Gmail to enable this option')]]
+                [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
 
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
@@ -4430,7 +4490,7 @@ def clointfusion_self_test(last_updated_on_month):
 
                 _init_cf_quick_test_log_file(temp_current_working_dir)
 
-                status_msg = clointfusion_self_test_cases(temp_current_working_dir)
+                status_msg, success = clointfusion_self_test_cases(temp_current_working_dir, start_time)
 
                 if str(status_msg).strip() == "":
                     window['Close'].update(disabled=False)
@@ -4442,37 +4502,11 @@ def clointfusion_self_test(last_updated_on_month):
 
                     sys.exit(0)
 
-                file_contents = ''
-                try:
-                    with open(log_path,encoding="utf-8") as f:
-                        file_contents = f.readlines()
-                except:
-                    file_contents = 'Unable to read the file'
+                
 
             if event in (sg.WINDOW_CLOSED, 'Close'):
                 
-                if file_contents != 'Unable to read the file':
-                    time_taken= timedelta(seconds=time.monotonic()  - start_time)
-                    
-                    os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-                    
-                    driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                    
-                    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-                    connct = sqlite3.connect(db_file_path,check_same_thread=False)
-                    cursr = connct.cursor()
-                    cursr.execute("UPDATE CFVALUES set SELF_TEST = 'False' where ID = 1")
-                    connct.commit()
-                    clear_screen()
-                    message_counter_down_timer("Closing browser (in seconds)",10)
-                    browser.set_driver(driver)
-                    browser_quit_h()
-                    
-                    #Ensure to close all browser if left open by this self test
-                    time.sleep(2)
-                    selft.ast()
-                    last_updated_on_month = 3
-                    
+                  
                 break        
                     
     except Exception as ex:
@@ -4488,7 +4522,7 @@ def clointfusion_self_test(last_updated_on_month):
         try:
             if last_updated_on_month == 2 :
                 window.close()
-            elif last_updated_on_month == 3:
+            elif success:
                 if os_name == windows_os:
                         os.system('python -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
                 elif os_name == linux_os:
