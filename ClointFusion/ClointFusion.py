@@ -539,7 +539,7 @@ def _ask_user_semi_automatic_mode():
         #         file_path = Path(file_path)
         #         _folder_write_text_file(file_path,str(stored_do_not_ask_user_preference))
 
-        #         if event in (sg.WIN_CLOSED, 'No'): #ask me every time
+        #         if event in (sg.WINDOW_CLOSED , 'No'): #ask me every time
         #             enable_semi_automatic_mode = False
         #             break
         #         elif event == 'Yes': #do not ask me again
@@ -925,7 +925,7 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
             while True:
                 event, values = window.read()
 
-                if event == sg.WIN_CLOSED or event == 'Cancel':
+                if event == sg.WINDOW_CLOSED or event == 'Cancel':
                     break
                 if event == 'OK':
                     if values and values['-FOLDER-']:
@@ -1018,7 +1018,7 @@ def gui_get_any_input_from_user(msgForUser="Please enter : ",password=False,mult
                 
                 event, values = window.read()
 
-                if event == sg.WIN_CLOSED or event == 'Cancel':
+                if event == sg.WINDOW_CLOSED  or event == 'Cancel':
                     
                     if oldValue or (values and values['-VALUE-']):
                         break
@@ -1112,7 +1112,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
 
             while True:
                     event, values = window.read()
-                    if event == sg.WIN_CLOSED or event == 'Cancel':
+                    if event == sg.WINDOW_CLOSED  or event == 'Cancel':
                         break
                     if event == 'OK':
                         if values and values['-FILE-']:
@@ -1456,7 +1456,7 @@ def message_counter_down_timer(strMsg="Calling ClointFusion Function in (seconds
             CONTINUE = True
             break
             
-        if event in (sg.WIN_CLOSED, 'Cancel'):    
+        if event in (sg.WINDOW_CLOSED , 'Cancel'):    
             CONTINUE = False  
             print("Action cancelled by user")
             break
@@ -4288,16 +4288,23 @@ def clointfusion_self_test_cases(temp_current_working_dir):
         try:
             print()
             print("Testing CLIs")
+            
+            #Test work
             reqs = subprocess.check_output('work')
 
             if "Error in cli_bre_whm" in str(reqs):
                 print("Error in cli_bre_whm")
+                logging.info("Error in cli_bre_whm")
                 TEST_CASES_STATUS_MESSAGE  += "Error in CLI work"
 
+            #Test dost
             reqs = subprocess.check_output('dost')
+            time.sleep(5)
+            window_close_windows("Build BOT with Zero Coding - Google Chrome")
 
             if "Error" in str(reqs):
                 print("Error in cli_dost")
+                logging.info("Error in cli_dost")
                 TEST_CASES_STATUS_MESSAGE  += "Error in CLI dost"
             
         except Exception as ex:
@@ -4435,8 +4442,6 @@ def clointfusion_self_test(last_updated_on_month):
 
                     sys.exit(0)
 
-            if event in (sg.WIN_CLOSED, 'Close'):
-                
                 file_contents = ''
                 try:
                     with open(log_path,encoding="utf-8") as f:
@@ -4444,13 +4449,15 @@ def clointfusion_self_test(last_updated_on_month):
                 except:
                     file_contents = 'Unable to read the file'
 
+            if event in (sg.WINDOW_CLOSED, 'Close'):
+                
                 if file_contents != 'Unable to read the file':
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                     
                     driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+                    
                     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
                     connct = sqlite3.connect(db_file_path,check_same_thread=False)
                     cursr = connct.cursor()
@@ -4465,7 +4472,6 @@ def clointfusion_self_test(last_updated_on_month):
                     time.sleep(2)
                     selft.ast()
                     last_updated_on_month = 3
-                    
                     
                 break        
                     
@@ -4617,6 +4623,7 @@ def cli_bre_whm():
             pass
         
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+
         connct = sqlite3.connect(db_path,check_same_thread=False)
 
         cursr = connct.cursor()
@@ -4769,26 +4776,25 @@ elif os_name == linux_os:
     r = sr.Recognizer()
     energy_threshold = [3000]
 
+folder_create(clointfusion_directory) 
+log_path = Path(os.path.join(clointfusion_directory, "Logs"))
+img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
+batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
+config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
+error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
+status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
+
+folder_create(log_path)
+folder_create(img_folder_path)
+folder_create(batch_file_path)
+folder_create(config_folder_path)
+folder_create(error_screen_shots_path)
+folder_create(output_folder_path)
+
 CONTINUE = _welcome_to_clointfusion()
-
 if CONTINUE:
-    folder_create(clointfusion_directory) 
-    log_path = Path(os.path.join(clointfusion_directory, "Logs"))
-    img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
-    batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
-    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-    output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
-    error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
-    status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
-
-    folder_create(log_path)
-    folder_create(img_folder_path)
-    folder_create(batch_file_path)
-    folder_create(config_folder_path)
-    folder_create(error_screen_shots_path)
-    folder_create(output_folder_path)
     _init_log_file()
-
     update_log_excel_file(bot_name +'- BOT initiated')
     _ask_user_semi_automatic_mode()
     enable_semi_automatic_mode = False # By DEFAULT

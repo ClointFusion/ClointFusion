@@ -177,3 +177,5 @@ with console.status("DOST client running...\n") as status:
         except WebDriverException:
             browser.kill_browser()
             start = False
+        except Exception as ex:
+            print("Error in DOST_Client.pyw="+str(ex))
