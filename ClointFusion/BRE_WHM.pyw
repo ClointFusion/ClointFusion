@@ -16,7 +16,7 @@ from elevate import elevate
 import pyinspect as pi
 import pyautogui as pg
 from ClointFusion import selft
-
+import threading
 user_uuid = selft.get_uuid()
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
@@ -433,25 +433,7 @@ def launch_cf_log_generator_gui_new():
     except Exception as ex:
         print("Error in launch_cf_log_generator_gui_new="+str(ex))            
 
-def show_toast_notification_if_new_version_is_available():
-    if os_name == windows_os:
-
-        if c_version < s_version:
-            toaster.show_toast(
-                "ClointFusion", 
-                "New version {} is avaiable now ! Click to update".format(s_version), 
-                icon_path=cf_icon_cdt_file_path,
-                duration=None,
-                threaded=True, 
-                callback_on_click=lambda: os.system('cf') # click notification to run function 
-            )
-
 try:
     launch_cf_log_generator_gui_new()
 except Exception as ex:
     pg.alert(ex)
-
-schedule.every().hour.do(show_toast_notification_if_new_version_is_available)
-while True:
-    schedule.run_pending()
-    time.sleep(60) #Check Every minute
