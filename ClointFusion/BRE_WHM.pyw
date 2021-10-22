@@ -15,12 +15,9 @@ from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
 import pyinspect as pi
 import pyautogui as pg
-from win10toast_click import ToastNotifier 
-import requests
-import threading
-import schedule
+from ClointFusion import selft
 
-toaster = ToastNotifier()
+user_uuid = selft.get_uuid()
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 
@@ -62,8 +59,8 @@ except: #Ask ADMIN Rights if REQUIRED
 # connct.execute("DROP TABLE CFEVENTS")
 
 # Creating table
-sys_config_table = """ CREATE TABLE IF NOT EXISTS SYS_CONFIG (
-            uuid TEXT NOT NULL,
+sys_config_table = """ CREATE TABLE SYS_CONFIG (
+            uuid TEXT PRIMARY KEY NOT NULL,
             platform TEXT NULL,
             platform_release TEXT NULL,
             platform_version TEXT NULL,
@@ -74,8 +71,14 @@ sys_config_table = """ CREATE TABLE IF NOT EXISTS SYS_CONFIG (
             processor TEXT NULL
         ); """
 
-cursr.execute(sys_config_table)
-connct.commit()
+try:
+    cursr.execute(sys_config_table)
+    cursr.execute("Insert into SYS_CONFIG values(?,?,?,?,?,?,?,?,?)", (user_uuid), str(platform.system()), str(platform.release()),str(platform.version()),str(platform.machine()),str(socket.gethostname()),str(socket.gethostbyname(socket.gethostname())),str(':'.join(re.findall('..', '%012x' % uuid.getnode()))),str(platform.processor()))
+    connct.commit()
+except sqlite3.OperationalError:
+        pass
+except Exception as ex :
+    print(f"Exception: {ex}")
 
 try:
     cursr.execute("ALTER TABLE SYS_CONFIG DROP COLUMN RAM")
@@ -83,8 +86,7 @@ try:
 except:
     pass
 
-cursr.execute("Insert into SYS_CONFIG values(?,?,?,?,?,?,?,?,?)", (str(uuid.uuid4()), str(platform.system()), str(platform.release()),str(platform.version()),str(platform.machine()),str(socket.gethostname()),str(socket.gethostbyname(socket.gethostname())),str(':'.join(re.findall('..', '%012x' % uuid.getnode()))),str(platform.processor())))
-connct.commit()
+
 
 event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
             TIME_STAMP TEXT NOT NULL,
