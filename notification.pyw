@@ -8,7 +8,6 @@ from ClointFusion import selft
 
 toaster = ToastNotifier()
 
-
 os_name = str(platform.system()).lower()
 windows_os = "windows"
 linux_os = "linux"
@@ -25,8 +24,6 @@ img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
 config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
 cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
 cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
-
-
 
 def _getServerVersion():
     global s_version
@@ -72,10 +69,10 @@ def show_toast_notification_if_new_version_is_available():
                 resp = eval(resp.text)
                 server_msg = resp['msg']
                 server_url = resp['url']
-                server_date, server_month = resp['dt'].split('/')[0]
+                server_date, server_month = resp['dt'].split('/')[0], resp['dt'].split('/')[1]
                 today_date, today_month  = datetime.now().day, datetime.now().month
                 
-                if today_date <= server_date or today_month > server_month:
+                if today_date <= server_date or today_month < server_month:
                     toaster.show_toast(
                         "ClointFusion", 
                         f"Hai {name}, \n{server_msg}\nClick for more detail.",
@@ -87,10 +84,9 @@ def show_toast_notification_if_new_version_is_available():
             except:
                 pass
             
-schedule.every(2).hours.until(timedelta(hours=20)).do(show_toast_notification_if_new_version_is_available)
+schedule.every(5).hour.do(show_toast_notification_if_new_version_is_available)
 
 # Server Broadcast
 while True:
-    print("Running")
     schedule.run_pending()
     time.sleep(60) #Check Every minute
