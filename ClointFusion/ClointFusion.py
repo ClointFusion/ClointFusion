@@ -39,7 +39,6 @@ import warnings
 import traceback
 import shutil
 import socket
-from pandas.core.algorithms import isin, mode
 from pywebio.output import put_text
 
 try:
@@ -88,6 +87,7 @@ mac_os = "darwin"
 
 config_folder_path = ""
 log_path = ""
+log_file_path = ""
 img_folder_path = ""
 batch_file_path = ""
 output_folder_path = ""
@@ -426,19 +426,11 @@ def _update_version(c_version,s_version):
 
     try:
         if os_name == windows_os:
-            os.system("pip install -U ClointFusion --user --force-reinstall")
+            os.system(f"pip install -U ClointFusion=={s_version} --user --no-warn-script-location")
         else:
-            os.system("sudo pip3 install -U ClointFusion")
+            os.system("sudo pip3 install -U ClointFusion=={s_version}")
     except:
-        try:
-            if os_name == windows_os:
-                elevate(show_console=False)
-                os.system("pip install -U ClointFusion --force-reinstall")
-            else:
-                elevate(graphical=False)
-                os.system("pip3 install -U ClointFusion")    
-        except:
-            print("Please Upgrade ClointFusion")
+        print("Please Upgrade ClointFusion manually.")
 
 def verify_version(c_version, s_version):
     try:
@@ -451,9 +443,15 @@ def verify_version(c_version, s_version):
     except:
         return False
 
+# Function in use, Dont Delete
 def _perform_self_test():
     try:
-        clointfusion_self_test("0")
+        if os_name == windows_os:
+            _load_missing_python_packages_windows()
+            _install_pyaudio_windows()
+        elif os_name == linux_os:
+            _load_missing_python_packages_linux()
+        clointfusion_self_test()
     except Exception as ex:
         print("Error in Self Test="+str(ex))
         _rerun_clointfusion_first_run()
@@ -464,7 +462,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.0.6)"
+    version = "(Version: 1.0.7)"
 
     hour = datetime.datetime.now().hour
 
@@ -3901,14 +3899,16 @@ def clear_screen():
     except:
         pass
 
-def text_to_speech(audio):
+def text_to_speech(audio, show=True):
     """
     Text to Speech using Google's Generic API
     """
     if type(audio) is list:
-        print(' '.join(audio))
+        if show:
+            print(' '.join(audio))
     else:
-        print(str(audio))
+        if show:
+            print(str(audio))
 
     engine.say(audio)   
     engine.runAndWait()
@@ -3963,8 +3963,7 @@ def _init_cf_quick_test_log_file(log_path_arg):
     """
     Internal function to generates the log and saves it to the file in the given base directory. 
     """
-    global log_path
-    log_path = log_path_arg
+    global log_file_path
     
     try:
         
@@ -3973,12 +3972,12 @@ def _init_cf_quick_test_log_file(log_path_arg):
         dt_tm = dt_tm.replace(":","-")
         dt_tm = dt_tm.split(".")[0]
 
-        log_path = Path(os.path.join(log_path, str(dt_tm) + ".txt"))
+        log_file_path = Path(os.path.join(log_path_arg, str(dt_tm) + ".txt"))
                 
         for handler in logging.root.handlers[:]:
             logging.root.removeHandler(handler)
 
-        logging.basicConfig(filename=log_path, level=logging.INFO, format='%(asctime)s  :  %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
+        logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s  :  %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
         
     except Exception as ex:
         print("ERROR in _init_log_file="+str(ex))
@@ -3997,7 +3996,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
     """
     Main function for Self Test, which is called by GUI
     """
-    global enable_semi_automatic_mode
+    global enable_semi_automatic_mode, log_file_path
 
     TEST_CASES_STATUS_MESSAGE = ""
     SUCCESS = False
@@ -4016,12 +4015,16 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
     enable_semi_automatic_mode = True
 
     try:
-        message_pop_up('Importing ClointFusion', delay=1)
+        text_to_speech("I will let you know the progress of the self-test, and, explain what is being done on your computer.", show=False)
+        text_to_speech("Sit back and relax, while i check your machine for compatibility of Clointfusion package...", show=False)
+        
+        message_pop_up('Importing ClointFusion', delay=2)
         print('Importing ClointFusion')
         print()
-
         print('ClointFusion imported successfully '+ show_emoji())
-        print("____________________________________________________________")
+        print("\n____________________________________________________________\n")
+
+
         print()
         logging.info('ClointFusion imported successfully')
         try:
@@ -4049,16 +4052,25 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 TEST_CASES_STATUS_MESSAGE  += 'Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex)
 
             print()
+            print("\n____________________________________________________________\n")
+            text_to_speech("ClointFusion Self Testing Initiated...", show=False)
             print('ClointFusion Self Testing Initiated '+show_emoji())
             logging.info('ClointFusion Self Testing Initiated')
+            
         except Exception as ex:
             print('Error while creating sub-folders='+str(ex))
             logging.info('Error while creating sub-folders='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while creating sub-folders='+str(ex)
 
-        try:
+        try: # Folder Operations
             print()
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Let me test folder operations...", show=False)
             print('Testing folder operations')
+            
+            
             folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
             folder_create_text_file(test_folder_path, "My Text File")
             excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
@@ -4077,18 +4089,27 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             folder_create(Path(test_folder_path / 'Split_Merge'))
             print(folder_get_all_filenames_as_list(test_folder_path))
             print(folder_get_all_filenames_as_list(test_folder_path, extension="xlsx"))
+            
+            text_to_speech("Folder operations test is successful", show=False)
             print('Folder operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
+            print("\n____________________________________________________________\n")
+
+
             logging.info('Folder operations tested successfully')
         except Exception as ex:
             print('Error while testing Folder operations='+str(ex))
             logging.info('Error while testing Folder operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while testing Folder operations='+str(ex)
 
-        if os_name == windows_os:
+        if os_name == windows_os: # Window operations
             try:
                 print()
-                print('Testing window based operations')
+                print("\n____________________________________________________________\n")
+
+
+                text_to_speech("This is Windows PC, I love Windows, let me test the windows specific functions.", show=False)
+                print('Started testing window based operations...')
+                
                 window_show_desktop()
                 launch_any_exe_bat_application(test_run_excel_path)
                 time.sleep(5)
@@ -4098,77 +4119,94 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 time.sleep(5)
                 print(window_get_all_opened_titles_windows())
                 window_close_windows('Quick_Self_Test_Excel')
+                
                 print('Window based operations tested successfully '+show_emoji())
-                print("____________________________________________________________")
+                print("\n____________________________________________________________\n")
+
+
+                text_to_speech("Great, Windows functions work flawlessly on your PC. Cant wait to see how you use these functions.", show=False)
                 logging.info('Window based operations tested successfully')
             except Exception as ex:
                 print('Error while testing window based operations='+str(ex))
                 logging.info('Error while testing window based operations='+str(ex))
                 TEST_CASES_STATUS_MESSAGE  += 'Error while testing window based operations='+str(ex)
         else:
+            text_to_speech("Skipping window operations as it is Windows OS specific.", show=False)
             print('Skipping window operations as it is Windows OS specific')
             logging.info('Skipping window operations as it is Windows OS specific')
             TEST_CASES_STATUS_MESSAGE  += 'Skipping window operations as it is Windows OS specific'
             
-        try:
+        try: # String operations
             print()
-            print('Testing String Operations')
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Testing String manipulation functions.", show=False)
+            print('Started testing String Operations...')
+            
             print(string_remove_special_characters("C!@loin#$tFu*(sion"))
             print(string_extract_only_alphabets(inputString="C1l2o#%^int&*Fus12i5on"))
             print(string_extract_only_numbers("C1l2o3i4n5t6F7u8i9o0n"))
+            
             print('String operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("String operations tested successfully.", show=False)
             logging.info('String operations tested successfully')
         except Exception as ex:
             print('Error while testing string operations='+str(ex))
             logging.info('Error while testing string operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing string operations="+str(ex)
             
-        try:
+        try: # Keyboard operations
             print()
-            print('Testing keyboard operations')
-            message_counter_down_timer("Starting Keyboard Operations in (seconds)",3)
+            print("\n____________________________________________________________\n")
 
+
+            text_to_speech("Let me test keyboard functions.", show=False)
+            print('Started testing keyboard operations...')
+            
             add_msg = f"Hi {user_name},\nClointFusion is celebrating One Year of Hackathon ! Motivate your friends to register Now : https://tinyurl.com/ClointFusion" #"Performing ClointFusion Self Test for Notepad"
 
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
                 key_write_enter(write_to_window="notepad",text_to_write=add_msg)
+                text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
                 key_hit_enter(write_to_window="notepad")
                 key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                 key_press("right")
                 key_hit_enter()
-                print('Keyboard operations tested successfully '+show_emoji())
-                print("____________________________________________________________")
-                logging.info('Keyboard operations tested successfully')
             elif os_name == linux_os:
                 launch_any_exe_bat_application("gedit") # Ubuntu
                 key_write_enter(text_to_write=add_msg)
+                text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
                 key_hit_enter()
                 key_press(key_1="alt", key_2="f4")
                 subprocess.Popen(f"killall -9 gedit", shell=True,
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
-                print('Keyboard operations tested successfully '+show_emoji())
-                print("____________________________________________________________")
-                logging.info('Keyboard operations tested successfully')
             elif os_name == mac_os:
                 try:
                     launch_any_exe_bat_application("TextEdit") # macOS
                     key_write_enter(text_to_write=add_msg)
+                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
                     key_hit_enter()
                     key_press(key_1="command", key_2="f4")
                     subprocess.Popen('pkill -9 "TextEdit"', shell=True,
                            stdout=subprocess.PIPE, 
                            stderr=subprocess.PIPE)
-                    print('Keyboard operations tested successfully '+show_emoji())
-                    print("____________________________________________________________")
-                    logging.info('Keyboard operations tested successfully')
                 except:
                     print("Currently Not Supported.")
                     logging.info('Keyboard operations Skipped.')
                     TEST_CASES_STATUS_MESSAGE  += "Keyboard operations Skipped for MAC OS"
+            
+            print('Keyboard operations tested successfully '+show_emoji())
+            print("\n____________________________________________________________\n")
 
+
+            text_to_speech("Keyboard operations tested successfully.", show=False)
+            logging.info('Keyboard operations tested successfully')
         except Exception as ex:
             print('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
@@ -4176,12 +4214,15 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 key_press(key_1="alt", key_2="f4")
             except:
                 pg.hotkey("alt", "f4")
-
-        message_counter_down_timer("Starting Excel Operations in (seconds)",3)
-    
-        try:
+ 
+        try: # Excel operations
             print()
-            print('Testing excel operations')
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Let me test the excel compatability.", show=False)
+            print('Started testing excel operations...')
+
             excel_create_excel_file_in_given_folder(test_folder_path, "Test_Excel_File", "Test_Sheet")
             print(excel_get_row_column_count(test_run_excel_path))
 
@@ -4235,199 +4276,207 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=2,setText="4")
             excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=3,setText="3")
             excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=4,setText="5")
-
             excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
             
             print('Excel operations tested successfully '+show_emoji())
-            print("____________________________________________________________")
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Excel operations tested successfully.", show=False)
             logging.info('Excel operations tested successfully')
+            
+            text_to_speech("Isn't amazingly quick, But yeah, more than 28 functions, and, more than 50 excel operations, have been tested just now.", show=False)
+            text_to_speech("Banking, finance, from data collection, to data cleaning, and sending reports, everything can be done, with excel functions and Clointfusion. Give it a try today.", show=False)
         except Exception as ex:
             print("Error while testing Excel Operations="+str(ex))
             logging.info("Error while testing Excel Operations="+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing Excel Operations="+str(ex)
             
-        message_counter_down_timer("Starting Screen Scraping Operations in (seconds)",3)
 
-        try:
+        try: # Screen scraping operations
             print()
-            print("Testing screen-scraping functions")
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Testing screen-scraping functions..", show=False)
+            print('Started testing screen-scraping operations...')
             
-            browser_activate('https://sites.google.com/view/clointfusion-hackathon')
+            browser_activate('https://google.com')
+            browser_write_h('clointfusion hackathon')
+            browser_mouse_click_h("Python based RPA Development Platform")
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
+            
+            browser_mouse_click_h(element='//*[@id="h.5a888886ece64872_27"]/div/div/div/a')
+            text_to_speech("Date with ClointFusion is an initiative for fast track entry into our growing workforce.", show=False)
+            browser.scroll_down(200)
+            
+            
+            print('Screen-scraping operations tested successfully '+show_emoji())
+            print("\n____________________________________________________________\n")
 
-            print("Screen-scraping functions tested successfully "+ show_emoji())
-            print("____________________________________________________________")
+
+            text_to_speech("Screen-scraping functions tested successfully..", show=False)
             logging.info("Screen-scraping functions tested successfully")
         except Exception as ex:
             print('Error while testing screenscraping functions='+str(ex))
             logging.info('Error while testing screenscraping functions='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while testing screenscraping functions='+str(ex)
 
-        try:
+        try: # Mouse operations
             print()
-            print("Testing mouse operations")    
-            mouse_move(850,600)
-            
+            print("\n____________________________________________________________\n")
+            text_to_speech("Testing mouse operations", show=False)
+            print('Started testing mouse operations...')
+            browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon")
+            mouse_move(850,500)
             time.sleep(2)
-            
-            mouse_drag_from_to(600,510,1150,680)
-
-            message_counter_down_timer("Testing Mouse Operations in (seconds)",3)
-            
+            mouse_drag_from_to(600,450,1150,680)
             search_highlight_tab_enter_open("chat.whatsapp")
-
+            text_to_speech("Please join our WhatsApp community group to keep yourself updated on our progress.", show=False)
             mouse_click(int(pg.size()[0]/2),int(pg.size()[1]/2)) #Click at center of the screen
+            browser_quit_h()
 
             print('Mouse operations tested successfully ' + show_emoji())
-            print("____________________________________________________________")
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Mouse operations tested successfully", show=False)
             logging.info('Mouse operations tested successfully')
-            browser_quit_h()
         except Exception as ex:
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
             key_press(key_1="ctrl", key_2="w")
             TEST_CASES_STATUS_MESSAGE  += 'Error in mouse operations='+str(ex)
         
-        message_counter_down_timer("Calling Helium Functions in (seconds)",3)
 
-        try:
+        try: # Browser operations
             print()
-            print("Testing Browser's Helium functions")
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Great going, almost done, let me quickly test the browser functions.", show=False)
+            print("Started testing Browser's Operations...")
             
             if browser_activate("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
-
                 browser_navigate_h('https://pypi.org/project/ClointFusion/')
-                
+                text_to_speech("This is our pypi page, you can read, our detailed documentation, and view, our well, explained gifs.", show=False)
                 key_press("browserstop")
-
                 browser_mouse_click_h(element="RPA",double_click=True)
-                
                 browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
-                
+                text_to_speech("By the way, this is your DOST, powered by Clointfusion, Made automation easy, just drag, and drop, and automate.", show=False)
+                text_to_speech("Type D O S T, in terminal to launch.", show=False)
                 pause_program(10)
-                
                 browser_quit_h()
+                
                 print("Tested Browser's Helium functions successfully " + show_emoji())
-                print("____________________________________________________________")
-                logging.info("Tested Browser's Helium functions successfully")
+                print("\n____________________________________________________________\n")
 
+
+                text_to_speech("Browser functions tested successfully..", show=False)
+                logging.info("Tested Browser's Helium functions successfully")
             else:
                 TEST_CASES_STATUS_MESSAGE  += "Helium package's Compatible Chrome is missing"
-
         except Exception as ex:
             print("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
             key_press(key_1="ctrl", key_2="w") #to close any open browser
             TEST_CASES_STATUS_MESSAGE  += "Error while Testing Browser Helium functions="+str(ex)
 
-        try:
+        try: # CLI operations
             print()
-            print("Testing CLIs")
+            print("\n____________________________________________________________\n")
+
+
+            text_to_speech("Let me show you, some terminal commands,", show=False)
+            print('Started testing CLIs Operations...')
             
+            text_to_speech("Press CF in terminal to get all the available commands", show=False)
+            print("Press 'cf' in terminal for this function.\n")
             #Test work
-            reqs = subprocess.check_output('work')
-
-            if "Error in cli_bre_whm" in str(reqs):
-                print("Error in cli_bre_whm")
-                logging.info("Error in cli_bre_whm")
-                TEST_CASES_STATUS_MESSAGE  += "Error in CLI work"
-            else:
-                try:
-                    print("Tested WORK successfully " + show_emoji())
-                    logging.info("Tested WORK command successfully")
-                except:
-                    pass
-                    
-
-            #Test dost
-            reqs = subprocess.check_output('dost')
-            time.sleep(5)
+            cli_cf_test()
             
-            window_close_windows("Build BOT with Zero Coding - Google Chrome")
+            text_to_speech("Want to quickly test your internet speed, type CF underscore ST.", show=False)
+            print("Type 'cf_st' in terminal for this function")
+            text_to_speech("Internet speed is being tested in the terminal as we speak.", show=False)
+            # Test Speed Test
+            key_press(key_1="alt", key_2="tab")
+            cli_speed_test_test()
+            key_press(key_1="alt", key_2="tab")
             
+            
+            text_to_speech("Want to see, how much time you spent, on what, and which application, type work. First let me tell you this, yes data is stored locally and only belongs to you.", show=False)
+            print("Type 'work' in terminal for this function")
+            # Test BRE WHM
+            cli_bre_whm_test()
+            text_to_speech("This Report looks colorful and neat in a terminal, give it a try.", show=False)
+            
+            print("CLI's functions tested successfully"+show_emoji())
+            print("\n____________________________________________________________\n")
 
-            if "Error" in str(reqs):
-                print("Error in cli_dost")
-                logging.info("Error in cli_dost")
-                TEST_CASES_STATUS_MESSAGE  += "Error in CLI dost"
-                try:
-                    window_close_windows("Build BOT with Zero Coding - Google Chrome")
-                except:
-                    pass            
-            else:
-                try:
-                    print("Tested DOST successfully " + show_emoji())
-                    logging.info("Tested DOST command successfully")
-                    window_close_windows("Build BOT with Zero Coding - Google Chrome")
-                except:
-                    pass
 
+            text_to_speech("CLI's functions tested successfully", show=False)
+            logging.info("CLI functions tested successfully")    
         except Exception as ex:
             print("Error while Testing CLIs")
             logging.info("Error while Testing CLIs")
             TEST_CASES_STATUS_MESSAGE  += "Error while Testing CLIs"
-
-        message_counter_down_timer("Almost Done... Please Wait... (in seconds)",3)
         
-        try:
-            print("____________________________________________________________")
+        try: # Message operations
             print()
-            print("Testing flash message.")
-            message_pop_up("Testing flash message.")
-            message_toast("Testing toast message.")
-            logging.info("Flash message tested successfully.")
+            print("\n____________________________________________________________\n")
 
+
+            text_to_speech("Ok, Let me show you some different message pop ups.", show=False)
+            print("Started testing message functions...")
+            
+            text_to_speech("Message with timer...", show=False)
+            message_counter_down_timer("Message with timer (in seconds)",3)
+            
+            text_to_speech("Popup Message...", show=False)
+            message_pop_up("Testing popup message.")
+            
+            text_to_speech("Flash Message...", show=False)
+            message_flash("Testing flash message.")
+            
+            print('Message operations tested successfully '+show_emoji())
+            print("\n____________________________________________________________\n")
+
+            text_to_speech("Message functions tested successfully", show=False)
+            logging.info('Message functions tested successfully')
         except Exception as ex:
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing Flash message="+str(ex)
-        
-        try:
-            print("____________________________________________________________")
-            print()
-            text_to_speech("This is Bol, your self-test is successful.")
-            text_to_speech("To activate me, type 'bol' in command prompt.")
-        except Exception as ex:
-            print("Error while Testing text_to_speech function="+str(ex))
-            logging.info("Error while Testing text_to_speech function="+str(ex))
-            TEST_CASES_STATUS_MESSAGE  += "Error while Testing text_to_speech function="+str(ex)
             
         try:
-            _folder_write_text_file(Path(os.path.join(clointfusion_directory,"Config_Files",'Running_ClointFusion_Self_Tests.txt')),str(False))
-            print("____________________________________________________________")
-            print("____________________________________________________________")
-            print()
-            if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
-                print("ClointFusion Self Testing Completed")
-                logging.info("ClointFusion Self Testing Completed")
-                print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
-                print("Closing automatically, please wait a moment...")
-                message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
-                print("____________________________________________________________")
-                
-                message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
-            
             file_contents = ''
             try:
-                with open(log_path,encoding="utf-8") as f:
+                with open(log_file_path, encoding="utf-8") as f:
                     file_contents = f.readlines()
-                
-                time_taken= timedelta(seconds=time.monotonic()  - start_time)
+            except Exception as ex:
+                file_contents = 'Unable to read the file' + str(ex)
+                TEST_CASES_STATUS_MESSAGE += "Unable to read log file" + str(ex)
             
+            try:
+                text_to_speech("Let me quickly, do the neccessary registration, for you. So you can, get started with automation", show=False)
+                time_taken= timedelta(seconds=time.monotonic()  - start_time)
                 os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-                
+            except Exception as ex:
+                TEST_CASES_STATUS_MESSAGE += str(ex)
+            
+            try:
                 driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                
                 db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
                 connct = sqlite3.connect(db_file_path,check_same_thread=False)
                 cursr = connct.cursor()
                 cursr.execute("UPDATE CFVALUES set SELF_TEST = 'False' where ID = 1")
                 connct.commit()
                 clear_screen()
-                message_counter_down_timer("Closing browser (in seconds)",10)
+                time.sleep(5)
+                text_to_speech("Closing the browser now.", show=False)
                 browser.set_driver(driver)
                 browser_quit_h()
                 
@@ -4435,9 +4484,17 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 time.sleep(2)
                 selft.ast()
                 SUCCESS = True
-            except:
-                file_contents = 'Unable to read the file'
-                TEST_CASES_STATUS_MESSAGE += "Unable to read log file"
+                time.sleep(5)
+            except Exception as ex:
+                TEST_CASES_STATUS_MESSAGE += str(ex)
+            
+            if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
+                print("")
+                logging.info("ClointFusion Self Testing Completed")
+                print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
+                message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
+                print("\n____________________________________________________________\n")
+                text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)
         except Exception as ex:
             print("ClointFusion Automated Testing Failed "+str(ex))
             logging.info("ClointFusion Automated Testing Failed "+str(ex))
@@ -4450,6 +4507,18 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
     finally:
         enable_semi_automatic_mode = False
         
+        if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
+            text_to_speech("All set and ready to go. Wanna to call me again, type B O L, in terminal", show=False)
+            print("Type 'bol'")
+            text_to_speech("Always remember, Think what to automate, not how to, because, Clointfusion is there to do it.", show=False)
+            message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
+        else:
+            print("ClointFusion Self Testing has Failed for few Functions")
+            print(TEST_CASES_STATUS_MESSAGE)
+            logging.info("ClointFusion Self Testing has Failed for few Functions")
+            logging.info(TEST_CASES_STATUS_MESSAGE)
+            SUCCESS = False
+
         if os_name == windows_os:
             try:
                 window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
@@ -4458,25 +4527,17 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 mouse_click(pos[0], pos[1])
         else:
             print("Please click red 'Close' button")
-        
-        if not str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
-            print("ClointFusion Self Testing has Failed for few Functions")
-            print(TEST_CASES_STATUS_MESSAGE)
-            logging.info("ClointFusion Self Testing has Failed for few Functions")
-            logging.info(TEST_CASES_STATUS_MESSAGE)        
-        
-        
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
-def clointfusion_self_test(last_updated_on_month):
-    global os_name, log_path
+def clointfusion_self_test():
+    global os_name
     WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
     try:
 
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
                 [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
-                [sg.Text("We will be collecting OS name, IP address & ClointFusion's Self Test Report to improve ClointFusion",justification='c',text_color='yellow',font='Courier 12')],
+                [sg.Text("Thanks for improving ClointFusion by sharing this self-test report.",justification='c',text_color='yellow',font='Courier 12')],
                 [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
@@ -4490,12 +4551,17 @@ def clointfusion_self_test(last_updated_on_month):
                 window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
             except:
                 WHILE_TRUE = False
-        
-        while WHILE_TRUE:             
+        instructions = False
+        while WHILE_TRUE:
+            if not instructions:
+                text_to_speech("Welcome to ClointFusion. ClointFusion, is a python based RPA tool.", show=False)    
+                text_to_speech("And, This is Bol, and will guide you through the self-test.", show=False)    
+                text_to_speech("Please click on the, 'Sign-In With Google' button, to verify, and press, Start, to start the self-test.", show=False)
+                instructions = True
+            
             event, _ = window.read()
 
             if event == 'SSO':
-                
                 selft.sso()
                 window['Start'].update(disabled=False)
                 window['SSO'].update(disabled=True)
@@ -4505,6 +4571,7 @@ def clointfusion_self_test(last_updated_on_month):
 
             if event == 'Skip for Now':
                 try:
+                    text_to_speech("You have chosen to skip ClointFusion's Self-Test. Some of the functions may not work properly !", show=False)     
                     pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
                     message_toast("ClointFusion Self-Test is Skipped")
                 except:
@@ -4542,8 +4609,6 @@ def clointfusion_self_test(last_updated_on_month):
                 
 
             if event in (sg.WINDOW_CLOSED, 'Close'):
-                
-                  
                 break        
                     
     except Exception as ex:
@@ -4696,6 +4761,23 @@ def cli_bre_whm():
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
         connct = sqlite3.connect(db_path,check_same_thread=False)
+        cursr = connct.cursor()
+        
+        event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
+            TIME_STAMP TEXT NOT NULL,
+            Event_Name TEXT NULL,
+            X TEXT NULL,
+            Y TEXT NULL,
+            KEY TEXT NULL,
+            Button_Name TEXT NULL,
+            Click_Count TEXT NULL,
+            Window_Name TEXT NULL,
+            Mouse_RGB TEXT NULL,
+            SNIP_File_Path TEXT NULL
+            ); """
+
+        cursr.execute(event_table)
+        connct.commit()
 
         cursr = connct.cursor()
         cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
@@ -4779,14 +4861,12 @@ def cli_bre_whm():
 
         print()
         yes_no = console.input("Would you like to see [bold red]detailed report (Y/N) [/] ?")
-
         if yes_no in ["Yes", "y", "Y","yes"]:
-            pivot_ui(df,rows=["(DATE(TIME_STAMP))"], cols=['Time Spent','Software/Program','Event_Name'])
-            webbrowser.open_new_tab('pivottablejs.html')
+                pivot_ui(df,rows=["(DATE(TIME_STAMP))"], cols=['Time Spent','Software/Program','Event_Name'])
+                webbrowser.open_new_tab('pivottablejs.html')
 
         console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
         table = Table(title="Last Week's Work Report",show_lines=True)
-
         console.print("All data is being stored locally on your own Computer and is in your Control.",style=style,justify='center',crop=False)
         print()
 
@@ -4799,10 +4879,162 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('You can try below commands:\n1)colab\n2)dost\n3)cf_vlookup\n4)cf_st\n5)work')    
+    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Personal Assistant powered by ClointFusion\n3)  work         - Get your Computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet Speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
 
 # --------- CLI Commands Ends ---------
 
+# --------- TEST FOR CLI ---------
+
+def cli_bre_whm_test():
+    """ClointFusion CLI for BRE and WHM"""
+    try:
+        from rich.table import Table
+        
+        style = "bold white on blue"
+        console.print("Your Work Hour Report for TODAY ({}):".format(datetime.datetime.now().strftime('%dth %B,%Y %I:%M:%S %p %A')),style=style,justify='center')
+
+        try:
+            if os_name == windows_os:
+                import ctypes
+                lib = ctypes.windll.kernel32
+                t = lib.GetTickCount64()
+                t = int(str(t)[:-3])
+            else:
+                t = os.popen('uptime -p').read()[:-1]
+
+            mins, sec = divmod(t, 60)
+            hour, mins = divmod(mins, 60)
+            days, hour = divmod(hour, 24)
+            
+            console.print('_' * 20,justify='center')  # Underscore
+            console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
+            
+        except:
+            pass
+        
+        db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+
+        connct = sqlite3.connect(db_path,check_same_thread=False)
+        cursr = connct.cursor()
+        
+        event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
+            TIME_STAMP TEXT NOT NULL,
+            Event_Name TEXT NULL,
+            X TEXT NULL,
+            Y TEXT NULL,
+            KEY TEXT NULL,
+            Button_Name TEXT NULL,
+            Click_Count TEXT NULL,
+            Window_Name TEXT NULL,
+            Mouse_RGB TEXT NULL,
+            SNIP_File_Path TEXT NULL
+            ); """
+
+        cursr.execute(event_table)
+        connct.commit()
+        
+        cursr = connct.cursor()
+        cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
+        connct.commit()
+
+        #Print this week's report
+        week_day=datetime.datetime.now().isocalendar()[2]
+        start_date=datetime.datetime.now() - datetime.timedelta(days=week_day)
+        
+        dates = []
+
+        dates=[str((start_date + datetime.timedelta(days=i)).date().strftime("%dth %b, %A")) for i in range(7)]
+        dates_df=[str((start_date + datetime.timedelta(days=i)).date().strftime("%Y-%m-%d")) for i in range(7)]
+
+        df_mc_lst = []
+        df_kp_lst = []
+        min_max_sum_lst = []
+        value_cnt = []
+
+        for dt in dates_df:
+            df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
+            df_mc_lst.append(df['CNT'].values[0])
+
+        for dt in dates_df:
+            df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
+            df_kp_lst.append(df['CNT'].values[0])
+
+        for dt in dates_df:
+            df = pd.read_sql('Select MIN(TIME_STAMP) as log_in, MAX(TIME_STAMP) as log_out from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)
+            try:
+                log_in_tm = datetime.datetime.strptime(str(df['log_in'].values[0]),"%Y-%m-%d %H:%M:%S")
+                log_in_tm = datetime.datetime.strftime(log_in_tm,"%H:%M:%S %p")
+                
+                log_out_tm = datetime.datetime.strptime(str(df['log_out'].values[0]),"%Y-%m-%d %H:%M:%S")
+                log_out_tm = datetime.datetime.strftime(log_out_tm,"%H:%M:%S %p")
+                min_max_sum_lst.append(str(log_in_tm) + "," + str(log_out_tm))
+            except:
+                min_max_sum_lst.append("No Data, No Data")
+
+        for dt in dates_df:
+            df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
+                        
+            if len(df.Window_Name.value_counts()) > 0:
+                value_cnt.append(str(df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'))
+            else:
+                value_cnt.append("No Data")
+            
+        console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
+        table = Table(title="This Week's Work Report",show_lines=True)
+
+        table.add_column("Date", justify="center", style="bold cyan", width=8)
+        table.add_column("Highlights",justify="center",style="bold magenta",width=20)
+        table.add_column("Details",justify="left",style="bold yellow")
+        
+        for i in reversed(range(7)):
+            table.add_row(dates[i],"In=" + str(min_max_sum_lst[i]).split(",")[0] + "\nClicks="+str(df_mc_lst[i]) + "\nKey Stokes=" + str(df_kp_lst[i]) + "\nOut=" + str(min_max_sum_lst[i]).split(",")[1],value_cnt[i])
+
+        console.print(table,justify='center')
+
+        # Charts       
+        df = pd.read_sql("SELECT DISTINCT(DATE(TIME_STAMP)),TIME_STAMP, Event_Name,Window_Name as 'Software/Program' from CFEVENTS group by Window_Name order by TIME_STAMP ASC",connct)
+
+        delay_lst = []
+        for ind in df.index:
+            try:
+                current_line_time_stamp = df['TIME_STAMP'][ind]
+                next_line_time_stamp = df['TIME_STAMP'][ind + 1]
+
+                delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
+                delay = int(delay.total_seconds())
+            
+                delay = str(datetime.timedelta(seconds=delay))
+                delay_lst.append(delay)
+            except Exception:
+                # delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
+                delay_lst.append("No Data")
+
+        df["Time Spent"] = delay_lst
+        df.drop('TIME_STAMP', axis=1, inplace=True)
+        df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
+
+        print()
+
+        console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
+        table = Table(title="Last Week's Work Report",show_lines=True)
+        console.print("All data is being stored locally on your own Computer and is in your Control.",style=style,justify='center',crop=False)
+        print()
+
+    except Exception as ex:
+        print("You may need to restart your computer !")
+        print("Error in cli_bre_whm="+str(ex))
+
+def cli_speed_test_test():
+    """CLI for testing internet bandwidth using speedtest.net"""
+    try:
+        os.system("speedtest-cli")
+    except Exception as ex:
+        print("Error in cli_speed_test="+str(ex))
+
+def cli_cf_test():
+    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Personal Assistant powered by ClointFusion\n3)  work         - Get your Computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet Speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+
+# --------- TEST FOR CLI Ends ---------
 
 # --------- 4. All default services ---------
 
@@ -4825,7 +5057,7 @@ if os_name == windows_os:
     if FIRST_RUN == "True":
         _load_missing_python_packages_windows()
         _install_pyaudio_windows()
-        #Bol Related
+    #Bol Related
     engine = pyttsx3.init('sapi5')
     voices = engine.getProperty('voices')
     voice_male_female = random.randint(0,1) # Randomly decide male/female voice
@@ -4839,7 +5071,7 @@ if os_name == windows_os:
 elif os_name == linux_os:
     if FIRST_RUN == "True":
         _load_missing_python_packages_linux()
-        #Bol Related
+    #Bol Related
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     voice_male_female = random.randint(0,1) # Randomly decide male/female voice
@@ -4862,8 +5094,29 @@ folder_create(batch_file_path)
 folder_create(config_folder_path)
 folder_create(error_screen_shots_path)
 folder_create(output_folder_path)
+db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+
+connct = sqlite3.connect(db_path,check_same_thread=False)
+cursr = connct.cursor()
+
+try:
+    cursr.execute('''CREATE TABLE CFVALUES
+        (ID INT PRIMARY KEY     NOT NULL,
+        FIRST_RUN           TEXT    NOT NULL,
+        BOL            INT     NOT NULL,
+        SELF_TEST        TEXT,
+        USERNAME        TEXT,
+        EMAIL        TEXT);''')
+    cursr.execute("INSERT INTO CFVALUES (ID,FIRST_RUN,BOL,SELF_TEST, USERNAME, EMAIL) \
+    VALUES (1, 'True', 1, 'True', 'username', 'email')");
+    connct.commit()
+except sqlite3.OperationalError:
+    pass
+except Exception as ex :
+    print(f"Exception: {ex}")
 
 CONTINUE = _welcome_to_clointfusion()
+
 if CONTINUE:
     _init_log_file()
     update_log_excel_file(bot_name +'- BOT initiated')
