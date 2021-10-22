@@ -462,7 +462,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.0.7)"
+    version = "(Version: 1.0.8)"
 
     hour = datetime.datetime.now().hour
     
@@ -4312,11 +4312,10 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             browser_mouse_click_h("Python based RPA Development Platform")
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
-            
-            browser_mouse_click_h('with ClointFusion')
+            time.sleep(3)
             browser_navigate_h("https://docs.google.com/document/d/17kqTg9RkALBn-54kngwimUsfhI74JiSpr5u_Z77herM/edit")
             text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
-            browser.scroll_down(200)
+            browser.scroll_down(300)
             
             
             print('Screen-scraping operations tested successfully '+show_emoji())
