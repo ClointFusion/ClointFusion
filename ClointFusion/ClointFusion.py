@@ -457,7 +457,7 @@ def _perform_self_test():
         _rerun_clointfusion_first_run()
 
 def _welcome_to_clointfusion():
-    global user_name, first_run
+    global user_name
     """
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
@@ -465,8 +465,13 @@ def _welcome_to_clointfusion():
     version = "(Version: 1.0.7)"
 
     hour = datetime.datetime.now().hour
-
-    greeting = "Good Morning " if 5<=hour<12 else "Good Afternoon " if hour<18 else "Good Evening "
+    
+    if hour >= 0 and hour < 12:
+        greeting = "Good Morning"
+    elif hour >= 12 and hour < 16:
+        greeting = "Good Afternoon"
+    else:
+        greeting = "Good Evening"
 
     welcome_msg = f"\n{greeting}{str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
@@ -4303,12 +4308,14 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             browser_activate('https://google.com')
             browser_write_h('clointfusion hackathon')
+            browser_hit_enter_h()
             browser_mouse_click_h("Python based RPA Development Platform")
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
             
-            browser_mouse_click_h(element='//*[@id="h.5a888886ece64872_27"]/div/div/div/a')
-            text_to_speech("Date with ClointFusion is an initiative for fast track entry into our growing workforce.", show=False)
+            browser_mouse_click_h('with ClointFusion')
+            browser_navigate_h("https://docs.google.com/document/d/17kqTg9RkALBn-54kngwimUsfhI74JiSpr5u_Z77herM/edit")
+            text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
             browser.scroll_down(200)
             
             
@@ -4361,9 +4368,11 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             if browser_activate("https://pypi.org"):
                 browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
                 browser_hit_enter_h()
+                time.sleep(5)
                 browser_navigate_h('https://pypi.org/project/ClointFusion/')
                 text_to_speech("This is our pypi page, you can read, our detailed documentation, and view, our well, explained gifs.", show=False)
                 key_press("browserstop")
+                browser.scroll_down(500)
                 browser_mouse_click_h(element="RPA",double_click=True)
                 browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                 text_to_speech("By the way, this is your DOST, powered by Clointfusion, Made automation easy, just drag, and drop, and automate.", show=False)
@@ -4402,16 +4411,14 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             print("Type 'cf_st' in terminal for this function")
             text_to_speech("Internet speed is being tested in the terminal as we speak.", show=False)
             # Test Speed Test
-            key_press(key_1="alt", key_2="tab")
             cli_speed_test_test()
-            key_press(key_1="alt", key_2="tab")
             
             
-            text_to_speech("Want to see, how much time you spent, on what, and which application, type work. First let me tell you this, yes data is stored locally and only belongs to you.", show=False)
-            print("Type 'work' in terminal for this function")
+            text_to_speech("Want to see, how much time you spent, on what, and which application. type work in terminal. But First, let me tell you this, your data is stored locally and only belongs to you.", show=False)
+            print("Type 'work' in terminal for this function.")
             # Test BRE WHM
             cli_bre_whm_test()
-            text_to_speech("This Report looks colorful and neat in a terminal, give it a try.", show=False)
+            text_to_speech("This Report looks colorful and neat in a terminal, give it a try, after self-test", show=False)
             
             print("CLI's functions tested successfully"+show_emoji())
             print("\n____________________________________________________________\n")
@@ -4433,7 +4440,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             print("Started testing message functions...")
             
             text_to_speech("Message with timer...", show=False)
-            message_counter_down_timer("Message with timer (in seconds)",3)
+            message_counter_down_timer("Message with timer (in seconds)",6)
             
             text_to_speech("Popup Message...", show=False)
             message_pop_up("Testing popup message.")
