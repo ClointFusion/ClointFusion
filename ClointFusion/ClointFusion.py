@@ -2156,6 +2156,28 @@ def window_show_desktop():
     except Exception as ex:
         print("Error in window_show_desktop="+str(ex))
 
+def window_get_active_window():
+    """
+    Returns the title of the active window.
+    """
+    try:
+        return win32gui.GetWindowText(win32gui.GetForegroundWindow())
+    except Exception as ex:
+        print("Error in window_get_active_window="+str(ex))
+
+def window_activate_window(window_title=''):
+    """
+    Activates the given window.
+    """
+    try:
+        if not window_title:
+            open_win_list = window_get_all_opened_titles_windows()
+            window_title = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)[0]
+        
+        win32gui.SetForegroundWindow(win32gui.FindWindow(None, window_title))
+    except Exception as ex:
+        print("Error in window_activate_window="+str(ex))
+
 def window_get_all_opened_titles_windows():
     """
     Gives the title of all the existing (open) windows.
@@ -4019,7 +4041,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
 
     enable_semi_automatic_mode = True
 
-    try:
+    try: # Test Self Test Cases
         text_to_speech("I will let you know the progress of the self-test, and, explain what is being done on your computer.", show=False)
         text_to_speech("Sit back and relax, while i check your machine for compatibility of Clointfusion package...", show=False)
         
@@ -4028,12 +4050,10 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         print()
         print('ClointFusion imported successfully '+ show_emoji())
         print("\n____________________________________________________________\n")
-
-
         print()
         logging.info('ClointFusion imported successfully')
-        try:
-            # base_dir = Path(user_chosen_test_folder)
+        
+        try: # Creating temp folder for ClointFusion Self Test
             folder_create(user_chosen_test_folder) 
             print('Test folder location {}'.format(user_chosen_test_folder))
             logging.info('Test folder location {}'.format(user_chosen_test_folder))
@@ -4070,8 +4090,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # Folder Operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Let me test folder operations...", show=False)
             print('Testing folder operations')
             
@@ -4098,8 +4116,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             text_to_speech("Folder operations test is successful", show=False)
             print('Folder operations tested successfully '+show_emoji())
             print("\n____________________________________________________________\n")
-
-
             logging.info('Folder operations tested successfully')
         except Exception as ex:
             print('Error while testing Folder operations='+str(ex))
@@ -4110,8 +4126,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             try:
                 print()
                 print("\n____________________________________________________________\n")
-
-
                 text_to_speech("This is Windows PC, I love Windows, let me test the windows specific functions.", show=False)
                 print('Started testing window based operations...')
                 
@@ -4127,8 +4141,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 
                 print('Window based operations tested successfully '+show_emoji())
                 print("\n____________________________________________________________\n")
-
-
                 text_to_speech("Great, Windows functions work flawlessly on your PC. Cant wait to see how you use these functions.", show=False)
                 logging.info('Window based operations tested successfully')
             except Exception as ex:
@@ -4144,8 +4156,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # String operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Testing String manipulation functions.", show=False)
             print('Started testing String Operations...')
             
@@ -4155,8 +4165,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             print('String operations tested successfully '+show_emoji())
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("String operations tested successfully.", show=False)
             logging.info('String operations tested successfully')
         except Exception as ex:
@@ -4167,8 +4175,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # Keyboard operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Let me test keyboard functions.", show=False)
             print('Started testing keyboard operations...')
             
@@ -4223,17 +4229,13 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # Excel operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Let me test the excel compatability.", show=False)
             print('Started testing excel operations...')
 
             excel_create_excel_file_in_given_folder(test_folder_path, "Test_Excel_File", "Test_Sheet")
             print(excel_get_row_column_count(test_run_excel_path))
-
             excel_create_excel_file_in_given_folder(test_folder_path,excelFileName="Excel_Test_Data")
             test_excel_path = test_folder_path / "Excel_Test_Data.xlsx"
-            
             excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=0,setText="A")
             excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=1,setText="B")
             excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=2,setText="C")
@@ -4244,29 +4246,22 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=2,setText="4")
             excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=3,setText="3")
             excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=4,setText="5")
-
             print(excel_get_single_cell(test_excel_path,sheet_name='Sheet1',columnName='Name'))
-
             excel_create_file(test_folder_path,"My New Paste Excel")
-
             excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-3','CF-Sheet-1')
             excel_file_path = test_folder_path / 'My Excel-3.xlsx'
             print(excel_get_all_sheet_names(excel_file_path))
             print(excel_get_all_sheet_names(test_run_excel_path))
-            
             excel_copied_Data=excel_copy_range_from_sheet(test_excel_path, sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6)
             print(excel_copied_Data)
             excel_copy_paste_range_from_to_sheet(Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6, copiedData=excel_copied_Data)
             excel_split_by_column(excel_path=Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", header=0, columnName="Name")
-
             folder_create(Path(test_folder_path / 'Split_Merge'))
             excel_split_the_file_on_row_count(excel_path=Path(test_folder_path / "My New Paste Excel.xlsx"), sheet_name="Sheet1", rowSplitLimit=1, outputFolderPath=os.path.join(test_folder_path,'Split_Merge'), outputTemplateFileName="Split")
             excel_merge_all_files(input_folder_path=test_folder_path / "Split_Merge", output_folder_path=Path(test_folder_path,'Split_Merge'))
             excel_drop_columns(Path(test_folder_path / "My New Paste Excel.xlsx"), columnsToBeDropped ="Age")
-
             excel_sort_columns(excel_path=test_excel_path, sheet_name="Sheet1", header=0, firstColumnToBeSorted="Age", secondColumnToBeSorted="Name")
             excel_clear_sheet(Path(test_folder_path / "My New Paste Excel.xlsx"), sheet_name="Sheet1", header=0)
-
             excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=5,setText="E")
             excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=5,setText="5")
             excel_remove_duplicates(excel_path=test_excel_path, sheet_name="Sheet1", header=0,columnName="Name", which_one_to_keep="first")
@@ -4285,8 +4280,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             print('Excel operations tested successfully '+show_emoji())
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Excel operations tested successfully.", show=False)
             logging.info('Excel operations tested successfully')
             
@@ -4301,8 +4294,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # Screen scraping operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Testing screen-scraping functions..", show=False)
             print('Started testing screen-scraping operations...')
             
@@ -4313,15 +4304,13 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
             time.sleep(3)
-            browser_navigate_h("https://docs.google.com/document/d/17kqTg9RkALBn-54kngwimUsfhI74JiSpr5u_Z77herM/edit")
+            browser_navigate_h("https://lnkd.in/gh_r9YB")
             text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
             browser.scroll_down(300)
             
             
             print('Screen-scraping operations tested successfully '+show_emoji())
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Screen-scraping functions tested successfully..", show=False)
             logging.info("Screen-scraping functions tested successfully")
         except Exception as ex:
@@ -4334,6 +4323,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             print("\n____________________________________________________________\n")
             text_to_speech("Testing mouse operations", show=False)
             print('Started testing mouse operations...')
+            
             browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon")
             mouse_move(850,500)
             time.sleep(2)
@@ -4345,8 +4335,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
 
             print('Mouse operations tested successfully ' + show_emoji())
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Mouse operations tested successfully", show=False)
             logging.info('Mouse operations tested successfully')
         except Exception as ex:
@@ -4359,8 +4347,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # Browser operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Great going, almost done, let me quickly test the browser functions.", show=False)
             print("Started testing Browser's Operations...")
             
@@ -4370,8 +4356,8 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 time.sleep(5)
                 browser_navigate_h('https://pypi.org/project/ClointFusion/')
                 text_to_speech("This is our pypi page, you can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                key_press("browserstop")
                 browser.scroll_down(500)
+                time.sleep(10)
                 browser_mouse_click_h(element="RPA",double_click=True)
                 browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                 text_to_speech("By the way, this is your DOST, powered by Clointfusion, Made automation easy, just drag, and drop, and automate.", show=False)
@@ -4381,8 +4367,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 
                 print("Tested Browser's Helium functions successfully " + show_emoji())
                 print("\n____________________________________________________________\n")
-
-
                 text_to_speech("Browser functions tested successfully..", show=False)
                 logging.info("Tested Browser's Helium functions successfully")
             else:
@@ -4396,8 +4380,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # CLI operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Let me show you, some terminal commands,", show=False)
             print('Started testing CLIs Operations...')
             
@@ -4421,8 +4403,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             print("CLI's functions tested successfully"+show_emoji())
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("CLI's functions tested successfully", show=False)
             logging.info("CLI functions tested successfully")    
         except Exception as ex:
@@ -4433,8 +4413,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         try: # Message operations
             print()
             print("\n____________________________________________________________\n")
-
-
             text_to_speech("Ok, Let me show you some different message pop ups.", show=False)
             print("Started testing message functions...")
             
@@ -4449,7 +4427,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             print('Message operations tested successfully '+show_emoji())
             print("\n____________________________________________________________\n")
-
             text_to_speech("Message functions tested successfully", show=False)
             logging.info('Message functions tested successfully')
         except Exception as ex:
@@ -4485,8 +4462,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 text_to_speech("Closing the browser now.", show=False)
                 browser.set_driver(driver)
                 browser_quit_h()
-                
-                #Ensure to close all browser if left open by this self test
                 time.sleep(2)
                 selft.ast()
                 SUCCESS = True
@@ -4501,6 +4476,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
                 print("\n____________________________________________________________\n")
                 text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)
+                
         except Exception as ex:
             print("ClointFusion Automated Testing Failed "+str(ex))
             logging.info("ClointFusion Automated Testing Failed "+str(ex))
