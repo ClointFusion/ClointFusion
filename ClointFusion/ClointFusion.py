@@ -159,34 +159,29 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
     Returns : None
 
     """
-    from colored import fg, attr
-    import random 
-    
-    accepted_colors_ints = [i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]]
+    try:
+        accepted_colors_ints = [i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]]
 
-
-    if magic:
-        for ch in strMsg:
+        if magic:
+            for ch in strMsg:
+                rand_int = random.choice(accepted_colors_ints)
+                color = fg(rand_int)
+                try:
+                    res = attr(1)
+                    print(color+ch+res,end="")
+                except:
+                    res = attr('reset')
+                    print(color+ch+res,end="")
+        else:
             rand_int = random.choice(accepted_colors_ints)
             color = fg(rand_int)
-            try:
-                res = attr(1)
-                print(color+ch+res,end="")
-            
-            except:
-                res = attr('reset')
-                print(color+ch+res,end="")
-    
-    else:
-        rand_int = random.choice(accepted_colors_ints)
-        color = fg(rand_int)
-        print(color+strMsg+attr(1))
-    reset = attr('reset')    
-    print (reset)
-    
+            print(color+strMsg+attr(1))
+        print(attr('reset'))
+        
+    except Exception as ex:
+        print("Error in print_with_magic_color="+str(ex))
 
 
-          
 def read_semi_automatic_log(key):
     """
     Function to read a value from semi_automatic_log for a given key
