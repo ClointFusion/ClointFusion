@@ -40,6 +40,7 @@ import traceback
 import shutil
 import socket
 from pywebio.output import put_text
+from win32 import win32gui
 
 try:
     import pyautogui as pg
@@ -2174,7 +2175,19 @@ def window_activate_window(window_title=''):
             open_win_list = window_get_all_opened_titles_windows()
             window_title = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)[0]
         
-        win32gui.SetForegroundWindow(win32gui.FindWindow(None, window_title))
+        item,window_found = _window_find_exact_name(window_title)
+        if window_found:
+            windw = gw.getWindowsWithTitle(item)[0]
+
+            try:
+                windw.activate()
+            except:
+                windw.minimize()
+                windw.maximize()
+            time.sleep(1)
+            
+        else:
+            print("No window OPEN by name="+str(windowName))
     except Exception as ex:
         print("Error in window_activate_window="+str(ex))
 
@@ -3783,6 +3796,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 
 
 # --------- Utility Functions ---------
+
 def ocr_now(img_path=""):
     """
     Recognize and “read” the text embedded in images using Google's Tesseract-OCR
@@ -4019,7 +4033,7 @@ def _rerun_clointfusion_first_run(ex):
     except:
         put_text("Please Re-run..." + str(ex)).show()
 
-def clointfusion_self_test_cases(temp_current_working_dir, start_time):
+def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_window_name):
     """
     Main function for Self Test, which is called by GUI
     """
@@ -4390,10 +4404,14 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             text_to_speech("Want to quickly test your internet speed, type CF underscore ST.", show=False)
             print("Type 'cf_st' in terminal for this function")
-            text_to_speech("Internet speed is being tested in the terminal as we speak.", show=False)
-            # Test Speed Test
-            cli_speed_test_test()
+            text_to_speech("Internet speed is being tested in the terminal.", show=False)
             
+            # Test Speed Test
+            window_activate_and_maximize_windows(console_window_name)
+            cli_speed_test_test()
+            window_minimize_windows(console_window_name)
+            window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
+            print("Here again.")
             
             text_to_speech("Want to see, how much time you spent, on what, and which application. type work in terminal. But First, let me tell you this, your data is stored locally and only belongs to you.", show=False)
             print("Type 'work' in terminal for this function.")
@@ -4525,7 +4543,9 @@ def clointfusion_self_test():
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
                 [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
                 [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
-
+        
+        console_window = window_get_active_window()
+        
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
         else:
@@ -4534,6 +4554,7 @@ def clointfusion_self_test():
             except:
                 WHILE_TRUE = False
         instructions = False
+        
         while WHILE_TRUE:
             if not instructions:
                 text_to_speech("Welcome to ClointFusion. ClointFusion, is a python based RPA tool.", show=False)    
@@ -4576,10 +4597,11 @@ def clointfusion_self_test():
 
                 _init_cf_quick_test_log_file(temp_current_working_dir)
 
-                status_msg, success = clointfusion_self_test_cases(temp_current_working_dir, start_time)
+                status_msg, success = clointfusion_self_test_cases(temp_current_working_dir, start_time, console_window)
 
-                if str(status_msg).strip() == "":
+                if str(status_msg).strip() == "" and success:
                     window['Close'].update(disabled=False)
+                    break
                 else:
                     try:
                         pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
@@ -4591,7 +4613,7 @@ def clointfusion_self_test():
                 
 
             if event in (sg.WINDOW_CLOSED, 'Close'):
-                break        
+                sys.exit(0)
                     
     except Exception as ex:
         try:
