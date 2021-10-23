@@ -179,6 +179,9 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
         rand_int = random.choice(accepted_colors_ints)
         color = fg(rand_int)
         print(color+strMsg+attr(1))
+    reset = attr('reset')    
+    print (reset)
+    
 
 
           
