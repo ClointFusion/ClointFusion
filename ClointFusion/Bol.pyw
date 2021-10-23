@@ -16,6 +16,12 @@ from rich import print
 from rich.console import Console
 import pyaudio
 
+from rich import pretty
+import pyinspect as pi
+pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
+pretty.install()
+
+
 console = Console()
 
 queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,', 'commands,', 'read screen,','help,',]

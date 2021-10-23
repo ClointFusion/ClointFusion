@@ -67,16 +67,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 from tabloo import show
 from colored import fg, attr
 import click
-import pyinspect as pi
 from elevate import elevate
-from rich import pretty
 from rich.console import Console
 import random
 import speech_recognition as sr
 import pyttsx3
 
+from rich import pretty
+import pyinspect as pi
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
+
 console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END
 

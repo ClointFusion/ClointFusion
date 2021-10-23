@@ -13,14 +13,16 @@ import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from elevate import elevate
-import pyinspect as pi
 import pyautogui as pg
 from ClointFusion import selft
 import threading
 import requests
 user_uuid = selft.get_uuid()
 
+from rich import pretty
+import pyinspect as pi
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
+pretty.install()
 
 os_name = str(platform.system()).lower()
 windows_os = "windows"
