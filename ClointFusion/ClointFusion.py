@@ -4318,7 +4318,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
             time.sleep(3)
-            browser_navigate_h("https://lnkd.in/gh_r9YB")
+            browser_navigate_h("https://docs.google.com/document/d/17kqTg9RkALBn-54kngwimUsfhI74JiSpr5u_Z77herM")
             text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
             browser.scroll_down(300)
             
@@ -4370,7 +4370,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 time.sleep(5)
                 browser_navigate_h('https://pypi.org/project/ClointFusion/')
                 text_to_speech("This is our pypi page, you can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                browser.scroll_down(500)
+                browser.scroll_down(2000)
                 time.sleep(10)
                 browser_mouse_click_h(element="RPA",double_click=True)
                 browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
