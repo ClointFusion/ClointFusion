@@ -4411,7 +4411,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             cli_speed_test_test()
             window_minimize_windows(console_window_name)
             window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
-            print("Here again.")
+            print("I am back !!!")
             
             text_to_speech("Want to see, how much time you spent, on what, and which application. type work in terminal. But First, let me tell you this, your data is stored locally and only belongs to you.", show=False)
             print("Type 'work' in terminal for this function.")
