@@ -4322,7 +4322,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             time.sleep(3)
             browser_navigate_h("https://docs.google.com/document/d/17kqTg9RkALBn-54kngwimUsfhI74JiSpr5u_Z77herM")
             text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
-            browser.scroll_down(300)
+            browser.scroll_down(1000)
             
             
             print('Screen-scraping operations tested successfully '+show_emoji())
