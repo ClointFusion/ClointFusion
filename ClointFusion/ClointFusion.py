@@ -435,7 +435,7 @@ def _update_version(c_version,s_version):
 
 def verify_version(c_version, s_version):
     try:
-        if c_version != s_version:
+        if c_version < s_version:
             _update_version(c_version, s_version)
             selft.sfn()
             return True
