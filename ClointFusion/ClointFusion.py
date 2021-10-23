@@ -4312,7 +4312,9 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             print('Started testing screen-scraping operations...')
             
             browser_activate('https://google.com')
+            text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
             browser_write_h('clointfusion hackathon')
+            time.sleep(5)
             browser_hit_enter_h()
             browser_mouse_click_h("Python based RPA Development Platform")
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
