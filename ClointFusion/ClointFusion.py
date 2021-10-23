@@ -4883,7 +4883,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Personal Assistant powered by ClointFusion\n3)  work         - Get your Computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet Speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
 
 # --------- CLI Commands Ends ---------
 
@@ -5036,7 +5036,7 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Personal Assistant powered by ClointFusion\n3)  work         - Get your Computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet Speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
 
 # --------- TEST FOR CLI Ends ---------
 
