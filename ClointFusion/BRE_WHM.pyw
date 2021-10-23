@@ -17,6 +17,7 @@ import pyinspect as pi
 import pyautogui as pg
 from ClointFusion import selft
 import threading
+import requests
 user_uuid = selft.get_uuid()
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
@@ -83,8 +84,8 @@ except Exception as ex :
 try:
     cursr.execute("ALTER TABLE SYS_CONFIG DROP COLUMN RAM")
     connct.commit()
-except:
-    pass
+except Exception as ex :
+    print(f"Exception TABLE SYS_CONFIG DROP : {ex}")
 
 
 
@@ -253,8 +254,8 @@ def on_click(x, y, button, pressed):
             try:
                 cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (get_time_stamp(),"Mouse Click",str(pg.position()[0]),str(pg.position()[1]),"N/A",str(button),str(click_count),str(windw).replace("*",""),str(rgb_pixels),str(snip_save_path)))
                 connct.commit()
-            except:
-                pass
+            except Exception as ex :
+                print(f"Exception CFEVENTS values : {ex}")
 
             COUNTER = COUNTER + 1
     except Exception as ex:
@@ -323,8 +324,8 @@ def exit(keyboard_listener,mouse_listener):
         mouse_listener.stop()
         os._exit(0) 
         
-    except:
-        pass
+    except Exception as ex :
+        print(f"Exception exit keyboard_listener,mouse_listener : {ex}")
 
 def _getServerVersion():
     global s_version
@@ -333,6 +334,8 @@ def _getServerVersion():
         s_version = response.json()['info']['version']
     except Warning:
         pass
+    except Exception as ex :
+        print(f"Exception _getServerVersion : {ex}")
 
     return s_version
 
@@ -345,8 +348,8 @@ def _getCurrentVersion():
             c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
 
         c_version = str(c_version).split(":")[1].strip()
-    except:
-        pass
+    except Exception as ex :
+        print(f"Exception _getCurrentVersion : {ex}")
 
     return c_version
 

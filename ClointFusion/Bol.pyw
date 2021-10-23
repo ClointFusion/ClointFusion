@@ -282,53 +282,52 @@ def call_social_media():
     #opens all social media links of ClointFusion
     try:
         webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
-    except:
-        pass
-
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+ 
     try:
         webbrowser.open_new_tab("https://twitter.com/ClointFusion")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
-    except:
-        pass
-
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
     try:
         webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
     try:
         webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
 def call_find_on_screen():
     cf.text_to_speech('OK, what to find ?')
@@ -451,8 +450,8 @@ def bol_main():
                         os.system(cmd)
                         status.start()
                         status.update("Listening...\n")
-                    except:
-                        pass
+                    except Exception as ex:
+                        print("Error in calling dost from bol = " + str(ex))
 
                 elif any(x in query for x in ["open notepad","launch notepad"]):
                     status.update("Processing...\n")

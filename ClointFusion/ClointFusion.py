@@ -386,8 +386,8 @@ def _getCurrentVersion():
             c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
 
         c_version = str(c_version).split(":")[1].strip()
-    except:
-        pass
+    except Exception as ex:
+        print("Error in _getCurrentVersion = " + str(ex))
 
     return c_version
 
@@ -398,6 +398,8 @@ def _getServerVersion():
         s_version = response.json()['info']['version']
     except Warning:
         pass
+    except Exception as ex:
+        print("Error in _getServerVersion = " + str(ex))
 
     return s_version
 
@@ -422,8 +424,8 @@ def _update_version(c_version,s_version):
             os.system("python -m pip install --upgrade pip")
         else:
             os.system("sudo python3 -m pip install --upgrade pip")
-    except:
-        pass
+    except Exception as ex:
+        print("Error in _update_version = " + str(ex))
 
     try:
         if os_name == windows_os:
@@ -474,7 +476,7 @@ def _welcome_to_clointfusion():
     else:
         greeting = "Good Evening"
 
-    welcome_msg = f"\n{greeting}{str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
+    welcome_msg = f"\n{greeting} {str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
@@ -1634,6 +1636,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                     subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
+            time.sleep(5)
 
         options = Options()
         options.add_argument("--start-maximized")
@@ -1915,6 +1918,18 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     finally:
         return status
 
+def browser_set_waiting_time(time: int):
+    """
+    Set the waiting time for the browser. If element is not found in the given time, it will raise an exception.
+
+    Args:
+        time ([int]): The time in seconds to wait for the element to be found.
+    """
+    try:
+        browser.Config.implicit_wait_secs = int(time)
+    except Exception as ex:
+        print("Error in browser_set_waiting_time = " + str(ex))
+
 def browser_quit_h():
     """Close the Browser or Browser Automation Session.
 
@@ -2075,8 +2090,8 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
                 file_path = Path(file_path)
                 os.remove(file_path)
                 count +=1 
-            except:
-                pass
+            except Exception as ex:
+                print("Error in folder_delete_all_files = " + str(ex))
         
         return count
     except Exception as ex:
@@ -3195,8 +3210,8 @@ def excel_sub_routines():
 
                 try:
                     os.remove(user_excel_path_with_sr)
-                except:
-                    pass
+                except Exception as ex:
+                    print("Error in excel_sub_routines = " + str(ex))
 
                 shutil.copy2(cf_excel_rountine_file_path,user_excel_path_with_sr)
 
@@ -3209,8 +3224,8 @@ def excel_sub_routines():
                 ws1.api.Copy(Before=wb2.sheets(1).api)
                 try:
                     wb2.save(user_excel_path_with_sr)
-                except:
-                    pass
+                except Exception as ex:
+                    print("Error in excel_sub_routines = " + str(ex))
 
                 wb1.close()
                 wb2.close()
@@ -3218,8 +3233,8 @@ def excel_sub_routines():
                 try:
                     wb1.app.quit()
                     wb2.app.quit()
-                except:
-                    pass
+                except Exception as ex:
+                    print("Error in excel_sub_routines = " + str(ex))
 
                 excel.Workbooks.Open(Filename=user_excel_path_with_sr, ReadOnly=1)
                 file_name = str(Path(user_excel_path_with_sr).stem) + ".xlsb"
@@ -3248,8 +3263,8 @@ def excel_sub_routines():
             try:
                 ew = gw.getWindowsWithTitle('Excel')[0]
                 ew.close()
-            except:
-                pass
+            except Exception as ex:
+                print("Error in excel_sub_routines = " + str(ex))
         else:
             print("This feature is available only on Windows OS")
 
@@ -3937,8 +3952,8 @@ def clear_screen():
       if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
         command = 'cls'
       os.system(command)
-    except:
-        pass
+    except Exception as ex:
+        print("Error in excel_sub_routines = " + str(ex))
 
 def text_to_speech(audio, show=True):
     """
@@ -4761,8 +4776,8 @@ def cli_bre_whm():
             console.print('_' * 20,justify='center')  # Underscore
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
             
-        except:
-            pass
+        except Exception as ex:
+            print("Error in click cli_bre_whm = " + str(ex))
         
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
@@ -4915,8 +4930,8 @@ def cli_bre_whm_test():
             console.print('_' * 20,justify='center')  # Underscore
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
             
-        except:
-            pass
+        except Exception as ex:
+            print("Error in click cli_bre_whm = " + str(ex))
         
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
