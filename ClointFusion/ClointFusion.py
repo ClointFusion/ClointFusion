@@ -157,10 +157,12 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
     Returns : None
 
     """
-    accepted_colors_ints = random.choice([i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]])
-
     from colored import fg, attr
     import random 
+    
+    accepted_colors_ints = [i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]]
+
+
     if magic:
         for ch in strMsg:
             rand_int = random.choice(accepted_colors_ints)
@@ -177,8 +179,8 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
         rand_int = random.choice(accepted_colors_ints)
         color = fg(rand_int)
         print(color+strMsg+attr(1))
-        
-        
+
+
           
 def read_semi_automatic_log(key):
     """
