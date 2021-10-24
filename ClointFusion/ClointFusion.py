@@ -87,6 +87,9 @@ windows_os = "windows"
 linux_os = "linux"
 mac_os = "darwin"
 
+python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
+pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
+
 config_folder_path = ""
 log_path = ""
 log_file_path = ""
@@ -149,7 +152,6 @@ def show_emoji(strInput=""):
         return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
     else:
         return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
-    
 
 def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
     """
@@ -180,7 +182,6 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
         
     except Exception as ex:
         print("Error in print_with_magic_color="+str(ex))
-
 
 def read_semi_automatic_log(key):
     """
@@ -423,36 +424,6 @@ def _get_site_packages_path():
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
 
-def _update_version(c_version,s_version):
-    print('You are using version {}, however different version {} is available !'.format(c_version,s_version))
-    print('\nUpgrading to latest version...Please wait a moment...\n')
-    try:
-        if os_name == windows_os:
-            os.system("python -m pip install --upgrade pip")
-        else:
-            os.system("sudo python3 -m pip install --upgrade pip")
-    except Exception as ex:
-        print("Error in _update_version = " + str(ex))
-
-    try:
-        if os_name == windows_os:
-            os.system(f"pip install -U ClointFusion=={s_version} --user --no-warn-script-location")
-        else:
-            os.system("sudo pip3 install -U ClointFusion=={s_version}")
-    except:
-        print("Please Upgrade ClointFusion manually.")
-
-def verify_version(c_version, s_version):
-    try:
-        if c_version < s_version:
-            _update_version(c_version, s_version)
-            selft.sfn()
-            return True
-        else:
-            return False
-    except:
-        return False
-
 # Function in use, Dont Delete
 def _perform_self_test():
     try:
@@ -489,13 +460,7 @@ def _welcome_to_clointfusion():
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
     
-    status = verify_version(c_version, s_version)
-
-    if status:
-        if os_name == windows_os:
-            os.system('python -c "import ClointFusion"')
-        elif os_name == linux_os:
-            os.system('sudo python3 -c "import ClointFusion"')
+    selft.verify_version(c_version, s_version)
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -4554,9 +4519,10 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
 def clointfusion_self_test():
-    global os_name
+    global os_name, python_exe_path
     WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
+    python_version = str(sys.version_info.major)
     try:
 
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
@@ -4634,11 +4600,9 @@ def clointfusion_self_test():
 
                     sys.exit(0)
 
-                
-
             if event in (sg.WINDOW_CLOSED, 'Close'):
                 sys.exit(0)
-                    
+
     except Exception as ex:
         try:
             pg.alert('Error in Clointfusion Self Test = '+str(ex))
@@ -4654,9 +4618,9 @@ def clointfusion_self_test():
                 window.close()
             elif success:
                 if os_name == windows_os:
-                        os.system('python -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
+                         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                 elif os_name == linux_os:
-                    os.system('sudo python3 -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
+                    os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                 time.sleep(2)
             else:
                 sys.exit(1)
@@ -4703,6 +4667,7 @@ def cli_speed_test():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
+    global python_exe_path
     try:   
         print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion : https://www.linkedin.com/in/jay-trivedi-09aa791a4/ \n")
         # try:   
@@ -4710,7 +4675,7 @@ def cli_colab_launcher():
         # except:
         #     subprocess.call("python3 " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)                        
 
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"' 
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"' 
         os.system(cmd)
 
     except Exception as ex:
@@ -4719,10 +4684,11 @@ def cli_colab_launcher():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_dost():
     """ClointFusion CLI for DOST GUI Launcher"""
+    global python_exe_path
     try:
         print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion : https://www.linkedin.com/in/murali-manohar-varma-220a03207 \n")
         
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
         os.system(cmd)
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
@@ -4730,10 +4696,11 @@ def cli_dost():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_bol():
     """ClointFusion CLI for DOST GUI Launcher"""
+    global python_exe_path
     try:
         print("Launching ClointFusion powered Virtual Assistant : Bol\n")
         
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
         print("Error in cli_bol "+str(ex))
@@ -4741,8 +4708,9 @@ def cli_bol():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_whm():
     """ClointFusion CLI for WHM Launcher"""
+    global pythonw_exe_path
     try:
-        cmd = f'pythonw "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
+        cmd = f'{pythonw_exe_path} "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
         os.system(cmd)
         print("WHM is now running..\n")
     except Exception as ex:
@@ -4911,6 +4879,7 @@ def cli_cf(message):
 
 # --------- CLI Commands Ends ---------
 
+
 # --------- TEST FOR CLI ---------
 
 def cli_bre_whm_test():
@@ -5063,6 +5032,7 @@ def cli_cf_test():
     print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
 
 # --------- TEST FOR CLI Ends ---------
+
 
 # --------- 4. All default services ---------
 

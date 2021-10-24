@@ -90,7 +90,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 browser.go_to(url)
             if not url:
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
-            browser.Config.implicit_wait_secs = 120
+            browser.Config.implicit_wait_secs = 20
         except Exception as ex:
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
