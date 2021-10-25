@@ -1747,7 +1747,7 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     finally:
         return status
 
-def browser_set_waiting_time(time: int):
+def browser_set_waiting_time(time=10):
     """
     Set the waiting time for the browser. If element is not found in the given time, it will raise an exception.
 
