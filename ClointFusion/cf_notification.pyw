@@ -99,7 +99,8 @@ def show_toast_notification_if_new_version_is_available():
                 print("Error in show_toast_notification_if_new_version_is_available" + str(ex))
             
 # schedule.every(5).hour.do(show_toast_notification_if_new_version_is_available)
-schedule.every(30).seconds.do(show_toast_notification_if_new_version_is_available)
+# schedule.every(30).seconds.do(show_toast_notification_if_new_version_is_available)
+schedule.every(30).to(60).seconds.do(show_toast_notification_if_new_version_is_available)
 
 # Server Broadcast
 while True:
