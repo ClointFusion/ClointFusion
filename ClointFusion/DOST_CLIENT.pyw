@@ -3,7 +3,7 @@ import requests
 import os
 import subprocess
 import platform
-import logging
+import logging, time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -11,7 +11,7 @@ import helium as browser
 from rich.text import Text
 from rich import print
 from rich.console import Console
-from ClointFusion import selft, time
+from ClointFusion import selft
 
 from rich import pretty
 import pyinspect as pi
