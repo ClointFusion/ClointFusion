@@ -40,6 +40,7 @@ import traceback
 import shutil
 import socket
 from pywebio.output import put_text
+from win32 import win32gui
 
 try:
     import pyautogui as pg
@@ -66,16 +67,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 from tabloo import show
 from colored import fg, attr
 import click
-import pyinspect as pi
 from elevate import elevate
-from rich import pretty
 from rich.console import Console
 import random
 import speech_recognition as sr
 import pyttsx3
 
+from rich import pretty
+import pyinspect as pi
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
+
 console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END
 
@@ -84,6 +86,9 @@ os_name = str(platform.system()).lower()
 windows_os = "windows"
 linux_os = "linux"
 mac_os = "darwin"
+
+python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
+pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
 
 config_folder_path = ""
 log_path = ""
@@ -147,7 +152,6 @@ def show_emoji(strInput=""):
         return(emoji.emojize(":{}:".format(str('thumbsup').lower()),use_aliases=True,variant="emoji_type"))
     else:
         return(emoji.emojize(":{}:".format(str(strInput).lower()),use_aliases=True,variant="emoji_type"))
-    
 
 def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
     """
@@ -157,34 +161,28 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
     Returns : None
 
     """
-    from colored import fg, attr
-    import random 
-    
-    accepted_colors_ints = [i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]]
+    try:
+        accepted_colors_ints = [i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]]
 
-
-    if magic:
-        for ch in strMsg:
+        if magic:
+            for ch in strMsg:
+                rand_int = random.choice(accepted_colors_ints)
+                color = fg(rand_int)
+                try:
+                    res = attr(1)
+                    print(color+ch+res,end="")
+                except:
+                    res = attr('reset')
+                    print(color+ch+res,end="")
+        else:
             rand_int = random.choice(accepted_colors_ints)
             color = fg(rand_int)
-            try:
-                res = attr(1)
-                print(color+ch+res,end="")
-            
-            except:
-                res = attr('reset')
-                print(color+ch+res,end="")
-    
-    else:
-        rand_int = random.choice(accepted_colors_ints)
-        color = fg(rand_int)
-        print(color+strMsg+attr(1))
-    reset = attr('reset')    
-    print (reset)
-    
+            print(color+strMsg+attr(1))
+        print(attr('reset'))
+        
+    except Exception as ex:
+        print("Error in print_with_magic_color="+str(ex))
 
-
-          
 def read_semi_automatic_log(key):
     """
     Function to read a value from semi_automatic_log for a given key
@@ -396,8 +394,8 @@ def _getCurrentVersion():
             c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
 
         c_version = str(c_version).split(":")[1].strip()
-    except:
-        pass
+    except Exception as ex:
+        print("Error in _getCurrentVersion = " + str(ex))
 
     return c_version
 
@@ -408,6 +406,8 @@ def _getServerVersion():
         s_version = response.json()['info']['version']
     except Warning:
         pass
+    except Exception as ex:
+        print("Error in _getServerVersion = " + str(ex))
 
     return s_version
 
@@ -423,36 +423,6 @@ def _get_site_packages_path():
 
     site_packages_path = str(site_packages_path).strip()  
     return str(site_packages_path)
-
-def _update_version(c_version,s_version):
-    print('You are using version {}, however different version {} is available !'.format(c_version,s_version))
-    print('\nUpgrading to latest version...Please wait a moment...\n')
-    try:
-        if os_name == windows_os:
-            os.system("python -m pip install --upgrade pip")
-        else:
-            os.system("sudo python3 -m pip install --upgrade pip")
-    except:
-        pass
-
-    try:
-        if os_name == windows_os:
-            os.system(f"pip install -U ClointFusion=={s_version} --user --no-warn-script-location")
-        else:
-            os.system("sudo pip3 install -U ClointFusion=={s_version}")
-    except:
-        print("Please Upgrade ClointFusion manually.")
-
-def verify_version(c_version, s_version):
-    try:
-        if c_version != s_version:
-            _update_version(c_version, s_version)
-            selft.sfn()
-            return True
-        else:
-            return False
-    except:
-        return False
 
 # Function in use, Dont Delete
 def _perform_self_test():
@@ -484,19 +454,13 @@ def _welcome_to_clointfusion():
     else:
         greeting = "Good Evening"
 
-    welcome_msg = f"\n{greeting}{str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
+    welcome_msg = f"\n{greeting} {str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
 
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
     
-    status = verify_version(c_version, s_version)
-
-    if status:
-        if os_name == windows_os:
-            os.system('python -c "import ClointFusion"')
-        elif os_name == linux_os:
-            os.system('sudo python3 -c "import ClointFusion"')
+    selft.verify_version(c_version, s_version)
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -1644,6 +1608,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                     subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
+            time.sleep(5)
 
         options = Options()
         options.add_argument("--start-maximized")
@@ -1925,6 +1890,18 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     finally:
         return status
 
+def browser_set_waiting_time(time: int):
+    """
+    Set the waiting time for the browser. If element is not found in the given time, it will raise an exception.
+
+    Args:
+        time ([int]): The time in seconds to wait for the element to be found.
+    """
+    try:
+        browser.Config.implicit_wait_secs = int(time)
+    except Exception as ex:
+        print("Error in browser_set_waiting_time = " + str(ex))
+
 def browser_quit_h():
     """Close the Browser or Browser Automation Session.
 
@@ -2085,8 +2062,8 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
                 file_path = Path(file_path)
                 os.remove(file_path)
                 count +=1 
-            except:
-                pass
+            except Exception as ex:
+                print("Error in folder_delete_all_files = " + str(ex))
         
         return count
     except Exception as ex:
@@ -2185,7 +2162,19 @@ def window_activate_window(window_title=''):
             open_win_list = window_get_all_opened_titles_windows()
             window_title = gui_get_dropdownlist_values_from_user("window titles to Activate & Maximize",dropdown_list=open_win_list,multi_select=False)[0]
         
-        win32gui.SetForegroundWindow(win32gui.FindWindow(None, window_title))
+        item,window_found = _window_find_exact_name(window_title)
+        if window_found:
+            windw = gw.getWindowsWithTitle(item)[0]
+
+            try:
+                windw.activate()
+            except:
+                windw.minimize()
+                windw.maximize()
+            time.sleep(1)
+            
+        else:
+            print("No window OPEN by name="+str(windowName))
     except Exception as ex:
         print("Error in window_activate_window="+str(ex))
 
@@ -3193,8 +3182,8 @@ def excel_sub_routines():
 
                 try:
                     os.remove(user_excel_path_with_sr)
-                except:
-                    pass
+                except Exception as ex:
+                    print("Error in excel_sub_routines = " + str(ex))
 
                 shutil.copy2(cf_excel_rountine_file_path,user_excel_path_with_sr)
 
@@ -3207,8 +3196,8 @@ def excel_sub_routines():
                 ws1.api.Copy(Before=wb2.sheets(1).api)
                 try:
                     wb2.save(user_excel_path_with_sr)
-                except:
-                    pass
+                except Exception as ex:
+                    print("Error in excel_sub_routines = " + str(ex))
 
                 wb1.close()
                 wb2.close()
@@ -3216,8 +3205,8 @@ def excel_sub_routines():
                 try:
                     wb1.app.quit()
                     wb2.app.quit()
-                except:
-                    pass
+                except Exception as ex:
+                    print("Error in excel_sub_routines = " + str(ex))
 
                 excel.Workbooks.Open(Filename=user_excel_path_with_sr, ReadOnly=1)
                 file_name = str(Path(user_excel_path_with_sr).stem) + ".xlsb"
@@ -3246,8 +3235,8 @@ def excel_sub_routines():
             try:
                 ew = gw.getWindowsWithTitle('Excel')[0]
                 ew.close()
-            except:
-                pass
+            except Exception as ex:
+                print("Error in excel_sub_routines = " + str(ex))
         else:
             print("This feature is available only on Windows OS")
 
@@ -3794,6 +3783,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
 
 
 # --------- Utility Functions ---------
+
 def ocr_now(img_path=""):
     """
     Recognize and “read” the text embedded in images using Google's Tesseract-OCR
@@ -3934,8 +3924,8 @@ def clear_screen():
       if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
         command = 'cls'
       os.system(command)
-    except:
-        pass
+    except Exception as ex:
+        print("Error in excel_sub_routines = " + str(ex))
 
 def text_to_speech(audio, show=True):
     """
@@ -4030,7 +4020,7 @@ def _rerun_clointfusion_first_run(ex):
     except:
         put_text("Please Re-run..." + str(ex)).show()
 
-def clointfusion_self_test_cases(temp_current_working_dir, start_time):
+def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_window_name):
     """
     Main function for Self Test, which is called by GUI
     """
@@ -4163,6 +4153,70 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             print('Skipping window operations as it is Windows OS specific')
             logging.info('Skipping window operations as it is Windows OS specific')
             TEST_CASES_STATUS_MESSAGE  += 'Skipping window operations as it is Windows OS specific'
+        
+        try: # Excel operations
+            print()
+            print("\n____________________________________________________________\n")
+            text_to_speech("Let me test the excel compatability.", show=False)
+            print('Started testing excel operations...')
+
+            excel_create_excel_file_in_given_folder(test_folder_path, "Test_Excel_File", "Test_Sheet")
+            print(excel_get_row_column_count(test_run_excel_path))
+            excel_create_excel_file_in_given_folder(test_folder_path,excelFileName="Excel_Test_Data")
+            test_excel_path = test_folder_path / "Excel_Test_Data.xlsx"
+            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=0,setText="A")
+            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=1,setText="B")
+            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=2,setText="C")
+            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=3,setText="D")
+            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=4,setText="E")
+            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=0,setText="1")
+            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=1,setText="2")
+            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=2,setText="4")
+            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=3,setText="3")
+            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=4,setText="5")
+            print(excel_get_single_cell(test_excel_path,sheet_name='Sheet1',columnName='Name'))
+            excel_create_file(test_folder_path,"My New Paste Excel")
+            excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-3','CF-Sheet-1')
+            excel_file_path = test_folder_path / 'My Excel-3.xlsx'
+            print(excel_get_all_sheet_names(excel_file_path))
+            print(excel_get_all_sheet_names(test_run_excel_path))
+            excel_copied_Data=excel_copy_range_from_sheet(test_excel_path, sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6)
+            print(excel_copied_Data)
+            excel_copy_paste_range_from_to_sheet(Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6, copiedData=excel_copied_Data)
+            excel_split_by_column(excel_path=Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", header=0, columnName="Name")
+            folder_create(Path(test_folder_path / 'Split_Merge'))
+            excel_split_the_file_on_row_count(excel_path=Path(test_folder_path / "My New Paste Excel.xlsx"), sheet_name="Sheet1", rowSplitLimit=1, outputFolderPath=os.path.join(test_folder_path,'Split_Merge'), outputTemplateFileName="Split")
+            excel_merge_all_files(input_folder_path=test_folder_path / "Split_Merge", output_folder_path=Path(test_folder_path,'Split_Merge'))
+            excel_drop_columns(Path(test_folder_path / "My New Paste Excel.xlsx"), columnsToBeDropped ="Age")
+            excel_sort_columns(excel_path=test_excel_path, sheet_name="Sheet1", header=0, firstColumnToBeSorted="Age", secondColumnToBeSorted="Name")
+            excel_clear_sheet(Path(test_folder_path / "My New Paste Excel.xlsx"), sheet_name="Sheet1", header=0)
+            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=5,setText="E")
+            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=5,setText="5")
+            excel_remove_duplicates(excel_path=test_excel_path, sheet_name="Sheet1", header=0,columnName="Name", which_one_to_keep="first")
+            excel_create_file(test_folder_path,"My VLookUp Excel")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=0,setText="A")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=1,setText="B")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=2,setText="C")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=3,setText="D")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=4,setText="E")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=0,setText="1")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=1,setText="2")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=2,setText="4")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=3,setText="3")
+            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=4,setText="5")
+            excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
+            
+            print('Excel operations tested successfully '+show_emoji())
+            print("\n____________________________________________________________\n")
+            text_to_speech("Excel operations tested successfully.", show=False)
+            logging.info('Excel operations tested successfully')
+            
+            text_to_speech("Isn't amazingly quick, But yeah, more than 28 functions, and, more than 50 excel operations, have been tested just now.", show=False)
+            text_to_speech("Banking, finance, from data collection, to data cleaning, and sending reports, everything can be done, with excel functions and Clointfusion. Give it a try today.", show=False)
+        except Exception as ex:
+            print("Error while testing Excel Operations="+str(ex))
+            logging.info("Error while testing Excel Operations="+str(ex))
+            TEST_CASES_STATUS_MESSAGE  += "Error while testing Excel Operations="+str(ex)
             
         try: # String operations
             print()
@@ -4236,71 +4290,6 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 key_press(key_1="alt", key_2="f4")
             except:
                 pg.hotkey("alt", "f4")
- 
-        try: # Excel operations
-            print()
-            print("\n____________________________________________________________\n")
-            text_to_speech("Let me test the excel compatability.", show=False)
-            print('Started testing excel operations...')
-
-            excel_create_excel_file_in_given_folder(test_folder_path, "Test_Excel_File", "Test_Sheet")
-            print(excel_get_row_column_count(test_run_excel_path))
-            excel_create_excel_file_in_given_folder(test_folder_path,excelFileName="Excel_Test_Data")
-            test_excel_path = test_folder_path / "Excel_Test_Data.xlsx"
-            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=0,setText="A")
-            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=1,setText="B")
-            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=2,setText="C")
-            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=3,setText="D")
-            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=4,setText="E")
-            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=0,setText="1")
-            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=1,setText="2")
-            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=2,setText="4")
-            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=3,setText="3")
-            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=4,setText="5")
-            print(excel_get_single_cell(test_excel_path,sheet_name='Sheet1',columnName='Name'))
-            excel_create_file(test_folder_path,"My New Paste Excel")
-            excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-3','CF-Sheet-1')
-            excel_file_path = test_folder_path / 'My Excel-3.xlsx'
-            print(excel_get_all_sheet_names(excel_file_path))
-            print(excel_get_all_sheet_names(test_run_excel_path))
-            excel_copied_Data=excel_copy_range_from_sheet(test_excel_path, sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6)
-            print(excel_copied_Data)
-            excel_copy_paste_range_from_to_sheet(Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", startCol=1, startRow=1, endCol=2, endRow=6, copiedData=excel_copied_Data)
-            excel_split_by_column(excel_path=Path(os.path.join(test_folder_path,"My New Paste Excel.xlsx")), sheet_name="Sheet1", header=0, columnName="Name")
-            folder_create(Path(test_folder_path / 'Split_Merge'))
-            excel_split_the_file_on_row_count(excel_path=Path(test_folder_path / "My New Paste Excel.xlsx"), sheet_name="Sheet1", rowSplitLimit=1, outputFolderPath=os.path.join(test_folder_path,'Split_Merge'), outputTemplateFileName="Split")
-            excel_merge_all_files(input_folder_path=test_folder_path / "Split_Merge", output_folder_path=Path(test_folder_path,'Split_Merge'))
-            excel_drop_columns(Path(test_folder_path / "My New Paste Excel.xlsx"), columnsToBeDropped ="Age")
-            excel_sort_columns(excel_path=test_excel_path, sheet_name="Sheet1", header=0, firstColumnToBeSorted="Age", secondColumnToBeSorted="Name")
-            excel_clear_sheet(Path(test_folder_path / "My New Paste Excel.xlsx"), sheet_name="Sheet1", header=0)
-            excel_set_single_cell(test_excel_path,columnName="Name",cellNumber=5,setText="E")
-            excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=5,setText="5")
-            excel_remove_duplicates(excel_path=test_excel_path, sheet_name="Sheet1", header=0,columnName="Name", which_one_to_keep="first")
-            excel_create_file(test_folder_path,"My VLookUp Excel")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=0,setText="A")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=1,setText="B")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=2,setText="C")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=3,setText="D")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=4,setText="E")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=0,setText="1")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=1,setText="2")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=2,setText="4")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=3,setText="3")
-            excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=4,setText="5")
-            excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
-            
-            print('Excel operations tested successfully '+show_emoji())
-            print("\n____________________________________________________________\n")
-            text_to_speech("Excel operations tested successfully.", show=False)
-            logging.info('Excel operations tested successfully')
-            
-            text_to_speech("Isn't amazingly quick, But yeah, more than 28 functions, and, more than 50 excel operations, have been tested just now.", show=False)
-            text_to_speech("Banking, finance, from data collection, to data cleaning, and sending reports, everything can be done, with excel functions and Clointfusion. Give it a try today.", show=False)
-        except Exception as ex:
-            print("Error while testing Excel Operations="+str(ex))
-            logging.info("Error while testing Excel Operations="+str(ex))
-            TEST_CASES_STATUS_MESSAGE  += "Error while testing Excel Operations="+str(ex)
-            
 
         try: # Screen scraping operations
             print()
@@ -4309,15 +4298,18 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             print('Started testing screen-scraping operations...')
             
             browser_activate('https://google.com')
+            text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
             browser_write_h('clointfusion hackathon')
+            time.sleep(5)
             browser_hit_enter_h()
             browser_mouse_click_h("Python based RPA Development Platform")
             folder_create(os.path.join(test_folder_path,'Screen_scrape'))
             scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
             time.sleep(3)
-            browser_navigate_h("https://lnkd.in/gh_r9YB")
+            browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
             text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
-            browser.scroll_down(300)
+            browser.scroll_down(2000)
+            time.sleep(10)
             
             
             print('Screen-scraping operations tested successfully '+show_emoji())
@@ -4367,7 +4359,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
                 time.sleep(5)
                 browser_navigate_h('https://pypi.org/project/ClointFusion/')
                 text_to_speech("This is our pypi page, you can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                browser.scroll_down(500)
+                browser.scroll_down(2000)
                 time.sleep(10)
                 browser_mouse_click_h(element="RPA",double_click=True)
                 browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
@@ -4401,10 +4393,14 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
             
             text_to_speech("Want to quickly test your internet speed, type CF underscore ST.", show=False)
             print("Type 'cf_st' in terminal for this function")
-            text_to_speech("Internet speed is being tested in the terminal as we speak.", show=False)
-            # Test Speed Test
-            cli_speed_test_test()
+            text_to_speech("Internet speed is being tested in the terminal.", show=False)
             
+            # Test Speed Test
+            window_activate_and_maximize_windows(console_window_name)
+            cli_speed_test_test()
+            window_minimize_windows(console_window_name)
+            window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
+            print("I am back !!!")
             
             text_to_speech("Want to see, how much time you spent, on what, and which application. type work in terminal. But First, let me tell you this, your data is stored locally and only belongs to you.", show=False)
             print("Type 'work' in terminal for this function.")
@@ -4523,9 +4519,10 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time):
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
 def clointfusion_self_test():
-    global os_name
+    global os_name, python_exe_path
     WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
+    python_version = str(sys.version_info.major)
     try:
 
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
@@ -4536,7 +4533,9 @@ def clointfusion_self_test():
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
                 [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
                 [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
-
+        
+        console_window = window_get_active_window()
+        
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
         else:
@@ -4545,6 +4544,7 @@ def clointfusion_self_test():
             except:
                 WHILE_TRUE = False
         instructions = False
+        
         while WHILE_TRUE:
             if not instructions:
                 text_to_speech("Welcome to ClointFusion. ClointFusion, is a python based RPA tool.", show=False)    
@@ -4587,10 +4587,11 @@ def clointfusion_self_test():
 
                 _init_cf_quick_test_log_file(temp_current_working_dir)
 
-                status_msg, success = clointfusion_self_test_cases(temp_current_working_dir, start_time)
+                status_msg, success = clointfusion_self_test_cases(temp_current_working_dir, start_time, console_window)
 
-                if str(status_msg).strip() == "":
+                if str(status_msg).strip() == "" and success:
                     window['Close'].update(disabled=False)
+                    break
                 else:
                     try:
                         pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
@@ -4599,11 +4600,9 @@ def clointfusion_self_test():
 
                     sys.exit(0)
 
-                
-
             if event in (sg.WINDOW_CLOSED, 'Close'):
-                break        
-                    
+                sys.exit(0)
+
     except Exception as ex:
         try:
             pg.alert('Error in Clointfusion Self Test = '+str(ex))
@@ -4619,9 +4618,9 @@ def clointfusion_self_test():
                 window.close()
             elif success:
                 if os_name == windows_os:
-                        os.system('python -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
+                         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                 elif os_name == linux_os:
-                    os.system('sudo python3 -i -c "import ClointFusion as cf; print(\'Try cf.browser_activate() \')"')
+                    os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                 time.sleep(2)
             else:
                 sys.exit(1)
@@ -4668,6 +4667,7 @@ def cli_speed_test():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
+    global python_exe_path
     try:   
         print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion : https://www.linkedin.com/in/jay-trivedi-09aa791a4/ \n")
         # try:   
@@ -4675,7 +4675,7 @@ def cli_colab_launcher():
         # except:
         #     subprocess.call("python3 " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)                        
 
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"' 
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"' 
         os.system(cmd)
 
     except Exception as ex:
@@ -4684,10 +4684,11 @@ def cli_colab_launcher():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_dost():
     """ClointFusion CLI for DOST GUI Launcher"""
+    global python_exe_path
     try:
         print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion : https://www.linkedin.com/in/murali-manohar-varma-220a03207 \n")
         
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
         os.system(cmd)
     except Exception as ex:
         print("Error in cli_dost "+str(ex))
@@ -4695,10 +4696,11 @@ def cli_dost():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_bol():
     """ClointFusion CLI for DOST GUI Launcher"""
+    global python_exe_path
     try:
         print("Launching ClointFusion powered Virtual Assistant : Bol\n")
         
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
         print("Error in cli_bol "+str(ex))
@@ -4706,8 +4708,9 @@ def cli_bol():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_whm():
     """ClointFusion CLI for WHM Launcher"""
+    global pythonw_exe_path
     try:
-        cmd = f'pythonw "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
+        cmd = f'{pythonw_exe_path} "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
         os.system(cmd)
         print("WHM is now running..\n")
     except Exception as ex:
@@ -4748,8 +4751,8 @@ def cli_bre_whm():
             console.print('_' * 20,justify='center')  # Underscore
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
             
-        except:
-            pass
+        except Exception as ex:
+            print("Error in click cli_bre_whm = " + str(ex))
         
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
@@ -4872,9 +4875,10 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Personal Assistant powered by ClointFusion\n3)  work         - Get your Computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet Speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
 
 # --------- CLI Commands Ends ---------
+
 
 # --------- TEST FOR CLI ---------
 
@@ -4902,8 +4906,8 @@ def cli_bre_whm_test():
             console.print('_' * 20,justify='center')  # Underscore
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
             
-        except:
-            pass
+        except Exception as ex:
+            print("Error in click cli_bre_whm = " + str(ex))
         
         db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
@@ -5025,9 +5029,10 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Personal Assistant powered by ClointFusion\n3)  work         - Get your Computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet Speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
 
 # --------- TEST FOR CLI Ends ---------
+
 
 # --------- 4. All default services ---------
 

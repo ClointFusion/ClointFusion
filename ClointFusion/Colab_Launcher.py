@@ -11,6 +11,12 @@ import requests
 from helium._impl import selenium_wrappers
 from pyautogui import KEYBOARD_KEYS
 
+from rich import pretty
+import pyinspect as pi
+pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
+pretty.install()
+
+
 cf_icon_file_path = "Cloint-ICON.ico"
 cursr = ""
 connct = ""

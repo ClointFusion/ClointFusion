@@ -1,5 +1,5 @@
 import webbrowser
-from win10toast_click import ToastNotifier 
+from win10toast_click import ToastNotifier
 import requests
 import schedule, platform, os, time
 from pathlib import Path
@@ -49,14 +49,23 @@ def _getCurrentVersion():
 
     return c_version
 
+local_server_msg = ""
+local_server_url = ""
+
+msg_date, msg_month = 0, 0
+
 def show_toast_notification_if_new_version_is_available():
+    global local_server_msg, local_server_url, msg_date, msg_month
+    today_date, today_month  = datetime.now().day, datetime.now().month
+    name, _, _ = selft.get_details()
+    
     if os_name == windows_os:
         s_version = _getServerVersion()
         c_version = _getCurrentVersion()
         if c_version < s_version:
             toaster.show_toast(
                 "ClointFusion", 
-                "New version {} is available now ! Click to update".format(s_version), 
+                f"Hi ! {name}, \nNew version {s_version} is available now ! Click to update", 
                 icon_path=cf_icon_cdt_file_path,
                 duration=None,
                 threaded=True, 
@@ -64,29 +73,36 @@ def show_toast_notification_if_new_version_is_available():
             )
         else:
             try:
-                resp = selft.broadcast_message()
-                name, _, _ = selft.get_details()
-                resp = eval(resp.text)
-                server_msg = resp['msg']
-                server_url = resp['url']
-                server_date, server_month = resp['dt'].split('/')[0], resp['dt'].split('/')[1]
-                today_date, today_month  = datetime.now().day, datetime.now().month
-                
-                if today_date <= server_date or today_month < server_month:
-                    toaster.show_toast(
-                        "ClointFusion", 
-                        f"Hai {name}, \n{server_msg}\nClick for more detail.",
-                        icon_path=cf_icon_cdt_file_path,
-                        duration=None,
-                        threaded=True,
-                        callback_on_click=lambda: webbrowser.open(server_url)
-                    )
-            except:
-                pass
+                if today_date > msg_date or today_month > msg_month:
+                    resp = selft.broadcast_message()
+                    resp = eval(resp.text)
+                    local_server_msg = resp['msg']
+                    local_server_url = resp['url']
+                    msg_date_n, msg_month_n = int(resp['dt'].split('/')[0]), int(resp['dt'].split('/')[1])
+                    if msg_date_n < today_date or msg_month_n < today_month:
+                        msg_date = today_date
+                        msg_month = today_month
+                    else:
+                        msg_date = msg_date_n
+                        msg_month = msg_month_n
+                else:
+                    pass
+                toaster.show_toast(
+                    "ClointFusion", 
+                    f"Hai {name}, \n{local_server_msg}\nClick for more detail.",
+                    icon_path=cf_icon_cdt_file_path,
+                    duration=None,
+                    threaded=True,
+                    callback_on_click=lambda: webbrowser.open(local_server_url)
+                )
+            except Exception as ex:
+                print("Error in show_toast_notification_if_new_version_is_available" + str(ex))
             
-schedule.every(5).hour.do(show_toast_notification_if_new_version_is_available)
+# schedule.every(5).hour.do(show_toast_notification_if_new_version_is_available)
+schedule.every(30).seconds.do(show_toast_notification_if_new_version_is_available)
 
 # Server Broadcast
 while True:
     schedule.run_pending()
-    time.sleep(60) #Check Every minute
+    # time.sleep(60) #Check Every minute
+    time.sleep(1) #Check Every minute
