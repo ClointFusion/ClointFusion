@@ -46,6 +46,7 @@ setup(
             'cf_vlookup = ClointFusion.ClointFusion:cli_vlookup',
             'cf_st = ClointFusion.ClointFusion:cli_speed_test',
             'work = ClointFusion.ClointFusion:cli_bre_whm',
+            'cf_wm = ClointFusion.ClointFusion:cli_send_whatsapp_msg',
         ],
     },
   python_requires='>=3.8, <3.10',

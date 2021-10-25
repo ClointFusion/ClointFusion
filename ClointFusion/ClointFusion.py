@@ -4582,11 +4582,12 @@ def cli_vlookup():
         print("Error in cli_vlookup="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option("--excel_path", prompt=True, help="Please provide path of excel file having 3 columns: Mobile Number, Name, Message")
-def send_whatsapp_msg(excel_path):
+@click.option("--excel_path","-e", prompt=True, help="Please provide path of excel file having 3 columns: Mobile Number, Name, Message")
+def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
-        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw " {excel_path}'
+        cmd = f'"{python_exe_path}" "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
+        # cmd = f'{python_exe_path} "C:\\Users\\devmm\\Documents\\GitHub\\ClointFusion\\ClointFusion\\WA_BOT.pyw" {excel_path}'
         print(cmd)
         os.system(cmd)  
     except Exception as ex:

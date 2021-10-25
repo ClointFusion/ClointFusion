@@ -4,6 +4,8 @@ from urllib.parse import quote
 import pandas as pd
 import sys
 
+from ClointFusion.ClointFusion import browser_locate_element_h
+
 def send_wa_msg(mobile_number,name, msg):
     try:
         print("Sending WA MSG to ", mobile_number, name, msg)
@@ -54,6 +56,7 @@ def shoot_msg(excel_path):
         # print(2)
 
         try:
+            # if browser_locate_element_h()
             logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[2]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
                                                             
         except Exception as ex:
@@ -75,8 +78,10 @@ def shoot_msg(excel_path):
     except Exception as ex:
                 print("Error while initialsing "+ str(ex))
 
-if len(sys.argv) > 1:
-    print("Here")
-    print(sys.argv)
-    excel_path = sys.argv[2]
-    shoot_msg(excel_path)
+# if len(sys.argv) > 1:
+print("Here")
+print(sys.argv)
+excel_path = sys.argv[1]
+shoot_msg(excel_path)
+
+# "D:\ClointFusion\testing\wa_gp.xlsx"
