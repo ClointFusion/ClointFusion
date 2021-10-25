@@ -4896,53 +4896,47 @@ def cli_cf_test():
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
-conn = sqlite3.connect(db_path)
-cursr = conn.cursor()
-data = cursr.execute("SELECT updating from CF_VALUES")
-for row in data:
-    updating =  row[0]
-    if updating == "False":
-        config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-        log_path = Path(os.path.join(clointfusion_directory, "Logs"))
-        img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
-        batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
-        output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
-        error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
-        status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
+
+config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+log_path = Path(os.path.join(clointfusion_directory, "Logs"))
+img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
+batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
+output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
+error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
+status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
 
 
-        if os_name == windows_os:
-            
-            #Bol Related
-            engine = pyttsx3.init('sapi5')
-            voices = engine.getProperty('voices')
-            voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-            engine.setProperty('voice', voices[voice_male_female].id)
-            r = sr.Recognizer()
-            energy_threshold = [3000]
+if os_name == windows_os:
+    
+    #Bol Related
+    engine = pyttsx3.init('sapi5')
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
 
-            from unicodedata import name
-            import pygetwindow as gw
-            from win32 import win32gui
+    from unicodedata import name
+    import pygetwindow as gw
+    from win32 import win32gui
 
-        elif os_name == linux_os:
-            
-            #Bol Related
-            engine = pyttsx3.init()
-            voices = engine.getProperty('voices')
-            voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-            engine.setProperty('voice', voices[voice_male_female].id)
-            r = sr.Recognizer()
-            energy_threshold = [3000]
+elif os_name == linux_os:
+    
+    #Bol Related
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
 
-        _welcome_to_clointfusion()
+_welcome_to_clointfusion()
 
-        _init_log_file()
-        update_log_excel_file(bot_name +'- BOT initiated')
-        _ask_user_semi_automatic_mode()
-        enable_semi_automatic_mode = False # By DEFAULT
-    else:
-        sys.exit()
+_init_log_file()
+update_log_excel_file(bot_name +'- BOT initiated')
+_ask_user_semi_automatic_mode()
+enable_semi_automatic_mode = False # By DEFAULT
+
 
 # ########################
 
