@@ -69,7 +69,7 @@ def show_toast_notification_if_new_version_is_available():
                 icon_path=cf_icon_cdt_file_path,
                 duration=None,
                 threaded=True, 
-                callback_on_click=lambda: os.system('cf') # click notification to run function 
+                callback_on_click=lambda: act_on_click # click notification to run function 
             )
         else:
             try:
@@ -87,23 +87,30 @@ def show_toast_notification_if_new_version_is_available():
                         msg_month = msg_month_n
                 else:
                     pass
-                toaster.show_toast(
-                    "ClointFusion", 
-                    f"Hai {name}, \n{local_server_msg}\nClick for more detail.",
-                    icon_path=cf_icon_cdt_file_path,
-                    duration=None,
-                    threaded=True,
-                    callback_on_click=lambda: webbrowser.open(local_server_url)
-                )
+                if local_server_msg != "done":
+                    toaster.show_toast(
+                        "ClointFusion", 
+                        f"Hai {name}, \n{local_server_msg}\nClick for more detail.",
+                        icon_path=cf_icon_cdt_file_path,
+                        duration=None,
+                        threaded=True,
+                        callback_on_click=lambda: webbrowser.open(local_server_url)
+                    )
             except Exception as ex:
                 print("Error in show_toast_notification_if_new_version_is_available" + str(ex))
-            
+    
+    def act_on_click():
+        global local_server_msg
+        local_server_msg = "done"
+        os.system('cf')
+
 # schedule.every(5).hour.do(show_toast_notification_if_new_version_is_available)
 # schedule.every(30).seconds.do(show_toast_notification_if_new_version_is_available)
-schedule.every(30).to(60).seconds.do(show_toast_notification_if_new_version_is_available)
+# schedule.every(30).to(60).seconds.do(show_toast_notification_if_new_version_is_available)
+schedule.every(3).to(6).hour.do(show_toast_notification_if_new_version_is_available)
 
 # Server Broadcast
 while True:
     schedule.run_pending()
-    # time.sleep(60) #Check Every minute
-    time.sleep(1) #Check Every minute
+    time.sleep(60) #Check Every minute
+    # time.sleep(1) #Check Every second

@@ -3,7 +3,7 @@ import requests
 import os
 import subprocess
 import platform
-import logging
+import logging, time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -58,6 +58,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                     subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
+            time.sleep(10)
 
         options = Options()
         options.add_argument("--start-maximized")
