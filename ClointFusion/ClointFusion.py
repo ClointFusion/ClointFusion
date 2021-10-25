@@ -40,7 +40,6 @@ import traceback
 import shutil
 import socket
 from pywebio.output import put_text
-from win32 import win32gui
 
 try:
     import pyautogui as pg
@@ -1501,7 +1500,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             if not url:
                 browser.go_to("https://dost.clointfusion.com")
             status = True
-            browser.Config.implicit_wait_secs = 120
+            browser.Config.implicit_wait_secs = 60
             helium_service_launched = True
         except Exception as ex:
             print(f"Error while browser_activate: {str(ex)}")
@@ -1748,7 +1747,7 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     finally:
         return status
 
-def browser_set_waiting_time(time: int):
+def browser_set_waiting_time(time=10):
     """
     Set the waiting time for the browser. If element is not found in the given time, it will raise an exception.
 
@@ -3783,7 +3782,7 @@ def clear_screen():
         command = 'cls'
       os.system(command)
     except Exception as ex:
-        print("Error in excel_sub_routines = " + str(ex))
+        print("Error in clear_screen = " + str(ex))
 
 def text_to_speech(audio, show=True):
     """
@@ -4924,6 +4923,7 @@ for row in data:
 
             from unicodedata import name
             import pygetwindow as gw
+            from win32 import win32gui
 
         elif os_name == linux_os:
             
