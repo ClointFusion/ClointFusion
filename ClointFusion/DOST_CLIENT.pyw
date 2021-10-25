@@ -11,7 +11,7 @@ import helium as browser
 from rich.text import Text
 from rich import print
 from rich.console import Console
-from ClointFusion import selft
+from ClointFusion import selft, time
 
 from rich import pretty
 import pyinspect as pi
@@ -58,6 +58,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                     subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
                     print(f"Error while closing previous chrome instances. {ex}")
+            time.sleep(10)
 
         options = Options()
         options.add_argument("--start-maximized")
