@@ -66,7 +66,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from tabloo import show
 from colored import fg, attr
 import click
-from elevate import elevate
 from rich.console import Console
 import random
 import speech_recognition as sr
@@ -4386,8 +4385,8 @@ def clointfusion_self_test():
 
         layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
                 [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
-                [sg.Text("Thanks for improving ClointFusion by sharing this self-test report.",justification='c',text_color='yellow',font='Courier 12')],
-                [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
+                [sg.Text("Thanks for improving ClointFusion by continuing with this self-test.",justification='c',text_color='yellow',font='Courier 12')],
+                [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
                 [sg.Output(size=(140,20), key='-OUTPUT-')],
                 [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
@@ -4942,7 +4941,7 @@ for row in data:
         _ask_user_semi_automatic_mode()
         enable_semi_automatic_mode = False # By DEFAULT
     else:
-        sys.exit()
+        os.system("exit")
 
 # ########################
 

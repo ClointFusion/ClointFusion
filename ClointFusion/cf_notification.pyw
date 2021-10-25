@@ -57,7 +57,7 @@ msg_date, msg_month = 0, 0
 def show_toast_notification_if_new_version_is_available():
     global local_server_msg, local_server_url, msg_date, msg_month
     today_date, today_month  = datetime.now().day, datetime.now().month
-    name, _, _ = selft.get_details()
+    name, _, _, _ = selft.get_details()
     
     if os_name == windows_os:
         s_version = _getServerVersion()
