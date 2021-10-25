@@ -31,7 +31,7 @@ from loader import error_screen_shots_path
 from loader import cf_icon_file_path
 from loader import cf_logo_file_path
 from loader import os_name
-
+from loader import browser
 
 # ---------  GUI Functions | Current Count : 6
 from loader import gui_get_consent_from_user

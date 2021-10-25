@@ -4566,7 +4566,6 @@ def cli_bol():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_whm():
     """ClointFusion CLI for WHM Launcher"""
-    global pythonw_exe_path
     try:
         cmd = f'{pythonw_exe_path} "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
         os.system(cmd)
@@ -4581,6 +4580,17 @@ def cli_vlookup():
         excel_vlook_up()
     except Exception as ex:
         print("Error in cli_vlookup="+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option("--excel_path", prompt=True, help="Please provide path of excel file having 3 columns: Mobile Number, Name, Message")
+def send_whatsapp_msg(excel_path):
+    """Sends WhatsApp Message using CF's Helium"""
+    try:
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw " {excel_path}'
+        print(cmd)
+        os.system(cmd)  
+    except Exception as ex:
+        print("Error in send_whatsapp_msg", str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_bre_whm():
