@@ -567,27 +567,13 @@ except: #Ask ADMIN Rights if REQUIRED
     connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
     cursr = connct.cursor()
 
-try:
-    cursr.execute('''CREATE TABLE CFTRIGGERS
-         (ID INT PRIMARY KEY     NOT NULL,
-         FIRST_RUN           TEXT    NOT NULL,
-         BOL            INT     NOT NULL,
-         SELF_TEST        TEXT);''')
-    cursr.execute("INSERT INTO CFTRIGGERS (ID,FIRST_RUN,BOL,SELF_TEST) \
-      VALUES (1, 'True', 1, 'True')");
-    connct.commit()
-except sqlite3.OperationalError:
-    pass
-except Exception as ex :
-    print(f"Exception: {ex}")
 
-
-data = cursr.execute("SELECT bol from CFTRIGGERS where ID = 1")
+data = cursr.execute("SELECT bol from CF_VALUES where ID = 1")
 for row in data:
    run =  row[0]
 
 welcome(run)
-cursr.execute("UPDATE CFTRIGGERS set bol = bol+1 where ID = 1")
+cursr.execute("UPDATE CF_VALUES set bol = bol+1 where ID = 1")
 connct.commit()
 
 bol_main()

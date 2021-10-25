@@ -99,8 +99,10 @@ output_folder_path = ""
 error_screen_shots_path = ""
 status_log_excel_filepath = ""
 bot_name = "My_BOT"
+user_name = ""
+engine = ""
 
-user_name, user_email, FIRST_RUN = selft.get_details()
+user_name, c_version, s_version, user_email = selft.get_details()
 temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
 temp_current_working_dir = Path(temp_current_working_dir)
 
@@ -120,6 +122,9 @@ cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint
 cf_logo_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-LOGO.PNG")
 cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
 
+config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
 
@@ -128,9 +133,6 @@ Browser_Service_Started = False
 ai_screenshot = ""
 ai_processes = []
 helium_service_launched=False
-
-c_version = ""
-s_version = ""
 
 find_api_url = "https://api.clointfusion.com/find"
 
@@ -273,143 +275,6 @@ def ON_semi_automatic_mode():
 
 
 # ---------  Private Functions ---------
-def _install_pyaudio_windows():
-    #Install pyaudio
-    try:
-        import pyaudio
-    except:
-        sys_version = str(sys.version[0:6]).strip()
-        
-        if "3.7" in sys_version :
-            cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp37-cp37m-win_amd64.whl?raw=true"
-        elif "3.8" in sys_version :
-            cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp38-cp38-win_amd64.whl?raw=true"
-        elif "3.9" in sys_version :
-            cmd = "https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Wheels/PyAudio-0.2.11-cp39-cp39-win_amd64.whl?raw=true"
-
-        time.sleep(5)
-
-        try:
-            os.system("pip install " + cmd)
-        except:
-            print("Please install appropriate driver from : https://github.com/ClointFusion/Image_ICONS_GIFs/tree/main/Wheels")
-
-        import pyaudio
-
-#Windows OS specific packages
-def _load_missing_python_packages_windows():
-    """
-    Installs Windows OS specific python packages
-    """       
-    list_of_required_packages = ["pywin32","PyGetWindow","pywinauto","comtypes","xlwings","win10toast-click","winshell"] 
-    try:
-        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
-        installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
-        missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
-        if missing_packages:
-            print_with_magic_color("{} package(s) are missing".format(missing_packages)) 
-            
-            if "comtypes" in missing_packages:
-                os.system("{} -m pip install comtypes==1.1.7".format(sys.executable))
-            else:
-                os.system("{} -m pip install --upgrade pip".format(sys.executable))
-            
-            cmd = "pip install --upgrade {}".format(missing_packages)
-            
-            os.system(cmd) 
-
-    except Exception as ex:
-        print("Error in _load_missing_python_packages_windows="+str(ex))
-
-#Linux OS specific packages
-def _load_missing_python_packages_linux():
-    """
-    Installs Linux OS specific python packages
-    """       
-    list_of_required_packages = ["comtypes"]
-    
-    additional_ubuntu_packages = "sudo apt-get install python3-tk python3-dev fonts-symbola scrot libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev python3-apt python3-xlib espeak ffmpeg libespeak1 python-pyaudio python3-pyaudio xsel"
-    try:
-        os.system(additional_ubuntu_packages)
-        os.system("xhost +SI:localuser:root")
-        os.system(f"xhost +SI:localuser:{str(os.getlogin())}")
-        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'list'])
-        installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
-        missing_packages = ' '.join(list(set(list_of_required_packages)-set(installed_packages)))
-        if missing_packages:
-            print_with_magic_color("{} package(s) are missing".format(missing_packages)) 
-            
-            if "comtypes" in missing_packages:
-                os.system("sudo {} -m pip install comtypes==1.1.7".format(sys.executable))
-            else:
-                os.system("sudo {} -m pip install --upgrade pip".format(sys.executable))
-            
-            cmd = "sudo pip3 install --upgrade {}".format(missing_packages)
-            
-            os.system(cmd) 
-
-    except Exception as ex:
-        print("Error in _load_missing_python_packages_linux="+str(ex))
-
-def _download_cloint_ico_png():    
-    """
-    Internal function to download ClointFusion ICON from GitHub
-    """
-    try:
-        folder_create(os.path.join(clointfusion_directory,"Logo_Icons")) 
-
-    except: #Ask ADMIN Rights if REQUIRED
-        if os_name == windows_os:
-            elevate(show_console=False)
-        else:
-            elevate(graphical=False)
-        folder_create(os.path.join(clointfusion_directory,"Logo_Icons")) 
-
-    try:
-        if not os.path.exists(str(cf_icon_file_path)):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON.ico',str(cf_icon_file_path))
-
-        if not os.path.exists(str(cf_icon_cdt_file_path)):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-ICON-CDT.ico',str(cf_icon_cdt_file_path))
-
-        if not os.path.exists(str(cf_logo_file_path)):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO.PNG',str(cf_logo_file_path))
-
-        if not os.path.exists(str(cf_splash_png_path)):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Splash.png',str(cf_splash_png_path))
-
-        #BOL related Audio files
-        if not os.path.exists(str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))):
-            urllib.request.urlretrieve('https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/applause.wav',(str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
-
-    except Exception as ex:
-        print("Error while downloading Cloint ICOn/LOGO = "+str(ex))
-
-def _getCurrentVersion():
-    global c_version
-    try:
-        if os_name == windows_os:
-            c_version = os.popen('pip show ClointFusion | findstr "Version"').read()
-        elif os_name == linux_os:
-            c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
-
-        c_version = str(c_version).split(":")[1].strip()
-    except Exception as ex:
-        print("Error in _getCurrentVersion = " + str(ex))
-
-    return c_version
-
-def _getServerVersion():
-    global s_version
-    try:
-        response = requests.get(f'https://pypi.org/pypi/ClointFusion/json')
-        s_version = response.json()['info']['version']
-    except Warning:
-        pass
-    except Exception as ex:
-        print("Error in _getServerVersion = " + str(ex))
-
-    return s_version
 
 def _get_site_packages_path():
     """
@@ -427,15 +292,10 @@ def _get_site_packages_path():
 # Function in use, Dont Delete
 def _perform_self_test():
     try:
-        if os_name == windows_os:
-            _load_missing_python_packages_windows()
-            _install_pyaudio_windows()
-        elif os_name == linux_os:
-            _load_missing_python_packages_linux()
         clointfusion_self_test()
     except Exception as ex:
         print("Error in Self Test="+str(ex))
-        _rerun_clointfusion_first_run()
+        _rerun_clointfusion_first_run(ex)
 
 def _welcome_to_clointfusion():
     global user_name
@@ -459,8 +319,6 @@ def _welcome_to_clointfusion():
     print_with_magic_color(welcome_msg,magic=True)
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
-    
-    selft.verify_version(c_version, s_version)
 
 def _create_status_log_file(xtLogFilePath):
     """
@@ -3931,6 +3789,7 @@ def text_to_speech(audio, show=True):
     """
     Text to Speech using Google's Generic API
     """
+    global engine
     if type(audio) is list:
         if show:
             print(' '.join(audio))
@@ -3945,6 +3804,8 @@ def speech_to_text():
     """
     Speech to Text using Google's Generic API
     """
+    global engine
+    
     bol_url = "https://api.clointfusion.com/update_bol"
     system_uuid = selft.get_uuid()
 
@@ -4024,7 +3885,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
     """
     Main function for Self Test, which is called by GUI
     """
-    global enable_semi_automatic_mode, log_file_path
+    global enable_semi_automatic_mode, log_file_path, db_path
 
     TEST_CASES_STATUS_MESSAGE = ""
     SUCCESS = False
@@ -4459,10 +4320,9 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             
             try:
                 driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-                connct = sqlite3.connect(db_file_path,check_same_thread=False)
+                connct = sqlite3.connect(db_path,check_same_thread=False)
                 cursr = connct.cursor()
-                cursr.execute("UPDATE CFVALUES set SELF_TEST = 'False' where ID = 1")
+                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
                 connct.commit()
                 clear_screen()
                 time.sleep(5)
@@ -4727,6 +4587,7 @@ def cli_vlookup():
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
+    global db_path
     try:
         from datetime import date
         from rich.table import Table
@@ -4753,8 +4614,6 @@ def cli_bre_whm():
             
         except Exception as ex:
             print("Error in click cli_bre_whm = " + str(ex))
-        
-        db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
         connct = sqlite3.connect(db_path,check_same_thread=False)
         cursr = connct.cursor()
@@ -4885,6 +4744,7 @@ def cli_cf(message):
 def cli_bre_whm_test():
     """ClointFusion CLI for BRE and WHM"""
     try:
+        global db_path
         from rich.table import Table
         
         style = "bold white on blue"
@@ -4905,11 +4765,9 @@ def cli_bre_whm_test():
             
             console.print('_' * 20,justify='center')  # Underscore
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
-            
+         
         except Exception as ex:
             print("Error in click cli_bre_whm = " + str(ex))
-        
-        db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
         connct = sqlite3.connect(db_path,check_same_thread=False)
         cursr = connct.cursor()
@@ -5039,87 +4897,52 @@ def cli_cf_test():
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
+conn = sqlite3.connect(db_path)
+cursr = conn.cursor()
+data = cursr.execute("SELECT updating from CF_VALUES")
+for row in data:
+    updating =  row[0]
+    if updating == "False":
+        config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+        log_path = Path(os.path.join(clointfusion_directory, "Logs"))
+        img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
+        batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
+        output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
+        error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
+        status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
 
-get_current_version_thread = threading.Thread(target=_getCurrentVersion, name="GetCurrentVersion")
-get_current_version_thread.start()
 
-get_server_version_thread = threading.Thread(target=_getServerVersion, name="GetServerVersion")
-get_server_version_thread.start()
+        if os_name == windows_os:
+            
+            #Bol Related
+            engine = pyttsx3.init('sapi5')
+            voices = engine.getProperty('voices')
+            voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+            engine.setProperty('voice', voices[voice_male_female].id)
+            r = sr.Recognizer()
+            energy_threshold = [3000]
 
-get_current_version_thread.join()
-get_server_version_thread.join()
+            from unicodedata import name
+            import pygetwindow as gw
 
-_download_cloint_ico_png()
+        elif os_name == linux_os:
+            
+            #Bol Related
+            engine = pyttsx3.init()
+            voices = engine.getProperty('voices')
+            voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+            engine.setProperty('voice', voices[voice_male_female].id)
+            r = sr.Recognizer()
+            energy_threshold = [3000]
 
-if os_name == windows_os:
-    if FIRST_RUN == "True":
-        _load_missing_python_packages_windows()
-        _install_pyaudio_windows()
-    #Bol Related
-    engine = pyttsx3.init('sapi5')
-    voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
-    r = sr.Recognizer()
-    energy_threshold = [3000]
+        _welcome_to_clointfusion()
 
-    from unicodedata import name
-    import pygetwindow as gw
-
-elif os_name == linux_os:
-    if FIRST_RUN == "True":
-        _load_missing_python_packages_linux()
-    #Bol Related
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
-    r = sr.Recognizer()
-    energy_threshold = [3000]
-
-folder_create(clointfusion_directory) 
-log_path = Path(os.path.join(clointfusion_directory, "Logs"))
-img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
-batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
-config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
-error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
-status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
-
-folder_create(log_path)
-folder_create(img_folder_path)
-folder_create(batch_file_path)
-folder_create(config_folder_path)
-folder_create(error_screen_shots_path)
-folder_create(output_folder_path)
-db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-
-connct = sqlite3.connect(db_path,check_same_thread=False)
-cursr = connct.cursor()
-
-try:
-    cursr.execute('''CREATE TABLE CFVALUES
-        (ID INT PRIMARY KEY     NOT NULL,
-        FIRST_RUN           TEXT    NOT NULL,
-        BOL            INT     NOT NULL,
-        SELF_TEST        TEXT,
-        USERNAME        TEXT,
-        EMAIL        TEXT);''')
-    cursr.execute("INSERT INTO CFVALUES (ID,FIRST_RUN,BOL,SELF_TEST, USERNAME, EMAIL) \
-    VALUES (1, 'True', 1, 'True', 'username', 'email')");
-    connct.commit()
-except sqlite3.OperationalError:
-    pass
-except Exception as ex :
-    print(f"Exception: {ex}")
-
-CONTINUE = _welcome_to_clointfusion()
-
-if CONTINUE:
-    _init_log_file()
-    update_log_excel_file(bot_name +'- BOT initiated')
-    _ask_user_semi_automatic_mode()
-    enable_semi_automatic_mode = False # By DEFAULT
+        _init_log_file()
+        update_log_excel_file(bot_name +'- BOT initiated')
+        _ask_user_semi_automatic_mode()
+        enable_semi_automatic_mode = False # By DEFAULT
+    else:
+        sys.exit()
 
 # ########################
 
