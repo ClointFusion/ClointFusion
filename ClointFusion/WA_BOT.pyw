@@ -4,8 +4,6 @@ from urllib.parse import quote
 import pandas as pd
 import sys
 
-from ClointFusion.ClointFusion import browser_locate_element_h
-
 def send_wa_msg(mobile_number,name, msg):
     try:
         print("Sending WA MSG to ", mobile_number, name, msg)
@@ -56,7 +54,6 @@ def shoot_msg(excel_path):
         # print(2)
 
         try:
-            # if browser_locate_element_h()
             logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[2]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
                                                             
         except Exception as ex:
@@ -69,19 +66,16 @@ def shoot_msg(excel_path):
                 try:
                     logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[2]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
                 except Exception as ex:
-                    print("Error while locationg elements 2"+ str(ex))
+                    print("Waiting for you to log in.")
         
         cf.text_to_speech("OK, Let me send the messages")
         cf.browser_set_waiting_time(60)
         
         send_wa_in_loop(excel_path)
     except Exception as ex:
-                print("Error while initialsing "+ str(ex))
+        print("Error while shoot_msg "+ str(ex))
 
-# if len(sys.argv) > 1:
-print("Here")
-print(sys.argv)
-excel_path = sys.argv[1]
-shoot_msg(excel_path)
+if len(sys.argv) > 1:
+    shoot_msg(sys.argv[1])
 
 # "D:\ClointFusion\testing\wa_gp.xlsx"
