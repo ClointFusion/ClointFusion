@@ -12,7 +12,6 @@ import traceback
 import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
-from elevate import elevate
 import pyautogui as pg
 from ClointFusion import selft
 import threading
@@ -44,19 +43,14 @@ cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint
 last_click = ""
 COUNTER = 1
 
-# elevate(show_console=False)
+
 try:
     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
     
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
-except: #Ask ADMIN Rights if REQUIRED
-    if os_name == windows_os:
-        elevate(show_console=False)
-    else:
-        elevate(graphical=False)
-    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
-    cursr = connct.cursor()
+except Exception as ex: #Ask ADMIN Rights if REQUIRED
+    print("Error in connecting to DB="+str(ex))
 
 # connct.execute("DROP TABLE SYS_CONFIG")
 # connct.execute("DROP TABLE CFEVENTS")
