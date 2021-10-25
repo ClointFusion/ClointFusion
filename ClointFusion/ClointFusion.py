@@ -4582,12 +4582,11 @@ def cli_vlookup():
         print("Error in cli_vlookup="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option("--excel_path", prompt=True, help="Please provide path of excel file having 3 columns: Mobile Number, Name, Message")
-def send_whatsapp_msg(excel_path):
+@click.option("--excel_path","-e", prompt=True, help="Please provide path of excel file having 3 columns: Mobile Number, Name, Message")
+def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
-        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw " {excel_path}'
-        print(cmd)
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
         os.system(cmd)  
     except Exception as ex:
         print("Error in send_whatsapp_msg", str(ex))
@@ -4742,7 +4741,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
 
 # --------- CLI Commands Ends ---------
 
@@ -4895,7 +4894,7 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n')
+    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
 
 # --------- TEST FOR CLI Ends ---------
 
