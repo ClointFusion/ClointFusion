@@ -9,13 +9,13 @@ with open(os.path.join(this_directory, "README.md"), "r") as fh:
 
 setup(
     options={'bdist_wheel':{'universal':True}},
-    name='ClointFusion',
+    name='clointfusion',
     author='ClointFusion',
     author_email = 'ClointFusion@cloint.com',
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='1.0.8',
+    version='1.0.9',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -47,6 +47,7 @@ setup(
             'cf_st = ClointFusion.ClointFusion:cli_speed_test',
             'work = ClointFusion.ClointFusion:cli_bre_whm',
             'cf_wm = ClointFusion.ClointFusion:cli_send_whatsapp_msg',
+            'cf_sm = ClointFusion.ClointFusion:call_social_media',
         ],
     },
   python_requires='>=3.8, <3.10',

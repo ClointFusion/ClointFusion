@@ -301,7 +301,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.0.8)"
+    version = "(Version: 1.0.9)"
 
     hour = datetime.datetime.now().hour
     
@@ -4582,7 +4582,7 @@ def cli_vlookup():
         print("Error in cli_vlookup="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option("--excel_path","-e", prompt=True, help="Please provide path of excel file having 3 columns: Mobile Number, Name, Message")
+@click.option("--excel_path","-e", prompt="Please provide path of excel file having 3 columns as header: Mobile Number, Name, Message", help="Please provide path of excel file having 3 columns as header: Mobile Number, Name, Message")
 def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
@@ -4742,6 +4742,59 @@ def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
     click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+def call_social_media():
+    #opens all social media links of ClointFusion
+    try:
+        webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+ 
+    try:
+        webbrowser.open_new_tab("https://twitter.com/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+    try:
+        webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
 
 # --------- CLI Commands Ends ---------
 

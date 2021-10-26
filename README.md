@@ -56,7 +56,7 @@ import ClointFusion as cf
 sudo apt-get install python3-tk python3-dev
 ```
 
-# ClointFusion's Function Tour:
+# Voice Guided Tour of ClointFusion's Functions:
 
 While importing / updating to new version of ClointFusion, you would be prompted with `ClointFusion Automated Self-Test`, which demonstrates all the 100 + functions running live on your computer, simultaneously checking the compatibility of ClointFusion with your PC's settings & configurations. On successful completion you'll recieve an email with self-test report.
 
