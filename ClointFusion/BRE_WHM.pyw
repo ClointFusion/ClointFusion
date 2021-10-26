@@ -77,14 +77,6 @@ except sqlite3.OperationalError:
 except Exception as ex :
     print(f"Exception: {ex}")
 
-try:
-    cursr.execute("ALTER TABLE SYS_CONFIG DROP COLUMN RAM")
-    connct.commit()
-except Exception as ex :
-    print(f"Exception TABLE SYS_CONFIG DROP : {ex}")
-
-
-
 event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
             TIME_STAMP TEXT NOT NULL,
             Event_Name TEXT NULL,
