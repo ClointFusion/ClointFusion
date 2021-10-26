@@ -56,12 +56,9 @@ import ClointFusion as cf
 sudo apt-get install python3-tk python3-dev
 ```
 
-# ClointFusion First Run Setup:
+# ClointFusion's Function Tour:
 
-When importing ClointFusion for the first time, you'd likely to be prompted with `ClointFusion Automated Selftest`, a tool designes and developed to check the compatibility of ClointFusion with your PC settings & configurations. On a successful event, you'll recieve an email with self-test report.
-<!-- 
-First time, when you import ClointFusion, you would be prompted to run ClointFusions's Automated Selftest, to check whether all functions of ClointFusion are compatible with your computer settings & configurations. 
-You would receive an email with self-test report. -->
+While importing / updating to new version of ClointFusion, you would be prompted with `ClointFusion Automated Self-Test`, which demonstrates all the 100 + functions running live on your computer, simultaneously checking the compatibility of ClointFusion with your PC's settings & configurations. On successful completion you'll recieve an email with self-test report.
 
 ## **Now access more than 100 functions (hit ctrl+space in your IDE)**
     
