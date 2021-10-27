@@ -1,3 +1,17 @@
+40) ClointFusion version 1.0.8 released on 01-10-2021 11:30 AM
+    1) CLI to send whatsapp messages in bulk is now available
+    2) Improved ClointFusion notifier
+    3) Bug Fixes and Enhancements
+
+
+39) ClointFusion version 1.0.7 released on 01-10-2021 11:30 AM
+    1) ClointFusion notifier added
+    2) Bug Fixes and Enhancements
+
+38) ClointFusion version 1.0.0 - 1.0.6 released on 16-10-2021 11:30 AM
+    1) Bug Fixes and Enhancements
+    2) Self-test is now guided by Bol
+
 37) ClointFusion version 0.1.45 released on 01-10-2021 11:30 AM
     1) RST file updated for https://readthedocs.org/projects/clointfusion
     2) BOL UI Updated - Murali
