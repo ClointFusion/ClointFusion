@@ -17,7 +17,7 @@ from cf_common import subprocess, os, sys, platform, sqlite3, time, Path, parser
 from cf_common import windows_os, linux_os, mac_os, os_name, python_exe_path, pythonw_exe_path
 from cf_common import clointfusion_directory, temp_current_working_dir, config_folder_path, db_file_path,current_working_dir,img_folder_path
 from cf_common import cf_splash_png_path, cf_icon_cdt_file_path, log_path, batch_file_path, output_folder_path, error_screen_shots_path, status_log_excel_filepath,cf_logo_file_path,cf_icon_file_path
-from cf_common import connct, cursr, pi, pretty
+from cf_common import connct, cursr, pi, pretty, site_packages_path
 
 import urllib.request
 from functools import lru_cache
@@ -237,18 +237,6 @@ def ON_semi_automatic_mode():
 
 # ---------  Private Functions ---------
 
-def _get_site_packages_path():
-    """
-    Returns Site-Packages Path
-    """
-    try:
-        import site  
-        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
-    except:
-        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
-
-    site_packages_path = str(site_packages_path).strip()  
-    return str(site_packages_path)
 
 # Function in use, Dont Delete
 def _perform_self_test():
@@ -4612,17 +4600,27 @@ def cli_speed_test():
         print("Error in cli_speed_test="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
+def cli_auto_liker():
+    """CLI for auto liking CF's specific posts on Socail Media"""
+    try:
+        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\cf_auto_liker.py"'
+        os.system(cmd)
+    except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in cli_speed_test="+str(ex))
+
+@click.command(context_settings=CONTEXT_SETTINGS)
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     global python_exe_path
     try:   
         print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion : https://www.linkedin.com/in/jay-trivedi-09aa791a4/ \n")
         # try:   
-        #     subprocess.call("python " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)
+        #     subprocess.call("python " + f'{site_packages_path}' + "\ClointFusion\Colab_Launcher.py", shell=True)
         # except:
-        #     subprocess.call("python3 " + f'{_get_site_packages_path()}' + "\ClointFusion\Colab_Launcher.py", shell=True)                        
+        #     subprocess.call("python3 " + f'{site_packages_path}' + "\ClointFusion\Colab_Launcher.py", shell=True)                        
 
-        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"' 
+        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Colab_Launcher.py"' 
         os.system(cmd)
 
     except Exception as ex:
@@ -4636,7 +4634,7 @@ def cli_dost():
     try:
         print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion : https://www.linkedin.com/in/murali-manohar-varma-220a03207 \n")
         
-        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
+        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
         os.system(cmd)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -4649,7 +4647,7 @@ def cli_bol():
     try:
         print("Launching ClointFusion powered Virtual Assistant : Bol\n")
         
-        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
+        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -4659,7 +4657,7 @@ def cli_bol():
 def cli_whm():
     """ClointFusion CLI for WHM Launcher"""
     try:
-        cmd = f'{pythonw_exe_path} "{_get_site_packages_path()}\ClointFusion\BRE_WHM.pyw"'
+        cmd = f'{pythonw_exe_path} "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
         os.system(cmd)
         print("WHM is now running..\n")
     except Exception as ex:
@@ -4680,7 +4678,7 @@ def cli_vlookup():
 def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
-        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
+        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
         os.system(cmd)  
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5046,3 +5044,5 @@ for row in data:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+cli_auto_liker()
