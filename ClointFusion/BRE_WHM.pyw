@@ -1,63 +1,34 @@
 #BOT Recommendation Engine and Work Hour Monitor
-
-import sqlite3
-import os
-import sys
-import datetime
-import time
-from dateutil import parser
-from pathlib import Path
-import PySimpleGUI as sg
-import traceback
+from cf_common import sqlite3,os,sys, time, traceback, threading, requests,Path, parser, sg, pg, windows_os, linux_os, mac_os, os_name
+from cf_common import connct, cursr, pi, pretty
+from cf_common import datetime
+from cf_common import clointfusion_directory,img_folder_path, cf_splash_png_path,cf_icon_cdt_file_path
 import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
-import pyautogui as pg
 from ClointFusion import selft
-import threading
-import requests
+from cf_notification import show_toast_notification_if_new_msg_is_available
 user_uuid = selft.get_uuid()
-
-from rich import pretty
-import pyinspect as pi
+import datetime
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
-
-os_name = str(platform.system()).lower()
-windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
-
-if os_name == windows_os:
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
-elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
-
-img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
-config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
-cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
 
 last_click = ""
 COUNTER = 1
 
-
-try:
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-    
-    connct = sqlite3.connect(db_file_path,check_same_thread=False)
-    cursr = connct.cursor()
-except Exception as ex: #Ask ADMIN Rights if REQUIRED
-    print("Error in connecting to DB="+str(ex))
-
 # connct.execute("DROP TABLE SYS_CONFIG")
 # connct.execute("DROP TABLE CFEVENTS")
 
+try:
+    cursr.execute("DROP table IF EXISTS SYS_CONFIG")
+    connct.commit()
+except:
+    pass
+
 # Creating table
-sys_config_table = """ CREATE TABLE SYS_CONFIG (
-            uuid TEXT PRIMARY KEY NOT NULL,
+sys_config_table = """ CREATE TABLE IF NOT EXISTS SYS_CONFIG (
+            id INTEGER DEFAULT 0,
+            uuid TEXT NULL,
             platform TEXT NULL,
             platform_release TEXT NULL,
             platform_version TEXT NULL,
@@ -70,10 +41,13 @@ sys_config_table = """ CREATE TABLE SYS_CONFIG (
 
 try:
     cursr.execute(sys_config_table)
-    cursr.execute("Insert into SYS_CONFIG values(?,?,?,?,?,?,?,?,?)", (user_uuid), str(platform.system()), str(platform.release()),str(platform.version()),str(platform.machine()),str(socket.gethostname()),str(socket.gethostbyname(socket.gethostname())),str(':'.join(re.findall('..', '%012x' % uuid.getnode()))),str(platform.processor()))
     connct.commit()
-except sqlite3.OperationalError:
-        pass
+    cursr.execute("INSERT INTO SYS_CONFIG DEFAULT VALUES")
+    connct.commit()
+    sql_qry = "UPDATE SYS_CONFIG SET uuid = '" + user_uuid + "', platform = '" + str(platform.system()) + "', platform_release = '" + str(platform.release()) + "', platform_version ='" + str(platform.version()) + "',architecture = '" + str(platform.machine()) + "',hostname='" + str(socket.gethostname()) + "', ip_addr='" + str(socket.gethostbyname(socket.gethostname())) + "',mac_addr='" + str(':'.join(re.findall('..', '%012x' % uuid.getnode()))) + "',processor = '" + str(platform.processor()) + "' WHERE id=0"
+    # print(sql_qry)
+    cursr.execute(sql_qry)
+    connct.commit()
 except Exception as ex :
     print(f"Exception: {ex}")
 
@@ -416,7 +390,7 @@ def launch_cf_log_generator_gui_new():
             lambda icon, item: call_dost_client()),           
         item(
             'Work Report',
-            lambda icon, item: icon.notify("Hi, This is your work hour monitor powered by ClointFusion. Just open a command prompt and type 'work' to view the report")),
+            lambda icon, item: icon.notify("Hi, This is your work hour monitor powered by ClointFusion. Just open a command prompt and type 'cf_work' to view the report")),
         item(
             'Exit',
             lambda icon, item: exit(keyboard_listener,mouse_listener)))).run()
@@ -426,5 +400,6 @@ def launch_cf_log_generator_gui_new():
 
 try:
     launch_cf_log_generator_gui_new()
+    show_toast_notification_if_new_msg_is_available()
 except Exception as ex:
-    pg.alert(ex)
+    pg.alert(ex)    

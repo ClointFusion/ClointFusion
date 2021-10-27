@@ -45,9 +45,9 @@ setup(
             'cf = ClointFusion.ClointFusion:cli_cf',
             'cf_vlookup = ClointFusion.ClointFusion:cli_vlookup',
             'cf_st = ClointFusion.ClointFusion:cli_speed_test',
-            'work = ClointFusion.ClointFusion:cli_bre_whm',
+            'cf_work = ClointFusion.ClointFusion:cli_bre_whm',
             'cf_wm = ClointFusion.ClointFusion:cli_send_whatsapp_msg',
-            'cf_sm = ClointFusion.ClointFusion:call_social_media',
+            'cf_sm = ClointFusion.ClointFusion:cli_call_sm',
         ],
     },
   python_requires='>=3.8, <3.10',
@@ -66,7 +66,6 @@ setup(
 
 # python -m pip install --upgrade pip setuptools wheel
 # python setup.py build bdist_wheel --universal rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
-
 
 # twine upload dist/* --verbose
 # import time; start = time.process_time() ; import ClointFusion  ; print(time.process_time() - start)

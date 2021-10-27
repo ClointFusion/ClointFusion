@@ -1,9 +1,7 @@
+from cf_common import requests, os, subprocess, platform, time, windows_os, linux_os, mac_os, os_name
+from cf_common import clointfusion_directory
 from selenium.common.exceptions import TimeoutException, WebDriverException
-import requests
-import os
-import subprocess
-import platform
-import logging, time
+import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -19,16 +17,12 @@ pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
 console = Console()
-os_name = str(platform.system()).lower()
-windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
+
 start = True
 found = False
 script = True
 
 website = "https://dost.clointfusion.com"
-clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
 temp_code = clointfusion_directory + "\Config_Files\dost_code.py"
 
 class DisableLogger():

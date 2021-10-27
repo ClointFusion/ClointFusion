@@ -13,33 +13,24 @@
 # 1. All imports
 
 # Python Inbuilt Libraries
+from cf_common import subprocess, os, sys, platform, sqlite3, time, Path, parser, timedelta, webbrowser, traceback, shutil, socket, pd, sg, op
+from cf_common import windows_os, linux_os, mac_os, os_name, python_exe_path, pythonw_exe_path
+from cf_common import clointfusion_directory, temp_current_working_dir, config_folder_path, db_file_path,current_working_dir,img_folder_path
+from cf_common import cf_splash_png_path, cf_icon_cdt_file_path, log_path, batch_file_path, output_folder_path, error_screen_shots_path, status_log_excel_filepath,cf_logo_file_path,cf_icon_file_path
+from cf_common import connct, cursr, pi, pretty
 
-import subprocess
-import os
-import sys
-import platform
 import urllib.request
-import sqlite3
-
-from datetime import datetime
-from dateutil import parser
-from datetime import timedelta
-import time
-import datetime
 from functools import lru_cache
 import threading
 from threading import Timer
 import re
 import json
-from pathlib import Path
-import webbrowser
+
 import logging
 import tempfile
 import warnings
-import traceback
-import shutil
-import socket
 from pywebio.output import put_text
+import datetime
 
 try:
     import pyautogui as pg
@@ -51,9 +42,6 @@ try:
 except:
     import selft
     
-import pandas as pd
-import PySimpleGUI as sg
-import openpyxl as op
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import clipboard
@@ -71,8 +59,6 @@ import random
 import speech_recognition as sr
 import pyttsx3
 
-from rich import pretty
-import pyinspect as pi
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
@@ -80,48 +66,20 @@ console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END
 
 # 2. All global variables
-os_name = str(platform.system()).lower()
-windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
 
-python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
-pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
 
-config_folder_path = ""
 log_path = ""
 log_file_path = ""
-img_folder_path = ""
-batch_file_path = ""
-output_folder_path = ""
-error_screen_shots_path = ""
-status_log_excel_filepath = ""
+
 bot_name = "My_BOT"
-user_name = ""
 engine = ""
 
 user_name, c_version, s_version, user_email = selft.get_details()
-temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
-temp_current_working_dir = Path(temp_current_working_dir)
 
-if os_name == windows_os:
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
-elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
-else:
-    clointfusion_directory = temp_current_working_dir
 
 browser_driver = ""
 
-cf_icon_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON.ico")
-cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
-cf_logo_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-LOGO.PNG")
-cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
 
-config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-db_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
 
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
@@ -131,6 +89,7 @@ Browser_Service_Started = False
 ai_screenshot = ""
 ai_processes = []
 helium_service_launched=False
+
 
 find_api_url = "https://api.clointfusion.com/find"
 
@@ -3815,7 +3774,7 @@ def speech_to_text():
             else:
                 energy_threshold.append(r.energy_threshold)
 
-            r.pause_threshold = 0.6
+            r.pause_threshold = 0.8
 
             r.adjust_for_ambient_noise(source)
 
@@ -3883,7 +3842,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
     """
     Main function for Self Test, which is called by GUI
     """
-    global enable_semi_automatic_mode, log_file_path, db_path
+    global enable_semi_automatic_mode, log_file_path
 
     TEST_CASES_STATUS_MESSAGE = ""
     SUCCESS = False
@@ -4318,8 +4277,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             
             try:
                 driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                connct = sqlite3.connect(db_path,check_same_thread=False)
-                cursr = connct.cursor()
+
                 cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
                 connct.commit()
                 clear_screen()
@@ -4594,7 +4552,6 @@ def cli_send_whatsapp_msg(excel_path):
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
-    global db_path
     try:
         from datetime import date
         from rich.table import Table
@@ -4622,8 +4579,6 @@ def cli_bre_whm():
         except Exception as ex:
             print("Error in click cli_bre_whm = " + str(ex))
 
-        connct = sqlite3.connect(db_path,check_same_thread=False)
-        cursr = connct.cursor()
         
         event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
             TIME_STAMP TEXT NOT NULL,
@@ -4641,7 +4596,6 @@ def cli_bre_whm():
         cursr.execute(event_table)
         connct.commit()
 
-        cursr = connct.cursor()
         cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
         connct.commit()
 
@@ -4741,61 +4695,14 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
+    click.echo('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  cf_work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-def call_social_media():
-    #opens all social media links of ClointFusion
-    try:
-        webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
- 
-    try:
-        webbrowser.open_new_tab("https://twitter.com/ClointFusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-    try:
-        webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-
+def cli_call_sm():
+    """Opens all our Social Media in Google Chrome"""
+    from cf_common import call_social_media
+    call_social_media()
+    
 # --------- CLI Commands Ends ---------
 
 
@@ -4804,7 +4711,6 @@ def call_social_media():
 def cli_bre_whm_test():
     """ClointFusion CLI for BRE and WHM"""
     try:
-        global db_path
         from rich.table import Table
         
         style = "bold white on blue"
@@ -4829,8 +4735,6 @@ def cli_bre_whm_test():
         except Exception as ex:
             print("Error in click cli_bre_whm = " + str(ex))
 
-        connct = sqlite3.connect(db_path,check_same_thread=False)
-        cursr = connct.cursor()
         
         event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
             TIME_STAMP TEXT NOT NULL,
@@ -4848,7 +4752,7 @@ def cli_bre_whm_test():
         cursr.execute(event_table)
         connct.commit()
         
-        cursr = connct.cursor()
+        # cursr = connct.cursor()
         cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
         connct.commit()
 
@@ -4947,30 +4851,20 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
+    print('Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  cf_work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.')
 
 # --------- TEST FOR CLI Ends ---------
-
 
 # --------- 4. All default services ---------
 
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
-conn = sqlite3.connect(db_path)
-cursr = conn.cursor()
+
 data = cursr.execute("SELECT updating from CF_VALUES")
 for row in data:
     updating =  row[0]
     if updating == "False":
-        config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-        log_path = Path(os.path.join(clointfusion_directory, "Logs"))
-        img_folder_path =  Path(os.path.join(clointfusion_directory, "Images")) 
-        batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
-        output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
-        error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
-        status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
-
 
         if os_name == windows_os:
             

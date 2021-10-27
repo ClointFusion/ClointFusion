@@ -1,8 +1,8 @@
+from cf_common import time, pd, sys, pi, pretty
 import ClointFusion as cf
-import time
 from urllib.parse import quote
-import pandas as pd
-import sys
+pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
+pretty.install()
 
 def send_wa_msg(mobile_number,name, msg):
     try:

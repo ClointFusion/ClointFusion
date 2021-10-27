@@ -1,18 +1,7 @@
-import os
-import sys
-import threading 
-import time
-import traceback
-import platform
-import subprocess
-import sqlite3
-import requests
-
+from cf_common import os, sys, threading, time, traceback, platform, subprocess, sqlite3, requests, pi, pretty
+from cf_common import current_working_dir
 from helium._impl import selenium_wrappers
 from pyautogui import KEYBOARD_KEYS
-
-from rich import pretty
-import pyinspect as pi
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
@@ -26,8 +15,6 @@ passwd= ""
 url = 'https://raw.githubusercontent.com/ClointFusion/ClointFusion/master/requirements.txt'
 
 FIRST_TIME = False
-
-current_working_dir = os.path.dirname(os.path.realpath(__file__)) #get cwd
 
 os.chdir(current_working_dir)
 try:

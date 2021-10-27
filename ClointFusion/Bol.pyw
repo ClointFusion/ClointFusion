@@ -1,10 +1,6 @@
-import os
-import random
-import webbrowser
-import requests
+from cf_common import os, webbrowser, requests, time, Path, sys, os_name, windows_os, linux_os, mac_os, sqlite3, random,pi, pretty 
+from cf_common import clointfusion_directory, site_packages_path
 import datetime
-import sys
-import time
 import wikipedia
 import pywhatkit as kit
 import ClointFusion as cf
@@ -15,38 +11,16 @@ from rich.text import Text
 from rich import print
 from rich.console import Console
 import pyaudio
-
 from rich import pretty
-import pyinspect as pi
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
-
 
 console = Console()
 
 queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,', 'commands,', 'read screen,','help,',]
 latest_queries = ['launch zoom meeting,','switch window,','locate on screen,','take selfie,','read screen,',]
 
-if cf.os_name == "windows":
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-elif cf.os_name == "linux":
-    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
-elif cf.os_name == "darwin":
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
-
-def _get_site_packages_path():
-    """
-    Returns Site-Packages Path
-    """
-    import subprocess
-    try:
-        import site  
-        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
-    except:
-        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
-
-    site_packages_path = str(site_packages_path).strip()  
-    return str(site_packages_path)
 
 def error_try_later():
     error_choices=["Whoops, please try again","Mea Culpa, please try again","Sorry, i am experiencing some issues,  please try again","Apologies, please try again"]
@@ -284,57 +258,6 @@ def call_switch_wndw():
     windw_name = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
     cf.window_activate_and_maximize_windows(windw_name)
 
-def call_social_media():
-    #opens all social media links of ClointFusion
-    try:
-        webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
- 
-    try:
-        webbrowser.open_new_tab("https://twitter.com/ClointFusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-    try:
-        webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
-    try:
-        webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
-    except Exception as ex:
-        print("Error in call_social_media = " + str(ex))
-
 def call_find_on_screen():
     cf.text_to_speech('OK, what to find ?')
     query = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
@@ -452,7 +375,7 @@ def bol_main():
                     try:
                         status.update("Processing...\n")
                         status.stop()
-                        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
+                        cmd = f'python "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
                         os.system(cmd)
                         status.start()
                         status.update("Listening...\n")
@@ -522,6 +445,7 @@ def bol_main():
 
                 elif any(x in query for x in ["social media"]):
                     status.update("Processing...\n")
+                    from cf_common import call_social_media
                     call_social_media()
                     status.update("Listening...\n")
 
@@ -552,7 +476,6 @@ def bol_main():
 
 # elevate(show_console=False)
 try:
-    import sqlite3
     from elevate import elevate
     config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files")) 
     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
