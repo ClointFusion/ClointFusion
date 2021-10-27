@@ -140,6 +140,7 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
         print(attr('reset'))
         
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in print_with_magic_color="+str(ex))
 
 def read_semi_automatic_log(key):
@@ -193,6 +194,7 @@ def update_semi_automatic_log(key, value):
             append_df_to_excel(bot_config_path, df, index=False,startrow=None,header=None)
             
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in update_semi_automatic_log="+str(ex))
 
 def OFF_semi_automatic_mode():
@@ -209,6 +211,7 @@ def OFF_semi_automatic_mode():
         enable_semi_automatic_mode = False
         print("Semi Automatic Mode is DISABLED "+ show_emoji())
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in OFF_semi_automatic_mode="+str(ex))        
 
 def ON_semi_automatic_mode():
@@ -226,6 +229,7 @@ def ON_semi_automatic_mode():
         enable_semi_automatic_mode = True
         print("Semi Automatic Mode is ENABLED "+ show_emoji())
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in ON_semi_automatic_mode="+str(ex))
 
 # ---------  Methods Ends ---------
@@ -251,6 +255,7 @@ def _perform_self_test():
     try:
         clointfusion_self_test()
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in Self Test="+str(ex))
         _rerun_clointfusion_first_run(ex)
 
@@ -288,6 +293,7 @@ def _create_status_log_file(xtLogFilePath):
             df.to_excel(writer, sheet_name='Sheet1', index=False)
             writer.save()
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in _create_status_log_file = " +str(ex))
 
 def _init_log_file():
@@ -308,6 +314,7 @@ def _init_log_file():
         _create_status_log_file(status_log_excel_filepath)   
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ERROR in _init_log_file="+str(ex))
 
 def _folder_write_text_file(txt_file_path="",contents=""):
@@ -321,6 +328,7 @@ def _folder_write_text_file(txt_file_path="",contents=""):
         f.close()
         
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_write_text_file="+str(ex))
 
 def _ask_user_semi_automatic_mode():
@@ -395,6 +403,7 @@ def _ask_user_semi_automatic_mode():
             # file_path = Path(file_path)
             # _folder_write_text_file(file_path,str(enable_semi_automatic_mode))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in _ask_user_semi_automatic_mode " + str(ex))
 
 def _excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",value=""):
@@ -430,6 +439,7 @@ def _extract_filename_from_filepath(strFilePath=""):
 
             return strFileName
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error in _extract_filename_from_filepath="+str(ex))
 
     else:
@@ -463,6 +473,7 @@ def _window_find_exact_name(windowName=""):
                     break
         return win, window_found
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in _window_find_exact_name="+str(ex))
 
 def _excel_copy_range(startCol=1, startRow=1, endCol=1, endRow=1, sheet='Sheet1'):
@@ -483,6 +494,7 @@ def _excel_copy_range(startCol=1, startRow=1, endCol=1, endRow=1, sheet='Sheet1'
         return rangeSelected
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in _excel_copy_range="+str(ex))
     
 def _excel_paste_range(startCol=1, startRow=1, endCol=1, endRow=1, sheetReceiving='Sheet1',copiedData=[]):
@@ -500,6 +512,7 @@ def _excel_paste_range(startCol=1, startRow=1, endCol=1, endRow=1, sheetReceivin
         return countRow
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in _excel_paste_range="+str(ex))
 
 def get_public_ip():
@@ -569,6 +582,7 @@ def gui_get_consent_from_user(msgForUser="Continue ?"):
             return str(existing_value)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in gui_get_consent_from_user="+str(ex))
 
 def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_select=True): 
@@ -636,6 +650,7 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
                 return oldValue
                 
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error in gui_get_dropdownlist_values_from_user="+str(ex))
     else:
         print('gui_get_dropdownlist_values_from_user - List is empty')
@@ -723,6 +738,7 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
             return oldFilePath, oldSheet , int(oldHeader)
             
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in gui_get_excel_sheet_header_from_user="+str(ex))
     
 def gui_get_folder_path_from_user(msgForUser="the folder : "):    
@@ -780,6 +796,7 @@ def gui_get_folder_path_from_user(msgForUser="the folder : "):
             return str(existing_value)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in gui_get_folder_path_from_user="+str(ex))
 
 def gui_get_any_input_from_user(msgForUser="Please enter : ",password=False,multi_line=False,mandatory_field=True):   
@@ -891,6 +908,7 @@ def gui_get_any_input_from_user(msgForUser="Please enter : ",password=False,mult
             return str(existing_value)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         try:
             msgForUser = "Please enter " + msgForUser
 
@@ -967,6 +985,7 @@ def gui_get_any_file_from_user(msgForUser="the file : ",Extension_Without_Dot="*
             return str(existing_value)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in gui_get_any_file_from_user="+str(ex))
 
 # ---------  GUI Functions Ends---------
@@ -1006,6 +1025,7 @@ def mouse_click(x='', y='', left_or_right="left", no_of_clicks=1):
             time.sleep(1)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in mouseClick="+str(ex))
     finally:
         return status
@@ -1043,6 +1063,7 @@ def mouse_move(x="",y=""):
             time.sleep(0.2)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in mouse_move="+str(ex))
     finally:
         return status
@@ -1095,6 +1116,7 @@ def mouse_drag_from_to(x1="",y1="",x2="",y2="",delay=0.5):
         time.sleep(0.2)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in mouse_drag_from_to="+str(ex))
     finally:
         return status
@@ -1134,6 +1156,7 @@ def mouse_search_snip_return_coordinates_x_y(img="", wait=180):
             x,y = pos.left + int(pos.width / 2), pos.top + int(pos.height / 2)
         status = (x,y)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in mouse_search_snip_return_coordinates_x_y="+str(ex))
     finally:
         return status
@@ -1194,7 +1217,8 @@ def key_press(key_1='', key_2='', key_3='', write_to_window=""):
         time.sleep(0.5)
         status = True
     except Exception as ex:
-            print("Error in key_press="+str(ex))
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in key_press="+str(ex))
     finally:
         return status
     
@@ -1233,6 +1257,7 @@ def key_write_enter(text_to_write="", write_to_window="", delay_after_typing=1, 
         time.sleep(delay_after_typing)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in key_write_enter="+str(ex))
     finally:
         return status
@@ -1254,6 +1279,7 @@ def key_hit_enter(write_to_window=""):
         time.sleep(0.5)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in key_hit_enter="+str(ex))
     finally:
         return status
@@ -1328,6 +1354,7 @@ def message_flash(msg="",delay=3):
         r.start()
         pg.alert(text=msg, title='ClointFusion', button='OK')
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ERROR in message_flash="+str(ex))
 
 def message_toast(message,website_url="", file_folder_path=""):
@@ -1412,16 +1439,19 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 try:
                     subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == mac_os:
                 try:
                     subprocess.call('pkill "Google Chrome"', shell=True)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == linux_os:
                 try:
                     subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
             time.sleep(5)
 
@@ -1461,8 +1491,10 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
             browser.Config.implicit_wait_secs = 60
             helium_service_launched = True
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_website_h = " + str(ex))
         browser.kill_browser()
     finally:
@@ -1488,6 +1520,7 @@ def browser_navigate_h(url=""):
         browser.go_to(url.lower())
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_navigate_h = " + str(ex))
     finally:
         return status
@@ -1515,6 +1548,7 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
             browser.write(Value)
             status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_write_h = " + str(ex))
     finally:
         return status
@@ -1558,6 +1592,7 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
                 browser.rightclick(element)
             status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_mouse_click_h = " + str(ex))
     finally:
         return status  
@@ -1586,6 +1621,7 @@ def browser_locate_element_h(selector="", get_text=False, multiple_elements=Fals
                 return browser.find_all(browser.S(selector).web_element.text)
             return browser.find_all(browser.S(selector))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_locate_element_h = " + str(ex))
 
 def browser_wait_until_h(text="", element="t"):
@@ -1612,6 +1648,7 @@ def browser_wait_until_h(text="", element="t"):
             browser.wait_until(browser.Button(text).exists, 10) # button
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_wait_until_h = " + str(ex))
     finally:
         return status
@@ -1627,6 +1664,7 @@ def browser_refresh_page_h():
         browser.refresh()
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_refresh_page_h = " + str(ex))
     finally:
         return status
@@ -1642,6 +1680,7 @@ def browser_hit_enter_h():
         browser.press(browser.ENTER)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
     finally:
         return status
@@ -1679,6 +1718,7 @@ def browser_key_press_h(key_1="", key_2=""):
             press(key_1 + key_2)
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
     finally:
         return status
@@ -1715,6 +1755,7 @@ def browser_set_waiting_time(time=10):
     try:
         browser.Config.implicit_wait_secs = int(time)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_set_waiting_time = " + str(ex))
 
 def browser_quit_h():
@@ -1728,6 +1769,7 @@ def browser_quit_h():
         browser.kill_browser()
         status = True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_quit_h = " + str(ex))
     finally:
         return status
@@ -1769,6 +1811,7 @@ def folder_write_text_file(txt_file_path="",contents=""):
         f.close()
         
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_write_text_file="+str(ex))
 
 def folder_create(strFolderPath=""):
@@ -1790,6 +1833,7 @@ def folder_create(strFolderPath=""):
             os.makedirs(strFolderPath, exist_ok=True)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create="+str(ex))
 
 def folder_create_text_file(textFolderPath="",txtFileName=""):
@@ -1820,6 +1864,7 @@ def folder_create_text_file(textFolderPath="",txtFileName=""):
         f.close()
         
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create_text_file="+str(ex))
 
 def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
@@ -1844,6 +1889,7 @@ def folder_get_all_filenames_as_list(strFolderPath="",extension='all'):
 
         return allFilesOfaFolderAsLst
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_get_all_filenames_as_list="+str(ex))
 
 def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="all"):  
@@ -1878,10 +1924,12 @@ def folder_delete_all_files(fullPathOfTheFolder="",file_extension_without_dot="a
                 os.remove(file_path)
                 count +=1 
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("Error in folder_delete_all_files = " + str(ex))
         
         return count
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_delete_all_files="+str(ex)) 
         return -1
 
@@ -1941,6 +1989,7 @@ def file_get_json_details(path_of_json_file='',section=''):
             raise Exception('Section can\'t be find in given json file.')
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f'Error in file_get_json_details = {ex}')
 
 # ---------  Folder Functions Ends ---------
@@ -1957,6 +2006,7 @@ def window_show_desktop():
         pg.hotkey("win","d")
         time.sleep(0.5)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_show_desktop="+str(ex))
 
 def window_get_active_window():
@@ -1966,6 +2016,7 @@ def window_get_active_window():
     try:
         return win32gui.GetWindowText(win32gui.GetForegroundWindow())
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_get_active_window="+str(ex))
 
 def window_activate_window(window_title=''):
@@ -1991,6 +2042,7 @@ def window_activate_window(window_title=''):
         else:
             print("No window OPEN by name="+str(windowName))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_activate_window="+str(ex))
 
 def window_get_all_opened_titles_windows():
@@ -2008,6 +2060,7 @@ def window_get_all_opened_titles_windows():
                 allTitles_lst.append(str(item).strip())
         return allTitles_lst
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_get_all_opened_titles="+str(ex))
 
 def window_activate_and_maximize_windows(windowName=""):
@@ -2038,6 +2091,7 @@ def window_activate_and_maximize_windows(windowName=""):
         else:
             print("No window OPEN by name="+str(windowName))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_activate_and_maximize="+str(ex))
 
 def window_minimize_windows(windowName=""):
@@ -2060,6 +2114,7 @@ def window_minimize_windows(windowName=""):
         else:
             print("No window available to minimize by name="+str(windowName))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_minimize="+str(ex))
 
 def window_close_windows(windowName=""):
@@ -2082,6 +2137,7 @@ def window_close_windows(windowName=""):
         else:
             print("No window available to close, by name="+str(windowName))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_close="+str(ex))
 
 def launch_any_exe_bat_application(pathOfExeFile=""):
@@ -2116,6 +2172,7 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
                 time.sleep(2)
                 status = True
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("launch_any_exe_bat_application"+str(ex))
         
         elif os_name == mac_os:
@@ -2123,10 +2180,12 @@ def launch_any_exe_bat_application(pathOfExeFile=""):
                 subprocess.Popen(f'open -a "{pathOfExeFile}"')
                 status = True
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("launch_any_exe_bat_application"+str(ex))
                 
         time.sleep(1) 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ERROR in launch_any_exe_bat_application="+str(ex))
     finally:
         return status
@@ -2183,6 +2242,7 @@ def string_regex(inputStr="",strExpAfter="",strExpBefore="",intIndex=0):
         resp = requests.post(regex_url, data={'str_input':str(inputStr),'before':strExpBefore, 'after':strExpAfter,'indx':intIndex})
         return resp.text
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in string_regex = " + str(ex))
 
 # ---------  String Functions Ends --------- 
@@ -2211,6 +2271,7 @@ def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
         row = row + 1
         return row, col
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_row_column_count="+str(ex))
 
 def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, startRow=0, endCol=0, endRow=0): #*
@@ -2262,6 +2323,7 @@ def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, 
     
         return rangeSelected
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in copy_range_from_excel_sheet="+str(ex))
 
 def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', startCol=0, startRow=0, endCol=0, endRow=0, copiedData=""):#*
@@ -2312,6 +2374,7 @@ def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', sta
         to_wb.save(excel_path)
         return countRow-1
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_copy_paste_range_from_to_sheet="+str(ex))
 
 def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=""):#*
@@ -2338,6 +2401,7 @@ def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=
         message_toast("Excel splitting done", file_folder_path=file_path)
             
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_split_by_column="+str(ex))
 
 def excel_split_the_file_on_row_count(excel_path="", sheet_name = 'Sheet1', rowSplitLimit="", outputFolderPath="", outputTemplateFileName ="Split"):#*
@@ -2390,6 +2454,7 @@ def excel_split_the_file_on_row_count(excel_path="", sheet_name = 'Sheet1', rowS
             i = i + 1
         return True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_split_the_file_on_row_count="+str(ex))
 
 def excel_merge_all_files(input_folder_path="",output_folder_path=""):
@@ -2422,6 +2487,7 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
         
         return True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_merge_all_files="+str(ex))
 
 def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBeDropped = ""):
@@ -2451,6 +2517,7 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
             df.to_excel(writer, sheet_name=sheet_name,index=False) 
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_drop_columns="+str(ex))
 
 def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToBeSorted=None,secondColumnToBeSorted=None,thirdColumnToBeSorted=None,firstColumnSortType=True,secondColumnSortType=True,thirdColumnSortType=True, view_excel=False):#*
@@ -2498,6 +2565,7 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
         
         return True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_sort_columns="+str(ex))        
 
 def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
@@ -2516,6 +2584,7 @@ def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
             df.to_excel(writer,sheet_name=sheet_name, index=False)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_clear_sheet="+str(ex))
 
 def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnName="", cellNumber=0, setText=""): #*
@@ -2541,6 +2610,7 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
         return True
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_set_single_cell="+str(ex))
 
 def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName="",cellNumber=0): #*
@@ -2562,6 +2632,7 @@ def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName
         cellValue = df.at[cellNumber,columnName[0]]
         return cellValue
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_single_cell="+str(ex))
 
 def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnName="", saveResultsInSameExcel=True, which_one_to_keep="first"): #*
@@ -2594,6 +2665,7 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
 
         return count
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_remove_duplicates="+str(ex))
 
 def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepath_2="", sheet_name_2 = 'Sheet1', header_2 = 0, Output_path="", OutputExcelFileName="", match_column_name="",how='left', view_excel=False):#*
@@ -2639,6 +2711,7 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
         return True
     
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_vlook_up="+str(ex))
 
 def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name=''): 
@@ -2753,6 +2826,7 @@ def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',c
                 excel_newfile_path = output_dir + "\\" + column_name + '-'+condition_str   + '.xlsx'
                 df_new.to_excel(excel_newfile_path, index=False)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         errMsg = f"Error in excel_split_on_user_defined_conditions: {str(ex)}"
         return errMsg
 
@@ -2794,6 +2868,7 @@ def excel_convert_to_image(excel_file_path=""):
         else:
             print("This feature is available only on Windows OS")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_convert_to_image="+str(ex))
 
 def excel_create_excel_file_in_given_folder(fullPathToTheFolder="",excelFileName="",sheet_name="Sheet1"):
@@ -2835,6 +2910,7 @@ def excel_create_excel_file_in_given_folder(fullPathToTheFolder="",excelFileName
         
         return True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_create_excel_file_in_given_folder="+str(ex))
 
 def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",value=""):
@@ -2861,6 +2937,7 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
             return False
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_if_value_exists="+str(ex))
 
 def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
@@ -2891,6 +2968,7 @@ def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
         
         return True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_create_file="+str(ex))
 
 def excel_to_colored_html(formatted_excel_path=""):
@@ -2907,6 +2985,7 @@ def excel_to_colored_html(formatted_excel_path=""):
         xlsx2html(formatted_excel_path, formatted_html_path)
         return formatted_html_path
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_to_colored_html="+str(ex))
 
 def excel_get_all_sheet_names(excelFilePath=""):
@@ -2926,6 +3005,7 @@ def excel_get_all_sheet_names(excelFilePath=""):
         wb = load_workbook(excelFilePath)
         return wb.sheetnames
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_all_sheet_names="+str(ex))
 
 def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
@@ -2940,6 +3020,7 @@ def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
         col_lst = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,nrows=1,dtype=str,engine='openpyxl').columns.tolist()
         return col_lst
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_all_header_columns="+str(ex))
 
 def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0,view_excel=False):
@@ -2967,6 +3048,7 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0,view_excel=Fa
         return df.describe()
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_describe_data="+str(ex))
 
 def excel_sub_routines():
@@ -2998,6 +3080,7 @@ def excel_sub_routines():
                 try:
                     os.remove(user_excel_path_with_sr)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Error in excel_sub_routines = " + str(ex))
 
                 shutil.copy2(cf_excel_rountine_file_path,user_excel_path_with_sr)
@@ -3012,6 +3095,7 @@ def excel_sub_routines():
                 try:
                     wb2.save(user_excel_path_with_sr)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Error in excel_sub_routines = " + str(ex))
 
                 wb1.close()
@@ -3021,6 +3105,7 @@ def excel_sub_routines():
                     wb1.app.quit()
                     wb2.app.quit()
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Error in excel_sub_routines = " + str(ex))
 
                 excel.Workbooks.Open(Filename=user_excel_path_with_sr, ReadOnly=1)
@@ -3051,11 +3136,13 @@ def excel_sub_routines():
                 ew = gw.getWindowsWithTitle('Excel')[0]
                 ew.close()
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("Error in excel_sub_routines = " + str(ex))
         else:
             print("This feature is available only on Windows OS")
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_sub_routines="+str(ex))
 
 def convert_csv_to_excel(csv_path="",sep=""):
@@ -3088,6 +3175,7 @@ def convert_csv_to_excel(csv_path="",sep=""):
         message_toast("CSV to excel conversion done", file_folder_path=excel_file_path)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in convert_csv_to_excel="+str(ex))
 
 def isNaN(value):
@@ -3203,6 +3291,7 @@ def win_obj_open_app(title,program_path_with_name,file_path_with_name="",backend
             time.sleep(1)
             return app, main_dlg
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Exception in win_obj_open_app : " + str(ex))
     else:
         print("Works only on windows OS")
@@ -3225,6 +3314,7 @@ def win_obj_get_all_objects(main_dlg,save=False,file_name_with_path=""):
             else:
                 main_dlg.print_control_identifiers()
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Exception in win_obj_get_all_objects : " + str(ex))
     else:
         print("Works only on windows OS")
@@ -3253,6 +3343,7 @@ def win_obj_mouse_click(main_dlg,title="", auto_id="", control_type=""):
                 print("Need \'title\' or \'auto_id\' Parameter for Mouse Click to work")
                 exit()
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Exception in win_obj_mouse_click : " + str(ex))
     else:
         print("Works only on windows OS")
@@ -3281,6 +3372,7 @@ def win_obj_key_press(main_dlg,write,title="", auto_id="", control_type=""):
             else:
                 main_dlg.type_keys(write, with_spaces=True)
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Exception in win_obj_key_press : " + str(ex))
     else:
         print("Works only on windows OS")
@@ -3328,6 +3420,7 @@ def win_obj_get_text(main_dlg,title="", auto_id="", control_type="", value = Fal
                     read = main_dlg.window_text()
                 return read
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Exception in win_obj_get_text : " + str(ex))
     else:
         print("Works only on windows OS")
@@ -3382,6 +3475,7 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",switch_to_wind
         clipboard_data = ''
         return "Saved the contents at " + str(notepad_file_path)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in scrape_save_contents_to_notepad = "+str(ex))
     
 def scrape_get_contents_by_search_copy_paste(highlightText=""):
@@ -3428,6 +3522,7 @@ def scrape_get_contents_by_search_copy_paste(highlightText=""):
         clipboard_data = ''
         return output_lst_newline_removed
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in scrape_get_contents_by_search_copy_paste="+str(ex))
 
 def screen_clear_search(delay=0.2):
@@ -3442,6 +3537,7 @@ def screen_clear_search(delay=0.2):
         pg.hotkey("esc")
         time.sleep(delay)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in screen_clear_search="+str(ex))
 
 def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='No'):
@@ -3483,6 +3579,7 @@ def search_highlight_tab_enter_open(searchText="",hitEnterKey="Yes",shift_tab='N
         return True
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in search_highlight_tab_enter_open="+str(ex))
 
 def find_text_on_screen(searchText="",delay=0.1, occurance=1,isSearchToBeCleared=False):
@@ -3535,6 +3632,7 @@ def schedule_create_task_windows(Weekly_Daily="D",week_day="Sun",start_time_hh_m
         subprocess.call(str_cmd)
         print("Task Scheduled")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in schedule_create_task_windows="+str(ex))
 
 def schedule_delete_task_windows():
@@ -3548,6 +3646,7 @@ def schedule_delete_task_windows():
         print("Task {} Deleted".format(bot_name))
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in schedule_delete_task="+str(ex))
 
 # --------- Schedule Functions Ends ---------
@@ -3592,6 +3691,7 @@ def email_send_via_desktop_outlook(toAddress="",ccAddress="",subject="",htmlBody
             print("This feature is available only on Windows OS")
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in email_send_via_desktop_outlook="+str(ex))
 
 # --------- Email Functions Ends ---------
@@ -3615,6 +3715,7 @@ def ocr_now(img_path=""):
         
         return response.text
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         return "Error in ocr_now" + str(ex)
 
 def find(function_partial_name=""):
@@ -3626,6 +3727,7 @@ def find(function_partial_name=""):
         else:
             print("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in find="+str(ex))
 
 def pause_program(seconds="5"):
@@ -3636,6 +3738,7 @@ def pause_program(seconds="5"):
         seconds = int(seconds)
         time.sleep(seconds)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in pause_program="+str(ex))
 
 def create_batch_file(application_exe_pyw_file_path=""):
@@ -3684,6 +3787,7 @@ def create_batch_file(application_exe_pyw_file_path=""):
 
         print("Batch file saved in " + str(batch_file_path))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in create_batch_file="+str(ex))
 
     finally:
@@ -3703,7 +3807,8 @@ def dismantle_code(strFunctionName=""):
             print("Code dismantling {}".format(strFunctionName))
             return dis.dis(strFunctionName) 
     except Exception as ex:
-       print("Error in dismantle_code="+str(ex)) 
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in dismantle_code="+str(ex)) 
 
 def download_this_file(url=""):
     """
@@ -3728,6 +3833,7 @@ def download_this_file(url=""):
             return download_file_path
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in download_this_file="+str(ex))
 
 def clear_screen():
@@ -3740,6 +3846,7 @@ def clear_screen():
         command = 'cls'
       os.system(command)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in clear_screen = " + str(ex))
 
 def text_to_speech(audio, show=True):
@@ -3787,6 +3894,7 @@ def speech_to_text():
                     resp = requests.post(bol_url, data={'user_uuid':str(system_uuid),'user_cmd':str(query)})
                     print(resp.text)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(str(ex))
 
                 print(f"You Said : {query}")
@@ -3826,6 +3934,7 @@ def _init_cf_quick_test_log_file(log_path_arg):
         logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s  :  %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
         
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ERROR in _init_log_file="+str(ex))
     finally:
         host_ip = socket.gethostbyname(socket.gethostname()) 
@@ -3891,6 +4000,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 folder_create(tmp_error_screen_shots_path)
                 folder_create(tmp_output_folder_path)
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex))
                 logging.info('Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex))
                 TEST_CASES_STATUS_MESSAGE  += 'Unable to create basic sub-folders for img/batch/config/output/error_screen_shot=' + str(ex)
@@ -3902,6 +4012,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             logging.info('ClointFusion Self Testing Initiated')
             
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error while creating sub-folders='+str(ex))
             logging.info('Error while creating sub-folders='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while creating sub-folders='+str(ex)
@@ -3924,6 +4035,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 excel_create_excel_file_in_given_folder(os.path.join(test_folder_path,"Delete Excel"),'Delete-Excel-2')
                 folder_delete_all_files(os.path.join(test_folder_path,'Delete Excel'), "xlsx")
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print('Unable to delete files in test folder='+str(ex))
                 logging.info('Unable to delete files in test folder='+str(ex))
                 TEST_CASES_STATUS_MESSAGE  += 'Unable to delete files in test folder='+str(ex)
@@ -3937,6 +4049,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             print("\n____________________________________________________________\n")
             logging.info('Folder operations tested successfully')
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error while testing Folder operations='+str(ex))
             logging.info('Error while testing Folder operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while testing Folder operations='+str(ex)
@@ -3963,6 +4076,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 text_to_speech("Great, Windows functions work flawlessly on your PC. Cant wait to see how you use these functions.", show=False)
                 logging.info('Window based operations tested successfully')
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print('Error while testing window based operations='+str(ex))
                 logging.info('Error while testing window based operations='+str(ex))
                 TEST_CASES_STATUS_MESSAGE  += 'Error while testing window based operations='+str(ex)
@@ -4032,6 +4146,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("Isn't amazingly quick, But yeah, more than 28 functions, and, more than 50 excel operations, have been tested just now.", show=False)
             text_to_speech("Banking, finance, from data collection, to data cleaning, and sending reports, everything can be done, with excel functions and Clointfusion. Give it a try today.", show=False)
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error while testing Excel Operations="+str(ex))
             logging.info("Error while testing Excel Operations="+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing Excel Operations="+str(ex)
@@ -4051,6 +4166,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("String operations tested successfully.", show=False)
             logging.info('String operations tested successfully')
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error while testing string operations='+str(ex))
             logging.info('Error while testing string operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing string operations="+str(ex)
@@ -4102,6 +4218,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("Keyboard operations tested successfully.", show=False)
             logging.info('Keyboard operations tested successfully')
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error in keyboard operations='+str(ex))
             logging.info('Error in keyboard operations='+str(ex))
             try:
@@ -4135,6 +4252,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("Screen-scraping functions tested successfully..", show=False)
             logging.info("Screen-scraping functions tested successfully")
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error while testing screenscraping functions='+str(ex))
             logging.info('Error while testing screenscraping functions='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while testing screenscraping functions='+str(ex)
@@ -4159,6 +4277,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("Mouse operations tested successfully", show=False)
             logging.info('Mouse operations tested successfully')
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error in mouse operations='+str(ex))
             logging.info('Error in mouse operations='+str(ex))
             key_press(key_1="ctrl", key_2="w")
@@ -4193,6 +4312,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             else:
                 TEST_CASES_STATUS_MESSAGE  += "Helium package's Compatible Chrome is missing"
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error while Testing Browser Helium functions="+str(ex))
             logging.info("Error while Testing Browser Helium functions="+str(ex))
             key_press(key_1="ctrl", key_2="w") #to close any open browser
@@ -4231,6 +4351,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("CLI's functions tested successfully", show=False)
             logging.info("CLI functions tested successfully")    
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error while Testing CLIs")
             logging.info("Error while Testing CLIs")
             TEST_CASES_STATUS_MESSAGE  += "Error while Testing CLIs"
@@ -4255,6 +4376,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             text_to_speech("Message functions tested successfully", show=False)
             logging.info('Message functions tested successfully')
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing Flash message="+str(ex)
@@ -4265,6 +4387,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 with open(log_file_path, encoding="utf-8") as f:
                     file_contents = f.readlines()
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 file_contents = 'Unable to read the file' + str(ex)
                 TEST_CASES_STATUS_MESSAGE += "Unable to read log file" + str(ex)
             
@@ -4273,6 +4396,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 time_taken= timedelta(seconds=time.monotonic()  - start_time)
                 os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 TEST_CASES_STATUS_MESSAGE += str(ex)
             
             try:
@@ -4290,6 +4414,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 SUCCESS = True
                 time.sleep(5)
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 TEST_CASES_STATUS_MESSAGE += str(ex)
             
             if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
@@ -4301,10 +4426,12 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)
                 
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("ClointFusion Automated Testing Failed "+str(ex))
             logging.info("ClointFusion Automated Testing Failed "+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "ClointFusion Automated Testing Failed "+str(ex)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ClointFusion Automated Testing Failed "+str(ex))
         logging.info("ClointFusion Automated Testing Failed "+str(ex))
         TEST_CASES_STATUS_MESSAGE  += "ClointFusion Automated Testing Failed "+str(ex)
@@ -4420,6 +4547,7 @@ def clointfusion_self_test():
                 sys.exit(0)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         try:
             pg.alert('Error in Clointfusion Self Test = '+str(ex))
         except:
@@ -4441,6 +4569,7 @@ def clointfusion_self_test():
             else:
                 sys.exit(1)
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(str(ex))
 
 def update_log_excel_file(message=""):
@@ -4463,6 +4592,7 @@ def update_log_excel_file(message=""):
 
         return True
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in update_log_excel_file="+str(ex))
         return False
 
@@ -4478,6 +4608,7 @@ def cli_speed_test():
     try:
         print(os.system("speedtest-cli"))
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_speed_test="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4495,6 +4626,7 @@ def cli_colab_launcher():
         os.system(cmd)
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_colab_launcher " + str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4507,6 +4639,7 @@ def cli_dost():
         cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
         os.system(cmd)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_dost "+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4519,6 +4652,7 @@ def cli_bol():
         cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_bol "+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4529,6 +4663,7 @@ def cli_whm():
         os.system(cmd)
         print("WHM is now running..\n")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_whm "+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4537,6 +4672,7 @@ def cli_vlookup():
     try:
         excel_vlook_up()
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_vlookup="+str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4547,6 +4683,7 @@ def cli_send_whatsapp_msg(excel_path):
         cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
         os.system(cmd)  
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in send_whatsapp_msg", str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -4577,6 +4714,7 @@ def cli_bre_whm():
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
             
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error in click cli_bre_whm = " + str(ex))
 
         
@@ -4687,6 +4825,7 @@ def cli_bre_whm():
         print()
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("You may need to restart your computer !")
         print("Error in cli_bre_whm="+str(ex))
 
@@ -4733,6 +4872,7 @@ def cli_bre_whm_test():
             console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
          
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error in click cli_bre_whm = " + str(ex))
 
         
@@ -4840,6 +4980,7 @@ def cli_bre_whm_test():
         print()
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("You may need to restart your computer !")
         print("Error in cli_bre_whm="+str(ex))
 
@@ -4848,6 +4989,7 @@ def cli_speed_test_test():
     try:
         os.system("speedtest-cli")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():

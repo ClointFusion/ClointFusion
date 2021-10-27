@@ -1,5 +1,5 @@
-from cf_common import requests, os, subprocess, platform, time, windows_os, linux_os, mac_os, os_name
-from cf_common import clointfusion_directory
+from cf_common import requests, os, subprocess, platform, time, windows_os, linux_os, mac_os, os_name, sys
+from cf_common import clointfusion_directory, traceback
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import logging
 from selenium import webdriver
@@ -41,16 +41,19 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 try:
                     subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == mac_os:
                 try:
                     subprocess.call('pkill "Google Chrome"', shell=True)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
             elif os_name == linux_os:
                 try:
                     subprocess.call('sudo pkill -9 chrome', shell=True)
                 except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
             time.sleep(10)
 
@@ -87,8 +90,10 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             browser.Config.implicit_wait_secs = 20
         except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_website_h = " + str(ex))
         browser.kill_browser()
     finally:
@@ -131,6 +136,7 @@ try:
     browser.set_driver(web_driver)
     browser.Config.implicit_wait_secs = 5
 except Exception as ex:
+    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print(f"Error in UUID: {str(ex)}")
 
 try:
@@ -162,7 +168,9 @@ try:
                 browser.kill_browser()
                 start = False
             except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("Error in DOST_Client.pyw="+str(ex))
 
 except Exception as ex:
+    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print(f"Error in DOST_Client: {str(ex)}")

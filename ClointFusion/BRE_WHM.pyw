@@ -49,6 +49,7 @@ try:
     cursr.execute(sql_qry)
     connct.commit()
 except Exception as ex :
+    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print(f"Exception: {ex}")
 
 event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
@@ -151,6 +152,7 @@ def on_release(key):
         connct.commit()
             
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in on_press="+str(ex))
 
 def on_press(key):
@@ -217,10 +219,12 @@ def on_click(x, y, button, pressed):
                 cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (get_time_stamp(),"Mouse Click",str(pg.position()[0]),str(pg.position()[1]),"N/A",str(button),str(click_count),str(windw).replace("*",""),str(rgb_pixels),str(snip_save_path)))
                 connct.commit()
             except Exception as ex :
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print(f"Exception CFEVENTS values : {ex}")
 
             COUNTER = COUNTER + 1
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         exc_type, exc_value, exc_traceback = sys.exc_info()
         print(exc_type)
         print(exc_value)
@@ -274,6 +278,7 @@ def launch_cf_log_generator_gui():
                 
         window.Close()
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_cf_log_generator_gui="+str(ex))
 
 # def pause():
@@ -287,6 +292,7 @@ def exit(keyboard_listener,mouse_listener):
         os._exit(0) 
         
     except Exception as ex :
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Exception exit keyboard_listener,mouse_listener : {ex}")
 
 def _getServerVersion():
@@ -297,6 +303,7 @@ def _getServerVersion():
     except Warning:
         pass
     except Exception as ex :
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Exception _getServerVersion : {ex}")
 
     return s_version
@@ -311,6 +318,7 @@ def _getCurrentVersion():
 
         c_version = str(c_version).split(":")[1].strip()
     except Exception as ex :
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Exception _getCurrentVersion : {ex}")
 
     return c_version
@@ -344,6 +352,7 @@ def call_colab_launcher():
         cmd = f'python "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"'
         os.system(cmd)
     except Exception as ex :
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_colab_launcher" + str(ex))
 
 def call_dost_client():
@@ -351,6 +360,7 @@ def call_dost_client():
         cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
         os.system(cmd)
     except Exception as ex :
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_dost_client" + str(ex))
 
 def call_bol():
@@ -358,6 +368,7 @@ def call_bol():
         cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_bol " + str(ex))
 
 def launch_cf_log_generator_gui_new():
@@ -396,10 +407,12 @@ def launch_cf_log_generator_gui_new():
             lambda icon, item: exit(keyboard_listener,mouse_listener)))).run()
 
     except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_cf_log_generator_gui_new="+str(ex))            
 
 try:
     launch_cf_log_generator_gui_new()
     show_toast_notification_if_new_msg_is_available()
 except Exception as ex:
+    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     pg.alert(ex)    

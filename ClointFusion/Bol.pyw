@@ -1,5 +1,5 @@
 from cf_common import os, webbrowser, requests, time, Path, sys, os_name, windows_os, linux_os, mac_os, sqlite3, random,pi, pretty 
-from cf_common import clointfusion_directory, site_packages_path
+from cf_common import clointfusion_directory, site_packages_path, traceback
 import datetime
 import wikipedia
 import pywhatkit as kit
@@ -60,6 +60,7 @@ def _play_sound(music_file_path=""):
         #close PyAudio  
         p.terminate()
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Unable to play sound" + str(ex))
 
 def play_on_youtube():
@@ -178,6 +179,7 @@ def capture_photo(ocr=False):
         img.save(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))                    
         subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in capture_photo " + str(ex))
 
 def call_read_screen():
@@ -200,6 +202,7 @@ def call_read_screen():
         if yes_no in ["yes", "yah", "ok"]:
             cf.text_to_speech(ocr_result)
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in capture_photo " + str(ex))
 
 def call_name():
@@ -239,6 +242,7 @@ def call_ocr():
         cf.text_to_speech(ocr_result)
 
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in OCR " + str(ex))
         error_try_later()
 
@@ -380,6 +384,7 @@ def bol_main():
                         status.start()
                         status.update("Listening...\n")
                     except Exception as ex:
+                        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                         print("Error in calling dost from bol = " + str(ex))
 
                 elif any(x in query for x in ["open notepad","launch notepad"]):

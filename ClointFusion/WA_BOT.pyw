@@ -1,4 +1,4 @@
-from cf_common import time, pd, sys, pi, pretty
+from cf_common import time, pd, sys, pi, pretty, traceback
 import ClointFusion as cf
 from urllib.parse import quote
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
@@ -15,10 +15,10 @@ def send_wa_msg(mobile_number,name, msg):
         time.sleep(5)
         print("WA MSG sent.")
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error while send_wa_msg "+ str(ex))
 
 def send_wa_in_loop(excel_path):
-    
     try:
         df = pd.read_excel(excel_path,engine='openpyxl')
         for _, row in df.iterrows():
@@ -38,9 +38,11 @@ def send_wa_in_loop(excel_path):
             try:
                 send_wa_msg(mobile_number,name, msg)
             except Exception as ex:
+                cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("Error in send_wa_in_loop", str(ex))
         cf.browser_quit_h()
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error while send_wa_in_loop "+ str(ex))
         # browser.Alert().dismiss()
 
@@ -56,6 +58,7 @@ def shoot_msg(excel_path):
                 logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[3]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
 
         except Exception as ex:
+            cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("User is not logged in.")
         
 
@@ -67,6 +70,7 @@ def shoot_msg(excel_path):
                     if not logined:
                         logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[3]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
                 except Exception as ex:
+                    cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Waiting for you to log in.")
         
         cf.text_to_speech("OK, Let me send the messages", show=False)
@@ -74,6 +78,7 @@ def shoot_msg(excel_path):
         
         send_wa_in_loop(excel_path)
     except Exception as ex:
+        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error while shoot_msg "+ str(ex))
 
 if len(sys.argv) > 1:
