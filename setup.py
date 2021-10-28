@@ -49,6 +49,7 @@ setup(
             'cf_wm = ClointFusion.ClointFusion:cli_send_whatsapp_msg',
             'cf_sm = ClointFusion.ClointFusion:cli_call_sm',
             'cf_like = ClointFusion.ClointFusion:cli_auto_liker',
+            'cf_py = ClointFusion.ClointFusion:cli_cf_py',
         ],
     },
   python_requires='>=3.8, <3.10',
