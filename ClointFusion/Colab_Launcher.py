@@ -1,5 +1,5 @@
-from cf_common import os, sys, threading, time, traceback, platform, subprocess, sqlite3, requests, pi, pretty
-from cf_common import current_working_dir
+from ClointFusion.cf_common import os, sys, threading, time, traceback, platform, subprocess, sqlite3, requests, pi, pretty
+from ClointFusion.cf_common import current_working_dir
 from helium._impl import selenium_wrappers
 from pyautogui import KEYBOARD_KEYS
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)

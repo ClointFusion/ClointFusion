@@ -1,4 +1,4 @@
-from cf_common import time, pd, sys, pi, pretty, traceback
+from ClointFusion.cf_common import time, pd, sys, pi, pretty, traceback
 import ClointFusion as cf
 from urllib.parse import quote
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)

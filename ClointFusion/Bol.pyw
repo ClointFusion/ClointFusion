@@ -1,5 +1,5 @@
-from cf_common import os, webbrowser, requests, time, Path, sys, os_name, windows_os, linux_os, mac_os, sqlite3, random,pi, pretty 
-from cf_common import clointfusion_directory, site_packages_path, traceback
+from ClointFusion.cf_common import os, webbrowser, requests, time, Path, sys, os_name, windows_os, linux_os, mac_os, sqlite3, random,pi, pretty 
+from ClointFusion.cf_common import clointfusion_directory, site_packages_path, traceback
 import datetime
 import wikipedia
 import pywhatkit as kit
@@ -450,7 +450,7 @@ def bol_main():
 
                 elif any(x in query for x in ["social media"]):
                     status.update("Processing...\n")
-                    from cf_common import call_social_media
+                    from ClointFusion.cf_common import call_social_media
                     call_social_media()
                     status.update("Listening...\n")
 

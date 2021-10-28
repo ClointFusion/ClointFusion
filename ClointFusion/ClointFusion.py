@@ -13,11 +13,11 @@
 # 1. All imports
 
 # Python Inbuilt Libraries
-from cf_common import subprocess, os, sys, platform, sqlite3, time, Path, parser, timedelta, webbrowser, traceback, shutil, socket, pd, sg, op
-from cf_common import windows_os, linux_os, mac_os, os_name, python_exe_path, pythonw_exe_path
-from cf_common import clointfusion_directory, temp_current_working_dir, config_folder_path, db_file_path,current_working_dir,img_folder_path
-from cf_common import cf_splash_png_path, cf_icon_cdt_file_path, log_path, batch_file_path, output_folder_path, error_screen_shots_path, status_log_excel_filepath,cf_logo_file_path,cf_icon_file_path
-from cf_common import connct, cursr, pi, pretty, site_packages_path
+from ClointFusion.cf_common import subprocess, os, sys, platform, sqlite3, time, Path, parser, timedelta, webbrowser, traceback, shutil, socket, pd, sg, op
+from ClointFusion.cf_common import windows_os, linux_os, mac_os, os_name, python_exe_path, pythonw_exe_path
+from ClointFusion.cf_common import clointfusion_directory, temp_current_working_dir, config_folder_path, db_file_path,current_working_dir, img_folder_path
+from ClointFusion.cf_common import cf_splash_png_path, cf_icon_cdt_file_path, log_path, batch_file_path, output_folder_path, error_screen_shots_path, status_log_excel_filepath,cf_logo_file_path,cf_icon_file_path
+from ClointFusion.cf_common import connct, cursr, pi, pretty, site_packages_path
 
 import urllib.request
 from functools import lru_cache
@@ -4657,24 +4657,23 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
                 window_show_desktop()
                 text_to_speech("want to launch Launch any exe or application", show=False)
-                message_pop_up("\Command used :\n```````````\ncf.launch_any_exe_bat_application('write')\n\n", delay=5)
-                
+                message_pop_up("\nCommand being used :\n```````````\ncf.launch_any_exe_bat_application('write')\n\n", delay=3)
                 launch_any_exe_bat_application("write")
                 text_to_speech("Minimize window", show=False)
                 time.sleep(2)
-                message_pop_up("\Command used :\n`````````````\ncf.window_minimize_windows('Document')\n\n", delay=5)
+                message_pop_up("\nCommand being used :\n`````````````\ncf.window_minimize_windows('Document')\n\n", delay=3)
                 window_minimize_windows('Document')
                 text_to_speech("Maximize window", show=False)
                 time.sleep(2)
-                message_pop_up("\Command used :\n```````````\ncf.window_activate_and_maximize_windows('Document')\n\n", delay=5)
+                message_pop_up("\nCommand being used :\n```````````\ncf.window_activate_and_maximize_windows('Document')\n\n", delay=5)
                 window_activate_and_maximize_windows('Document')
                 time.sleep(2)
                 text_to_speech("Get all window names", show=False)
-                message_pop_up("\Command used :\n```````````\ncf.window_get_all_opened_titles_windows()\n\n", delay=5)
+                message_pop_up("\nCommand being used :\n```````````\ncf.window_get_all_opened_titles_windows()\n\n", delay=3)
                 window_names = window_get_all_opened_titles_windows()
                 message_pop_up("Window Names\n``````````````" + str("\n"+"\n".join(window_names)))
                 text_to_speech("Close window", show=False)
-                message_pop_up("\Command used :\n```````````\ncf.window_close_windows('Document')\n\n", delay=5)
+                message_pop_up("\nCommand being used :\n```````````\ncf.window_close_windows('Document')\n\n", delay=3)
                 window_close_windows('Document')
                 text_to_speech("See, its that easy, Automation is now right in your hands.", show=False)
                 print()
@@ -5371,7 +5370,7 @@ def cli_cf(message):
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
     """Opens all our Social Media in Google Chrome"""
-    from cf_common import call_social_media
+    from ClointFusion.cf_common import call_social_media
     call_social_media()
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -5593,3 +5592,4 @@ with warnings.catch_warnings():
 
 
 
+cli_auto_liker()
