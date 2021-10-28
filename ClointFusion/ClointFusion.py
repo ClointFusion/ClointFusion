@@ -4477,9 +4477,9 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             text_to_speech("First and foremost, there is no automation, unless we can control, the mouse and keyboard.", show=False)
             text_to_speech("ClointFusion currently has three, keyboard functions, to control keyboard", show=False)
             message_pop_up("\nKeyboard\n```````````\n1)  key_press\n2)  key_write_enter\n3)  key_hit_enter\n\n", delay=5)
-            text_to_speech("and four, mouse functions, to control mouse pointer, with many more on the way.", show=False)
+            text_to_speech("and we have four, mouse functions, to control mouse pointer", show=False)
             message_pop_up("\nMouse\n```````````\n1)  mouse_click\n2)  mouse_move\n3)  mouse_drag_from_to\n4)  mouse_search_snip_return_coordinates_x_y\n\n", delay=5)
-            
+            text_to_speech("with many more on the way.", show=False)
             text_to_speech("Now, let me put these functions to the test and show you how to automate them.", show=False)
             
             
@@ -4560,10 +4560,12 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print()
             print('Finished testing Keyboard and Mouse operations...')
             print("\n____________________________________________________________\n")
-            
+            logging.info('Keyboard and mouse operations tested successfully')
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("ClointFusion Automated Testing Failed for Keyboard and mouse Functions"+str(ex))
+            logging.info(' Error Keyboard and mouse operations tested successfully')
+            TEST_CASES_STATUS_MESSAGE  += "Error while Testing Keyboard and mouse operations"
 
 # Browser Operations
         try: 
@@ -4574,59 +4576,68 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             text_to_speech("With the pandemic, working from home, as well as everything of our employment and education, has gone entirely online. ", show=False)
             text_to_speech("If we can't automate the web, there's no point in automation. ClointFusion includes 11 browser automation functions.", show=False)
             message_pop_up("\Browser\n```````````\n1)  browser_activate\n2)  browser_navigate_h\n3)  browser_write_h\n4)  browser_mouse_click_h\n5)  browser_locate_element_h\n6)  browser_wait_until_h\n7)  browser_refresh_page_h\n8)  browser_hit_enter_h\n9)  browser_key_press_h\n10)  browser_mouse_hover_h\n11)  browser_quit_h\n\n", delay=5)
-            text_to_speech("In a web browser, you can do whatever you want, and, however you want, with these functions.", show=False)
+            text_to_speech("With these functions, you can do whatever you want, and, however you like, in a web browser.", show=False)
             text_to_speech("Now, let me put these functions to the test.", show=False)
             
             # Actions
-            browser_activate('https://google.com')
-            text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
-            browser_write_h('clointfusion hackathon')
-            time.sleep(5)
-            browser_hit_enter_h()
-            browser_mouse_click_h("Python based RPA Development Platform")
-            
-            text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
-            folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-            scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
-            text_to_speech("Its done already,", show=False)
-            
-            os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
-            text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
-            os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
-            pg.scroll(10)
-            pause_program(3)
-            pg.scroll(10)
-            
-            text_to_speech("Ok, Lets get back to the web.", show=False)
-            window_close_windows('Screen_scrape')
-            window_close_windows('notepad-contents.txt')
-            
-            window_activate_and_maximize_windows("Python based RPA Development")
-            text_to_speech("Interested in our Work, let have a Date,", show=False)
-            browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
-            text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
-            browser.scroll_down(2000)
-            text_to_speech("Let me, take you to our pypi page.", show=False)
-            browser_navigate_h('https://pypi.org')
-            browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
-            browser_hit_enter_h()
-            time.sleep(5)
-            browser_navigate_h('https://pypi.org/project/ClointFusion/')
-            text_to_speech("You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-            browser_mouse_click_h(element="RPA",double_click=True)
-            text_to_speech("Are you worried, or bored, or dont know to code. We got you covered.", show=False)
-            browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
-            text_to_speech("DOST, a block based approach, powered by Clointfusion, Made automation easy, just drag, and drop, and automate.", show=False)
-            pause_program(10)
-            browser_quit_h()
-            text_to_speech("Is'nt interesting so far. But we still have so much, sit back and relax.", show=False)
-            print()
-            print('Finished testing Browser operations...')
-            print("\n____________________________________________________________\n")
-            
+            if browser_activate('https://google.com'):
+                text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
+                browser_write_h('clointfusion hackathon')
+                time.sleep(5)
+                browser_hit_enter_h()
+                browser_mouse_click_h("Python based RPA Development Platform")
+                
+                text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
+                folder_create(os.path.join(test_folder_path,'Screen_scrape'))
+                scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
+                text_to_speech("Its done already,", show=False)
+                
+                os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
+                text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
+                os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
+                pg.scroll(10)
+                pause_program(3)
+                pg.scroll(10)
+                
+                text_to_speech("Ok, Lets get back to the web.", show=False)
+                window_close_windows('Screen_scrape')
+                window_close_windows('notepad-contents.txt')
+                
+                window_activate_and_maximize_windows("Python based RPA Development")
+                text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
+                browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
+                text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
+                browser.scroll_down(1000)
+                text_to_speech("Let me, take you to our pypi page.", show=False)
+                browser_navigate_h('https://pypi.org')
+                browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
+                browser_hit_enter_h()
+                time.sleep(5)
+                browser_navigate_h('https://pypi.org/project/ClointFusion/')
+                browser.scroll_down(1000)
+                text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
+                browser_mouse_click_h(element="RPA",double_click=True)
+                text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
+                text_to_speech("Are you just bored, to copy paste the same syntax twice, thrice...", show=False)
+                text_to_speech("ClointFusion, got you covered.", show=False)
+                browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
+                pause_program(10)
+                text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com", show=False)
+                browser_quit_h()
+                text_to_speech("Is'nt interesting so far. But we still have so much, sit back and relax.", show=False)
+                print()
+                print('Finished testing Browser operations...')
+                print("\n____________________________________________________________\n")
+                logging.info("Tested Browser's Helium functions successfully")
+            else:
+                TEST_CASES_STATUS_MESSAGE  += "Helium package's Compatible Chrome is missing"
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("ClointFusion Automated Testing Failed for Browser Functions"+str(ex))
+            logging.info("Error while Testing Browser Helium functions="+str(ex))
+            key_press(key_1="ctrl", key_2="w") #to close any open browser
+            TEST_CASES_STATUS_MESSAGE  += "Error while Testing Browser Helium functions="+str(ex)
             
 # Windows Operations
         if os_name == windows_os:
@@ -4636,36 +4647,67 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 print("\n____________________________________________________________\n")
                 print('Started testing Windows operations...')
                 text_to_speech("This PC is powered by Windows. Windows PCs are the best for automation.", show=False)
-                text_to_speech("ClointFusion has five window-specific functions.", show=False)
+                text_to_speech("ClointFusion has six window-specific functions.", show=False)
                 message_pop_up("\nWindows\n```````````\n1)  window_show_desktop\n2)  window_get_all_opened_titles_windows\n3)  window_activate_and_maximize_windows\n4)  window_minimize_windows\n5)  window_close_windows\n6)  launch_any_exe_bat_application\n\n", delay=5)
                 
-                text_to_speech("These functions help to perform high-level automation in Windows. Let me show you while I test them.", show=False)
+                text_to_speech("These functions help you to perform high-level automation in Windows. Let me show you while I test them.", show=False)
                 
                 # Actions
                 text_to_speech("Show Desktop", show=False)
                 
                 window_show_desktop()
-                text_to_speech("Launch any exe or application", show=False)
+                text_to_speech("want to launch Launch any exe or application", show=False)
+                message_pop_up("\Command used :\n```````````\ncf.launch_any_exe_bat_application('write')\n\n", delay=5)
+                
                 launch_any_exe_bat_application("write")
                 text_to_speech("Minimize window", show=False)
                 time.sleep(2)
+                message_pop_up("\Command used :\n`````````````\ncf.window_minimize_windows('Document')\n\n", delay=5)
                 window_minimize_windows('Document')
                 text_to_speech("Maximize window", show=False)
                 time.sleep(2)
+                message_pop_up("\Command used :\n```````````\ncf.window_activate_and_maximize_windows('Document')\n\n", delay=5)
                 window_activate_and_maximize_windows('Document')
                 time.sleep(2)
+                text_to_speech("Get all window names", show=False)
+                message_pop_up("\Command used :\n```````````\ncf.window_get_all_opened_titles_windows()\n\n", delay=5)
                 window_names = window_get_all_opened_titles_windows()
                 message_pop_up("Window Names\n``````````````" + str("\n"+"\n".join(window_names)))
                 text_to_speech("Close window", show=False)
+                message_pop_up("\Command used :\n```````````\ncf.window_close_windows('Document')\n\n", delay=5)
                 window_close_windows('Document')
                 text_to_speech("See, its that easy, Automation is now right in your hands.", show=False)
                 print()
                 print('Finsihed testing Windows operations...')
                 print("\n____________________________________________________________\n")
+                logging.info('Window based operations tested successfully')
             except Exception as ex:
                 selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                print("ClointFusion Automated Testing Failed for Windows Functions"+str(ex)) 
-                
+                print("ClointFusion Automated Testing Failed for Windows Functions"+str(ex))
+                logging.info('Error while testing window based operations='+str(ex))
+                TEST_CASES_STATUS_MESSAGE  += 'Error while testing window based operations='+str(ex)
+
+# String operations
+        try: 
+            print()
+            print("\n____________________________________________________________\n")
+            text_to_speech("Testing String manipulation functions.", show=False)
+            print('Started testing String Operations...')
+            
+            print(string_remove_special_characters("C!@loin#$tFu*(sion"))
+            print(string_extract_only_alphabets(inputString="C1l2o#%^int&*Fus12i5on"))
+            print(string_extract_only_numbers("C1l2o3i4n5t6F7u8i9o0n"))
+            
+            print('String operations tested successfully '+show_emoji())
+            print("\n____________________________________________________________\n")
+            text_to_speech("String operations tested successfully.", show=False)
+            logging.info('String operations tested successfully')
+        except Exception as ex:
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            print('Error while testing string operations='+str(ex))
+            logging.info('Error while testing string operations='+str(ex))
+            TEST_CASES_STATUS_MESSAGE  += "Error while testing string operations="+str(ex)
+             
 # Folder Operations
         try: 
             print()
@@ -4710,7 +4752,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print("\n____________________________________________________________\n")
             logging.info('Folder operations tested successfully')
         except Exception as ex:
-            # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print('Error while testing Folder operations='+str(ex))
             logging.info('Error while testing Folder operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += 'Error while testing Folder operations='+str(ex)   
@@ -4779,7 +4821,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             logging.info('Excel operations tested successfully')
             
             text_to_speech("Isn't amazingly quick, But yeah, more than 28 functions, and, more than 50 excel operations, have been tested just now.", show=False)
-            text_to_speech("Banking, finance, from data collection, to data cleaning, and sending reports, everything can be done, with excel functions and Clointfusion. Give it a try today.", show=False)
+            text_to_speech("Banking, finance, from data collection, to data cleaning, and sending reports, everything can be done, with excel functions, and Clointfusion. Give it a try today.", show=False)
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error while testing Excel Operations="+str(ex))
@@ -4802,6 +4844,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             text_to_speech("Flash Message...", show=False)
             message_flash("Testing flash message.")
             
+            print()
             print('Message operations tested successfully '+show_emoji())
             text_to_speech("Message functions tested successfully", show=False)
             print("\n____________________________________________________________\n")
@@ -4821,11 +4864,13 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print('Started testing CLIs Operations...')
             
             text_to_speech("Press CF in terminal to get all the available commands", show=False)
+            print("\n_________________\n")
             print("Press 'cf' in terminal for this function.\n")
             #Test work
             cli_cf_test()
             
             text_to_speech("Want to quickly test your internet speed, type CF underscore ST.", show=False)
+            print("\n_________________\n")
             print("Type 'cf_st' in terminal for this function")
             text_to_speech("Internet speed is being tested in the terminal.", show=False)
             
@@ -4930,8 +4975,6 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             except:
                 text_to_speech("Please click on close button.", show=False)
                 print("Please click red 'Close' button")
-
-                
         else:
             print("Please click red 'Close' button")
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
@@ -4967,8 +5010,8 @@ def clointfusion_self_test():
         while WHILE_TRUE:
             if not instructions:
                 text_to_speech("Thank you for downloading and installing the ClointFusion Python package.", show=False)    
-                text_to_speech("Bol is a ClointFusion-powered voice-based assistant.", show=False)    
-                text_to_speech("I'm here to give you a quick tour of the ClointFusion package and to check your machine for compatibility.", show=False)
+                text_to_speech("This is Bol, is a ClointFusion-powered voice-based assistant.", show=False)    
+                text_to_speech("I'm here to give you a quick tour of the ClointFusion package, and to check your machine for compatibility.", show=False)
                 text_to_speech("Please sign in and confirm. Then press the start button.", show=False)
                 instructions = True
             
@@ -5008,7 +5051,7 @@ def clointfusion_self_test():
                 _init_cf_quick_test_log_file(temp_current_working_dir)
                 
                 name_st, _, _, _ = selft.get_details()
-                text_to_speech("Thank you, {name_st}, for starting the self-test, and helping to improve ClointFusion.", show=False)    
+                text_to_speech(f"Thank you, {user_name}, for starting the self-test, and helping to improve ClointFusion.", show=False)    
                 
 
                 status_msg, success = clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window)
@@ -5545,6 +5588,7 @@ with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+clointfusion_self_test()
 
 # message_pop_up("key_press\nkey_write_enter\nkey_hit_enter\n mouse_click\nmouse_move\nmouse_drag_from_to\nmouse_search_snip_return_coordinates_x_y", delay=5)
 
