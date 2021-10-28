@@ -4468,7 +4468,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
 # SELF TEST AND TOUR STARTS HERE
     try:
 
-# Keyboard and Mouse Operations        
+# Keyboard and Mouse Operations
         try: 
             # Description
             print()
