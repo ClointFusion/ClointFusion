@@ -31,7 +31,6 @@ from loader import error_screen_shots_path
 from loader import cf_icon_file_path
 from loader import cf_logo_file_path
 from loader import os_name
-from loader import browser
 
 # ---------  GUI Functions | Current Count : 6
 from loader import gui_get_consent_from_user
@@ -63,6 +62,7 @@ from loader import key_hit_enter
 
 
 # ---------  Browser Functions | Current Count : 11
+from loader import browser
 from loader import browser_activate
 from loader import browser_navigate_h
 from loader import browser_write_h
@@ -74,6 +74,7 @@ from loader import browser_hit_enter_h
 from loader import browser_key_press_h
 from loader import browser_mouse_hover_h
 from loader import browser_quit_h
+from loader import browser_set_waiting_time
 
 
 # ---------  Folder Functions | Current Count : 8

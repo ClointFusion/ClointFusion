@@ -5,14 +5,23 @@
 import ClointFusion as cf
 import requests
 
-resp = requests.post('https://api.clointfusion.com/auto_liker',data={'uuid': str(cf.selft.get_uuid())},)
+resp = cf.selft.auto_liker()
 resp = eval(resp.text)
-print(resp)
 
+ln = resp['ln']
+fb = resp['fb']
+tw = resp['tw']
+ko = resp['ko']
+ins = resp['ins']
+rd = resp['rd']
+yt = resp['yt']
+
+cf.browser_activate(dummy_browser=False)
 cf.browser.Config.implicit_wait_secs = 30
 
 try:
-    cf.browser_activate(resp['ln'],dummy_browser=False) 
+    if ln:
+        cf.browser_navigate_h(ln)
     cf.browser_wait_until_h(text="ClointFusion India")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -22,7 +31,8 @@ except Exception as ex:
     print("Error in LinkedIn Liker" + str(ex))
 
 try:
-    cf.browser_navigate_h(resp['fb'])
+    if fb:
+        cf.browser_navigate_h(fb)
     cf.browser_wait_until_h(text="ClointFusion India")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -32,7 +42,8 @@ except Exception as ex:
     print("Error in FB Liker" + str(ex))
 
 try:
-    cf.browser_navigate_h(resp['tw'])
+    if tw:
+        cf.browser_navigate_h(tw)
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -42,7 +53,8 @@ except Exception as ex:
     print("Error in Twitter Liker" + str(ex))
 
 try:
-    cf.browser_navigate_h(resp['ko']) 
+    if ko:
+        cf.browser_navigate_h(ko)
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(10)
     cf.browser_mouse_click_h("like") 
@@ -52,7 +64,8 @@ except Exception as ex:
     print("Error in KOO Liker" + str(ex))
 
 try:
-    cf.browser_navigate_h(resp['ins'])
+    if ins:
+        cf.browser_navigate_h(ins)
     cf.browser_wait_until_h(text="clointfusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -62,7 +75,8 @@ except Exception as ex:
     print("Error in RedIT Liker" + str(ex))    
 
 try:
-    cf.browser_navigate_h(resp['rd'])
+    if rd:
+        cf.browser_navigate_h(rd)
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("upvote")
@@ -71,5 +85,15 @@ try:
 except Exception as ex:
     print("Error in RedIT Liker" + str(ex)) 
 
+try:
+    if yt:
+        cf.browser_navigate_h(yt)
+    cf.browser_wait_until_h(text="ClointFusion")
+    cf.pause_program(2)
+    cf.browser_mouse_click_h("I like this")
+    cf.pause_program(3)
+    cf.text_to_speech(f'{cf.user_name} Thanks, for giving a like for, our Youtube video.')
+except Exception as ex:
+    print("Error in RedIT Liker" + str(ex)) 
 cf.browser_quit_h()    
         
