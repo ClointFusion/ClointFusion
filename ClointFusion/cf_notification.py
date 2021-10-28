@@ -1,5 +1,5 @@
-from cf_common import webbrowser,platform, os, time, Path, datetime, timedelta, windows_os, linux_os, mac_os, os_name , pi, pretty
-from cf_common import clointfusion_directory, cf_icon_cdt_file_path
+from ClointFusion.cf_common import webbrowser,platform, os, time, Path, datetime, timedelta, windows_os, linux_os, mac_os, os_name , pi, pretty
+from ClointFusion.cf_common import clointfusion_directory, cf_icon_cdt_file_path
 from win10toast_click import ToastNotifier
 import requests
 import schedule

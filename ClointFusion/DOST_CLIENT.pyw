@@ -1,5 +1,5 @@
-from cf_common import requests, os, subprocess, platform, time, windows_os, linux_os, mac_os, os_name, sys
-from cf_common import clointfusion_directory, traceback
+from ClointFusion.cf_common import requests, os, subprocess, platform, time, windows_os, linux_os, mac_os, os_name, sys
+from ClointFusion.cf_common import clointfusion_directory, traceback
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import logging
 from selenium import webdriver

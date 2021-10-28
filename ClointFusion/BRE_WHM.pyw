@@ -1,8 +1,8 @@
 #BOT Recommendation Engine and Work Hour Monitor
-from cf_common import sqlite3,os,sys, time, traceback, threading, requests,Path, parser, sg, pg, windows_os, linux_os, mac_os, os_name
-from cf_common import connct, cursr, pi, pretty
-from cf_common import datetime
-from cf_common import clointfusion_directory,img_folder_path, cf_splash_png_path,cf_icon_cdt_file_path
+from ClointFusion.cf_common import sqlite3,os,sys, time, traceback, threading, requests,Path, parser, sg, pg, windows_os, linux_os, mac_os, os_name
+from ClointFusion.cf_common import connct, cursr, pi, pretty
+from ClointFusion.cf_common import datetime
+from ClointFusion.cf_common import clointfusion_directory,img_folder_path, cf_splash_png_path,cf_icon_cdt_file_path
 import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
