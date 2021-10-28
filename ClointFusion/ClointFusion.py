@@ -4859,7 +4859,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
         try:
             print()
             print("\n____________________________________________________________\n")
-            text_to_speech("Nothing can beat a CLI command, in convience, or effectivity.", show=False)
+            text_to_speech("Nothing can beat a CLI command, in convenience, or effectivity.", show=False)
             text_to_speech("Let me show you, some terminal commands, offered by ClointFusion.", show=False)
             print('Started testing CLIs Operations...')
             
@@ -4879,9 +4879,11 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             cli_speed_test_test()
             window_minimize_windows(console_window_name)
             window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
+            print("\n_________________\n")
             text_to_speech("I am back !!!", show=False)
             
             text_to_speech("Want to see, how much time you spent, on what, and which application. type cf_work in terminal. But First, let me tell you this, your data is stored locally and only belongs to you.", show=False)
+            print("\n_________________\n")
             print("Type 'cf_work' in terminal for this function.")
             # Test BRE WHM
             cli_bre_whm_test()
@@ -5588,9 +5590,6 @@ with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-clointfusion_self_test()
-
-# message_pop_up("key_press\nkey_write_enter\nkey_hit_enter\n mouse_click\nmouse_move\nmouse_drag_from_to\nmouse_search_snip_return_coordinates_x_y", delay=5)
 
 
 
