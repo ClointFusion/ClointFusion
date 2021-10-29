@@ -160,3 +160,9 @@ Dockerfile_Win
 
 .google-cookie
 ClointFusion.rtf
+ClointFusion/cf_common.c
+ClointFusion/setup_selft.py
+ClointFusion/setup_common.py
+ClointFusion/setup_loader.py
+ClointFusion/selft.c
+ClointFusion/loader.c

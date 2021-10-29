@@ -1,11 +1,29 @@
-from ClointFusion.cf_common import webbrowser,platform, os, time, Path, datetime, timedelta, windows_os, linux_os, mac_os, os_name , pi, pretty
-from ClointFusion.cf_common import clointfusion_directory, cf_icon_cdt_file_path
 from win10toast_click import ToastNotifier
 import requests
 import schedule
 from ClointFusion import selft
 import datetime
+from datetime import timedelta
+import webbrowser,platform, os, time, datetime
+import pyinspect as pi
+from rich import pretty
+from pathlib import Path
+import sys
 
+
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+os_name = str(platform.system()).lower()
+
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+
+cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 

@@ -1,5 +1,3 @@
-from ClointFusion.cf_common import requests, os, subprocess, platform, time, windows_os, linux_os, mac_os, os_name, sys
-from ClointFusion.cf_common import clointfusion_directory, traceback
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import logging
 from selenium import webdriver
@@ -10,9 +8,25 @@ from rich.text import Text
 from rich import print
 from rich.console import Console
 from ClointFusion import selft
-
+import requests, os, subprocess, platform, time, sys, traceback
 from rich import pretty
 import pyinspect as pi
+
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+os_name = str(platform.system()).lower()
+
+python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
+pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
+
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 

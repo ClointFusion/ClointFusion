@@ -1,5 +1,5 @@
-from ClointFusion.cf_common import os, webbrowser, requests, time, Path, sys, os_name, windows_os, linux_os, mac_os, sqlite3, random,pi, pretty 
-from ClointFusion.cf_common import clointfusion_directory, site_packages_path, traceback
+import os, webbrowser, requests, time, sys, sqlite3, random, traceback
+import pyinspect as pi
 import datetime
 import wikipedia
 import pywhatkit as kit
@@ -12,6 +12,12 @@ from rich import print
 from rich.console import Console
 import pyaudio
 from rich import pretty
+import platform
+
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+os_name = str(platform.system()).lower()
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
@@ -20,7 +26,6 @@ console = Console()
 
 queries = ["current time,","global news,","send whatsapp,","open , minimize , close any application,","Open Gmail,", "play youtube video,","search in google,",'launch zoom meeting,','switch window,','locate on screen,','take selfie,','OCR now,', 'commands,', 'read screen,','help,',]
 latest_queries = ['launch zoom meeting,','switch window,','locate on screen,','take selfie,','read screen,',]
-
 
 def error_try_later():
     error_choices=["Whoops, please try again","Mea Culpa, please try again","Sorry, i am experiencing some issues,  please try again","Apologies, please try again"]
@@ -176,7 +181,7 @@ def capture_photo(ocr=False):
         img=cf.pg.screenshot()
         time.sleep(1)
         
-        img.save(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))                    
+        img.save(Path(os.path.join(cf.clointfusion_directory, "Images","Selfie.PNG")))                    
         subprocess.run('Taskkill /IM WindowsCamera.exe /F', shell=True)
     except Exception as ex:
         cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -190,9 +195,9 @@ def call_read_screen():
         cf.window_activate_and_maximize_windows(windw_name)
         time.sleep(2)
         img=cf.pg.screenshot()
-        img.save(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))
+        img.save(Path(os.path.join(cf.clointfusion_directory, "Images","Selfie.PNG")))
         # OCR process
-        ocr_img_path = Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG"))
+        ocr_img_path = Path(os.path.join(cf.clointfusion_directory, "Images","Selfie.PNG"))
         cf.text_to_speech(shuffle_return_one_option(["OK, performing OCR now","Give me a moment","abracadabra","Hang on"]))
         ocr_result = cf.ocr_now(ocr_img_path)
         print(ocr_result)
@@ -227,7 +232,7 @@ def call_ocr():
 
         capture_photo(ocr=True)
 
-        ocr_img_path = Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG"))
+        ocr_img_path = Path(os.path.join(cf.clointfusion_directory, "Images","Selfie.PNG"))
 
         imageObject = Image.open(ocr_img_path)
 
@@ -286,7 +291,7 @@ def call_take_selfie():
     cf.text_to_speech("Thanks, I saved your photo. Do you want me to open ?")
     yes_no = cf.speech_to_text().lower() ## takes user cf.speech_to_text 
     if yes_no in ["yes", "yah", "ok"]:
-        cf.launch_any_exe_bat_application(Path(os.path.join(clointfusion_directory, "Images","Selfie.PNG")))
+        cf.launch_any_exe_bat_application(Path(os.path.join(cf.clointfusion_directory, "Images","Selfie.PNG")))
     else:
         pass
 
@@ -300,6 +305,57 @@ def call_shut_pc():
     if yes_no in ["yes", "yah", "ok"]:
         cf.text_to_speech("OK, Shutting down your machine in a minute")
         os.system('shutdown -s')
+
+def call_social_media():
+    #opens all social media links of ClointFusion
+    try:
+        webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+ 
+    try:
+        webbrowser.open_new_tab("https://twitter.com/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+    try:
+        webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
 def bol_main():
     query_num = 5
@@ -367,7 +423,7 @@ def bol_main():
                 #Clap
                 elif any(x in query for x in ["clap","applause","shout","whistle"]):
                     status.update("Processing...\n")
-                    _play_sound((str(Path(os.path.join(clointfusion_directory,"Logo_Icons","Applause.wav")))))
+                    _play_sound((str(Path(os.path.join(cf.clointfusion_directory,"Logo_Icons","Applause.wav")))))
                     status.update("Listening...\n")
 
                 elif any(x in query for x in ["bye","quit","stop","exit"]):
@@ -377,6 +433,15 @@ def bol_main():
 
                 elif "dost" in query:
                     try:
+                        import subprocess
+                        try:
+                            import site  
+                            site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+                        except:
+                            site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
+
+                        site_packages_path = str(site_packages_path).strip()  
+
                         status.update("Processing...\n")
                         status.stop()
                         cmd = f'python "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
@@ -450,7 +515,6 @@ def bol_main():
 
                 elif any(x in query for x in ["social media"]):
                     status.update("Processing...\n")
-                    from ClointFusion.cf_common import call_social_media
                     call_social_media()
                     status.update("Listening...\n")
 
@@ -482,7 +546,7 @@ def bol_main():
 # elevate(show_console=False)
 try:
     from elevate import elevate
-    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files")) 
+    config_folder_path = Path(os.path.join(cf.clointfusion_directory, "Config_Files")) 
     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
     
     connct = sqlite3.connect(db_file_path,check_same_thread=False)

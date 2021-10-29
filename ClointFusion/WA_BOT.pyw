@@ -1,6 +1,9 @@
-from ClointFusion.cf_common import time, pd, sys, pi, pretty, traceback
 import ClointFusion as cf
+import traceback
 from urllib.parse import quote
+import pyinspect as pi
+from rich import pretty
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
@@ -10,17 +13,17 @@ def send_wa_msg(mobile_number,name, msg):
         url_qry = "https://web.whatsapp.com/send?phone=" + str(mobile_number) + "&text=" + quote(msg)
         cf.browser_navigate_h(url=url_qry)
         cf.browser_mouse_click_h(msg)
-        time.sleep(2)
+        cf.time.sleep(2)
         cf.browser_hit_enter_h()
-        time.sleep(5)
+        cf.time.sleep(5)
         print("WA MSG sent.")
     except Exception as ex:
-        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
         print("Error while send_wa_msg "+ str(ex))
 
 def send_wa_in_loop(excel_path):
     try:
-        df = pd.read_excel(excel_path,engine='openpyxl')
+        df = cf.pd.read_excel(excel_path,engine='openpyxl')
         for _, row in df.iterrows():
             mobile_number = row[0]
             name = row[1]
@@ -81,5 +84,5 @@ def shoot_msg(excel_path):
         cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error while shoot_msg "+ str(ex))
 
-if len(sys.argv) > 1:
-    shoot_msg(sys.argv[1])
+if len(cf.sys.argv) > 1:
+    shoot_msg(cf.sys.argv[1])

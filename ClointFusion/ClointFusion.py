@@ -13,34 +13,31 @@
 # 1. All imports
 
 # Python Inbuilt Libraries
-from ClointFusion.cf_common import subprocess, os, sys, platform, sqlite3, time, Path, parser, timedelta, webbrowser, traceback, shutil, socket, pd, sg, op
-from ClointFusion.cf_common import windows_os, linux_os, mac_os, os_name, python_exe_path, pythonw_exe_path
-from ClointFusion.cf_common import clointfusion_directory, temp_current_working_dir, config_folder_path, db_file_path,current_working_dir, img_folder_path
-from ClointFusion.cf_common import cf_splash_png_path, cf_icon_cdt_file_path, log_path, batch_file_path, output_folder_path, error_screen_shots_path, status_log_excel_filepath,cf_logo_file_path,cf_icon_file_path
-from ClointFusion.cf_common import connct, cursr, pi, pretty, site_packages_path
-
+import subprocess, os, sys, platform, sqlite3, time, webbrowser, traceback, shutil, socket
+from dateutil import parser
 import urllib.request
 from functools import lru_cache
 import threading
 from threading import Timer
 import re
 import json
-
+import pyinspect as pi
+from rich import pretty
+from pathlib import Path
+from datetime import timedelta
 import logging
 import tempfile
 import warnings
 from pywebio.output import put_text
 import datetime
+import PySimpleGUI as sg
+import openpyxl as op
+import pandas as pd
 
 try:
     import pyautogui as pg
 except:
     from pywebio.output import popup, put_html
-
-try:
-    from ClointFusion import selft
-except:
-    import selft
     
 from openpyxl import Workbook
 from openpyxl import load_workbook
@@ -59,11 +56,99 @@ import random
 import speech_recognition as sr
 import pyttsx3
 
+temp_current_working_dir = tempfile.mkdtemp(prefix="cloint_",suffix="_fusion")
+temp_current_working_dir = Path(temp_current_working_dir)
+
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+os_name = str(platform.system()).lower()
+
+python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
+pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
+
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+else:
+    clointfusion_directory = temp_current_working_dir
+
+current_working_dir = os.path.dirname(os.path.realpath(__file__)) #get cwd
+config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
+cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
+cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
+log_path = Path(os.path.join(clointfusion_directory, "Logs"))
+batch_file_path = Path(os.path.join(clointfusion_directory, "Batch_File"))    
+output_folder_path = Path(os.path.join(clointfusion_directory, "Output")) 
+error_screen_shots_path = Path(os.path.join(clointfusion_directory, "Error_Screenshots"))
+status_log_excel_filepath = Path(os.path.join(clointfusion_directory,"StatusLogExcel"))
+cf_icon_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON.ico")
+cf_logo_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-LOGO.PNG")
+engine = ""
+
+try:
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+    cursr = connct.cursor()
+except Exception as ex:
+    print("Error in connecting to DB="+str(ex))
+
+def _get_site_packages_path():
+    """
+    Returns Site-Packages Path
+    """
+    import subprocess
+    try:
+        import site  
+        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+    except:
+        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
+
+    site_packages_path = str(site_packages_path).strip()  
+    return str(site_packages_path)
+
+site_packages_path = _get_site_packages_path()
+
+#Bol Related
+if os_name == windows_os:   
+    engine = pyttsx3.init('sapi5')
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
+    
+    from unicodedata import name
+    import pygetwindow as gw
+    try:
+        import win32gui
+    except:
+        cmd = python_exe_path + site_packages_path  + "/Scripts/pywin32_postinstall.py -install"
+        os.system(cmd)
+        import win32gui
+
+elif os_name == linux_os:
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_male_female].id)
+    r = sr.Recognizer()
+    energy_threshold = [3000]
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
 console = Console()
 sg.theme('Dark') # for PySimpleGUI FRONT END
+
+try:
+    from ClointFusion import selft
+except:
+    import selft
 
 # 2. All global variables
 
@@ -72,14 +157,10 @@ log_path = ""
 log_file_path = ""
 
 bot_name = "My_BOT"
-engine = ""
-
 user_name, c_version, s_version, user_email = selft.get_details()
 
 
 browser_driver = ""
-
-
 
 ss_path_b = Path(os.path.join(temp_current_working_dir,"my_screen_shot_before.png")) #before search
 ss_path_a = Path(os.path.join(temp_current_working_dir,"my_screen_shot_after.png")) #after search
@@ -236,8 +317,6 @@ def ON_semi_automatic_mode():
 
 
 # ---------  Private Functions ---------
-
-
 # Function in use, Dont Delete
 def _perform_self_test():
     try:
@@ -2032,7 +2111,7 @@ def window_activate_window(window_title=''):
             time.sleep(1)
             
         else:
-            print("No window OPEN by name="+str(windowName))
+            print("No window OPEN by name="+str(window_title))
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_activate_window="+str(ex))
@@ -3714,8 +3793,11 @@ def find(function_partial_name=""):
     # Find and inspect python functions
     try:
         if function_partial_name:
-            response = requests.post(find_api_url,data={'partial_name':function_partial_name})
-            print(response.text)
+
+            # response = requests.post(find_api_url,data={'partial_name':function_partial_name})
+            # print(response.text)
+            import ClointFusion as cf
+            msg = pi.search(cf, name=function_partial_name)
         else:
             print("Please pass partial name of the function. Ex: sort")
     except Exception as ex:
@@ -3938,6 +4020,57 @@ def _rerun_clointfusion_first_run(ex):
         pg.alert("Please Re-run..." + str(ex))
     except:
         put_text("Please Re-run..." + str(ex)).show()
+
+def call_social_media():
+    #opens all social media links of ClointFusion
+    try:
+        webbrowser.open_new_tab("https://www.facebook.com/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+ 
+    try:
+        webbrowser.open_new_tab("https://twitter.com/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.youtube.com/channel/UCIygBtp1y_XEnC71znWEW2w")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+    try:
+        webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.instagram.com/clointfusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.kooapp.com/profile/ClointFusion")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://discord.com/invite/tsMBN4PXKH")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://www.eventbrite.com/e/2-days-event-on-software-bot-rpa-development-with-no-coding-tickets-183070046437")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
+
+    try:
+        webbrowser.open_new_tab("https://internshala.com/internship/detail/python-rpa-automation-software-bot-development-work-from-home-job-internship-at-clointfusion1631715670")
+    except Exception as ex:
+        print("Error in call_social_media = " + str(ex))
 
 def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_window_name):
     """
@@ -5370,7 +5503,6 @@ def cli_cf(message):
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
     """Opens all our Social Media in Google Chrome"""
-    from ClointFusion.cf_common import call_social_media
     call_social_media()
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -5545,30 +5677,6 @@ def cli_cf_test():
 # ########################
 # ClointFusion's DEFAULT SERVICES
 
-if os_name == windows_os:
-            
-            #Bol Related
-            engine = pyttsx3.init('sapi5')
-            voices = engine.getProperty('voices')
-            voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-            engine.setProperty('voice', voices[voice_male_female].id)
-            r = sr.Recognizer()
-            energy_threshold = [3000]
-
-            from unicodedata import name
-            import pygetwindow as gw
-            from win32 import win32gui
-
-elif os_name == linux_os:
-    
-    #Bol Related
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
-    r = sr.Recognizer()
-    energy_threshold = [3000]
-
 data = cursr.execute("SELECT updating from CF_VALUES")
 for row in data:
     updating =  row[0]
@@ -5588,8 +5696,3 @@ for row in data:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
-
-
-cli_auto_liker()

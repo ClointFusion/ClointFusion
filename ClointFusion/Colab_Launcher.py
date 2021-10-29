@@ -1,10 +1,11 @@
-from ClointFusion.cf_common import os, sys, threading, time, traceback, platform, subprocess, sqlite3, requests, pi, pretty
-from ClointFusion.cf_common import current_working_dir
 from helium._impl import selenium_wrappers
 from pyautogui import KEYBOARD_KEYS
+import pyinspect as pi
+from rich import pretty
+import os, sys, threading, time, traceback, platform, subprocess, sqlite3, requests
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
-
 
 cf_icon_file_path = "Cloint-ICON.ico"
 cursr = ""
@@ -16,7 +17,19 @@ url = 'https://raw.githubusercontent.com/ClointFusion/ClointFusion/master/requir
 
 FIRST_TIME = False
 
-os.chdir(current_working_dir)
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+os_name = str(platform.system()).lower()
+
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+
+os.chdir(clointfusion_directory)
 try:
     os.system("{} -m pip install --upgrade pip".format(sys.executable))
 except Exception as ex:
@@ -35,7 +48,7 @@ def db_create_database_connect():
     global connct
     try:            
         # connct = sqlite3.connect('{}.db'.format(database_name))
-        connct = sqlite3.connect(r'{}\{}.db'.format(current_working_dir,"ClointFusion_DB"))
+        connct = sqlite3.connect(r'{}\{}.db'.format(clointfusion_directory,"ClointFusion_DB"))
         cursr = connct.cursor()
         # print('Created & Connected with Database \'{}\''.format("ClointFusion_DB"))
     except Exception as ex:

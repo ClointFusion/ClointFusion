@@ -9,7 +9,7 @@ with open(os.path.join(this_directory, "README.md"), "r") as fh:
 
 setup(
     options={'bdist_wheel':{'universal':True}},
-    name='clointfusion',
+    name='ClointFusion',
     author='ClointFusion',
     author_email = 'ClointFusion@cloint.com',
     packages=find_packages(), 

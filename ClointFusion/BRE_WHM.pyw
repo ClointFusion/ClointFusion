@@ -1,18 +1,53 @@
 #BOT Recommendation Engine and Work Hour Monitor
-from ClointFusion.cf_common import sqlite3,os,sys, time, traceback, threading, requests,Path, parser, sg, pg, windows_os, linux_os, mac_os, os_name
-from ClointFusion.cf_common import connct, cursr, pi, pretty
-from ClointFusion.cf_common import datetime
-from ClointFusion.cf_common import clointfusion_directory,img_folder_path, cf_splash_png_path,cf_icon_cdt_file_path
+import os,sys, time, traceback, threading, requests, sqlite3
+from dateutil import parser
+import PySimpleGUI as sg
+import pyautogui as pg
+from pathlib import Path
 import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from ClointFusion import selft
 from cf_notification import show_toast_notification_if_new_msg_is_available
-user_uuid = selft.get_uuid()
 import datetime
+import pyinspect as pi
+from rich import pretty
+
+windows_os = "windows"
+linux_os = "linux"
+mac_os = "darwin"
+os_name = str(platform.system()).lower()
+
+if os_name == windows_os:
+    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+elif os_name == linux_os:
+    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
+elif os_name == mac_os:
+    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+
+config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
+cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
+cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
+
+try:
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+    cursr = connct.cursor()
+except Exception as ex:
+    print("Error in connecting to DB="+str(ex))
+
+try:
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+    cursr = connct.cursor()
+except Exception as ex:
+    print("Error in connecting to DB="+str(ex))
+
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
+user_uuid = selft.get_uuid()
 last_click = ""
 COUNTER = 1
 
