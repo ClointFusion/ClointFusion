@@ -41,11 +41,11 @@ def send_wa_in_loop(excel_path):
             try:
                 send_wa_msg(mobile_number,name, msg)
             except Exception as ex:
-                cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
                 print("Error in send_wa_in_loop", str(ex))
         cf.browser_quit_h()
     except Exception as ex:
-        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
         print("Error while send_wa_in_loop "+ str(ex))
         # browser.Alert().dismiss()
 
@@ -61,7 +61,7 @@ def shoot_msg(excel_path):
                 logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[3]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
 
         except Exception as ex:
-            cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            # cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("User is not logged in.")
         
 
@@ -73,7 +73,7 @@ def shoot_msg(excel_path):
                     if not logined:
                         logined = True if str(cf.browser_locate_element_h('//*[@id="app"]/div[1]/div[1]/div[4]/div/div/div[2]/div[3]/div[2]/div/a', get_text=True)).lower() == "get it here" else False
                 except Exception as ex:
-                    cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                    # cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Waiting for you to log in.")
         
         cf.text_to_speech("OK, Let me send the messages", show=False)
@@ -81,7 +81,7 @@ def shoot_msg(excel_path):
         
         send_wa_in_loop(excel_path)
     except Exception as ex:
-        cf.selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
         print("Error while shoot_msg "+ str(ex))
 
 if len(cf.sys.argv) > 1:
