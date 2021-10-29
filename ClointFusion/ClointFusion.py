@@ -5253,11 +5253,11 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             return TEST_CASES_STATUS_MESSAGE, SUCCESS
         else:
             text_to_speech("I hope you enjoyed our tour and learned something new. If you want to repeat, press the start button. Otherwise, click the close button.", show=False)
+            print("\n____________________________________________________________\n")
             text_to_speech("I printed out all of the syntax I used on this tour. Feel free to scroll through and take notes.")
-            
-            text_to_speech("Please let you know, how we can better ourselves. Email at clointfusion@cloint.com")
-            pause_program(10)
-            
+            print("\n____________________________________________________________\n")
+            text_to_speech("There are plenty other functions to explore. For example, we have a large selection of, Excel functions as well as, some of the top utility functions. We hope that, this tour has sparked your interest, in learning more about automation and ClointFusion.")
+            print("\n____________________________________________________________\n")
             return tour_comp, tour_comp
             
         
