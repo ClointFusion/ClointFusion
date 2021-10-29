@@ -4586,7 +4586,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             print("Please click red 'Close' button")
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
-def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window_name):
+def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window_name, tour=False):
     TEST_CASES_STATUS_MESSAGE = ""
     SUCCESS = False
 
@@ -4628,6 +4628,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     screen_height = pg.size().height
                     launch_any_exe_bat_application("mspaint")
                     mouse_move(screen_width/2, screen_height/2)
+                    key_press("ctrl"+"pgup")
+                    key_press("ctrl"+"pgup")
                     key_press("b")
                     mouse_click()
                     key_press("e")
@@ -4643,6 +4645,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     mouse_click()
                     key_write_enter("ClointFusion is awesome, right?")
                     key_press("ctrl", "a")
+                    pause_program(3)
                     text_to_speech("ClointFusion is awesome, right?", show=False)
                     key_press("alt", "f4")
                     key_press("right")
@@ -4691,7 +4694,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     logging.info('Keyboard operations Skipped.')
                     TEST_CASES_STATUS_MESSAGE  += "Keyboard operations Skipped for MAC OS"
             print()
-            print('Finished testing Keyboard and Mouse operations...')
+            print('Finished testing Keyboard and Mouse operations. '+show_emoji())
             print("\n____________________________________________________________\n")
             logging.info('Keyboard and mouse operations tested successfully')
         except Exception as ex:
@@ -4760,7 +4763,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 browser_quit_h()
                 text_to_speech("Is'nt interesting so far. But we still have so much, sit back and relax.", show=False)
                 print()
-                print('Finished testing Browser operations...')
+                print('Finished testing Browser operations...'+show_emoji())
                 print("\n____________________________________________________________\n")
                 logging.info("Tested Browser's Helium functions successfully")
             else:
@@ -4810,7 +4813,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 window_close_windows('Document')
                 text_to_speech("See, its that easy, Automation is now right in your hands.", show=False)
                 print()
-                print('Finsihed testing Windows operations...')
+                print('Finsihed testing Windows operations. '+show_emoji())
                 print("\n____________________________________________________________\n")
                 logging.info('Window based operations tested successfully')
             except Exception as ex:
@@ -4880,7 +4883,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             window_close_windows("ClointFusion_Self_Tests")
 
             print("\n")
-            print('Folder operations tested successfully '+show_emoji())
+            print('Folder operations tested successfully. '+show_emoji())
             print("\n____________________________________________________________\n")
             logging.info('Folder operations tested successfully')
         except Exception as ex:
@@ -4947,7 +4950,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             pause_program(5)
             window_close_windows("My VLookUp Excel")
             
-            print('Excel operations tested successfully '+show_emoji())
+            print('Excel operations tested successfully. '+show_emoji())
             text_to_speech("Excel operations tested successfully.", show=False)
             print("\n____________________________________________________________\n")
             logging.info('Excel operations tested successfully')
@@ -4977,7 +4980,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             message_flash("Testing flash message.")
             
             print()
-            print('Message operations tested successfully '+show_emoji())
+            print('Message operations tested successfully. '+show_emoji())
             text_to_speech("Message functions tested successfully", show=False)
             print("\n____________________________________________________________\n")
             logging.info('Message functions tested successfully')
@@ -5022,7 +5025,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             text_to_speech("This Report looks colorful and neat in a terminal, give it a try, after self-test", show=False)
             
             print()
-            print("CLI's functions tested successfully"+show_emoji())
+            print("CLI's functions tested successfully. "+show_emoji())
             print("\n____________________________________________________________\n")
             text_to_speech("CLI's functions tested successfully", show=False)
             logging.info("CLI functions tested successfully")    
@@ -5033,56 +5036,57 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             TEST_CASES_STATUS_MESSAGE  += "Error while Testing CLIs"
 
 # Register User
-        try:
-            file_contents = ''
+        if not tour:
             try:
-                with open(log_file_path, encoding="utf-8") as f:
-                    file_contents = f.readlines()
-            except Exception as ex:
-                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                file_contents = 'Unable to read the file' + str(ex)
-                TEST_CASES_STATUS_MESSAGE += "Unable to read log file" + str(ex)
-            
-            try:
-                text_to_speech("Let me quickly, do the neccessary registration, for you. So you can, get started with automation", show=False)
-                time_taken= timedelta(seconds=time.monotonic()  - start_time)
-                os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
-            except Exception as ex:
-                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                TEST_CASES_STATUS_MESSAGE += str(ex)
-            
-            try:
-                driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
-                connct.commit()
-                clear_screen()
-                time.sleep(5)
-                text_to_speech("Closing the browser now.", show=False)
-                browser.set_driver(driver)
-                browser_quit_h()
-                time.sleep(2)
-                selft.ast()
-                SUCCESS = True
-                time.sleep(5)
-            except Exception as ex:
-                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                TEST_CASES_STATUS_MESSAGE += str(ex)
-            
-            if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
-                print("")
-                logging.info("ClointFusion Self Testing Completed")
-                print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
-                message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
-                print("\n____________________________________________________________\n")
-                text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)
-                text_to_speech("An email with this self-test report is being sent to the registered email address.", show=False)
+                file_contents = ''
+                try:
+                    with open(log_file_path, encoding="utf-8") as f:
+                        file_contents = f.readlines()
+                except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                    file_contents = 'Unable to read the file' + str(ex)
+                    TEST_CASES_STATUS_MESSAGE += "Unable to read log file" + str(ex)
                 
-        except Exception as ex:
-            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-            print("ClointFusion Automated Testing Failed "+str(ex))
-            logging.info("ClointFusion Automated Testing Failed "+str(ex))
-            TEST_CASES_STATUS_MESSAGE  += "ClointFusion Automated Testing Failed "+str(ex) 
-               
+                try:
+                    text_to_speech("Let me quickly, do the neccessary registration, for you. So you can, get started with automation", show=False)
+                    time_taken= timedelta(seconds=time.monotonic()  - start_time)
+                    os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
+                except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                    TEST_CASES_STATUS_MESSAGE += str(ex)
+                
+                try:
+                    driver = selft.gf(os_hn_ip, time_taken, file_contents)
+                    cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
+                    connct.commit()
+                    clear_screen()
+                    time.sleep(5)
+                    text_to_speech("Closing the browser now.", show=False)
+                    browser.set_driver(driver)
+                    browser_quit_h()
+                    time.sleep(2)
+                    selft.ast()
+                    SUCCESS = True
+                    time.sleep(5)
+                except Exception as ex:
+                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                    TEST_CASES_STATUS_MESSAGE += str(ex)
+                
+                if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
+                    print("")
+                    logging.info("ClointFusion Self Testing Completed")
+                    print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
+                    message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
+                    print("\n____________________________________________________________\n")
+                    text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)
+                    text_to_speech("An email with this self-test report is being sent to the registered email address.", show=False)
+                    
+            except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                print("ClointFusion Automated Testing Failed "+str(ex))
+                logging.info("ClointFusion Automated Testing Failed "+str(ex))
+                TEST_CASES_STATUS_MESSAGE  += "ClointFusion Automated Testing Failed "+str(ex) 
+                
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ClointFusion Automated Testing Failed "+str(ex))
@@ -5092,27 +5096,29 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
 # End of Self Test
     finally:
         enable_semi_automatic_mode = False
-        
-        if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
-            text_to_speech("All set and ready to go. Wanna to call me again, type B O L, in terminal", show=False)
-            print("Type 'bol'")
-            text_to_speech("Always remember, Think what to automate, not how to, because, Clointfusion is there to do it.", show=False)
-            message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
-        else:
-            print("ClointFusion Self Testing has Failed for few Functions")
-            print(TEST_CASES_STATUS_MESSAGE)
-            logging.info("ClointFusion Self Testing has Failed for few Functions")
-            logging.info(TEST_CASES_STATUS_MESSAGE)
-            SUCCESS = False
+        if not tour:
+            if str(TEST_CASES_STATUS_MESSAGE).strip()  == "":
+                text_to_speech("All set and ready to go. Wanna to call me again, type B O L, in terminal", show=False)
+                print("Type 'bol'")
+                text_to_speech("Always remember, Think what to automate, not how to, because, Clointfusion is there to do it.", show=False)
+                message_toast("ClointFusion is compatible with your computer's settings !", website_url="https://tinyurl.com/ClointFusion")
+            else:
+                print("ClointFusion Self Testing has Failed for few Functions")
+                print(TEST_CASES_STATUS_MESSAGE)
+                logging.info("ClointFusion Self Testing has Failed for few Functions")
+                logging.info(TEST_CASES_STATUS_MESSAGE)
+                SUCCESS = False
 
-        if os_name == windows_os:
-            try:
-                window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
-            except:
-                text_to_speech("Please click on close button.", show=False)
+            if os_name == windows_os:
+                try:
+                    window_close_windows('Welcome to ClointFusion - Made in India with LOVE')
+                except:
+                    text_to_speech("Please click on close button.", show=False)
+                    print("Please click red 'Close' button")
+            else:
                 print("Please click red 'Close' button")
         else:
-            print("Please click red 'Close' button")
+            text_to_speech("Hope, you enjoyed our tour. If you want to go again click start, else, click close.", show=False)
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
 
@@ -5121,6 +5127,7 @@ def clointfusion_self_test(tour=False):
     WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
     python_version = str(sys.version_info.major)
+    last_updated_on_month = ""
     try:
         if not tour:
         
@@ -5199,22 +5206,28 @@ def clointfusion_self_test(tour=False):
                 name_st, _, _, _ = selft.get_details()
                 text_to_speech(f"Thank you, {user_name}, for starting the self-test, and helping to improve ClointFusion.", show=False)    
                 
+                if not tour:
+                    status_msg, success = clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window, tour)
 
-                status_msg, success = clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window)
-
-                if str(status_msg).strip() == "" and success:
+                    if str(status_msg).strip() == "" and success:
+                        window['Close'].update(disabled=False)
+                        break
+                    else:
+                        try:
+                            pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
+                        except:
+                            put_text("Please resolve below errors and try again:\n\n" + status_msg)
+                        sys.exit(0)
+                else:
+                    clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window, tour)
                     window['Close'].update(disabled=False)
                     break
-                else:
-                    try:
-                        pg.alert("Please resolve below errors and try again:\n\n" + status_msg)
-                    except:
-                        put_text("Please resolve below errors and try again:\n\n" + status_msg)
-
-                    sys.exit(0)
 
             if event in (sg.WINDOW_CLOSED, 'Close'):
-                sys.exit(0)
+                if tour:
+                    window.close()
+                else:
+                    sys.exit(0)
 
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5226,18 +5239,22 @@ def clointfusion_self_test(tour=False):
         exc_type, exc_value, exc_tb = sys.exc_info()
         print(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
         _rerun_clointfusion_first_run(str(ex))
+    
     finally:
         try:
-            if last_updated_on_month == 2 :
-                window.close()
-            elif success:
-                if os_name == windows_os:
-                         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
-                elif os_name == linux_os:
-                    os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
-                time.sleep(2)
+            if not tour:
+                if last_updated_on_month == 2 :
+                    window.close()
+                elif success:
+                    if os_name == windows_os:
+                        os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
+                    else:
+                        os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
+                        time.sleep(2)
+                else:
+                    sys.exit(1)
             else:
-                sys.exit(1)
+                pass
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(str(ex))
