@@ -5301,6 +5301,7 @@ def clointfusion_self_test(tour=False):
         else:
             try:
                 window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
+                console_window = ""
             except:
                 WHILE_TRUE = False
         instructions = False
