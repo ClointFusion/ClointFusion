@@ -4527,7 +4527,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             try:
                 driver = selft.gf(os_hn_ip, time_taken, file_contents)
 
-                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
+                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'True' where ID = 1")
                 connct.commit()
                 clear_screen()
                 time.sleep(5)
@@ -5184,7 +5184,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
                 try:
                     driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                    cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
+                    cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'True' where ID = 1")
                     connct.commit()
                     clear_screen()
                     time.sleep(5)
