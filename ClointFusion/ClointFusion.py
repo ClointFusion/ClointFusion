@@ -3923,7 +3923,7 @@ def clear_screen():
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in clear_screen = " + str(ex))
 
-def text_to_speech(audio, show=True, rate=150):
+def text_to_speech(audio, show=True, rate=170):
     """
     Text to Speech using Google's Generic API
     Rate is the speed of speech. Default is 150
@@ -5898,5 +5898,3 @@ for row in data:
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-text_to_speech("Murali, what are you doing my dear")
