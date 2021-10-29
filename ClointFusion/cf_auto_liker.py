@@ -22,6 +22,8 @@ cf.browser.Config.implicit_wait_secs = 30
 try:
     if ln:
         cf.browser_navigate_h(ln)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="ClointFusion India")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -33,6 +35,8 @@ except Exception as ex:
 try:
     if fb:
         cf.browser_navigate_h(fb)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="ClointFusion India")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -44,6 +48,8 @@ except Exception as ex:
 try:
     if tw:
         cf.browser_navigate_h(tw)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -55,6 +61,8 @@ except Exception as ex:
 try:
     if ko:
         cf.browser_navigate_h(ko)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(10)
     cf.browser_mouse_click_h("like") 
@@ -66,6 +74,8 @@ except Exception as ex:
 try:
     if ins:
         cf.browser_navigate_h(ins)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="clointfusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("Like")
@@ -77,6 +87,8 @@ except Exception as ex:
 try:
     if rd:
         cf.browser_navigate_h(rd)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("upvote")
@@ -88,6 +100,8 @@ except Exception as ex:
 try:
     if yt:
         cf.browser_navigate_h(yt)
+        cf.pause_program(2)
+        cf.browser_refresh_page_h()
     cf.browser_wait_until_h(text="ClointFusion")
     cf.pause_program(2)
     cf.browser_mouse_click_h("I like this")
