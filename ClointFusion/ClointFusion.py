@@ -318,9 +318,9 @@ def ON_semi_automatic_mode():
 
 # ---------  Private Functions ---------
 # Function in use, Dont Delete
-def _perform_self_test():
+def _perform_self_test(tour=False):
     try:
-        clointfusion_self_test()
+        clointfusion_self_test(tour)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in Self Test="+str(ex))
@@ -5116,21 +5116,31 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
 
-def clointfusion_self_test():
+def clointfusion_self_test(tour=False):
     global os_name, python_exe_path
     WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
     python_version = str(sys.version_info.major)
     try:
-
-        layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
-                [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
-                [sg.Text("Thanks for improving ClointFusion by continuing with this self-test.",justification='c',text_color='yellow',font='Courier 12')],
-                [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
-                [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
-                [sg.Output(size=(140,20), key='-OUTPUT-')],
-                [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
-                [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
+        if not tour:
+        
+            layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
+                    [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
+                    [sg.Text("Thanks for improving ClointFusion by continuing with this self-test.",justification='c',text_color='yellow',font='Courier 12')],
+                    [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
+                    [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
+                    [sg.Output(size=(140,20), key='-OUTPUT-')],
+                    [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=True, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
+                    [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
+        else:
+            layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
+                    [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
+                    [sg.Text("Thanks for improving ClointFusion by continuing with this self-test.",justification='c',text_color='yellow',font='Courier 12')],
+                    [sg.Text('Its highly recommended to close all open files/folders/browsers before running this self test.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
+                    [sg.Text('This Automated Self Test, takes around 4-5 minutes...Kindly do not move the mouse or type anything.',size=(0, 1),justification='l',text_color='red',font='Courier 12')],
+                    [sg.Output(size=(140,20), key='-OUTPUT-')],
+                    [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=False, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
+                    [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
         
         console_window = window_get_active_window()
         
@@ -5522,7 +5532,7 @@ def cli_cf_py():
 def cli_cf_tour():
     """CLI for the guided tour."""
     
-    _perform_self_test()
+    _perform_self_test(True)
    
 # --------- CLI Commands Ends ---------
 
