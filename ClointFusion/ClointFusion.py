@@ -4708,7 +4708,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print('Started testing Browser operations...')
             text_to_speech("With the pandemic, working from home, as well as everything of our employment and education, has gone entirely online. ", show=False)
             text_to_speech("If we can't automate the web, there's no point in automation. ClointFusion includes 11 browser automation functions.", show=False)
-            message_pop_up("\Browser\n```````````\n1)  browser_activate\n2)  browser_navigate_h\n3)  browser_write_h\n4)  browser_mouse_click_h\n5)  browser_locate_element_h\n6)  browser_wait_until_h\n7)  browser_refresh_page_h\n8)  browser_hit_enter_h\n9)  browser_key_press_h\n10)  browser_mouse_hover_h\n11)  browser_quit_h\n\n", delay=5)
+            message_pop_up("\nBrowser\n```````````\n1)  browser_activate\n2)  browser_navigate_h\n3)  browser_write_h\n4)  browser_mouse_click_h\n5)  browser_locate_element_h\n6)  browser_wait_until_h\n7)  browser_refresh_page_h\n8)  browser_hit_enter_h\n9)  browser_key_press_h\n10)  browser_mouse_hover_h\n11)  browser_quit_h\n\n", delay=5)
             text_to_speech("With these functions, you can do whatever you want, and, however you like, in a web browser.", show=False)
             text_to_speech("Now, let me put these functions to the test.", show=False)
             
@@ -5074,7 +5074,9 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 print("Congratulations - ClointFusion is compatible with your computer " + show_emoji('clap') + show_emoji('clap'))
                 message_pop_up("Congratulations !!!\n\nClointFusion is compatible with your computer settings")
                 print("\n____________________________________________________________\n")
-                text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)     
+                text_to_speech("Self Test is Completed. And i am happy to say, your PC is compatible with ClointFusion", show=False)
+                text_to_speech("An email with this self-test report is being sent to the registered email address.", show=False)
+                
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("ClointFusion Automated Testing Failed "+str(ex))
@@ -5515,7 +5517,13 @@ def cli_cf_py():
     ch_function_3 = random.choice(functions_list)
     
     os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+def cli_cf_tour():
+    """CLI for the guided tour."""
     
+    _perform_self_test()
+   
 # --------- CLI Commands Ends ---------
 
 
