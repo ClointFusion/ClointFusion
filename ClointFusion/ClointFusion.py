@@ -5306,10 +5306,7 @@ def clointfusion_self_test(tour=False):
             event, _ = window.read()
 
             if event == sg.WIN_CLOSED:
-                if tour:
-                    window.close()
-                else:
-                    sys.exit(0)
+                break
             
             if event == 'SSO':
                 selft.sso()
@@ -5367,10 +5364,7 @@ def clointfusion_self_test(tour=False):
                     window['Start'].update(disabled=False)
 
             if event in (sg.WINDOW_CLOSED, 'Close'):
-                if tour:
-                    window.close()
-                else:
-                    sys.exit(0)
+                break
                     
             
 
@@ -5391,6 +5385,11 @@ def clointfusion_self_test(tour=False):
                 if last_updated_on_month == 2 :
                     window.close()
                 elif success:
+                    try:
+                        window.close()
+                    except:
+                        pass
+                    pause_program(5)
                     if os_name == windows_os:
                         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                     else:
@@ -5399,6 +5398,7 @@ def clointfusion_self_test(tour=False):
                 else:
                     sys.exit(1)
             else:
+                window.close()
                 text_to_speech("Thank you very much. I hope you found this tour useful. You are welcome to return at any time. I will gladly give you the tour again.", show=False)
 
         except Exception as ex:
