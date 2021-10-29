@@ -5188,11 +5188,12 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     connct.commit()
                     clear_screen()
                     time.sleep(5)
+                    selft.ast()
                     text_to_speech("Closing the browser now.", show=False)
                     browser.set_driver(driver)
                     browser_quit_h()
                     time.sleep(2)
-                    selft.ast()
+                    
                     SUCCESS = True
                     time.sleep(5)
                 except Exception as ex:
