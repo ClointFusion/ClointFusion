@@ -5293,10 +5293,11 @@ def clointfusion_self_test(tour=False):
                     [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=False, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
                     [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
         
-        console_window = window_get_active_window()
+        
         
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
+            console_window = window_get_active_window()
         else:
             try:
                 window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
