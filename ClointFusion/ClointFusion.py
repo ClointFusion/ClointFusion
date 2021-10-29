@@ -4600,6 +4600,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
 
 # SELF TEST AND TOUR STARTS HERE
     try:
+
 # Keyboard and Mouse Operations
         try: 
             # Description
@@ -4638,6 +4639,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     launch_any_exe_bat_application("mspaint")
                     pause_program(3)
                     key_press("ctrl", "pageup")
+                    if screen_width > 1920 or screen_height > 1080:
+                        key_press("ctrl", "pageup")
                     mouse_move(screen_width/2, screen_height/2)
                     key_press("b")
                     mouse_click()
@@ -4650,10 +4653,10 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     mouse_drag_from_to(screen_width/3+30, screen_height/3+80, screen_width/3+230, screen_height/3+80)
                     key_press("t")
                     mouse_click()
-                    key_write_enter("ClointFusion is awesome, right?")
+                    key_write_enter("ClointFusion is awesome, isn't?")
                     key_press("ctrl", "a")
                     pause_program(3)
-                    text_to_speech("ClointFusion is awesome, right?", show=False)
+                    text_to_speech("ClointFusion is awesome, isn't it?", show=False)
                     key_press("alt", "f4")
                     key_press("right")
                     key_hit_enter()
@@ -4776,7 +4779,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
                     browser_mouse_click_h(element="RPA",double_click=True)
                     text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
-                    text_to_speech("Are you just bored, to copy paste the same syntax twice, thrice...", show=False)
+                    text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
                     text_to_speech("ClointFusion, got you covered.", show=False)
                     browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                     text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
@@ -5242,7 +5245,9 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             else:
                 print("Please click red 'Close' button")
         else:
-            text_to_speech("Hope, you enjoyed our tour. If you want to go again click start, else, click close.", show=False)
+            text_to_speech("I hope you enjoyed our tour and learned something new. If you want to repeat, press the start button. Otherwise, click the close button.", show=False)
+            text_to_speech("I printed out all of the syntax I used on this tour. Feel free to scroll through and take notes.")
+            
         return TEST_CASES_STATUS_MESSAGE, SUCCESS
 
 
@@ -5393,7 +5398,7 @@ def clointfusion_self_test(tour=False):
                 else:
                     sys.exit(1)
             else:
-                text_to_speech("Thank you very much. I hope you found this tour useful. You are welcome to return at any time. I will gladly give you the tour again.")
+                text_to_speech("Thank you very much. I hope you found this tour useful. You are welcome to return at any time. I will gladly give you the tour again.", show=False)
 
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5667,7 +5672,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo("Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  cf_work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)  cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)  cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.")
+    click.echo("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion\n3)   cf_work      - Get your computer usage report\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
@@ -5842,7 +5847,7 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print("Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  cf_work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)  cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)  cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.")
+    print("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion\n3)   cf_work      - Get your computer usage report\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
 
 # --------- TEST FOR CLI Ends ---------
 
