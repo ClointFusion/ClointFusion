@@ -22,13 +22,13 @@ from threading import Timer
 import re
 import json
 import pyinspect as pi
-from rich import pretty, text
+from rich import pretty
 from pathlib import Path
 from datetime import timedelta
 import logging
 import tempfile
 import warnings
-from pywebio.output import clear, put_text
+from pywebio.output import put_text
 import datetime
 import PySimpleGUI as sg
 import openpyxl as op
