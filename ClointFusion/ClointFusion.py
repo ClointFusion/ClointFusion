@@ -3790,14 +3790,14 @@ def ocr_now(img_path=""):
 def find(function_partial_name=""):
     # Find and inspect python functions
     try:
-        if function_partial_name:
+        # if function_partial_name:
 
             # response = requests.post(find_api_url,data={'partial_name':function_partial_name})
             # print(response.text)
-            import ClointFusion as cf
-            msg = pi.search(cf, name=function_partial_name)
-        else:
-            print("Please pass partial name of the function. Ex: sort")
+            # import ClointFusion as cf
+            # msg = pi.search(cf, name=function_partial_name)
+        print("Function in development.")
+        
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in find="+str(ex))
