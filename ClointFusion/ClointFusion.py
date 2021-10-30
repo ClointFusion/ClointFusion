@@ -1689,6 +1689,8 @@ def browser_locate_element_h(selector="", get_text=False, multiple_elements=Fals
             if get_text:
                 return browser.find_all(browser.S(selector).web_element.text)
             return browser.find_all(browser.S(selector))
+    except LookupError:
+        print("Unable to find the element.")
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_locate_element_h = " + str(ex))
