@@ -22,13 +22,13 @@ from threading import Timer
 import re
 import json
 import pyinspect as pi
-from rich import pretty, text
+from rich import pretty
 from pathlib import Path
 from datetime import timedelta
 import logging
 import tempfile
 import warnings
-from pywebio.output import clear, put_text
+from pywebio.output import put_text
 import datetime
 import PySimpleGUI as sg
 import openpyxl as op
@@ -332,7 +332,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.0.10)"
+    version = "(Version: 1.1.0)"
 
     hour = datetime.datetime.now().hour
     
@@ -3923,9 +3923,11 @@ def clear_screen():
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in clear_screen = " + str(ex))
 
-def text_to_speech(audio, show=True):
+def text_to_speech(audio, show=True, rate=170):
     """
     Text to Speech using Google's Generic API
+    Rate is the speed of speech. Default is 150
+    Actual default : 200
     """
     global engine
     if type(audio) is list:
@@ -3934,7 +3936,7 @@ def text_to_speech(audio, show=True):
     else:
         if show:
             print(str(audio))
-
+    engine.setProperty('rate', rate)
     engine.say(audio)   
     engine.runAndWait()
 
@@ -4527,7 +4529,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             try:
                 driver = selft.gf(os_hn_ip, time_taken, file_contents)
 
-                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
+                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'True' where ID = 1")
                 connct.commit()
                 clear_screen()
                 time.sleep(5)
@@ -4599,7 +4601,9 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
     enable_semi_automatic_mode = True
 
 # SELF TEST AND TOUR STARTS HERE
+    tour_comp = False
     try:
+
 # Keyboard and Mouse Operations
         try: 
             # Description
@@ -4638,6 +4642,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     launch_any_exe_bat_application("mspaint")
                     pause_program(3)
                     key_press("ctrl", "pageup")
+                    if screen_width > 1920 or screen_height > 1080:
+                        key_press("ctrl", "pageup")
                     mouse_move(screen_width/2, screen_height/2)
                     key_press("b")
                     mouse_click()
@@ -4650,10 +4656,10 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     mouse_drag_from_to(screen_width/3+30, screen_height/3+80, screen_width/3+230, screen_height/3+80)
                     key_press("t")
                     mouse_click()
-                    key_write_enter("ClointFusion is awesome, right?")
+                    key_write_enter("ClointFusion is awesome, isn't?")
                     key_press("ctrl", "a")
                     pause_program(3)
-                    text_to_speech("ClointFusion is awesome, right?", show=False)
+                    text_to_speech("ClointFusion is awesome, isn't it?", show=False)
                     key_press("alt", "f4")
                     key_press("right")
                     key_hit_enter()
@@ -4776,7 +4782,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
                     browser_mouse_click_h(element="RPA",double_click=True)
                     text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
-                    text_to_speech("Are you just bored, to copy paste the same syntax twice, thrice...", show=False)
+                    text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
                     text_to_speech("ClointFusion, got you covered.", show=False)
                     browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                     text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
@@ -5181,15 +5187,16 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
                 try:
                     driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                    cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'False' where ID = 1")
+                    cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'True' where ID = 1")
                     connct.commit()
                     clear_screen()
                     time.sleep(5)
+                    selft.ast()
                     text_to_speech("Closing the browser now.", show=False)
                     browser.set_driver(driver)
                     browser_quit_h()
                     time.sleep(2)
-                    selft.ast()
+                    
                     SUCCESS = True
                     time.sleep(5)
                 except Exception as ex:
@@ -5210,6 +5217,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 print("ClointFusion Automated Testing Failed "+str(ex))
                 logging.info("ClointFusion Automated Testing Failed "+str(ex))
                 TEST_CASES_STATUS_MESSAGE  += "ClointFusion Automated Testing Failed "+str(ex) 
+        else:
+            tour_comp = True
                 
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5241,9 +5250,17 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     print("Please click red 'Close' button")
             else:
                 print("Please click red 'Close' button")
+            return TEST_CASES_STATUS_MESSAGE, SUCCESS
         else:
-            text_to_speech("Hope, you enjoyed our tour. If you want to go again click start, else, click close.", show=False)
-        return TEST_CASES_STATUS_MESSAGE, SUCCESS
+            text_to_speech("I hope you enjoyed our tour and learned something new. If you want to repeat, press the start button. Otherwise, click the close button.", show=False)
+            print("\n____________________________________________________________\n")
+            text_to_speech("I printed out all of the syntax I used on this tour. Feel free to scroll through and take notes.")
+            print("\n____________________________________________________________\n")
+            text_to_speech("There are plenty other functions to explore. For example, we have a large selection of, Excel functions as well as, some of the top utility functions. We hope that, this tour has sparked your interest, in learning more about automation and ClointFusion.")
+            print("\n____________________________________________________________\n")
+            return tour_comp, tour_comp
+            
+        
 
 
 def clointfusion_self_test(tour=False):
@@ -5252,7 +5269,10 @@ def clointfusion_self_test(tour=False):
     start_time = time.monotonic()
     python_version = str(sys.version_info.major)
     last_updated_on_month = ""
+    tour_comp = False
     try:
+    
+# Layout and data
         if not tour:
         
             layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
@@ -5273,17 +5293,21 @@ def clointfusion_self_test(tour=False):
                     [sg.Button('Start',bind_return_key=True,button_color=('white','green'),font='Courier 14',disabled=False, tooltip='Sign-In with Gmail to Enable this button'), sg.Button('Close',button_color=('white','firebrick'),font='Courier 14', tooltip='Close this window & exit')],
                     [sg.Button('Skip for Now',button_color=('white', 'orange'),font='Courier 14',disabled= False, tooltip=  'Click this button to skip Self-Test')]]
         
-        console_window = window_get_active_window()
+        
         
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
+            console_window = window_get_active_window()
         else:
             try:
                 window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
+                console_window = ""
             except:
                 WHILE_TRUE = False
         instructions = False
         name_st, _, _, _ = selft.get_details()
+
+# Application Starts
         while WHILE_TRUE:
             if not instructions:
                 if not tour:
@@ -5299,12 +5323,7 @@ def clointfusion_self_test(tour=False):
             
             event, _ = window.read()
 
-            if event == sg.WIN_CLOSED:
-                if tour:
-                    window.close()
-                else:
-                    sys.exit(0)
-            
+# SSO    
             if event == 'SSO':
                 selft.sso()
                 window['Start'].update(disabled=False)
@@ -5313,6 +5332,7 @@ def clointfusion_self_test(tour=False):
                 if os_name  == linux_os:
                     clear_screen()
 
+# Skip
             if event == 'Skip for Now':
                 try:
                     text_to_speech("You have chosen to skip ClointFusion's Self-Test. Some of the functions may not work properly !", show=False)     
@@ -5324,6 +5344,7 @@ def clointfusion_self_test(tour=False):
                 last_updated_on_month = 2
                 break
 
+# Start
             if event == 'Start':
                 window['-OUTPUT-'].update('')
                 window['Start'].update(disabled=True)
@@ -5332,15 +5353,13 @@ def clointfusion_self_test(tour=False):
                 _folder_write_text_file(os.path.join(clointfusion_directory,"Config_Files",'Running_ClointFusion_Self_Tests.txt'),str(True))
                 _init_cf_quick_test_log_file(temp_current_working_dir)
                 
-                
                 if not tour:
                     print("Starting ClointFusion's Automated Self Testing Module")
                     print('This may take several minutes to complete...')
                     print('During this test, some excel file, notepad, browser etc may be opened & closed automatically')
                     print('Please sitback & relax while all the test-cases are run...')
                     print()
-                    text_to_speech(f"Thank you, {name_st}, for starting the self-test, and helping to improve ClointFusion.", show=False)    
-                    
+                    text_to_speech(f"Thank you, {name_st}, for starting the self-test, and helping to improve ClointFusion.", show=False)
                     status_msg, success = clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window, tour)
 
                     if str(status_msg).strip() == "" and success:
@@ -5356,18 +5375,18 @@ def clointfusion_self_test(tour=False):
                     text_to_speech("Welcome to ClointFusion's Automated Self Tour.")
                     text_to_speech('Please sitback & relax while i explain you the clointfusion functions.')
                     print()
-                    clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window, tour)
+                    tour_comp, _ = clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window, tour)
                     window['Close'].update(disabled=False)
                     window['Start'].update(disabled=False)
 
-            if event in (sg.WINDOW_CLOSED, 'Close'):
-                if tour:
-                    window.close()
-                else:
-                    sys.exit(0)
-                    
-            
+# Close
+            if event in (sg.WINDOW_CLOSED, 'Close', sg.WIN_CLOSED):
+                if tour and instructions and not tour_comp:
+                    text_to_speech("Please, let us know, if there is anything further we can do, to improve. Please contact us at, clointfusion@cloint.com, if you have any questions.")
+                    pause_program(10)
+                break
 
+# Exception
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         try:
@@ -5378,13 +5397,19 @@ def clointfusion_self_test(tour=False):
         exc_type, exc_value, exc_tb = sys.exc_info()
         print(traceback.format_exception(exc_type, exc_value, exc_tb,limit=None, chain=True))
         _rerun_clointfusion_first_run(str(ex))
-    
+
+# Finally 
     finally:
         try:
             if not tour:
                 if last_updated_on_month == 2 :
                     window.close()
                 elif success:
+                    try:
+                        window.close()
+                    except:
+                        pass
+                    pause_program(5)
                     if os_name == windows_os:
                         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                     else:
@@ -5393,7 +5418,9 @@ def clointfusion_self_test(tour=False):
                 else:
                     sys.exit(1)
             else:
-                text_to_speech("Thank you very much. I hope you found this tour useful. You are welcome to return at any time. I will gladly give you the tour again.")
+                if tour_comp == True:
+                    text_to_speech("Thank you very much. I hope you found this tour useful. You are welcome to return at any time. I will gladly give you the tour again.", show=False)
+                    window.close()
 
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5667,7 +5694,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo("Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  cf_work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)  cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)  cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.")
+    click.echo("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion\n3)   cf_work      - Get your computer usage report\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
@@ -5842,7 +5869,7 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print("Below commands are available for TERMINAL use :\n\n1)  dost         - Build RPA Bots without Code.\n2)  bol          - Voice based assistant powered by ClointFusion\n3)  cf_work         - Get your computer usage report\n4)  cf_tray      - Launch ClointFusion tray icon.\n5)  cf_st        - Check your internet speed.\n6)  cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)  cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)  cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)  cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.")
+    print("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion\n3)   cf_work      - Get your computer usage report\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
 
 # --------- TEST FOR CLI Ends ---------
 

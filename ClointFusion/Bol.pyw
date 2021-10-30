@@ -543,21 +543,16 @@ def bol_main():
                 error_try_later()
 
 
-# elevate(show_console=False)
+
 try:
-    from elevate import elevate
     config_folder_path = Path(os.path.join(cf.clointfusion_directory, "Config_Files")) 
     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
     
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
-except: #Ask ADMIN Rights if REQUIRED
-    if cf.os_name == "windows":
-        elevate(show_console=False)
-    else:
-        elevate(graphical=False)
-    connct = sqlite3.connect(r'{}\BRE_WHM.db'.format(str(config_folder_path)),check_same_thread=False)
-    cursr = connct.cursor()
+except Exception as ex: #Ask ADMIN Rights if REQUIRED
+    cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
+    print("Error in connecting to database = " + str(ex))
 
 
 data = cursr.execute("SELECT bol from CF_VALUES where ID = 1")
