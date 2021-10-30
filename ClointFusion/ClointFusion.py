@@ -3939,7 +3939,8 @@ def text_to_speech(audio, show=True, rate=170):
     else:
         if show:
             print(str(audio))
-    engine.setProperty('rate', rate)
+    if os_name == windows_os:
+        engine.setProperty('rate', rate)
     engine.say(audio)   
     engine.runAndWait()
 
