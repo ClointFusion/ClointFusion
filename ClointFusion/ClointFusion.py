@@ -3797,7 +3797,7 @@ def find(function_partial_name=""):
     try:
         if function_partial_name:
             import ClointFusion.cce as cf
-            msg = pi.search(cf, name=function_partial_name)
+            pi.search(cf, name=function_partial_name)
         
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
