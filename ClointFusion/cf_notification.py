@@ -77,10 +77,22 @@ def show_toast_notification_if_new_msg_is_available():
         except Exception as ex:
             print("Error in show_toast_notification_if_new_msg_is_available" + str(ex))
 
+# # # # Actual Values # # # #
 # schedule.every(1).to(6).hours.do(show_toast_notification_if_new_msg_is_available)
 # Server Broadcast
 # while True:
 #     schedule.run_pending()
 #     time.sleep(60) #Check Every minute
+
+# # # # For test uncomment below # # # #
+# schedule.every(5).to(15).seconds.do(show_toast_notification_if_new_msg_is_available)
+# # Server Broadcast
+# i = 1
+# while True:
+    
+#     print("run", i)
+#     i += 1
+#     schedule.run_pending()
+#     time.sleep(2) #Check Every minute
 
 show_toast_notification_if_new_msg_is_available()

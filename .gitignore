@@ -166,3 +166,5 @@ ClointFusion/setup_common.py
 ClointFusion/setup_loader.py
 ClointFusion/selft.c
 ClointFusion/loader.c
+ClointFusion/__pycache__/cf_notification.cpython-39.pyc
+*.pyc
