@@ -4741,101 +4741,170 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
             # Actions
             if tour:
-                print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.browser_activate('https://google.com')\ncf.browser_write_h('clointfusion hackathon')\ncf.pause_program(3)\ncf.browser_hit_enter_h()\ncf.browser_mouse_click_h("Python based RPA Development Platform")\ncf.folder_create(os.path.join(test_folder_path,'Screen_scrape'))\ncf.scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")\ncf.os.startfile(os.path.join(test_folder_path,'Screen_scrape'))\ncf.os.startfil(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))\ncf.pg.scroll(10)\ncf.pause_program(3)\ncf.pg.scroll(10)\ncf.window_close_windows('Screen_scrape')\ncf.window_close_windows('notepad-contents.txt')\ncf.window_activate_and_maximize_windows("Python based RPA Development")\ncf.browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")\ncf.browser.scroll_down(1000)\ncf.browser_navigate_h('https://pypi.org')\ncf.browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")\ncf.browser_hit_enter_h()\ncf.pause_program(5)\ncf.browser_navigate_h('https://pypi.org/project/ClointFusion/')\ncf.browser.scroll_down(1000)\ncf.browser_mouse_click_h(element="RPA",double_click=True)\ncf.browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))\ncf.pause_program(10)\ncf.browser_quit_h()""")
+                print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.browser_activate('https://google.com')\ncf.browser_write_h('clointfusion hackathon')\ncf.pause_program(3)\ncf.browser_hit_enter_h()\ncf.browser_mouse_click_h("Python based RPA Development Platform")\ncf.folder_create(os.path.join(test_folder_path,'Screen_scrape'))\ncf.scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")\ncf.os.startfile(os.path.join(test_folder_path,'Screen_scrape'))\ncf.os.startfil(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))\ncf.pg.scroll(10)\ncf.pause_program(3)\ncf.pg.scroll(10)\ncf.window_close_windows('Screen_scrape')\ncf.window_close_windows('notepad-contents.txt')\ncf.window_activate_and_maximize_windows("Python based RPA Development")\ncf.browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")\ncf.browser.scroll_down(1000)\ncf.browser_navigate_h('https://pypi.org')\ncf.browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")\ncf.browser_hit_enter_h()\ncf.pause_program(5)\ncf.browser_navigate_h('https://pypi.org/project/ClointFusion/')\ncf.browser.scroll_down(2000)\ncf.browser_mouse_click_h(element="RPA",double_click=True)\ncf.browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))\ncf.pause_program(10)\ncf.browser_quit_h()""")
             
-            if not tour:
-                if browser_activate('https://google.com'):
-                    text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
-                    browser_write_h('clointfusion hackathon')
-                    pause_program(3)
-                    browser_hit_enter_h()
-                    browser_mouse_click_h("Python based RPA Development Platform")
-                    
-                    text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
-                    folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-                    scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
-                    text_to_speech("Its done already,", show=False)
-                    
-                    os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
-                    text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
-                    os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
-                    pg.scroll(10)
-                    pause_program(3)
-                    pg.scroll(10)
-                    
-                    text_to_speech("Ok, Lets get back to the web.", show=False)
-                    window_close_windows('Screen_scrape')
-                    window_close_windows('notepad-contents.txt')
-                    
-                    window_activate_and_maximize_windows("Python based RPA Development")
-                    text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
-                    browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
-                    text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
-                    browser.scroll_down(1000)
-                    text_to_speech("Let me, take you to our pypi page.", show=False)
-                    browser_navigate_h('https://pypi.org')
-                    browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
-                    browser_hit_enter_h()
-                    pause_program(3)
-                    browser_navigate_h('https://pypi.org/project/ClointFusion/')
-                    browser.scroll_down(1000)
-                    text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                    browser_mouse_click_h(element="RPA",double_click=True)
-                    text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
-                    text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
-                    text_to_speech("ClointFusion, got you covered.", show=False)
-                    browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
-                    text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
-                    pause_program(10)
-                    text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com", show=False)
-                    browser_quit_h()
-                    text_to_speech("Is'nt interesting so far. But we still have so much, sit back and relax.", show=False)
-                    print()
-                    print('Finished testing Browser operations...'+show_emoji())
-                    print("\n____________________________________________________________\n")
-                    logging.info("Tested Browser's Helium functions successfully")
+            if not tour: # Self test for browser
+                if os_name == windows_os:
+                    if browser_activate('https://google.com'):
+                        text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
+                        browser_write_h('clointfusion hackathon')
+                        pause_program(3)
+                        browser_hit_enter_h()
+                        browser_mouse_click_h("Python based RPA Development Platform")
+                        
+                        text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
+                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
+                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
+                        text_to_speech("Its done already,", show=False)
+                        
+                        os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
+                        text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
+                        os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
+                        pg.scroll(10)
+                        pause_program(3)
+                        pg.scroll(10)
+                        
+                        text_to_speech("Ok, Lets get back to the web.", show=False)
+                        window_close_windows('Screen_scrape')
+                        window_close_windows('notepad-contents.txt')
+                        
+                        window_activate_and_maximize_windows("Python based RPA Development")
+                        text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
+                        browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
+                        text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
+                        browser.scroll_down(1000)
+                        text_to_speech("Let me, take you to our pypi page.", show=False)
+                        browser_navigate_h('https://pypi.org')
+                        browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
+                        browser_hit_enter_h()
+                        pause_program(3)
+                        browser_navigate_h('https://pypi.org/project/ClointFusion/')
+                        browser_mouse_click_h(element="RPA",double_click=True)
+                        browser.scroll_down(2000)
+                        text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
+                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
+                        text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
+                        text_to_speech("ClointFusion, got you covered.", show=False)
+                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
+                        pause_program(10)
+                        text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com", show=False)
+                        browser_quit_h()
+                        text_to_speech("Is'nt interesting so far. But we still have so much, sit back and relax.", show=False)
+                    else:
+                        TEST_CASES_STATUS_MESSAGE  += "Helium package's Compatible Chrome is missing"
                 else:
-                    TEST_CASES_STATUS_MESSAGE  += "Helium package's Compatible Chrome is missing"
-            else:
-                if browser_activate('https://google.com'):
-                    browser_write_h('clointfusion hackathon')
-                    pause_program(3)
-                    browser_hit_enter_h()
-                    browser_mouse_click_h("Python based RPA Development Platform")
-                    text_to_speech("I will do the screen scraping now.", show=False)
-                    folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-                    scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
-                    os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
-                    text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
-                    os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
-                    pause_program(3)
-                    text_to_speech("Ok, Lets get back to the web.", show=False)
-                    window_close_windows('Screen_scrape')
-                    window_close_windows('notepad-contents.txt')
-                    window_activate_and_maximize_windows("Python based RPA Development")
-                    browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
-                    browser.scroll_down(1000)
-                    browser_navigate_h('https://pypi.org')
-                    browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
-                    browser_hit_enter_h()
-                    pause_program(3)
-                    browser_navigate_h('https://pypi.org/project/ClointFusion/')
-                    browser.scroll_down(1000)
-                    text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                    browser_mouse_click_h(element="RPA",double_click=True)
-                    browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
-                    text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.")
-                    pause_program(10)
-                    text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com")
-                    browser_quit_h()
-                    print("\n____________________________________________________________\n")
-                    text_to_speech("Let's go on to the next section.")
-                    print("\n____________________________________________________________\n")
-                    
+                    if browser_activate('https://google.com'):
+                        text_to_speech("Thanks to internet, we are indexed, on all search engines, just type clointfusion hackathon", show=False)
+                        browser_write_h('clointfusion hackathon')
+                        pause_program(3)
+                        browser_hit_enter_h()
+                        browser_mouse_click_h("Python based RPA Development Platform")
+                        text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
+                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
+                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
+                        
+                        text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
+                        browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
+                        text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
+                        browser.scroll_down(1000)
+                        text_to_speech("Let me, take you to our pypi page.", show=False)
+                        browser_navigate_h('https://pypi.org')
+                        browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
+                        browser_hit_enter_h()
+                        pause_program(3)
+                        browser_navigate_h('https://pypi.org/project/ClointFusion/')
+                        browser_mouse_click_h(element="RPA",double_click=True)
+                        browser.scroll_down(2000)
+                        text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
+                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
+                        text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
+                        text_to_speech("ClointFusion, got you covered.", show=False)
+                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
+                        pause_program(10)
+                        text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com", show=False)
+                        browser_quit_h()
+                        text_to_speech("Is'nt interesting so far. But we still have so much, sit back and relax.", show=False)
+                    else:
+                        TEST_CASES_STATUS_MESSAGE  += "Helium package's Compatible Chrome is missing"
+                print()
+                print('Finished testing Browser operations...'+show_emoji())
+                print("\n____________________________________________________________\n")
+                logging.info("Tested Browser's Helium functions successfully")
+            else: # Guided Tour
+                if os_name == windows_os:
+                    if browser_activate('https://google.com'):
+                        browser_write_h('clointfusion hackathon')
+                        pause_program(3)
+                        browser_hit_enter_h()
+                        browser_mouse_click_h("Python based RPA Development Platform")
+                        text_to_speech("I will do the screen scraping now.", show=False)
+                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
+                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
+                        os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
+                        text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
+                        os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
+                        pause_program(3)
+                        text_to_speech("Ok, Lets get back to the web.", show=False)
+                        window_close_windows('Screen_scrape')
+                        window_close_windows('notepad-contents.txt')
+                        window_activate_and_maximize_windows("Python based RPA Development")
+                        browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
+                        browser.scroll_down(1000)
+                        browser_navigate_h('https://pypi.org')
+                        browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
+                        browser_hit_enter_h()
+                        pause_program(3)
+                        browser_navigate_h('https://pypi.org/project/ClointFusion/')
+                        browser_mouse_click_h(element="RPA",double_click=True)
+                        browser.scroll_down(2000)
+                        text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
+                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.")
+                        pause_program(10)
+                        text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com")
+                        browser_quit_h()
+                        print("\n____________________________________________________________\n")
+                        text_to_speech("Let's go on to the next section.")
+                        print("\n____________________________________________________________\n")
+                    else:
+                        text_to_speech("Sorry, experiencing some trouble.")
+                        text_to_speech("Try, again later.")
+                        pass
                 else:
-                    text_to_speech("Sorry, experiencing some trouble.")
-                    text_to_speech("Try, again later.")
-                    pass
+                    if browser_activate('https://google.com'):
+                        browser_write_h('clointfusion hackathon')
+                        pause_program(3)
+                        browser_hit_enter_h()
+                        browser_mouse_click_h("Python based RPA Development Platform")
+                        text_to_speech("I will do the screen scraping now.", show=False)
+                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
+                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
+                        
+                        browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
+                        browser.scroll_down(1000)
+                        browser_navigate_h('https://pypi.org')
+                        browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")
+                        browser_hit_enter_h()
+                        pause_program(3)
+                        browser_navigate_h('https://pypi.org/project/ClointFusion/')
+                        browser_mouse_click_h(element="RPA",double_click=True)
+                        browser.scroll_down(2000)
+                        text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
+                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.")
+                        pause_program(10)
+                        text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com")
+                        browser_quit_h()
+                        print("\n____________________________________________________________\n")
+                        text_to_speech("Let's go on to the next section.")
+                        print("\n____________________________________________________________\n")
+                    else:
+                        text_to_speech("Sorry, experiencing some trouble.")
+                        text_to_speech("Try, again later.")
+                        pass
+      
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("ClointFusion Automated Testing Failed for Browser Functions"+str(ex))
@@ -4950,17 +5019,27 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                
             if tour:
                 print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.folder_create(Path(cf.os.path.join(test_folder_path,"My Test Folder")))\ncf.os.startfile(cf.os.path.join(test_folder_path))\ncf.pause_program(1)\ncf.folder_create_text_file(test_folder_path, "My Text File")\ncf.pause_program(1)\ncf.excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')\ncf.pause_program(1)\ncf.excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-1')\ncf.pause_program(1)\ncf.excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-2')\ncf.excel_create_excel_file_in_given_folder(cf.os.path.join(test_folder_path,"Delete Excel"),'Delete-Excel-1')\ncf.pause_program(2)\ncf.excel_create_excel_file_in_given_folder(cf.os.path.join(test_folder_path,"Delete Excel"),'Delete-Excel-2')\ncf.pause_program(2)\ncf.folder_delete_all_files(cf.os.path.join(test_folder_path,'Delete Excel'), "xlsx")\ncf.folder_create(Path(test_folder_path / 'Split_Merge'))\ncf.pause_program(2)\ncf.print(folder_get_all_filenames_as_list(test_folder_path))\ncf.pause_program(2)\ncf.print(folder_get_all_filenames_as_list(test_folder_path, extension="xlsx"))\n""")
-            folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
-            os.startfile(os.path.join(test_folder_path))
-            text_to_speech("Watch this folder carefully.., i will create random folders, text files, excel files.", show=False)
-            pause_program(1)
-            folder_create_text_file(test_folder_path, "My Text File")
-            pause_program(1)
-            excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
-            pause_program(1)
-            excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-1')
-            pause_program(1)
-            excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-2')
+            if os_name == windows_os:
+                folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
+                os.startfile(os.path.join(test_folder_path))
+                text_to_speech("Watch this folder carefully.., i will create random folders, text files, excel files.", show=False)
+                pause_program(1)
+                folder_create_text_file(test_folder_path, "My Text File")
+                pause_program(1)
+                excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
+                pause_program(1)
+                excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-1')
+                pause_program(1)
+                excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-2')
+            else:
+                folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
+                folder_create_text_file(test_folder_path, "My Text File")
+                pause_program(1)
+                excel_create_excel_file_in_given_folder(test_folder_path,'Quick_Self_Test_Excel')
+                pause_program(1)
+                excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-1')
+                pause_program(1)
+                excel_create_excel_file_in_given_folder(test_folder_path,'My Excel-2')
 
             try:
                 excel_create_excel_file_in_given_folder(os.path.join(test_folder_path,"Delete Excel"),'Delete-Excel-1')
@@ -5051,10 +5130,11 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=3,setText="3")
                 excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=4,setText="5")
                 excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
-                os.startfile(Path(test_folder_path,"My VLookUp Excel.xlsx"))
-                pause_program(5)
-                window_close_windows("My VLookUp Excel")
-                
+                if os_name == windows_os:
+                    os.startfile(Path(test_folder_path,"My VLookUp Excel.xlsx"))
+                    pause_program(5)
+                    window_close_windows("My VLookUp Excel")
+
                 print('Excel operations tested successfully. '+show_emoji())
                 text_to_speech("Excel operations tested successfully.", show=False)
                 print("\n____________________________________________________________\n")
@@ -5133,18 +5213,24 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             #Test work
             cli_cf_test()
             
-            text_to_speech("Want to quickly test your internet speed, type CF underscore ST.", show=False)
-            print("\n_________________\n")
-            print("Type 'cf_st' in terminal for this function")
-            text_to_speech("Internet speed is being tested in the terminal.", show=False)
-            
-            # Test Speed Test
-            window_activate_and_maximize_windows(console_window_name)
-            cli_speed_test_test()
-            window_minimize_windows(console_window_name)
-            window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
-            print("\n_________________\n")
-            text_to_speech("I am back !!!", show=False)
+            try:
+                text_to_speech("Want to quickly test your internet speed, type CF underscore ST.", show=False)
+                print("\n_________________\n")
+                print("Type 'cf_st' in terminal for this function")
+                
+                # Test Speed Test
+                if os_name == windows_os:
+                    text_to_speech("Internet speed is being tested in the terminal. Let me show you..", show=False)
+                    window_activate_and_maximize_windows(console_window_name)
+                    cli_speed_test_test()
+                    window_minimize_windows(console_window_name)
+                    window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
+                    print("\n_________________\n")
+                    text_to_speech("I am back !!!", show=False)
+                else:
+                    cli_speed_test_test()
+            except: # Dont want to cancel self-test if speed test fails
+                pass
             
             text_to_speech("Want to see, how much time you spent, on what, and which application. type cf_work in terminal. But First, let me tell you this, your data is stored locally and only belongs to you.", show=False)
             print("\n_________________\n")
@@ -5270,6 +5356,7 @@ def clointfusion_self_test(tour=False):
     python_version = str(sys.version_info.major)
     last_updated_on_month = ""
     tour_comp = False
+    status_msg, success = "", ""
     try:
     
 # Layout and data
