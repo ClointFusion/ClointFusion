@@ -172,8 +172,6 @@ ai_processes = []
 helium_service_launched=False
 
 
-find_api_url = "https://api.clointfusion.com/find"
-
 # 3. All function definitions
 
 # ---------  Methods ---------
