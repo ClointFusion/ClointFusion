@@ -1537,6 +1537,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
                 options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
             elif os_name == mac_os:
                 options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
+            elif os_name == linux_os:
+                options.add_argument("user-data-dir=/home/{}/.config/google-chrome/".format(os.getlogin()))
+                
             options.add_argument(f"profile-directory={profile}")
         #  Set the download path
         if files_download_path != '':
@@ -4800,10 +4803,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pause_program(3)
                         browser_hit_enter_h()
                         browser_mouse_click_h("Python based RPA Development Platform")
-                        text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
-                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
-                        
+                        text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)                  
                         text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
                         text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
@@ -5058,7 +5058,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print(folder_get_all_filenames_as_list(test_folder_path))
             pause_program(2)
             print(folder_get_all_filenames_as_list(test_folder_path, extension="xlsx"))
-            window_close_windows("ClointFusion_Self_Tests")
+            if os_name == windows_os:
+                window_close_windows("ClointFusion_Self_Tests")
             if not tour:
                 text_to_speech("Folder operations test is successful", show=False)
                 print("\n")
