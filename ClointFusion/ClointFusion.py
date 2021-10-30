@@ -172,8 +172,6 @@ ai_processes = []
 helium_service_launched=False
 
 
-find_api_url = "https://api.clointfusion.com/find"
-
 # 3. All function definitions
 
 # ---------  Methods ---------
@@ -3792,14 +3790,14 @@ def ocr_now(img_path=""):
 def find(function_partial_name=""):
     # Find and inspect python functions
     try:
-        if function_partial_name:
+        # if function_partial_name:
 
             # response = requests.post(find_api_url,data={'partial_name':function_partial_name})
             # print(response.text)
-            import ClointFusion as cf
-            msg = pi.search(cf, name=function_partial_name)
-        else:
-            print("Please pass partial name of the function. Ex: sort")
+            # import ClointFusion as cf
+            # msg = pi.search(cf, name=function_partial_name)
+        print("Function in development.")
+        
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in find="+str(ex))
@@ -5694,7 +5692,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion\n3)   cf_work      - Get your computer usage report\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
+    click.echo("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion.\n3)   cf_work      - Get your computer usage report.\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message.\n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Social Media.\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
@@ -5869,7 +5867,7 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion\n3)   cf_work      - Get your computer usage report\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message \n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Socail Media\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
+    print("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion.\n3)   cf_work      - Get your computer usage report.\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message.\n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Social Media.\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
 
 # --------- TEST FOR CLI Ends ---------
 

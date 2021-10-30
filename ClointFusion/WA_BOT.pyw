@@ -81,7 +81,7 @@ def shoot_msg(excel_path):
         
         send_wa_in_loop(excel_path)
     except Exception as ex:
-        cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
+        # cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
         print("Error while shoot_msg "+ str(ex))
 
 if len(cf.sys.argv) > 1:
