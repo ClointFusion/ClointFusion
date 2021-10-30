@@ -5,38 +5,44 @@
 <img src="https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/CCEW.PNG">
 
 
-# Description
-Cloint India Pvt. Ltd - Python functions for Automation (RPA)
+## Description
 
-# What is ClointFusion ?
-ClointFusion is a company registered at Vadodara, Gujarat, India. ClointFusion is our home-grown Python based RPA platform for Software BOT development. We are working towards Common Man's RPA using AI.
+Cloint India Pvt. Ltd - Python functions for Robotic Process Automation shortly `RPA`.
 
-![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) ![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) ![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status)             ![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) ![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) ![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) ![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) ![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
+# What is ClointFusion?
 
-![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) ![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
+ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Python-based RPA platform for developing Software BOTs. Using AI, we're working on Common Man's RPA.
 
-<br>
+#### Check out Project Status
 
-## Build BOT using DOST: <a href="http://dost.clointfusion.com" target="_blank">Blockly based BOT Builder</a>
+![PyPI](https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version) 
+![PyPI - License](https://img.shields.io/pypi/l/ClointFusion?label=License) 
+![PyPI - Status](https://img.shields.io/pypi/status/ClointFusion?label=Release%20Status) 
+![ClointFusion](https://snyk.io/advisor/python/ClointFusion/badge.svg) 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/ClointFusion?label=PyPI%20Downloads) 
+![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/ClointFusion) 
+![PyPI - Format](https://img.shields.io/pypi/format/ClointFusion?label=PyPI%20Format) 
+![GitHub contributors](https://img.shields.io/github/contributors/ClointFusion/ClointFusion?label=Contributors) 
+![GitHub last commit](https://img.shields.io/github/last-commit/ClointFusion/ClointFusion?label=Last%20Commit) 
 
-<br>
+![GitHub Repo stars](https://img.shields.io/github/stars/ClointFusion/ClointFusion?label=Stars&style=social) 
+![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion) 
+![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social) 
+![Twitter Follow](https://img.shields.io/twitter/follow/ClointFusion?style=social)
 
-## Test Drive ClointFusion on Google Colabs: <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab\"/></a>
+## Release Notes
 
-<br>
+- Click here for <a href="https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt" target="_blank"> Release Notes</a>
 
-> Click here for <a href="https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt" target="_blank"> Release Notes</a>
+---
 
-<br>
-
-# Installation on your local computer
+# Installation
 
 ## ClointFusion is now supported in Windows / Ubuntu / macOS !
 
 1. Please install Python 3.9.7 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.7 64 Bit</a>. Windows users may refer to these steps | <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
 
-2. It is recommended to run ClointFusion in a Virtual Environment.
-Please refer these steps to create one, as per your OS: <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment" target="_blank">Creating a virtual environment in Windows / Mac / Ubuntu</a>
+2. It is recommended to run ClointFusion in a Virtual Environment. Please refer these steps to create one, as per your OS: <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment" target="_blank">Creating a virtual environment in Windows / Mac / Ubuntu</a>
 
 3. Install ClointFusion by executing this package in command promt (with Admin rights): 
 
@@ -56,23 +62,92 @@ import ClointFusion as cf
 sudo apt-get install python3-tk python3-dev
 ```
 
-# Voice Guided Tour of ClointFusion's Functions:
+## The Voice Guided Tour of ClointFusion Functions | ClointFusion Automated Self-Test
 
-While importing / updating to new version of ClointFusion, you would be prompted with `ClointFusion Automated Self-Test`, which demonstrates all the 100 + functions running live on your computer, simultaneously checking the compatibility of ClointFusion with your PC's settings & configurations. On successful completion you'll recieve an email with self-test report.
+When you import or update to a new version of ClointFusion, you'll be prompted with the `ClointFusion Automated Self-Test`, which highlights all of ClointFusion's 100+ features operating live on your computer while also confirming ClointFusion's compatibility with your PC's settings and configurations.
+You will receive an email with a self-test report once you have completed the test successfully. 
+
+## What do ClointFusion have?
+
+ClointFusion offers 
+
+- **More than 100 ready to use functions helpful in building BOTs**
+
+<br>
+
+### DOST - Your friend in automation
+
+`DOST` is an interactive blockly based **`no code`** BOT Builder platform designed and optimized for BOT development using ClointFusion. We believe that automation is not just for programmers, and that a non-technical person can develop a BOT in minutes using DOST. 
+
+#### Advantages of DOST 
+
+- Easy to Use.
+- Build BOT in minutes.
+- No prior Programming knowledge needed.
+
+#### Usage of DOST
+
+Open your favourite terminal and type `dost`. That's it!
+
+
+**Build BOT with DOST:** [DOST Website](https://dost.clointfusion.com/)
+
+<br>
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/DOST.gif?raw=true" height="400">
+
+> Checkout more about Blockly by Google [here](https://developers.google.com/blockly)
+
+<br>
+
+### BOL - Your automation voice based assistant
+
+`BOL` is voice based automation assistant designed to execute BOTs build out of ClointFusion without any human computer interaction.
+
+#### Usage of BOL
+
+Open your favourite terminal and type `bol`. Within a moment, a personalised Virtual Assistant will be at your service.
+
+***Note:`BOL` is currently in deveopment stage. More functionalities are yet to be added.***
+
+<br>
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/DOST.gif?raw=true" height="400">
+
+<br>
+<br>
+
+### WORK - The Work Hour Monitor
+
+`WORK` is an intelligent application that detects each and every work you do in your PC and displays a detailed work report.
+
+#### Usage of WORK
+
+Open your favourite terminal and type `work`. A detailed work report will be displayed.
+
+***Important NOTE: All the information that is being collected by `WORK` is stored in a securely maintained database in your system.***
+
+
+<br>
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/DOST.gif?raw=true" height="400">
+
+<br>
+<br>
+
+
+---
 
 ## **Now access more than 100 functions (hit ctrl+space in your IDE)**
-    
-You can find and inspect all of ClointFusion's functions using only one function i.e., `find()`. Just pass the partial name of the function.
+
+***TIP: You can find and inspect all of ClointFusion's functions using only one function i.e., `find()`. Just pass the partial name of the function.***
 
 ```
 cf.find("sort")
 cf.find("gui")
 ```
-* ## 6 gui functions, to take any input from user:
+* ### 6 gui functions, to take any input from user:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
-| cf.gui_get_any_input_from_user() | msgForUser="Please enter : ", password=False, multi_line=False, mandatory_field=True | Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format.
+| cf.gui_get_any_input_from_user() | msgForUser="Please enter : ", password=False, multi_line=False, mandatory_field=True | Generic function to accept any input (text / numeric) from user using GUI. Returns the value in string format. |
 | cf.gui_get_any_file_from_user() | msgForUser="the file : ", Extension_Without_Dot="*" | Generic function to accept file path from user using GUI. Returns the filepath value in string format.Default allows all files. |
 | cf.gui_get_consent_from_user() | msgForUser="Continue ?" | Generic function to get consent from user using GUI. Returns the string 'yes' or 'no' |
 | cf.gui_get_dropdownlist_values_from_user() | msgForUser=" ", dropdown_list=[], multi_select=True | Generic function to accept one of the drop-down value from user using GUI. Returns all chosen values in list format. |
@@ -84,7 +159,7 @@ cf.find("gui")
 
 ----
 
-* ## 4 functions on Mouse Operations:
+* ### 4 functions on Mouse Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -98,7 +173,7 @@ cf.find("gui")
 
 ----
 
-* ## 6 functions on Window Operations (works only in Windows OS):
+* ### 6 functions on Window Operations (works only in Windows OS):
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -114,11 +189,11 @@ cf.find("gui")
 
 ----
     
-* ## 5 functions on Window Objects (works only in Windows OS):
+* ### 5 functions on Window Objects (works only in Windows OS):
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
-| cf.win_obj_open_app() | title, program_path_with_name, file_path_with_name=" ", backend='uia' | Open any windows application. |
+| cf.win_obj_open_app() | title, program_path_with_name, file_path_with_name=" ", backend="uia" | Open any windows application. |
 | cf.win_obj_get_all_objects() | main_dlg, save=False, file_name_with_path=" " | Print or Save all the windows object elements of an application. |
 | cf.win_obj_mouse_click() | main_dlg,title=" ",  auto_id=" ", control_type=" " | Simulate high level mouse clicks on windows object elements. |
 | cf.win_obj_key_press() | main_dlg,write, title=" ", auto_id=" ", control_type=" " | Simulate high level Keypress on windows object elements. |
@@ -129,7 +204,7 @@ cf.find("gui")
 
 ----
 
-* ## 8 functions on Folder Operations:
+* ### 8 functions on Folder Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -147,33 +222,33 @@ cf.find("gui")
 
 ----
 
-* ## 28 functions on Excel Operations:
+* ### 28 functions on Excel Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
 | cf.excel_get_all_sheet_names() | excelFilePath=" " | Gives you all names of the sheets in the given excel sheet. |
 | cf.excel_create_excel_file_in_given_folder() | fullPathToTheFolder=" ", excelFileName=" ", sheet_name="Sheet1" | Creates an excel file in the desired folder with desired filename |
-| cf.excel_if_value_exists() | excel_path=" ", sheet_name='Sheet1', header=0, usecols=" ", value=" " | Check if a given value exists in given excel. Returns True / False |
+| cf.excel_if_value_exists() | excel_path=" ", sheet_name="Sheet1", header=0, usecols=" ", value=" " | Check if a given value exists in given excel. Returns True / False |
 | cf.excel_create_file() | fullPathToTheFile=" ", fileName=" ", sheet_name="Sheet1" | Create a Excel file in fullPathToTheFile with filename. |
-| cf.excel_copy_paste_range_from_to_sheet() | excel_path=" ", sheet_name='Sheet1', startCol=0, startRow=0, endCol=0, endRow=0, copiedData=" " | Pastes the copied data in specific range of the given excel sheet. |
+| cf.excel_copy_paste_range_from_to_sheet() | excel_path=" ", sheet_name="Sheet1",<br> startCol=0, startRow=0, endCol=0,<br> endRow=0, copiedData=" " | Pastes the copied data in specific range of the given excel sheet. |
 | cf.excel_get_row_column_count() | excel_path=" ", sheet_name="Sheet1", header=0 | Gets the row and coloumn count of the provided excel sheet. |
-| cf.excel_copy_range_from_sheet() | excel_path=" ", sheet_name='Sheet1', startCol=0, startRow=0, endCol=0, endRow=0 | Copies the specific range from the provided excel sheet and returns copied data as a list |
-| cf.excel_split_by_column() | excel_path=" ", sheet_name='Sheet1', header=0, columnName=" " | Splits the excel file by Column Name |
-| cf.excel_split_the_file_on_row_count() | excel_path=" ", sheet_name = 'Sheet1', rowSplitLimit=" ", outputFolderPath=" ", outputTemplateFileName ="Split" |  Splits the excel file as per given row limit |
+| cf.excel_copy_range_from_sheet() | excel_path=" ", sheet_name="Sheet1", startCol=0, startRow=0, endCol=0, endRow=0 | Copies the specific range from the provided excel sheet and returns copied data as a list |
+| cf.excel_split_by_column() | excel_path=" ", sheet_name="Sheet1",<br> header=0, columnName=" " | Splits the excel file by Column Name |
+| cf.excel_split_the_file_on_row_count() | excel_path=" ", sheet_name = "Sheet1", rowSplitLimit=" ", outputFolderPath=" ", outputTemplateFileName ="Split" |  Splits the excel file as per given row limit |
 | cf.excel_merge_all_files() | input_folder_path=" ", output_folder_path=" " | Merges all the excel files in the given folder |
-| cf.excel_drop_columns() | excel_path=" ", sheet_name='Sheet1', header=0, columnsToBeDropped = " " | Drops the desired column from the given excel file |
-| cf.excel_sort_columns() | excel_path=" ", sheet_name='Sheet1', header=0, firstColumnToBeSorted=None, secondColumnToBeSorted=None, thirdColumnToBeSorted=None, firstColumnSortType=True, secondColumnSortType=True, thirdColumnSortType=True, view_excel=False | A function which takes excel full path to excel and column names on which sort is to be performed |
-| cf.excel_clear_sheet() | excel_path=" ",sheet_name="Sheet1", header=0 |  Clears the contents of given excel files keeping header row intact |
-| cf.excel_set_single_cell() | excel_path=" ", sheet_name="Sheet1", header=0, columnName=" ", cellNumber=0, setText=" " | Writes the given text to the desired column/cell number for the given excel file |
-| cf.excel_get_single_cell() | excel_path=" ",sheet_name="Sheet1",header=0, columnName=" ",cellNumber=0 | Gets the text from the desired column/cell number of the given excel file |
-| cf.excel_remove_duplicates() | excel_path=" ",sheet_name="Sheet1", header=0, columnName=" ", saveResultsInSameExcel=True, which_one_to_keep="first" | Drops the duplicates from the desired Column of the given excel file |
-| cf.excel_vlook_up() | filepath_1=" ", sheet_name_1 = 'Sheet1', header_1 = 0, filepath_2=" ", sheet_name_2 = 'Sheet1', header_2 = 0, Output_path=" ", OutputExcelFileName=" ", match_column_name=" ",how='left', view_excel=False | Performs excel_vlook_up on the given excel files for the desired columns. Possible values for how are "inner","left", "right", "outer" |
-| cf.excel_describe_data() | excel_path=" ",sheet_name='Sheet1',header=0,view_excel=False |  Describe statistical data for the given excel |
+| cf.excel_drop_columns() | excel_path=" ", sheet_name="Sheet1",<br> header=0, columnsToBeDropped = " " | Drops the desired column from the given excel file |
+| cf.excel_sort_columns() | excel_path=" ", sheet_name="Sheet1",<br> header=0, firstColumnToBeSorted=None, secondColumnToBeSorted=None, thirdColumnToBeSorted=None, firstColumnSortType=True, secondColumnSortType=True, thirdColumnSortType=True,<br> view_excel=False | A function which takes excel full path to excel and column names on which sort is to be performed |
+| cf.excel_clear_sheet() | excel_path=" ",sheet_name="Sheet1",<br> header=0 |  Clears the contents of given excel files keeping header row intact |
+| cf.excel_set_single_cell() | excel_path=" ", sheet_name="Sheet1",<br> header=0, columnName=" ", cellNumber=0, setText=" " | Writes the given text to the desired column/cell number for the given excel file |
+| cf.excel_get_single_cell() | excel_path=" ",sheet_name="Sheet1",<br> header=0, columnName=" ",cellNumber=0 | Gets the text from the desired column/cell number of the given excel file |
+| cf.excel_remove_duplicates() | excel_path=" ",sheet_name="Sheet1",<br> header=0, columnName=" ", saveResultsInSameExcel=True, which_one_to_keep="first" | Drops the duplicates from the desired Column of the given excel file |
+| cf.excel_vlook_up() | filepath_1=" ", sheet_name_1 = "Sheet1",<br> header_1 = 0, filepath_2=" ", sheet_name_2 = "Sheet1",<br> header_2 = 0, Output_path=" ", OutputExcelFileName=" ", match_column_name=" ", how='left', view_excel=False | Performs excel_vlook_up on the given excel files for the desired columns. Possible values for how are "inner","left", "right", "outer" |
+| cf.excel_describe_data() | excel_path=" ",sheet_name="Sheet1", header=0, view_excel=False |  Describe statistical data for the given excel |
 | cf.excel_change_corrupt_xls_to_xlsx() | xls_file ='',xlsx_file = '', xls_sheet_name='' | Repair corrupt excel file |
 | cf.excel_get_all_header_columns() | excel_path=" ",sheet_name="Sheet1",header=0 | Gives you all column header names of the given excel sheet |
 | cf.excel_convert_to_image() | excel_file_path=" " | Returns an Image (PNG) of given Excel |
-| cf.excel_split_on_user_defined_conditions() | excel_file_path, sheet_name='Sheet1', column_name='', condition_strings=None,output_dir='', view_excel=False | Splits the excel based on user defined row/column conditions |
-| cf.excel_apply_format_as_table() | excel_file_path, table_style="TableStyleMedium21", sheet_name='Sheet1' | Applies table format to the used range of the given excel |
+| cf.excel_split_on_user_defined_conditions() | excel_file_path, sheet_name="Sheet1", column_name='', condition_strings=None,output_dir='', view_excel=False | Splits the excel based on user defined row/column conditions |
+| cf.excel_apply_format_as_table() | excel_file_path, table_style="TableStyleMedium21", sheet_name="Sheet1" | Applies table format to the used range of the given excel |
 | cf.excel_convert_xls_to_xlsx() | xls_file_path='',xlsx_file_path='' | Converts given XLS file to XLSX |
 | cf.isNaN() | value | Returns TRUE if a given value is NaN False otherwise |
 | cf.convert_csv_to_excel() | csv_path=" ", sep=" " | Function to convert CSV to Excel | 
@@ -185,7 +260,7 @@ cf.find("gui")
 
 ----
 
-* ## 3 functions on Keyboard Operations:
+* ### 3 functions on Keyboard Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -198,7 +273,7 @@ cf.find("gui")
 
 ----
 
-* ## 5 functions on Screenscraping Operations:
+* ### 5 functions on Screenscraping Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -213,7 +288,7 @@ cf.find("gui")
 
 ----
 
-* ## 11 functions on Browser Operations:
+* ### 11 functions on Browser Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -234,7 +309,7 @@ cf.find("gui")
 
 ----
 
-* ## 4 functions on Alert Messages:
+* ### 4 functions on Alert Messages:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -245,7 +320,7 @@ cf.find("gui")
 
 ----
 
-* ## 3 functions on String Operations: 
+* ### 3 functions on String Operations: 
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -258,7 +333,7 @@ cf.find("gui")
 
 ----
 
-* ## Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
+* ### Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
@@ -302,36 +377,56 @@ cf.find("gui")
 <br>    
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true" height="400">    
 
+# BOTS made out of ClointFusion
 
-# Outlook Email BOT implemented using ClointFusion
+### Outlook Email BOT implemented using ClointFusion
 
-<br>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true" height="400">
 
 <br>
 
 # We love your contribution
-Contribute by giving a star / writing article on ClointFusion / feedback / report issues / bug fixes / feature enhancement / add documentation / many more ways as you please..
 
-Participate in our monthly online hackathons & weekly meetups. Click here for more details: https://sites.google.com/view/clointfusion-hackathon
+Contribute to us by giving a star, writing articles on `ClointFusion`, giving comments, reporting bugs, bug fixes, feature enhancements, adding documentation, and many other ways. 
 
-Please visit our GitHub repository: https://github.com/ClointFusion/ClointFusion
+
+## Invitation to our Monthly Branded Hackathon
+
+We also invite everyone to take part in our monthly branded event, the `ClointFusion Hackathon`, and stand a chance to work with us.
+
+Checkout our Hackathon Website for more details here: [ClointFusion Hackathon](https://sites.google.com/view/clointfusion-hackathon
+)
 
 <br>
 
-# Date &#10084;&#65039; with ClointFusion 
-This an initiative for fast track entry into our growing workforce. For more details, please visit: https://lnkd.in/gh_r9YB
+## Date &#10084;&#65039; with ClointFusion
 
-# Aknowledgements
+This an initiative for fast track entry into our growing workforce. For more details, please visit: [Date with ClointFusion](https://lnkd.in/gh_r9YB)
 
-ClointFusion thanks to all it's dependent packages for the great contribution, which made ClointFusion possible!
+
+## Acknowledgements
+
+We sincerely thanks to all it's dependent packages for the great contribution, which made `ClointFusion` possible!
 
 Please find all the dependencies [here](https://openbase.com/python/ClointFusion/dependencies) 
 <!-- 
 <a href="https://openbase.com/python/ClointFusion/dependencies" target="blank">ClointFusion thanks all its dependent packages for the great contribution, which has made ClointFusion possible !</a> -->
 
-# ReadMe File Maintainer: 
-Fharook Shaik, Intern@ClointFusion. Please connect with him at: https://www.linkedin.com/in/fharook-shaik-7a757b181
+## Credits
 
-# Do you need help in building BOTs ? Contact us: 
-Drop a mail to ClointFusion@cloint.com
+#### ReadMe File Maintainer 
+fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on 
+
+<a href="https://www.linkedin.com/in/fharook-shaik-7a757b181/" target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a> &nbsp;
+<a href="https://github.com/fharookshaik" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a> &nbsp;  
+
+
+## Need help in Building BOTS?
+
+Write us by clicking below<br>
+<div align='left'>
+<a href="mailto:ClointFusion@cloint.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail"></a> &nbsp;
+</div>
+
+---
+
