@@ -45,11 +45,31 @@ class DisableLogger():
     def __exit__(self, exit_type, exit_value, exit_traceback):
        logging.disable(logging.NOTSET)
 
-def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
+def browser_activate(url="", files_download_path='', dummy_browser=True, open_in_background=False, incognito=False,
                      clear_previous_instances=False, profile="Default"):
-    """ This function is used to activate the browser.  """
+    """Function to launch browser and start the session.
+
+    Args:
+        url (str, optional): Website you want to visit. Defaults to "".
+        files_download_path (str, optional): Path to which the files need to be downloaded.
+        Defaults: ''.
+        dummy_browser (bool, optional): If it is false Default profile is opened. 
+        Defaults: True.
+        incognito (bool, optional): Opens the browser in incognito mode. 
+        Defaults: False.
+        clear_previous_instances (bool, optional): If true all the opened chrome instances are closed. 
+        Defaults: False.
+        profile (str, optional): By default it opens the 'Default' profile. 
+        Eg : Profile 1, Profile 2
+
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    status = False
+    global browser_driver, helium_service_launched
+
     try:
-    # To clear previous instances of chrome
+        # To clear previous instances of chrome
         if clear_previous_instances:
             if os_name == windows_os:
                 try:
@@ -69,7 +89,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 except Exception as ex:
                     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
-            time.sleep(10)
+            time.sleep(5)
 
         options = Options()
         options.add_argument("--start-maximized")
@@ -84,6 +104,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
             elif os_name == mac_os:
                 options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
+            elif os_name == linux_os:
+                options.add_argument("user-data-dir=/home/{}/.config/google-chrome/".format(os.getlogin()))
+                
             options.add_argument(f"profile-directory={profile}")
         #  Set the download path
         if files_download_path != '':
@@ -94,6 +117,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 "safebrowsing.enabled": False
             }
             options.add_experimental_option('prefs', prefs)
+
         try:
             with DisableLogger():
                 browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
@@ -101,8 +125,10 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
             if url:
                 browser.go_to(url)
             if not url:
-                browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
-            browser.Config.implicit_wait_secs = 20
+                browser.go_to("https://dost.clointfusion.com")
+            status = True
+            browser.Config.implicit_wait_secs = 60
+            helium_service_launched = True
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
@@ -111,7 +137,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
         print("Error in launch_website_h = " + str(ex))
         browser.kill_browser()
     finally:
-        return browser_driver
+        return status
 
 def clear_screen():
     """
