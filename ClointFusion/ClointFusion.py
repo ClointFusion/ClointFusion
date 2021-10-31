@@ -4751,23 +4751,19 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pause_program(3)
                         browser_hit_enter_h()
                         browser_mouse_click_h("Python based RPA Development Platform")
-                        
                         text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
                         folder_create(os.path.join(test_folder_path,'Screen_scrape'))
                         scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
                         text_to_speech("Its done already,", show=False)
-                        
                         os.startfile(os.path.join(test_folder_path,'Screen_scrape'))
                         text_to_speech("Its in this folder and saved as notepad-contents, let me open the file.", show=False)
                         os.startfile(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))
                         pg.scroll(10)
                         pause_program(3)
                         pg.scroll(10)
-                        
                         text_to_speech("Ok, Lets get back to the web.", show=False)
                         window_close_windows('Screen_scrape')
                         window_close_windows('notepad-contents.txt')
-                        
                         window_activate_and_maximize_windows("Python based RPA Development")
                         text_to_speech("Do you love what we do, Interested in joining our workforce, lets, have a Date..", show=False)
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
@@ -4800,7 +4796,6 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pause_program(3)
                         browser_hit_enter_h()
                         browser_mouse_click_h("Python based RPA Development Platform")
-                                         
                         text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date", show=False)
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
                         text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
@@ -4875,10 +4870,6 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pause_program(3)
                         browser_hit_enter_h()
                         browser_mouse_click_h("Python based RPA Development Platform")
-                        text_to_speech("I will do the screen scraping now.", show=False)
-                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")
-                        
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
                         browser.scroll_down(1000)
                         browser_navigate_h('https://pypi.org')
