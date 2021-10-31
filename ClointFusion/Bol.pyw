@@ -390,12 +390,13 @@ def bol_main():
                     status.update("Processing...\n")
                     play_on_youtube()
                     status.update("Listening...\n")
+                
                 #Search in Google
                 elif any(x in query for x in ["google search","search in google"]): 
                     status.update("Processing...\n")
                     google_search()
                     status.update("Listening...\n")
-                    
+                
                 #Open gmail
                 elif any(x in query for x in ["gmail","email"]): 
                     status.update("Processing...\n")
@@ -545,15 +546,13 @@ def bol_main():
 
 
 try:
-    config_folder_path = Path(os.path.join(cf.clointfusion_directory, "Config_Files")) 
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-    
+    config_folder_path = Path(os.path.join(cf.clointfusion_directory, "Config_Files"))
+    db_file_path = cf.folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
-except Exception as ex: #Ask ADMIN Rights if REQUIRED
+except Exception as ex:
     cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
-    print("Error in connecting to database = " + str(ex))
-
+    print("Error in connecting to DB="+str(ex))
 
 data = cursr.execute("SELECT bol from CF_VALUES where ID = 1")
 for row in data:

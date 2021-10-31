@@ -8,7 +8,6 @@ import platform,socket,re,uuid,json,logging
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
 from ClointFusion import selft
-from cf_notification import show_toast_notification_if_new_msg_is_available
 import datetime
 import pyinspect as pi
 from rich import pretty
@@ -20,6 +19,7 @@ os_name = str(platform.system()).lower()
 
 if os_name == windows_os:
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
+    from cf_notification import show_toast_notification_if_new_msg_is_available
 elif os_name == linux_os:
     clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
 elif os_name == mac_os:
@@ -30,15 +30,36 @@ img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
 cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
 cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
 
-try:
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-    connct = sqlite3.connect(db_file_path,check_same_thread=False)
-    cursr = connct.cursor()
-except Exception as ex:
-    print("Error in connecting to DB="+str(ex))
+def folder_create_text_file(textFolderPath="",txtFileName="", custom=False):
+    """
+    Creates Text file in the given path.
+    Internally this uses folder_create() method to create folders if the folder/s does not exist.
+    automatically adds txt extension if not given in textFilePath.
+
+    Parameters:
+        textFilePath (str) : Complete path to the folder with double slashes.
+    """
+    try:
+
+        if not custom:
+            if ".txt" not in txtFileName:
+                txtFileName = txtFileName + ".txt"
+        
+        if not os.path.exists(textFolderPath):
+            os.makedirs(textFolderPath, exist_ok=True)
+        
+        file_path = os.path.join(textFolderPath, txtFileName)
+        file_path = Path(file_path)
+        
+        if not file_path.exists():
+            file_path.touch()
+        return file_path
+    except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in folder_create_text_file="+str(ex))
 
 try:
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
 except Exception as ex:
@@ -102,6 +123,8 @@ event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
 
 cursr.execute(event_table)
 connct.commit()
+
+
 
 def get_time_stamp():
     st = time.time()
@@ -447,7 +470,8 @@ def launch_cf_log_generator_gui_new():
 
 try:
     launch_cf_log_generator_gui_new()
-    show_toast_notification_if_new_msg_is_available()
+    if os_name == windows_os:
+        show_toast_notification_if_new_msg_is_available()
 except Exception as ex:
     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     pg.alert(ex)    

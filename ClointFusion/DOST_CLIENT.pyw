@@ -102,7 +102,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 browser.go_to(url)
             if not url:
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
-            browser.Config.implicit_wait_secs = 20
+            browser.Config.implicit_wait_secs = 5
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
@@ -148,7 +148,6 @@ try:
 
     web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, clear_previous_instances=True)
     browser.set_driver(web_driver)
-    browser.Config.implicit_wait_secs = 5
 except Exception as ex:
     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print(f"Error in UUID: {str(ex)}")
@@ -176,6 +175,7 @@ try:
             except TimeoutException:
                 found = False
             except WebDriverException:
+                print("Thank you for utilising DOST. I hope you have a good time with it.")
                 browser.kill_browser()
                 start = False
             except IndexError:

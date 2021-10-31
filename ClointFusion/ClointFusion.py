@@ -66,6 +66,7 @@ os_name = str(platform.system()).lower()
 
 python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
 pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
+python_version = str(sys.version_info.major)
 
 if os_name == windows_os:
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
@@ -90,25 +91,19 @@ cf_icon_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICO
 cf_logo_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-LOGO.PNG")
 engine = ""
 
-try:
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-    connct = sqlite3.connect(db_file_path,check_same_thread=False)
-    cursr = connct.cursor()
-except Exception as ex:
-    print("Error in connecting to DB="+str(ex))
 
 def _get_site_packages_path():
     """
     Returns Site-Packages Path
     """
-    import subprocess
     try:
-        import site  
-        site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+        import site
+        if os_name == windows_os:
+            site_packages_path = next(p for p in site.getsitepackages() if 'site-packages' in p)
+        else:
+            site_packages_path = site.getsitepackages()[0]
     except:
-        site_packages_path = subprocess.run('python -c "import os; print(os.path.join(os.path.dirname(os.__file__), \'site-packages\'))"',capture_output=True, text=True).stdout
-
-    site_packages_path = str(site_packages_path).strip()  
+        site_packages_path = site.getsitepackages()[0]
     return str(site_packages_path)
 
 site_packages_path = _get_site_packages_path()
@@ -132,10 +127,7 @@ if os_name == windows_os:
         import win32gui
 
 elif os_name == linux_os:
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
+    engine = pyttsx3.init('espeak')
     r = sr.Recognizer()
     energy_threshold = [3000]
 
@@ -1535,9 +1527,14 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         if not dummy_browser:
             if os_name == windows_os:
                 options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
+                options.add_argument(f"profile-directory={profile}")
             elif os_name == mac_os:
                 options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
-            options.add_argument(f"profile-directory={profile}")
+                options.add_argument(f"profile-directory={profile}")
+            elif os_name == linux_os:
+                options.add_argument("user-data-dir=/home/{}/.config/google-chrome".format(os.getlogin()))
+                
+            
         #  Set the download path
         if files_download_path != '':
             prefs = {
@@ -1907,7 +1904,7 @@ def folder_create(strFolderPath=""):
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create="+str(ex))
 
-def folder_create_text_file(textFolderPath="",txtFileName=""):
+def folder_create_text_file(textFolderPath="",txtFileName="", custom=False):
     """
     Creates Text file in the given path.
     Internally this uses folder_create() method to create folders if the folder/s does not exist.
@@ -1925,15 +1922,19 @@ def folder_create_text_file(textFolderPath="",txtFileName=""):
             txtFileName = gui_get_any_input_from_user("text file name")
             txtFileName = txtFileName 
 
-        if ".txt" not in txtFileName:
-            txtFileName = txtFileName + ".txt"
-            
+        if not custom:
+            if ".txt" not in txtFileName:
+                txtFileName = txtFileName + ".txt"
+        
+        if not os.path.exists(textFolderPath):
+            folder_create(textFolderPath)
+        
         file_path = os.path.join(textFolderPath, txtFileName)
         file_path = Path(file_path)
         
-        f = open(file_path, 'w',encoding="utf-8")
-        f.close()
-        
+        if not file_path.exists():
+            file_path.touch()
+        return file_path
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create_text_file="+str(ex))
@@ -2557,6 +2558,8 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
         # message_toast("Excel merging completed", file_folder_path=final_path)
         
         return True
+    except ValueError:
+        print("Please check the inputs, and try again.")
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_merge_all_files="+str(ex))
@@ -3792,13 +3795,9 @@ def ocr_now(img_path=""):
 def find(function_partial_name=""):
     # Find and inspect python functions
     try:
-        # if function_partial_name:
-
-            # response = requests.post(find_api_url,data={'partial_name':function_partial_name})
-            # print(response.text)
-            # import ClointFusion as cf
-            # msg = pi.search(cf, name=function_partial_name)
-        print("Function in development.")
+        if function_partial_name:
+            import ClointFusion.cce as cf
+            pi.search(cf, name=function_partial_name)
         
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -3936,6 +3935,8 @@ def text_to_speech(audio, show=True, rate=170):
     else:
         if show:
             print(str(audio))
+    if os_name == linux_os:
+        rate -= 10
     engine.setProperty('rate', rate)
     engine.say(audio)   
     engine.runAndWait()
@@ -3945,7 +3946,6 @@ def speech_to_text():
     Speech to Text using Google's Generic API
     """
     global engine
-    
     bol_url = "https://api.clointfusion.com/update_bol"
     system_uuid = selft.get_uuid()
 
@@ -4309,7 +4309,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             if os_name == windows_os:
                 launch_any_exe_bat_application("notepad") # Windows
                 key_write_enter(write_to_window="notepad",text_to_write=add_msg)
-                text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
+                text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!", show=False)
                 key_hit_enter(write_to_window="notepad")
                 key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                 key_press("right")
@@ -4317,7 +4317,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             elif os_name == linux_os:
                 launch_any_exe_bat_application("gedit") # Ubuntu
                 key_write_enter(text_to_write=add_msg)
-                text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
+                text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is", show=False)
                 key_hit_enter()
                 key_press(key_1="alt", key_2="f4")
                 subprocess.Popen(f"killall -9 gedit", shell=True,
@@ -4327,7 +4327,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 try:
                     launch_any_exe_bat_application("TextEdit") # macOS
                     key_write_enter(text_to_write=add_msg)
-                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
+                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is", show=False)
                     key_hit_enter()
                     key_press(key_1="command", key_2="f4")
                     subprocess.Popen('pkill -9 "TextEdit"', shell=True,
@@ -4666,7 +4666,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     text_to_speech("But let me tell you something, the only limit to automation is your creativity.", show=False)  
                     launch_any_exe_bat_application("notepad") # Windows
                     key_write_enter(write_to_window="notepad",text_to_write=add_msg)
-                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
+                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is", show=False)
                     key_hit_enter(write_to_window="notepad")
                     key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                     key_press("right")
@@ -4680,7 +4680,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 try:
                     launch_any_exe_bat_application("gedit") # Ubuntu
                     key_write_enter(text_to_write=add_msg)
-                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
+                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is", show=False)
                     key_hit_enter()
                     key_press(key_1="alt", key_2="f4")
                     subprocess.Popen(f"killall -9 gedit", shell=True,
@@ -4695,7 +4695,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 try:
                     launch_any_exe_bat_application("TextEdit") # macOS
                     key_write_enter(text_to_write=add_msg)
-                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is ..!!!", show=False)
+                    text_to_speech("By the way, keep your data a secret, not me, Let your friends know, how cool ClointFusion is", show=False)
                     key_hit_enter()
                     key_press(key_1="command", key_2="f4")
                     subprocess.Popen('pkill -9 "TextEdit"', shell=True,
@@ -4769,7 +4769,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         window_close_windows('notepad-contents.txt')
                         
                         window_activate_and_maximize_windows("Python based RPA Development")
-                        text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
+                        text_to_speech("Do you love what we do, Interested in joining our workforce, lets, have a Date..", show=False)
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
                         text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
                         browser.scroll_down(1000)
@@ -4782,8 +4782,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         browser_mouse_click_h(element="RPA",double_click=True)
                         browser.scroll_down(2000)
                         text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
-                        text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
+                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate", show=False)
+                        text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice", show=False)
                         text_to_speech("ClointFusion, got you covered.", show=False)
                         browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                         text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
@@ -4800,11 +4800,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pause_program(3)
                         browser_hit_enter_h()
                         browser_mouse_click_h("Python based RPA Development Platform")
-                        text_to_speech("Ever wanted to simply copy whole page and save to notepad? You can simply do it with one scraping function. Let me show you", show=False)
-                        folder_create(os.path.join(test_folder_path,'Screen_scrape'))
-                        scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape')
-                        
-                        text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date..", show=False)
+                                         
+                        text_to_speech("Do you love what we do? Interested in joining our workforce, lets, have a Date", show=False)
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
                         text_to_speech("Date with ClointFusion, is an initiative, for fast track entry, into our growing workforce.", show=False)
                         browser.scroll_down(1000)
@@ -4817,8 +4814,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         browser_mouse_click_h(element="RPA",double_click=True)
                         browser.scroll_down(2000)
                         text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate?", show=False)
-                        text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice...", show=False)
+                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate", show=False)
+                        text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice", show=False)
                         text_to_speech("ClointFusion, got you covered.", show=False)
                         browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
                         text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
@@ -4934,6 +4931,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 if tour:
                     print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.launch_any_exe_bat_application("write")\ncf.pause_program(2)\ncf.window_minimize_windows('Document')\ncf.pause_program(2)\ncf.window_activate_and_maximize_windows('Document')\ncf.pause_program(2)\nwindow_names = cf.window_get_all_opened_titles_windows()\ncf.window_close_windows('Document')""")
                 text_to_speech("Show Desktop", show=False)
+                message_pop_up("\nCommand being used :\n```````````\ncf.window_show_desktop()\n\n", delay=3)
                 window_show_desktop()
                 text_to_speech("want to launch Launch any exe or application", show=False)
                 message_pop_up("\nCommand being used :\n```````````\ncf.launch_any_exe_bat_application('write')\n\n", delay=3)
@@ -5009,7 +5007,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             if not tour:
                 print()
                 print("\n____________________________________________________________\n")
-                text_to_speech("Let me test folder operations...", show=False)
+                text_to_speech("Let me test folder operations", show=False)
                 print('Testing folder operations')
             else:
                 print("\n____________________________________________________________\n")
@@ -5022,7 +5020,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             if os_name == windows_os:
                 folder_create(Path(os.path.join(test_folder_path,"My Test Folder")))
                 os.startfile(os.path.join(test_folder_path))
-                text_to_speech("Watch this folder carefully.., i will create random folders, text files, excel files.", show=False)
+                text_to_speech("Watch this folder carefully, i will create random folders, text files, excel files.", show=False)
                 pause_program(1)
                 folder_create_text_file(test_folder_path, "My Text File")
                 pause_program(1)
@@ -5058,7 +5056,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print(folder_get_all_filenames_as_list(test_folder_path))
             pause_program(2)
             print(folder_get_all_filenames_as_list(test_folder_path, extension="xlsx"))
-            window_close_windows("ClointFusion_Self_Tests")
+            if os_name == windows_os:
+                window_close_windows("ClointFusion_Self_Tests")
             if not tour:
                 text_to_speech("Folder operations test is successful", show=False)
                 print("\n")
@@ -5338,11 +5337,15 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 print("Please click red 'Close' button")
             return TEST_CASES_STATUS_MESSAGE, SUCCESS
         else:
-            text_to_speech("I hope you enjoyed our tour and learned something new. If you want to repeat, press the start button. Otherwise, click the close button.", show=False)
+            text_to_speech("I hope you enjoyed our tour and learned something new", show=False)
+            text_to_speech("If you want to repeat, press the start button. Otherwise, click the close button.", show=False)
             print("\n____________________________________________________________\n")
-            text_to_speech("I printed out all of the syntax I used on this tour. Feel free to scroll through and take notes.")
+            text_to_speech("I printed out all of the syntax I used on this tour")
+            text_to_speech("Feel free to scroll through and take notes.")
             print("\n____________________________________________________________\n")
-            text_to_speech("There are plenty other functions to explore. For example, we have a large selection of, Excel functions as well as, some of the top utility functions. We hope that, this tour has sparked your interest, in learning more about automation and ClointFusion.")
+            text_to_speech("There are plenty other functions to explore. ")
+            text_to_speech("For example, we have a large selection of, Excel functions as well as, some of the top utility functions.")
+            text_to_speech("We hope that, this tour has sparked your interest, in learning more about automation and ClointFusion.")
             print("\n____________________________________________________________\n")
             return tour_comp, tour_comp
             
@@ -5353,7 +5356,6 @@ def clointfusion_self_test(tour=False):
     global os_name, python_exe_path
     WHILE_TRUE = True #Colab Settings
     start_time = time.monotonic()
-    python_version = str(sys.version_info.major)
     last_updated_on_month = ""
     tour_comp = False
     status_msg, success = "", ""
@@ -5403,7 +5405,7 @@ def clointfusion_self_test(tour=False):
                     text_to_speech("I'm here to give you a quick tour of the ClointFusion package, and to check your machine for compatibility.", show=False)
                     text_to_speech("Please sign in and confirm. Then press the start button.", show=False)
                 else:
-                    text_to_speech(f"Hi!!, {name_st}, Thanks for showing interest in ClointFusion's tour.", show=False)
+                    text_to_speech(f"Hi, {name_st}, Thanks for showing interest in ClointFusion's tour.", show=False)
                     text_to_speech("As you know, this is Bol, a ClointFusion-powered voice-based assistant.", show=False)
                     text_to_speech("Click on the start button to get started.", show=False)
                 instructions = True
@@ -5422,8 +5424,8 @@ def clointfusion_self_test(tour=False):
 # Skip
             if event == 'Skip for Now':
                 try:
-                    text_to_speech("You have chosen to skip ClointFusion's Self-Test. Some of the functions may not work properly !", show=False)     
-                    pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
+                    text_to_speech("You have chosen to skip ClointFusion's Self-Test. Some of the functions may not work properly", show=False)     
+                    pg.alert("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly")
                     message_toast("ClointFusion Self-Test is Skipped")
                 except:
                     put_text("You have chosen to skip ClointFusion's Self-Test.\n\nSome of the functions may not work properly !")
@@ -5556,8 +5558,12 @@ def cli_speed_test():
 def cli_auto_liker():
     """CLI for auto liking CF's specific posts on Socail Media"""
     try:
-        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\cf_auto_liker.py"'
-        os.system(cmd)
+        if os_name == windows_os:
+            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\cf_auto_liker.py"'
+            os.system(cmd)
+        else:
+            print("Auto Liker option is only available on windows. We regret the inconvience.")
+            
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_speed_test="+str(ex))
@@ -5566,14 +5572,16 @@ def cli_auto_liker():
 def cli_colab_launcher():
     """ClointFusion CLI for Colab Launcher"""
     global python_exe_path
-    try:   
-        print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion : https://www.linkedin.com/in/jay-trivedi-09aa791a4/ \n")
-
-        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Colab_Launcher.py"' 
-        os.system(cmd)
+    try: 
+        if os_name == windows_os:  
+            print("Launching Google Colabs, actively maintained by Jay Trivedi, Research Intern@ClointFusion : https://www.linkedin.com/in/jay-trivedi-09aa791a4/ \n")
+            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Colab_Launcher.py"' 
+            os.system(cmd)
+        else:
+            print("Colab Launcher option is only available on windows. We regret the inconvience.")
 
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_colab_launcher " + str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -5583,8 +5591,15 @@ def cli_dost():
     try:
         print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion : https://www.linkedin.com/in/murali-manohar-varma-220a03207 \n")
         
-        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
-        os.system(cmd)
+        if os_name == windows_os:
+            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
+            os.system(cmd)
+        else:
+            # # Commands for linux
+            # cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
+            # os.system(cmd)
+            print("DOST option is only available on windows. We regret the inconvience.")
+
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_dost "+str(ex))
@@ -5596,8 +5611,15 @@ def cli_bol():
     try:
         print("Launching ClointFusion powered Virtual Assistant : Bol\n")
         
-        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Bol.pyw"'
-        os.system(cmd)
+        if os_name == windows_os:
+            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Bol.pyw"'
+            os.system(cmd)
+        else:
+            # Commands for linux
+            cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/Bol.pyw"'
+            os.system(cmd)
+            # print("BOL option is only available on windows. We regret the inconvience.")
+        
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_bol "+str(ex))
@@ -5606,9 +5628,17 @@ def cli_bol():
 def cli_whm():
     """ClointFusion CLI for WHM Launcher"""
     try:
-        cmd = f'{pythonw_exe_path} "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
-        os.system(cmd)
-        print("WHM is now running..\n")
+        if os_name == windows_os:
+            cmd = f'{pythonw_exe_path} "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
+            os.system(cmd)
+        else:
+            print("Tray option is only available on windows. We regret the inconvience.")
+            # # Commands for linux
+            # cmd = f'chmod +x "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
+            # os.system(cmd)
+            # cmd = f'nohup sudo python3 "{site_packages_path}\ClointFusion\BRE_WHM.pyw" &'
+            # os.system(cmd)
+            
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_whm "+str(ex))
@@ -5627,8 +5657,11 @@ def cli_vlookup():
 def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
-        cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
-        os.system(cmd)  
+        if os_name == windows_os:
+            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
+            os.system(cmd)
+        else:
+            print("WhatsApp bot is only available on windows. We regret the inconvience.")
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in send_whatsapp_msg", str(ex))
@@ -5650,15 +5683,11 @@ def cli_bre_whm():
                 lib = ctypes.windll.kernel32
                 t = lib.GetTickCount64()
                 t = int(str(t)[:-3])
-            else:
-                t = os.popen('uptime -p').read()[:-1]
-
-            mins, sec = divmod(t, 60)
-            hour, mins = divmod(mins, 60)
-            days, hour = divmod(hour, 24)
-            
-            console.print('_' * 20,justify='center')  # Underscore
-            console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
+                mins, sec = divmod(t, 60)
+                hour, mins = divmod(mins, 60)
+                days, hour = divmod(hour, 24)
+                console.print('_' * 20,justify='center')  # Underscore
+                console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')            
             
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5781,7 +5810,7 @@ def cli_bre_whm():
 def cli_cf(message):
     """ClointFusion Command Line Interface's basic command"""
     click.echo('\n'.join(message))
-    click.echo("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion.\n3)   cf_work      - Get your computer usage report.\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message.\n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Social Media.\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
+    click.echo("Below commands are available for TERMINAL use :   ( W - Windows, U - Ubuntu )\n\n1)   dost         - [W,  ] || Build RPA Bots without Code.\n2)   bol          - [W, U] || Voice based assistant powered by ClointFusion.\n3)   cf_work      - [W,  ] || Get your computer usage report.\n4)   cf_tray      - [W,  ] || Launch ClointFusion tray icon.\n5)   cf_st        - [W, U] || Check your internet speed.\n6)   cf_wm        - [W,  ] || Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message.\n7)   cf_py        - [W, U] || Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - [W,  ] || CLI for auto liking CF's specific posts on Social Media.\n9)   cf_tour      - [W, U] || CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - [W, U] || Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - [W, U] || Opens all our ClointFusion's Social Media in Default Browser.")
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
@@ -5797,7 +5826,10 @@ def cli_cf_py():
     ch_function_2 = random.choice(functions_list)
     ch_function_3 = random.choice(functions_list)
     
-    os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
+    if os_name == windows_os:
+        os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
+    else:
+        os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_cf_tour():
@@ -5824,16 +5856,12 @@ def cli_bre_whm_test():
                 lib = ctypes.windll.kernel32
                 t = lib.GetTickCount64()
                 t = int(str(t)[:-3])
-            else:
-                t = os.popen('uptime -p').read()[:-1]
+                mins, sec = divmod(t, 60)
+                hour, mins = divmod(mins, 60)
+                days, hour = divmod(hour, 24)
+                console.print('_' * 20,justify='center')  # Underscore
+                console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
 
-            mins, sec = divmod(t, 60)
-            hour, mins = divmod(mins, 60)
-            days, hour = divmod(hour, 24)
-            
-            console.print('_' * 20,justify='center')  # Underscore
-            console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')
-         
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print("Error in click cli_bre_whm = " + str(ex))
@@ -5956,7 +5984,7 @@ def cli_speed_test_test():
         print("Error in cli_speed_test="+str(ex))
 
 def cli_cf_test():
-    print("Below commands are available for TERMINAL use :\n\n1)   dost         - Build RPA Bots without Code.\n2)   bol          - Voice based assistant powered by ClointFusion.\n3)   cf_work      - Get your computer usage report.\n4)   cf_tray      - Launch ClointFusion tray icon.\n5)   cf_st        - Check your internet speed.\n6)   cf_wm        - Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message.\n7)   cf_py        - Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - CLI for auto liking CF's specific posts on Social Media.\n9)   cf_tour      - CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - Opens all our ClointFusion's Social Media in Google Chrome")
+    print("Below commands are available for TERMINAL use :   ( W - Windows, U - Ubuntu )\n\n1)   dost         - [W,  ] || Build RPA Bots without Code.\n2)   bol          - [W, U] || Voice based assistant powered by ClointFusion.\n3)   cf_work      - [W,  ] || Get your computer usage report.\n4)   cf_tray      - [W,  ] || Launch ClointFusion tray icon.\n5)   cf_st        - [W, U] || Check your internet speed.\n6)   cf_wm        - [W,  ] || Sends WhatsApp messages by providing path of excel file having 3 columns: Mobile Number, Name, Message.\n7)   cf_py        - [W, U] || Open python interpreter with preloaded 'clointfusion as cf'.\n8)   cf_like      - [W,  ] || CLI for auto liking CF's specific posts on Social Media.\n9)   cf_tour      - [W, U] || CLI for guided tour of ClointFusion.\n10)  cf_vlookup   - [W, U] || Performs excel_vlook_up on the given excel files for the desired columns.\n11)  cf_sm        - [W, U] || Opens all our ClointFusion's Social Media in Default Browser.")
 
 # --------- TEST FOR CLI Ends ---------
 
@@ -5965,6 +5993,13 @@ def cli_cf_test():
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
+try:
+    db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
+    connct = sqlite3.connect(db_file_path,check_same_thread=False)
+    cursr = connct.cursor()
+except Exception as ex:
+    print("Error in connecting to DB="+str(ex))
+
 
 data = cursr.execute("SELECT updating from CF_VALUES")
 for row in data:
