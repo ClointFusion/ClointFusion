@@ -140,7 +140,7 @@ Once you have successfully completed the self-test, you will receive an email wi
 
 ### Usage of DOST
 
-Open your favourite terminal and type `dost`. That's it!
+Open your favorite terminal and type `dost`. That's it!
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true" height="400">
 
@@ -156,7 +156,7 @@ Open your favourite terminal and type `dost`. That's it!
 
 ### Usage of BOL
 
-Open your favourite terminal and type `bol` or `sudo bol` for ubuntu users. Within a moment, a personalized Virtual Assistant will be at your service.
+Open your favorite terminal and type `bol` or `sudo bol` for ubuntu users. Within a moment, a personalized Virtual Assistant will be at your service.
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true" height="400">
 
@@ -172,7 +172,7 @@ Open your favourite terminal and type `bol` or `sudo bol` for ubuntu users. With
 
 ### Usage of WORK
 
-Open your favourite terminal and type `cf_work`. 
+Open your favorite terminal and type `cf_work`. 
 A detailed work report will be displayed.
 
 
@@ -184,13 +184,13 @@ A detailed work report will be displayed.
 
 <br>
 
-> ## Whatsapp Bot - Send Bulk whatsApp messages.
+> ## WhatsApp Bot - Send bulk WhatsApp messages.
 
-ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to send many customised messages to your contacts at once.
+ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to send many customized messages to your contacts at once.
 
-### Usage of Whatsapp Bot
+### Usage of WhatsApp Bot
 
-Open your favourite terminal and type `cf_wm`, and give path of the excel, 
+Open your favorite terminal and type `cf_wm`, and give path of the excel, 
 or `cf_wm -e excel_path.xlsx`
 
 https://user-images.githubusercontent.com/67296473/139609929-0bb9a1b0-26b0-4573-86ac-0493693a48d4.mp4
