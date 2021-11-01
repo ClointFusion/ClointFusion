@@ -38,102 +38,172 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 # Installation
 
-## ClointFusion is now supported in Windows / Ubuntu / macOS !
+<br>
 
-1. Please install Python 3.9.7 with 64 bit: <a href="https://www.python.org/downloads" target="_blank"> Python 3.9.7 64 Bit</a>. Windows users may refer to these steps | <a href="https://dev.to/fharookshaik/install-clointfusion-in-windows-operating-system-clointfusion-2dae" target="_blank">Install ClointFusion in Windows Operating System</a>
+> ### ClointFusion is now supported on Windows / Ubuntu / macOS* !
 
-2. It is recommended to run ClointFusion in a Virtual Environment. Please refer these steps to create one, as per your OS: <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment" target="_blank">Creating a virtual environment in Windows / Mac / Ubuntu</a>
+## Windows :
 
-3. Install ClointFusion by executing this package in command promt (with Admin rights): 
+* ClointFusion is compatible with both Windows 10 and Windows 11.
+* Installing on a Windows PC is a breeze.
+* Make certain that Python 3.8 or Python 3.9 is installed.
+* Then, from the command prompt, execute the following command.
 
-```
-pip install -U ClointFusion
-```
+    ```
+    pip install -U ClointFusion
+    ```
 
-4. Open a new file in your favorite Python IDE and type: 
+## Ubuntu :
+* Clointfusion requires sudo rights to install on Ubuntu.
+* Additional Linux packages must be installed before Clointfusion can be installed.
+* Make certain that Python 3.8 or Python 3.9 is installed.
+* Then, from the command prompt, execute the following command.
 
-```
-import ClointFusion as cf
-```
-
-***PS: `Ubuntu` users may need to install some additional packages:***
-
-```
-sudo apt-get install python3-tk python3-dev
-```
-
-## The Voice Guided Tour of ClointFusion Functions | ClointFusion Automated Self-Test
-
-When you import or update to a new version of ClointFusion, you'll be prompted with the `ClointFusion Automated Self-Test`, which highlights all of ClointFusion's 100+ features operating live on your computer while also confirming ClointFusion's compatibility with your PC's settings and configurations.
-You will receive an email with a self-test report once you have completed the test successfully. 
-
-## What do ClointFusion have?
-
-ClointFusion offers 
-
-- **More than 100 ready to use functions helpful in building BOTs**
+    ```
+    sudo apt-get install python3-tk python3-dev
+    sudo pip3 install ClointFusion
+    ```
 
 <br>
 
-### DOST - Your friend in automation
+# Importing
 
-`DOST` is an interactive blockly based **`no code`** BOT Builder platform designed and optimized for BOT development using ClointFusion. We believe that automation is not just for programmers, and that a non-technical person can develop a BOT in minutes using DOST. 
+<br>
 
-#### Advantages of DOST 
+> ### ClointFusion can be accessed using one of two methods.
+
+## Windows :
+
+* ### Terminal : Opens a Python interpreter using the command " import ClointFusion as cf "
+
+    ```
+    cf_py
+    ```
+* ### Code Editor or IDE : Import ClointFusion first, and then run the file in Python.
+
+    ```
+    # cf_bot.py
+
+    import ClointFusion as cf
+
+    cf.browser_activate()
+    ```
+    ```
+    python cf_bot.py
+    ```
+
+
+## Ubuntu :
+
+* ### Terminal : Opens a Python interpreter with the command " import ClointFusion as cf " and the required sudo privileges.
+
+    ```
+    sudo cf_py
+    ```
+* ### Code Editor or IDE : Run the file with sudo permissions.
+
+    ```
+    # cf_bot.py
+    
+    import ClointFusion as cf
+
+    cf.browser_activate()
+    ```
+    ```
+    sudo python3 cf_bot.py
+    ```
+
+<br>
+
+# Features
+
+<br>
+
+> ## ClointFusion's Voice-Guided, Fully Automated Self-Test.
+
+When you import ClointFusion for the first time, or upgrade to a new version, you'll be prompted with the "ClointFusion Automated Self-Test," which highlights all of ClointFusion's 100+ features in action on your computer while also confirming ClointFusion's compatibility with your PC's settings and configurations.
+Once you have successfully completed the self-test, you will receive an email with a self-test report.
+
+Below is the speed up version of self-test.
+
+https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4
+
+<br>
+
+<br>
+
+> ## DOST : Your friend in automation || Build RPA Bots without Code.
+
+` DOST ` is an interactive blockly based ``no-code`` BOT Builder platform built and optimised for ClointFusion-based BOT building. We feel that automation is important for people other than programmers. Using DOST, even a common man can create a BOT in minutes.
+
+### Advantages of DOST
 
 - Easy to Use.
 - Build BOT in minutes.
 - No prior Programming knowledge needed.
 
-#### Usage of DOST
+### Usage of DOST
 
-Open your favourite terminal and type `dost`. That's it!
+Open your favorite terminal and type `dost`. That's it!
 
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true" height="400">
 
 **Build BOT with DOST:** [DOST Website](https://dost.clointfusion.com/)
 
 <br>
-<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/DOST.gif?raw=true" height="400">
-
-> Checkout more about Blockly by Google [here](https://developers.google.com/blockly)
 
 <br>
 
-### BOL - Your automation voice based assistant
+> ## BOL : BOL - Your automation voice based assistant
 
-`BOL` is voice based automation assistant designed to execute BOTs build out of ClointFusion without any human computer interaction.
+` BOL ` is voice based automation assistant designed to execute BOTs build out of ClointFusion without any human computer interaction.
 
-#### Usage of BOL
+### Usage of BOL
 
-Open your favourite terminal and type `bol`. Within a moment, a personalised Virtual Assistant will be at your service.
+Open your favorite terminal and type `bol` or `sudo bol` for ubuntu users. Within a moment, a personalized Virtual Assistant will be at your service.
 
-***Note:`BOL` is currently in deveopment stage. More functionalities are yet to be added.***
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true" height="400">
+
+***Note: `BOL` is currently in deveopment stage. More functionalities are yet to be added.***
 
 <br>
-<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/DOST.gif?raw=true" height="400">
 
 <br>
-<br>
 
-### WORK - The Work Hour Monitor
+> ## WORK - The Work Hour Monitor
 
 `WORK` is an intelligent application that detects each and every work you do in your PC and displays a detailed work report.
 
-#### Usage of WORK
+### Usage of WORK
 
-Open your favourite terminal and type `work`. A detailed work report will be displayed.
+Open your favorite terminal and type `cf_work`. 
+A detailed work report will be displayed.
 
-***Important NOTE: All the information that is being collected by `WORK` is stored in a securely maintained database in your system.***
 
+<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_CF_WORK.gif?raw=true" height="400">
+
+***Note: All the information that is being collected by `WORK` is stored in a securely maintained database in your system.***
 
 <br>
-<img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/DOST.gif?raw=true" height="400">
 
 <br>
+
+> ## WhatsApp Bot - Send bulk WhatsApp messages.
+
+ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to send many customized messages to your contacts at once.
+
+### Usage of WhatsApp Bot
+
+Open your favorite terminal and type `cf_wm`, and give path of the excel, 
+or `cf_wm -e excel_path.xlsx`
+
+https://user-images.githubusercontent.com/67296473/139609929-0bb9a1b0-26b0-4573-86ac-0493693a48d4.mp4
+
 <br>
 
+<br>
 
----
+# ClointFusion in Action
 
 ## **Now access more than 100 functions (hit ctrl+space in your IDE)**
 
@@ -141,7 +211,9 @@ Open your favourite terminal and type `work`. A detailed work report will be dis
 
 ```
 cf.find("sort")
+
 cf.find("gui")
+
 ```
 * ### 6 gui functions, to take any input from user:
 
