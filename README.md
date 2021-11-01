@@ -42,8 +42,6 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ### ClointFusion is now supported on Windows / Ubuntu / macOS* !
 
-<br>
-
 ## Windows :
 
 * ClointFusion is compatible with both Windows 10 and Windows 11.
