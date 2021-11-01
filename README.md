@@ -128,6 +128,8 @@ Below is the speed up version of self-test.
 
 https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4
 
+<a href="https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4" target="_blank">Watch our Automated Self-Test Video</a> 
+
 <br>
 
 <br>
