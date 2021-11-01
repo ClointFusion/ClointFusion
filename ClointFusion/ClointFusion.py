@@ -1279,8 +1279,18 @@ def key_press(key_1='', key_2='', key_3='', write_to_window=""):
     status = False
     try:
         if not key_1:
-            key_1 = gui_get_any_input_from_user("keys combination using + as delimeter. Ex: ctrl or tab")
+            key_list = gui_get_any_input_from_user("keys combination using + as delimeter. Ex: ctrl or tab")
             
+            if key_list.count("+") == 0:
+                key_1 = key_list[0]
+            elif key_list.count("+") == 1:
+                key_1, key_2 = key_list.split("+")
+            elif key_list.count("+") == 2:
+                key_1, key_2, key_3 = key_list.split("+")
+            else:
+                print("Invalid keys combination")
+                return False
+
         if os_name == windows_os:
             if write_to_window:
                     window_activate_and_maximize_windows(write_to_window)
@@ -1783,7 +1793,16 @@ def browser_key_press_h(key_1="", key_2=""):
     browser_keys = [ENTER, SHIFT, TAB, ALT, ESCAPE, ESCAPE, CONTROL, CONTROL]
     try:
         if not key_1:
-            key_1 = gui_get_any_input_from_user('Enter key to press(Eg: tab or a):')
+            key_list = gui_get_any_input_from_user('keys combination using + as delimeter. Ex: ctrl or tab')
+            
+            if key_list.count("+") == 0:
+                key_1 = key_list[0]
+            elif key_list.count("+") == 1:
+                key_1, key_2 = key_list.split("+")
+            else:
+                print("Invalid keys combination")
+                return False
+
         if key_1 and not key_2:
             if key_1.lower() in hot_keys:
                 key_1 = browser_keys[hot_keys.index(key_1.lower())]
