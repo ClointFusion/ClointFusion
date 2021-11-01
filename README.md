@@ -158,11 +158,11 @@ Open your favourite terminal and type `dost`. That's it!
 
 ### Usage of BOL
 
-Open your favourite terminal and type `bol`. Within a moment, a personalised Virtual Assistant will be at your service.
-
-***Note:`BOL` is currently in deveopment stage. More functionalities are yet to be added.***
+Open your favourite terminal and type `bol` or `sudo bol` for ubuntu users. Within a moment, a personalized Virtual Assistant will be at your service.
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true" height="400">
+
+***Note: `BOL` is currently in deveopment stage. More functionalities are yet to be added.***
 
 <br>
 
@@ -172,14 +172,15 @@ Open your favourite terminal and type `bol`. Within a moment, a personalised Vir
 
 `WORK` is an intelligent application that detects each and every work you do in your PC and displays a detailed work report.
 
-### <u>Usage of WORK</u>
+### Usage of WORK
 
-Open your favourite terminal and type `work`. 
+Open your favourite terminal and type `cf_work`. 
 A detailed work report will be displayed.
 
-***Important NOTE: All the information that is being collected by `WORK` is stored in a securely maintained database in your system.***
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_CF_WORK.gif?raw=true" height="400">
+
+***Note: All the information that is being collected by `WORK` is stored in a securely maintained database in your system.***
 
 <br>
 
@@ -189,7 +190,7 @@ A detailed work report will be displayed.
 
 ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to send many customised messages to your contacts at once.
 
- - ### Usage of WORK
+### Usage of Whatsapp Bot
 
 Open your favourite terminal and type `cf_wm`, and give path of the excel, 
 or `cf_wm -e excel_path.xlsx`
