@@ -74,8 +74,6 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ### ClointFusion can be accessed using one of two methods.
 
-<br>
-
 ## Windows :
 
 * ### Terminal : Opens a Python interpreter using the command " import ClointFusion as cf "
@@ -136,15 +134,16 @@ Once you have successfully completed the self-test, you will receive an email wi
 
 ` DOST ` is an interactive blockly based ``no-code`` BOT Builder platform built and optimised for ClointFusion-based BOT building. We feel that automation is important for people other than programmers. Using DOST, even a common man can create a BOT in minutes.
 
-### <u> Advantages of DOST </u>
+### Advantages of DOST
 
 - Easy to Use.
 - Build BOT in minutes.
 - No prior Programming knowledge needed.
 
-### <u> Usage of DOST </u>
+### Usage of DOST
 
 Open your favourite terminal and type `dost`. That's it!
+
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true" height="400">
 
 **Build BOT with DOST:** [DOST Website](https://dost.clointfusion.com/)
@@ -153,11 +152,11 @@ Open your favourite terminal and type `dost`. That's it!
 
 <br>
 
-> ## DOST : BOL - Your automation voice based assistant
+> ## BOL : BOL - Your automation voice based assistant
 
 ` BOL ` is voice based automation assistant designed to execute BOTs build out of ClointFusion without any human computer interaction.
 
-### <u> Usage of BOL </u>
+### Usage of BOL
 
 Open your favourite terminal and type `bol`. Within a moment, a personalised Virtual Assistant will be at your service.
 
@@ -195,20 +194,13 @@ ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to se
 Open your favourite terminal and type `cf_wm`, and give path of the excel, 
 or `cf_wm -e excel_path.xlsx`
 
-
-
 https://user-images.githubusercontent.com/67296473/139609929-0bb9a1b0-26b0-4573-86ac-0493693a48d4.mp4
 
-
+<br>
 
 <br>
 
-
-
-<br>
-
-
----
+# ClointFusion in Action
 
 ## **Now access more than 100 functions (hit ctrl+space in your IDE)**
 
@@ -216,7 +208,9 @@ https://user-images.githubusercontent.com/67296473/139609929-0bb9a1b0-26b0-4573-
 
 ```
 cf.find("sort")
+
 cf.find("gui")
+
 ```
 * ### 6 gui functions, to take any input from user:
 
