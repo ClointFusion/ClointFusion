@@ -124,6 +124,10 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 When you import ClointFusion for the first time, or upgrade to a new version, you'll be prompted with the "ClointFusion Automated Self-Test," which highlights all of ClointFusion's 100+ features in action on your computer while also confirming ClointFusion's compatibility with your PC's settings and configurations.
 Once you have successfully completed the self-test, you will receive an email with a self-test report.
 
+Below is the speed up version of self-test.
+
+https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4
+
 <br>
 
 <br>
