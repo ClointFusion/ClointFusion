@@ -544,15 +544,20 @@ def bol_main():
                 error_try_later()
 
 
+config_folder_path = Path(os.path.join(cf.clointfusion_directory, "Config_Files")) 
 
-try:
-    config_folder_path = Path(os.path.join(cf.clointfusion_directory, "Config_Files"))
+if os_name == windows_os:
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+else:
     db_file_path = cf.folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
+        
+try:
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
 except Exception as ex:
     cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
-    print("Error in connecting to DB="+str(ex))
+    print("Error in connecting to DB="+str(ex))        
+
 
 data = cursr.execute("SELECT bol from CF_VALUES where ID = 1")
 for row in data:

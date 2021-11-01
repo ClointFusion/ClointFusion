@@ -168,3 +168,4 @@ ClointFusion/selft.c
 ClointFusion/loader.c
 ClointFusion/__pycache__/cf_notification.cpython-39.pyc
 *.pyc
+ClointFusion/__pycache__/ClointFusion.cpython-39.pyc

@@ -49,6 +49,7 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                      clear_previous_instances=False, profile="Default"):
     """ This function is used to activate the browser.  """
     try:
+        browser_driver = ""
     # To clear previous instances of chrome
         if clear_previous_instances:
             if os_name == windows_os:
@@ -69,14 +70,14 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
                 except Exception as ex:
                     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print(f"Error while closing previous chrome instances. {ex}")
-            time.sleep(10)
+            time.sleep(15)
 
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
         if os_name == linux_os:
             options.add_argument('--no-sandbox')
-            options.add_argument('--disable-dev-shm-usage') 
+            options.add_argument('--disable-dev-shm-usage')
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
@@ -175,16 +176,22 @@ try:
             except TimeoutException:
                 found = False
             except WebDriverException:
-                print("Thank you for utilising DOST. I hope you have a good time with it.")
+                print("Thank you for utilizing DOST. I hope you have a good time with it.")
                 browser.kill_browser()
                 start = False
+                break
             except IndexError:
                 browser.kill_browser()
                 start = False
+                break
+            except RuntimeError:
+                print("Please close all the Google Chrome browser windows, and try again.")
+                browser.kill_browser()
+                break
             except Exception as ex:
                 selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("Error in DOST_Client.pyw="+str(ex))
-
+                break
 except Exception as ex:
     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print(f"Error in DOST_Client: {str(ex)}")
