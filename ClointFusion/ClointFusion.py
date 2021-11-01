@@ -4778,7 +4778,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
             # Actions
             if tour:
-                print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.browser_activate('https://google.com')\ncf.browser_write_h('clointfusion hackathon')\ncf.pause_program(3)\ncf.browser_hit_enter_h()\ncf.browser_mouse_click_h("Python based RPA Development Platform")\ncf.folder_create(os.path.join(test_folder_path,'Screen_scrape'))\ncf.scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")\ncf.os.startfile(os.path.join(test_folder_path,'Screen_scrape'))\ncf.os.startfil(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))\ncf.pg.scroll(10)\ncf.pause_program(3)\ncf.pg.scroll(10)\ncf.window_close_windows('Screen_scrape')\ncf.window_close_windows('notepad-contents.txt')\ncf.window_activate_and_maximize_windows("Python based RPA Development")\ncf.browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")\ncf.browser.scroll_down(1000)\ncf.browser_navigate_h('https://pypi.org')\ncf.browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")\ncf.browser_hit_enter_h()\ncf.pause_program(5)\ncf.browser_navigate_h('https://pypi.org/project/ClointFusion/')\ncf.browser.scroll_down(2000)\ncf.browser_mouse_click_h(element="RPA",double_click=True)\ncf.browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))\ncf.pause_program(10)\ncf.browser_quit_h()""")
+                print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.browser_activate('https://google.com')\ncf.browser_write_h('clointfusion hackathon')\ncf.pause_program(3)\ncf.browser_hit_enter_h()\ncf.browser_mouse_click_h("Python based RPA Development Platform")\ncf.folder_create(os.path.join(test_folder_path,'Screen_scrape'))\ncf.scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")\ncf.os.startfile(os.path.join(test_folder_path,'Screen_scrape'))\ncf.os.startfil(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))\ncf.pg.scroll(10)\ncf.pause_program(3)\ncf.pg.scroll(10)\ncf.window_close_windows('Screen_scrape')\ncf.window_close_windows('notepad-contents')\ncf.window_activate_and_maximize_windows("Python based RPA Development")\ncf.browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")\ncf.browser.scroll_down(1000)\ncf.browser_navigate_h('https://pypi.org')\ncf.browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")\ncf.browser_hit_enter_h()\ncf.pause_program(5)\ncf.browser_navigate_h('https://pypi.org/project/ClointFusion/')\ncf.browser.scroll_down(2000)\ncf.browser_mouse_click_h(element="RPA",double_click=True)\ncf.browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))\ncf.pause_program(10)\ncf.browser_quit_h()""")
             
             if not tour: # Self test for browser
                 if os_name == windows_os:
@@ -4800,7 +4800,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pg.scroll(10)
                         text_to_speech("Ok, Lets get back to the web.", show=False)
                         window_close_windows('Screen_scrape')
-                        window_close_windows('notepad-contents.txt')
+                        window_close_windows('notepad-contents')
                         window_activate_and_maximize_windows("Python based RPA Development")
                         text_to_speech("Do you love what we do, Interested in joining our workforce, lets, have a Date..", show=False)
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
@@ -4877,7 +4877,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         pause_program(3)
                         text_to_speech("Ok, Lets get back to the web.", show=False)
                         window_close_windows('Screen_scrape')
-                        window_close_windows('notepad-contents.txt')
+                        window_close_windows('notepad-contents')
                         window_activate_and_maximize_windows("Python based RPA Development")
                         browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")
                         browser.scroll_down(1000)

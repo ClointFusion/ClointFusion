@@ -126,10 +126,7 @@ Once you have successfully completed the self-test, you will receive an email wi
 
 Below is the speed up version of self-test.
 
-https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4
-
-
-[Self-Test](https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4)
+[ Self-Test in Action ](https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4)
 
 <br>
 
@@ -200,7 +197,7 @@ ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to se
 Open your favorite terminal and type `cf_wm`, and give path of the excel, 
 or `cf_wm -e excel_path.xlsx`
 
-https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4
+[ WhatsApp Bot in action ](https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4)
 
 <br>
 
