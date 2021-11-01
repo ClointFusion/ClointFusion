@@ -125,8 +125,8 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ## ClointFusion's Voice-Guided, Fully Automated Self-Test.
 
-    When you import ClointFusion for the first time, or upgrade to a new version, you'll be prompted with the "ClointFusion Automated Self-Test," which highlights all of ClointFusion's 100+ features in action on your computer while also confirming ClointFusion's compatibility with your PC's settings and configurations.
-    Once you have successfully completed the self-test, you will receive an email with a self-test report.
+When you import ClointFusion for the first time, or upgrade to a new version, you'll be prompted with the "ClointFusion Automated Self-Test," which highlights all of ClointFusion's 100+ features in action on your computer while also confirming ClointFusion's compatibility with your PC's settings and configurations.
+Once you have successfully completed the self-test, you will receive an email with a self-test report.
 
 <br>
 
@@ -134,17 +134,17 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ## DOST : Your friend in automation || Build RPA Bots without Code.
 
-    ` DOST ` is an interactive blockly based ( no code ) BOT Builder platform built and optimised for ClointFusion-based BOT building. We feel that automation is important for people other than programmers. Using DOST, even a common man can create a BOT in minutes.
+` DOST ` is an interactive blockly based ``no-code`` BOT Builder platform built and optimised for ClointFusion-based BOT building. We feel that automation is important for people other than programmers. Using DOST, even a common man can create a BOT in minutes.
 
-    # Advantages of DOST 
+### <u> Advantages of DOST </u>
 
-    - Easy to Use.
-    - Build BOT in minutes.
-    - No prior Programming knowledge needed.
+- Easy to Use.
+- Build BOT in minutes.
+- No prior Programming knowledge needed.
 
-    # Usage of DOST
+### <u> Usage of DOST </u>
 
-    Open your favourite terminal and type `dost`. That's it!
+Open your favourite terminal and type `dost`. That's it!
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true" height="400">
 
 **Build BOT with DOST:** [DOST Website](https://dost.clointfusion.com/)
@@ -155,11 +155,11 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ## DOST : BOL - Your automation voice based assistant
 
-    ` BOL ` is voice based automation assistant designed to execute BOTs build out of ClointFusion without any human computer interaction.
+` BOL ` is voice based automation assistant designed to execute BOTs build out of ClointFusion without any human computer interaction.
 
-    # Usage of BOL
+### <u> Usage of BOL </u>
 
-    Open your favourite terminal and type `bol`. Within a moment, a personalised Virtual Assistant will be at your service.
+Open your favourite terminal and type `bol`. Within a moment, a personalised Virtual Assistant will be at your service.
 
 ***Note:`BOL` is currently in deveopment stage. More functionalities are yet to be added.***
 
@@ -171,12 +171,12 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ## WORK - The Work Hour Monitor
 
-    `WORK` is an intelligent application that detects each and every work you do in your PC and displays a detailed work report.
+`WORK` is an intelligent application that detects each and every work you do in your PC and displays a detailed work report.
 
-    # Usage of WORK
+### <u>Usage of WORK</u>
 
-    Open your favourite terminal and type `work`. 
-    A detailed work report will be displayed.
+Open your favourite terminal and type `work`. 
+A detailed work report will be displayed.
 
 ***Important NOTE: All the information that is being collected by `WORK` is stored in a securely maintained database in your system.***
 
@@ -188,12 +188,12 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 > ## Whatsapp Bot - Send Bulk whatsApp messages.
 
-    ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to send many customised messages to your contacts at once.
+ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to send many customised messages to your contacts at once.
 
-    # Usage of WORK
+ - ### Usage of WORK
 
-    Open your favourite terminal and type `cf_wm`, and give path of the excel, 
-    or `cf_wm -e excel_path.xlsx`
+Open your favourite terminal and type `cf_wm`, and give path of the excel, 
+or `cf_wm -e excel_path.xlsx`
 
 
 
