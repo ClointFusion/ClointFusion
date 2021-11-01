@@ -58,12 +58,17 @@ def folder_create_text_file(textFolderPath="",txtFileName="", custom=False):
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create_text_file="+str(ex))
 
-try:
+if os_name == windows_os:
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+else:
     db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
+        
+try:
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
 except Exception as ex:
-    print("Error in connecting to DB="+str(ex))
+    selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
+    print("Error in connecting to DB="+str(ex))     
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()

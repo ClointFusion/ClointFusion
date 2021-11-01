@@ -134,7 +134,7 @@ https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-
 
 > ## DOST : Your friend in automation || Build RPA Bots without Code.
 
-` DOST ` is an interactive blockly based ``no-code`` BOT Builder platform built and optimised for ClointFusion-based BOT building. We feel that automation is important for people other than programmers. Using DOST, even a common man can create a BOT in minutes.
+` DOST ` is an interactive Blockly based ``no-code`` BOT Builder platform built and optimized for ClointFusion-based BOT building. We feel that automation is important for people other than programmers. Using DOST, even a common man can create a BOT in minutes.
 
 ### Advantages of DOST
 
@@ -164,7 +164,7 @@ Open your favorite terminal and type `bol` or `sudo bol` for ubuntu users. Withi
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true" height="400">
 
-***Note: `BOL` is currently in deveopment stage. More functionalities are yet to be added.***
+***Note: `BOL` is currently in development stage. More functionalities are yet to be added.***
 
 <br>
 
@@ -197,9 +197,7 @@ ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to se
 Open your favorite terminal and type `cf_wm`, and give path of the excel, 
 or `cf_wm -e excel_path.xlsx`
 
-https://user-images.githubusercontent.com/67296473/139609929-0bb9a1b0-26b0-4573-86ac-0493693a48d4.mp4
-
-<br>
+https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4
 
 <br>
 
@@ -223,8 +221,8 @@ cf.find("gui")
 | cf.gui_get_any_file_from_user() | msgForUser="the file : ", Extension_Without_Dot="*" | Generic function to accept file path from user using GUI. Returns the filepath value in string format.Default allows all files. |
 | cf.gui_get_consent_from_user() | msgForUser="Continue ?" | Generic function to get consent from user using GUI. Returns the string 'yes' or 'no' |
 | cf.gui_get_dropdownlist_values_from_user() | msgForUser=" ", dropdown_list=[], multi_select=True | Generic function to accept one of the drop-down value from user using GUI. Returns all chosen values in list format. |
-| cf.gui_get_excel_sheet_header_from_user() | msgForUser=" " | Generic function to accept excel path, sheet name and header from user using GUI. Returns all these values in disctionary format. |
-| cf.gui_get_folder_path_from_user() | msgForUser="the folder : " | Generic function to accept folder path from user using GUI. Returns the folderpath value in string format. |
+| cf.gui_get_excel_sheet_header_from_user() | msgForUser=" " | Generic function to accept excel path, sheet name and header from user using GUI. Returns all these values in dictionary format. |
+| cf.gui_get_folder_path_from_user() | msgForUser="the folder : " | Generic function to accept folder path from user using GUI. Returns the folder path value in string format. |
 
 <br>
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true" height="400">
@@ -235,7 +233,7 @@ cf.find("gui")
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |
-| cf.mouse_click() | x=" ", y=" ", left_or_right="left", no_of_clicks=1  | Clicks at the given X Y Co-ordinates on the screen using ingle / double / tripple click(s). Optionally copies selected data to clipboard (works for double / triple clicks) |
+| cf.mouse_click() | x=" ", y=" ", left_or_right="left", no_of_clicks=1  | Clicks at the given X Y Co-ordinates on the screen using ingle / double / triple click(s). Optionally copies selected data to clipboard (works for double / triple clicks) |
 | cf.mouse_move() | x=" ", y=" " | Moves the cursor to the given X Y Co-ordinates |
 | cf.mouse_drag_from_to() | x1=" ", y1=" ", x2=" ",y2=" ", delay=0.5 | Clicks and drags from X1 Y1 co-ordinates to X2 Y2 Co-ordinates on the screen |
 | cf.mouse_search_snip_return_coordinates_x_y() | img=" ", wait=180 | Searches the given image on the screen and returns its center of X Y co-ordinates. |
@@ -268,7 +266,7 @@ cf.find("gui")
 | cf.win_obj_open_app() | title, program_path_with_name, file_path_with_name=" ", backend="uia" | Open any windows application. |
 | cf.win_obj_get_all_objects() | main_dlg, save=False, file_name_with_path=" " | Print or Save all the windows object elements of an application. |
 | cf.win_obj_mouse_click() | main_dlg,title=" ",  auto_id=" ", control_type=" " | Simulate high level mouse clicks on windows object elements. |
-| cf.win_obj_key_press() | main_dlg,write, title=" ", auto_id=" ", control_type=" " | Simulate high level Keypress on windows object elements. |
+| cf.win_obj_key_press() | main_dlg,write, title=" ", auto_id=" ", control_type=" " | Simulate high level key-press on windows object elements. |
 | cf.win_obj_get_text() | main_dlg, title=" ",  auto_id=" ", control_type=" ", value = False | Read text from windows object element. |
 
 <br>
@@ -303,7 +301,7 @@ cf.find("gui")
 | cf.excel_if_value_exists() | excel_path=" ", sheet_name="Sheet1", header=0, usecols=" ", value=" " | Check if a given value exists in given excel. Returns True / False |
 | cf.excel_create_file() | fullPathToTheFile=" ", fileName=" ", sheet_name="Sheet1" | Create a Excel file in fullPathToTheFile with filename. |
 | cf.excel_copy_paste_range_from_to_sheet() | excel_path=" ", sheet_name="Sheet1",<br> startCol=0, startRow=0, endCol=0,<br> endRow=0, copiedData=" " | Pastes the copied data in specific range of the given excel sheet. |
-| cf.excel_get_row_column_count() | excel_path=" ", sheet_name="Sheet1", header=0 | Gets the row and coloumn count of the provided excel sheet. |
+| cf.excel_get_row_column_count() | excel_path=" ", sheet_name="Sheet1", header=0 | Gets the row and column count of the provided excel sheet. |
 | cf.excel_copy_range_from_sheet() | excel_path=" ", sheet_name="Sheet1", startCol=0, startRow=0, endCol=0, endRow=0 | Copies the specific range from the provided excel sheet and returns copied data as a list |
 | cf.excel_split_by_column() | excel_path=" ", sheet_name="Sheet1",<br> header=0, columnName=" " | Splits the excel file by Column Name |
 | cf.excel_split_the_file_on_row_count() | excel_path=" ", sheet_name = "Sheet1", rowSplitLimit=" ", outputFolderPath=" ", outputTemplateFileName ="Split" |  Splits the excel file as per given row limit |
@@ -345,7 +343,7 @@ cf.find("gui")
 
 ----
 
-* ### 5 functions on Screenscraping Operations:
+* ### 5 functions on Screen-scraping Operations:
 
 | Function | Accepted Parameters | Description |
 | :--------: | :----: | :----------- |

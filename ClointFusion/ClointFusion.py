@@ -68,6 +68,11 @@ python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
 pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
 python_version = str(sys.version_info.major)
 
+if os.getlogin() in python_exe_path:
+    python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+if os.getlogin() in pythonw_exe_path:
+    pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+
 if os_name == windows_os:
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
 elif os_name == linux_os:
@@ -91,7 +96,6 @@ cf_icon_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICO
 cf_logo_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-LOGO.PNG")
 engine = ""
 
-
 def _get_site_packages_path():
     """
     Returns Site-Packages Path
@@ -112,8 +116,8 @@ site_packages_path = _get_site_packages_path()
 if os_name == windows_os:   
     engine = pyttsx3.init('sapi5')
     voices = engine.getProperty('voices')
-    voice_male_female = random.randint(0,1) # Randomly decide male/female voice
-    engine.setProperty('voice', voices[voice_male_female].id)
+    voice = random.choice(voices)# Randomly decide male/female voice
+    engine.setProperty('voice', voice.id)
     r = sr.Recognizer()
     energy_threshold = [3000]
     
@@ -128,6 +132,9 @@ if os_name == windows_os:
 
 elif os_name == linux_os:
     engine = pyttsx3.init('espeak')
+    voices = engine.getProperty('voices')
+    voice_int = random.randint(11, 17)# Randomly decide male/female voice
+    engine.setProperty('voice', voices[voice_int].id)
     r = sr.Recognizer()
     energy_threshold = [3000]
 
@@ -144,13 +151,11 @@ except:
 
 # 2. All global variables
 
-
 log_path = ""
 log_file_path = ""
 
 bot_name = "My_BOT"
 user_name, c_version, s_version, user_email = selft.get_details()
-
 
 browser_driver = ""
 
@@ -164,9 +169,11 @@ ai_processes = []
 helium_service_launched=False
 
 
+
 # 3. All function definitions
 
 # ---------  Methods ---------
+
 def show_emoji(strInput=""):
     """
     Function which prints Emojis
@@ -191,25 +198,30 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
     Returns : None
 
     """
+    import random
+    
     try:
-        accepted_colors_ints = [i for i in range(0,255) if i not in [8,*range(15,28),*range(51,68),77,*range(87,99),114,149,*range(231,250)]]
+        if magic == False:
+            fg_random = random.randint(2,255)
+            
+            while fg_random in [8,*range(15,28),22,23,*range(51,68),77,*range(87,99),114,149,*range(231,250)]:
+                fg_random = random.randint(2,255)            
 
-        if magic:
-            for ch in strMsg:
-                rand_int = random.choice(accepted_colors_ints)
-                color = fg(rand_int)
-                try:
-                    res = attr(1)
-                    print(color+ch+res,end="")
-                except:
-                    res = attr('reset')
-                    print(color+ch+res,end="")
+            print ('%s %s  %s' % (fg(fg_random), strMsg, attr(1)))
         else:
-            rand_int = random.choice(accepted_colors_ints)
-            color = fg(rand_int)
-            print(color+strMsg+attr(1))
-        print(attr('reset'))
+            for ch in strMsg:
+                try:
+                    fg_random = random.randint(2,255)
+                    while fg_random in [8,*range(15,28),22,23,*range(51,68),77,*range(87,99),114,149,*range(231,250)]:
+                        fg_random = random.randint(2,255)
+                    print ('%s%s%s' % (fg(fg_random), ch,attr(1)),sep='',end='')
+                except:
+                    print ('%s' % (fg(1), attr('reset')),ch,sep='',end='')
         
+        reset = attr('reset')    
+        print (reset)
+    except UnicodeEncodeError:
+        pass
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in print_with_magic_color="+str(ex))
@@ -337,8 +349,8 @@ def _welcome_to_clointfusion():
     message = random.choice(messages_list)
     
     welcome_msg = f"\n{greeting} {str(user_name).title()} !  Welcome to ClointFusion, Made in India with " + show_emoji("red_heart") + f". {version}"
-
     print_with_magic_color(welcome_msg,magic=True)
+    print()
     print_with_magic_color(message,magic=False)
     f = Figlet(font='small', width=150)
     console.print(f.renderText("ClointFusion Community Edition"))
@@ -1926,14 +1938,18 @@ def folder_create_text_file(textFolderPath="",txtFileName="", custom=False):
             if ".txt" not in txtFileName:
                 txtFileName = txtFileName + ".txt"
         
-        if not os.path.exists(textFolderPath):
-            folder_create(textFolderPath)
+            if not os.path.exists(textFolderPath):
+                folder_create(textFolderPath)
         
         file_path = os.path.join(textFolderPath, txtFileName)
         file_path = Path(file_path)
         
-        if not file_path.exists():
-            file_path.touch()
+        if os_name == windows_os:
+            f = open(file_path, 'w',encoding="utf-8")
+            f.close()
+        if os_name == linux_os:
+            if not file_path.exists():
+                file_path.touch()
         return file_path
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -4003,12 +4019,12 @@ def _init_cf_quick_test_log_file(log_path_arg):
         dt_tm = dt_tm.split(".")[0]
 
         log_file_path = Path(os.path.join(log_path_arg, str(dt_tm) + ".txt"))
-                
+        
         for handler in logging.root.handlers[:]:
             logging.root.removeHandler(handler)
-
-        logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s  :  %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
-        
+            
+        logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s  :  %(message)s',datefmt='%Y-%m-%d %H:%M:%S')           
+    
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("ERROR in _init_log_file="+str(ex))
@@ -4200,7 +4216,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
                 
                 print('Window based operations tested successfully '+show_emoji())
                 print("\n____________________________________________________________\n")
-                text_to_speech("Great, Windows functions work flawlessly on your PC. Cant wait to see how you use these functions.", show=False)
+                text_to_speech("Great, Windows functions work flawlessly on your PC. Cannot wait to see how you use these functions.", show=False)
                 logging.info('Window based operations tested successfully')
             except Exception as ex:
                 selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -4630,7 +4646,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             
             # Actions
             
-            add_msg = f"Hi {user_name},\nClointFusion is very happy and lucky to collaborate with IIT Dharwad for hackathon 14 !!! Motivate your friends to register Now : https://tinyurl.com/ClointFusion" #"Performing ClointFusion Self Test for Notepad"
+            add_msg = f"Hi {user_name},\nClointFusion is very happy and lucky to collaborate with IIT Dharwad for hackathon 14 !!! \nMotivate your friends to register Now : https://tinyurl.com/ClointFusion" #"Performing ClointFusion Self Test for Notepad"
 
             if os_name == windows_os:
                 try:
@@ -4648,9 +4664,11 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     key_press("b")
                     mouse_click()
                     key_press("e")
+                    text_to_speech("C", show=False)
                     mouse_drag_from_to(screen_width/3, screen_height/3, screen_width/3-200, screen_height/3)
                     mouse_drag_from_to(screen_width/3-200, screen_height/3, screen_width/3-200, screen_height/3+200)
                     mouse_drag_from_to(screen_width/3-200, screen_height/3+200, screen_width/3, screen_height/3+200,)
+                    text_to_speech("F", show=False)
                     mouse_drag_from_to(screen_width/3+30, screen_height/3, screen_width/3+30, screen_height/3+220)
                     mouse_drag_from_to(screen_width/3+30, screen_height/3, screen_width/3+230, screen_height/3)
                     mouse_drag_from_to(screen_width/3+30, screen_height/3+80, screen_width/3+230, screen_height/3+80)
@@ -4729,7 +4747,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 print("\n____________________________________________________________\n")
                 print('Started testing Browser operations...')
                 text_to_speech("With the pandemic, working from home, as well as everything of our employment and education, has gone entirely online. ", show=False)
-                text_to_speech("If we can't automate the web, there's no point in automation. ClointFusion includes 11 browser automation functions.", show=False)
+                text_to_speech("If we cannot automate the web, there's no point in automation. ClointFusion includes 11 browser automation functions.", show=False)
                 message_pop_up("\nBrowser\n```````````\n1)  browser_activate\n2)  browser_navigate_h\n3)  browser_write_h\n4)  browser_mouse_click_h\n5)  browser_locate_element_h\n6)  browser_wait_until_h\n7)  browser_refresh_page_h\n8)  browser_hit_enter_h\n9)  browser_key_press_h\n10)  browser_mouse_hover_h\n11)  browser_quit_h\n\n", delay=5)
                 text_to_speech("With these functions, you can do whatever you want, and, however you like, in a web browser.", show=False)
                 text_to_speech("Now, let me put these functions to the test.", show=False)
@@ -4778,7 +4796,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         browser_mouse_click_h(element="RPA",double_click=True)
                         browser.scroll_down(2000)
                         text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate", show=False)
+                        text_to_speech("Are you worried, that you dont know how to code, so you cannot automate", show=False)
                         text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice", show=False)
                         text_to_speech("ClointFusion, got you covered.", show=False)
                         browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
@@ -4809,7 +4827,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         browser_mouse_click_h(element="RPA",double_click=True)
                         browser.scroll_down(2000)
                         text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                        text_to_speech("Are you worried, that you dont know how to code, so you can't automate", show=False)
+                        text_to_speech("Are you worried, that you dont know how to code, so you cannot automate", show=False)
                         text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice", show=False)
                         text_to_speech("ClointFusion, got you covered.", show=False)
                         browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
@@ -4899,7 +4917,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             logging.info("Error while Testing Browser Helium functions="+str(ex))
             key_press(key_1="ctrl", key_2="w") #to close any open browser
             TEST_CASES_STATUS_MESSAGE  += "Error while Testing Browser Helium functions="+str(ex)
-            
+     
 # Windows Operations
         if os_name == windows_os:
             try:
@@ -4992,7 +5010,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print('Error while testing string operations='+str(ex))
             logging.info('Error while testing string operations='+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing string operations="+str(ex)
-             
+        
 # Folder Operations
         try:
             if not tour:
@@ -5109,21 +5127,25 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 excel_set_single_cell(test_excel_path,columnName="Age",cellNumber=5,setText="5")
                 excel_remove_duplicates(excel_path=test_excel_path, sheet_name="Sheet1", header=0,columnName="Name", which_one_to_keep="first")
                 excel_create_file(test_folder_path,"My VLookUp Excel")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=0,setText="A")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=1,setText="B")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=2,setText="C")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=3,setText="D")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=4,setText="E")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=0,setText="1")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=1,setText="2")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=2,setText="4")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=3,setText="3")
-                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=4,setText="5")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=0,setText="Avinash")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=1,setText="Anil")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=2,setText="Karthick")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=3,setText="Prashant")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Name",cellNumber=4,setText="Fharook")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=0,setText="20000")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=1,setText="50000")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=2,setText="40000")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=3,setText="30000")
+                excel_set_single_cell(Path(test_folder_path,"My VLookUp Excel.xlsx"),columnName="Salary",cellNumber=4,setText="5000")
                 excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
                 if os_name == windows_os:
                     os.startfile(Path(test_folder_path,"My VLookUp Excel.xlsx"))
                     pause_program(10)
-                    window_close_windows("My VLookUp Excel.xlsx")
+                    window_close_windows("My VLookUp Excel")
+                    try:
+                        window_close_windows("My VLookUp Excel.xlsx")
+                    except:
+                        pass
 
                 print('Excel operations tested successfully. '+show_emoji())
                 text_to_speech("Excel operations tested successfully.", show=False)
@@ -5179,7 +5201,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             print("Error while testing Flash message="+str(ex))
             logging.info("Error while testing Flash message="+str(ex))
             TEST_CASES_STATUS_MESSAGE  += "Error while testing Flash message="+str(ex)
-           
+   
 # CLI operations
         try:
             if not tour:
@@ -5213,6 +5235,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     text_to_speech("Internet speed is being tested in the terminal. Let me show you..", show=False)
                     window_activate_and_maximize_windows(console_window_name)
                     cli_speed_test_test()
+                    pause_program(5)
                     window_minimize_windows(console_window_name)
                     window_activate_window("Welcome to ClointFusion - Made in India with LOVE")
                     print("\n_________________\n")
@@ -5254,7 +5277,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     TEST_CASES_STATUS_MESSAGE += "Unable to read log file" + str(ex)
                 
                 try:
-                    text_to_speech("Let me quickly, do the neccessary registration, for you. So you can, get started with automation", show=False)
+                    text_to_speech("Let me quickly, do the necessary registration, for you. So you can, get started with automation", show=False)
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                 except Exception as ex:
@@ -5339,8 +5362,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
             text_to_speech("We hope that, this tour has sparked your interest, in learning more about automation and ClointFusion.")
             print("\n____________________________________________________________\n")
             return tour_comp, tour_comp
-            
-        
+
 
 
 def clointfusion_self_test(tour=False):
@@ -5350,11 +5372,13 @@ def clointfusion_self_test(tour=False):
     last_updated_on_month = ""
     tour_comp = False
     status_msg, success = "", ""
+    console_window = ""
+    if os_name == windows_os:
+        console_window = window_get_active_window()
     try:
     
 # Layout and data
         if not tour:
-        
             layout = [ [sg.Text("ClointFusion's Automated Compatibility Self-Test",justification='c',font='Courier 18',text_color='orange')],
                     [sg.Button("Sign-In With Google", key='SSO', tooltip='Sign-In with Gmail ID')],
                     [sg.Text("Thanks for improving ClointFusion by continuing with this self-test.",justification='c',text_color='yellow',font='Courier 12')],
@@ -5377,11 +5401,9 @@ def clointfusion_self_test(tour=False):
         
         if os_name == windows_os:
             window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=True,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
-            console_window = window_get_active_window()
         else:
             try:
                 window = sg.Window('Welcome to ClointFusion - Made in India with LOVE', layout, return_keyboard_events=True,use_default_focus=False,disable_minimize=False,grab_anywhere=False, disable_close=False,element_justification='c',keep_on_top=False,finalize=True,icon=cf_icon_file_path)
-                console_window = ""
             except:
                 WHILE_TRUE = False
         instructions = False
@@ -5440,6 +5462,8 @@ def clointfusion_self_test(tour=False):
                     print('Please sitback & relax while all the test-cases are run...')
                     print()
                     text_to_speech(f"Thank you, {name_st}, for starting the self-test, and helping to improve ClointFusion.", show=False)
+                    text_to_speech(f"This is a fully automatic self-test that requires no human intervention.", show=False)
+                    text_to_speech(f"Sit back and relax. I'll notify you when I'm finished.", show=False)
                     status_msg, success = clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_window, tour)
 
                     if str(status_msg).strip() == "" and success:
@@ -5985,8 +6009,14 @@ def cli_cf_test():
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
-try:
+if os_name == windows_os:
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+elif os_name == linux_os:
     db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
+else:
+    pass
+
+try:
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
 except Exception as ex:
