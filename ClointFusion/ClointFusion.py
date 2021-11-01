@@ -5254,7 +5254,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     TEST_CASES_STATUS_MESSAGE += "Unable to read log file" + str(ex)
                 
                 try:
-                    text_to_speech("Let me quickly, do the neccessary registration, for you. So you can, get started with automation", show=False)
+                    text_to_speech("Let me quickly, do the necessary registration, for you. So you can, get started with automation", show=False)
                     time_taken= timedelta(seconds=time.monotonic()  - start_time)
                     os_hn_ip = "OS:{}".format(os_name) + "HN:{}".format(socket.gethostname()) + ",IP:" + str(socket.gethostbyname(socket.gethostname())) + "/" + str(get_public_ip())
                 except Exception as ex:
