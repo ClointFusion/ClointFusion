@@ -5122,8 +5122,8 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 excel_vlook_up(filepath_1=test_excel_path,filepath_2=Path(test_folder_path,"My VLookUp Excel.xlsx"),match_column_name="Name")
                 if os_name == windows_os:
                     os.startfile(Path(test_folder_path,"My VLookUp Excel.xlsx"))
-                    pause_program(5)
-                    window_close_windows("My VLookUp Excel")
+                    pause_program(10)
+                    window_close_windows("My VLookUp Excel.xlsx")
 
                 print('Excel operations tested successfully. '+show_emoji())
                 text_to_speech("Excel operations tested successfully.", show=False)
@@ -5492,6 +5492,7 @@ def clointfusion_self_test(tour=False):
                     pause_program(5)
                     if os_name == windows_os:
                         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
+                        window_activate_and_maximize_windows(console_window)
                     else:
                         os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Awesome !!!, your now using the latest ClointFusion.\'); print(\'Try cf.browser_activate() \')"')
                         time.sleep(2)
