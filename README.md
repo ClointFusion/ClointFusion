@@ -197,7 +197,7 @@ ClointFusion's "WhatsApp Bot" is an automated utility tool that allows you to se
 Open your favorite terminal and type `cf_wm`, and give path of the excel, 
 or `cf_wm -e excel_path.xlsx`
 
-https://user-images.githubusercontent.com/67296473/139609929-0bb9a1b0-26b0-4573-86ac-0493693a48d4.mp4
+https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4
 
 <br>
 
