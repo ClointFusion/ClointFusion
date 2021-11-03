@@ -6126,8 +6126,8 @@ if os_name != mac_os:
 else:
     _welcome_to_clointfusion()
     try:
-        print_with_magic_color("We do not yet support macOS completely. Feel free to have a look and contribute to making us stronger.")
+        print_with_magic_color("We do not yet support macOS completely. Feel free to have a look and contribute to make us strong.")
         print_with_magic_color(random.choice(contribution_messages))
     except:
-        print("We do not yet support macOS completely. Feel free to have a look and contribute to making us stronger.")
+        print("We do not yet support macOS completely. Feel free to have a look and contribute to make us strong.")
         print(random.choice(contribution_messages))
