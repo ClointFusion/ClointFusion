@@ -556,7 +556,7 @@ try:
     cursr = connct.cursor()
 except Exception as ex:
     cf.selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
-    print("Error in connecting to DB="+str(ex))        
+    print("Error in connecting to DB="+str(ex))
 
 
 data = cursr.execute("SELECT bol from CF_VALUES where ID = 1")
