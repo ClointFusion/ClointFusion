@@ -4696,7 +4696,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     text_to_speech("F", show=False)
                     mouse_drag_from_to(screen_width/3+30, screen_height/3, screen_width/3+30, screen_height/3+220)
                     mouse_drag_from_to(screen_width/3+30, screen_height/3, screen_width/3+230, screen_height/3)
-                    mouse_drag_from_to(screen_width/3+30, screen_height/3+80, screen_width/3+230, screen_height/3+80)
+                    mouse_drag_from_to(screen_width/3+30, screen_height/3+80, screen_width/3+180, screen_height/3+80)
                     key_press("t")
                     mouse_click()
                     key_write_enter("ClointFusion is awesome, isn't?")
@@ -4714,6 +4714,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                     key_press(key_1="alt", key_2="f4", write_to_window="notepad")
                     key_press("right")
                     key_hit_enter()
+                    window_show_desktop()
                 except Exception as ex:
                     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("ClointFusion Automated Testing Failed for Keyboard and mouse Functions | Windows "+str(ex))
@@ -4784,7 +4785,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
             # Actions
             if tour:
-                print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.browser_activate('https://google.com')\ncf.browser_write_h('clointfusion hackathon')\ncf.pause_program(3)\ncf.browser_hit_enter_h()\ncf.browser_mouse_click_h("Python based RPA Development Platform")\ncf.folder_create(os.path.join(test_folder_path,'Screen_scrape'))\ncf.scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")\ncf.os.startfile(os.path.join(test_folder_path,'Screen_scrape'))\ncf.os.startfil(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))\ncf.pg.scroll(10)\ncf.pause_program(3)\ncf.pg.scroll(10)\ncf.window_close_windows('Screen_scrape')\ncf.window_close_windows('notepad-contents')\ncf.window_activate_and_maximize_windows("Python based RPA Development")\ncf.browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")\ncf.browser.scroll_down(1000)\ncf.browser_navigate_h('https://pypi.org')\ncf.browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")\ncf.browser_hit_enter_h()\ncf.pause_program(5)\ncf.browser_navigate_h('https://pypi.org/project/ClointFusion/')\ncf.browser.scroll_down(2000)\ncf.browser_mouse_click_h(element="RPA",double_click=True)\ncf.browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))\ncf.pause_program(10)\ncf.browser_quit_h()""")
+                print("""\nCommands I will be using in the next scenario:\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nimport ClointFusion as cf\ncf.browser_activate('https://google.com')\ncf.browser_write_h('clointfusion hackathon')\ncf.pause_program(3)\ncf.browser_hit_enter_h()\ncf.browser_mouse_click_h("Python based RPA Development Platform")\ncf.folder_create(os.path.join(test_folder_path,'Screen_scrape'))\ncf.scrape_save_contents_to_notepad(test_folder_path / 'Screen_scrape', switch_to_window="Python based")\ncf.os.startfile(os.path.join(test_folder_path,'Screen_scrape'))\ncf.os.startfil(os.path.join(test_folder_path,'Screen_scrape','notepad-contents.txt'))\ncf.pg.scroll(10)\ncf.pause_program(3)\ncf.pg.scroll(10)\ncf.window_close_windows('Screen_scrape')\ncf.window_close_windows('notepad-contents')\ncf.window_activate_and_maximize_windows("Python based RPA Development")\ncf.browser_navigate_h("https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion")\ncf.browser.scroll_down(1000)\ncf.browser_navigate_h('https://pypi.org')\ncf.browser_write_h("ClointFusion",User_Visible_Text_Element="Search projects")\ncf.browser_hit_enter_h()\ncf.pause_program(5)\ncf.browser_navigate_h('https://pypi.org/project/ClointFusion/')\ncf.browser.scroll_down(2000)\ncf.browser_mouse_click_h(element="RPA",double_click=True)\ncf.browser_navigate_h('https://dost.clointfusion.com/')\ncf.pause_program(10)\ncf.browser_quit_h()""")
             
             if not tour: # Self test for browser
                 if os_name == windows_os:
@@ -4824,7 +4825,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         text_to_speech("Are you worried, that you dont know how to code, so you cannot automate", show=False)
                         text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice", show=False)
                         text_to_speech("ClointFusion, got you covered.", show=False)
-                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        browser_navigate_h('https://dost.clointfusion.com/')
                         text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
                         pause_program(10)
                         text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com", show=False)
@@ -4855,7 +4856,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         text_to_speech("Are you worried, that you dont know how to code, so you cannot automate", show=False)
                         text_to_speech("Are you just bored, to copy paste the same syntax twice, and thrice", show=False)
                         text_to_speech("ClointFusion, got you covered.", show=False)
-                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        browser_navigate_h('https://dost.clointfusion.com/')
                         text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.", show=False)
                         pause_program(10)
                         text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com", show=False)
@@ -4895,7 +4896,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         browser_mouse_click_h(element="RPA",double_click=True)
                         browser.scroll_down(2000)
                         text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        browser_navigate_h('https://dost.clointfusion.com/')
                         text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.")
                         pause_program(10)
                         text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com")
@@ -4923,7 +4924,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                         browser_mouse_click_h(element="RPA",double_click=True)
                         browser.scroll_down(2000)
                         text_to_speech("Here, You can read, our detailed documentation, and view, our well, explained gifs.", show=False)
-                        browser_mouse_click_h(element=browser_locate_element_h('//*[@id="description"]/div/h2[2]/a'))
+                        browser_navigate_h('https://dost.clointfusion.com/')
                         text_to_speech("DOST, a block based approach to automate, powered by Clointfusion, just drag, and drop, the functions, and automate.")
                         pause_program(10)
                         text_to_speech("Just give it a try, and let us know your opinion via email to Clointfusion@cloint.com")
@@ -5400,6 +5401,8 @@ def clointfusion_self_test(tour=False):
     console_window = ""
     if os_name == windows_os:
         console_window = window_get_active_window()
+        if "command" in console_window:
+            console_window = "command"
     try:
     
 # Layout and data
@@ -5642,15 +5645,20 @@ def cli_colab_launcher():
         print("Error in cli_colab_launcher " + str(ex))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-def cli_dost():
+@click.option('--profile', '-p', multiple=True,help="ClointFusion Command Line Interface's basic command")
+def cli_dost(profile):
     """ClointFusion CLI for DOST GUI Launcher"""
     global python_exe_path
     try:
         print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion : https://www.linkedin.com/in/murali-manohar-varma-220a03207 \n")
         
         if os_name == windows_os:
-            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
-            os.system(cmd)
+            if profile:
+                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
+                os.system(cmd)
+            else:
+                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
+                os.system(cmd)
         elif os_name == linux_os:
             # Commands for linux
             cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
@@ -6126,8 +6134,8 @@ if os_name != mac_os:
 else:
     _welcome_to_clointfusion()
     try:
-        print_with_magic_color("We do not yet support macOS completely. Feel free to have a look and contribute to making us stronger.")
+        print_with_magic_color("We do not yet support macOS completely. Feel free to have a look and contribute to make us strong.")
         print_with_magic_color(random.choice(contribution_messages))
     except:
-        print("We do not yet support macOS completely. Feel free to have a look and contribute to making us stronger.")
+        print("We do not yet support macOS completely. Feel free to have a look and contribute to make us strong.")
         print(random.choice(contribution_messages))

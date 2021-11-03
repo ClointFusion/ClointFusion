@@ -53,6 +53,24 @@ def _get_site_packages_path():
         site_packages_path = site.getsitepackages()[0]
     return str(site_packages_path)
 
+def _welcome_to_clointfusion():
+    global user_name
+    """
+    Internal Function to display welcome message & push a notification to ClointFusion Slack
+    """
+    from pyfiglet import Figlet
+    version = "(Version: 1.1.1)"
+    import random
+
+
+    messages_list = ['Where would I be without a friend like you?', 'I appreciate what you did.', 'Thank you for thinking of me.', 'Thank you for your time today.', 'I am so thankful for what you did here', 'I really appreciate your help. Thank you.', "You know, if you're reading this, you're in the top 1% of smart people.", 'We know the world is full of choices. Yet you picked us, Thank you very much.', 'Thank you. We hope your experience was excellent and we can’t wait to see you again soon.', 'We hope you are happy with our tool, if not we are just an e-mail away at clointfusion@cloint.com. We will be pleased to hear from you.', 'ClointFusion would like to thank excellent users like you for your support. We couldn’t do it without you!', 'Thank you for your business, your trust, and your confidence. It is our pleasure to work with you.', 'We take pride in your business with us. Thank you!', 'It has been our pleasure to serve you, and we hope we see you again soon.', 'We value your trust and confidence in us and sincerely appreciate you!', 'Your satisfaction is our greatest concern!', 'Your confidence in us is greatly appreciated!', 'We are excited to serve you first!', 'Thank you for keeping us informed about how best to serve your needs. Together, we can make this history.', 'Our brand innovation wouldn’t have been possible if you didn’t give us feedback about our services.', 'Thank you so much for playing a pivotal role in our growth. We’ll make sure we continue to put your needs first as our company expands and improves.', 'We are exceedingly pleased to find people we can always count on. Thank you for being one of our loyal and trusted clients.', ]
+    message = random.choice(messages_list)
+    
+    print()
+    f = Figlet(font='small', width=150)
+    console.print(f.renderText("ClointFusion Community Edition"))
+    print(message + "\n")
+
 site_packages_path = _get_site_packages_path()
 
 python_version = str(sys.version_info.major)
@@ -92,9 +110,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
-        if os_name == linux_os:
-            options.add_argument('--no-sandbox')
-            options.add_argument('--disable-dev-shm-usage')
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
@@ -162,14 +177,20 @@ def exe_code(path):
 if os_name == windows_os:
 
     try:
-        uuid = selft.get_uuid()
-        text = Text("Welcome to DOST,")
-        text.stylize("bold magenta")
-        text.append(" you drag and drop, we do the rest. Happy Automation!")
-        console.print(text)
-
-        web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, clear_previous_instances=True)
-        browser.set_driver(web_driver)
+        profile = "Default"
+        if len(sys.argv) > 1:
+            profile = "".join([character for character in sys.argv[1] if character.isalnum() or character == ' '])
+        clear_screen()
+        _welcome_to_clointfusion()
+        with console.status(f"Launching DOST client with Profile : {profile} .\n") as status:
+            uuid = selft.get_uuid()
+            text = Text("Welcome to DOST,")
+            text.stylize("bold magenta")
+            text.append(" you drag and drop, we do the rest. Happy Automation!\n\n")
+            console.print(text)
+            
+            web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, profile=profile, clear_previous_instances=True)
+            browser.set_driver(web_driver)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in UUID: {str(ex)}")
@@ -189,6 +210,7 @@ if os_name == windows_os:
                         browser.wait_until(browser.Text("Running Program..").exists)
                         if browser.Text("Running Program...").exists:
                             browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+                            
                             status.update("Running your bot...\n")
                             while run_program(website):
                                 continue
@@ -197,13 +219,10 @@ if os_name == windows_os:
                 except TimeoutException:
                     found = False
                 except WebDriverException:
-                    print("Thank you for utilizing DOST. I hope you have a good time with it.")
                     browser.kill_browser()
-                    start = False
                     break
                 except IndexError:
                     browser.kill_browser()
-                    start = False
                     break
                 except RuntimeError:
                     print("Please close all the Google Chrome browser windows, and try again.")
@@ -213,6 +232,8 @@ if os_name == windows_os:
                     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Error in DOST_Client.pyw="+str(ex))
                     break
+        print("Thank you for utilizing DOST. I hope you have a good time with it.\n")
+            
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in DOST_Client: {str(ex)}")
@@ -225,23 +246,12 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import helium as browser
 from rich.text import Text
-from rich import print
 from rich.console import Console
-import requests, os, subprocess, platform, time, sys, traceback
+import requests, os, subprocess, time, traceback,  sys
 from rich import pretty
 import pyinspect as pi
 
-windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
-os_name = str(platform.system()).lower()
-
-if os_name == windows_os:
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
-elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
@@ -260,68 +270,6 @@ class DisableLogger():
        logging.disable(logging.CRITICAL)
     def __exit__(self, exit_type, exit_value, exit_traceback):
        logging.disable(logging.NOTSET)
-
-def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
-                     clear_previous_instances=False, profile="Default"):
-    try:
-        browser_driver = ""
-    # To clear previous instances of chrome
-        if clear_previous_instances:
-            if os_name == windows_os:
-                try:
-                    subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-                except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
-            elif os_name == mac_os:
-                try:
-                    subprocess.call('pkill "Google Chrome"', shell=True)
-                except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
-            elif os_name == linux_os:
-                try:
-                    subprocess.call('sudo pkill -9 chrome', shell=True)
-                except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
-            time.sleep(15)
-
-        options = Options()
-        options.add_argument("--start-maximized")
-        options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
-        if incognito:
-            options.add_argument("--incognito")
-        if not dummy_browser:
-            if os_name == windows_os:
-                options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-            elif os_name == mac_os:
-                options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
-            elif os_name == linux_os:
-                options.add_argument("user-data-dir=/home/{}/.config/google-chrome".format(os.getlogin()))
-            options.add_argument(f"profile-directory={profile}")
-        #  Set the download path
-        if files_download_path != '':
-            prefs = {
-                'download.default_directory': files_download_path,
-                "download.prompt_for_download": False,
-                'download.directory_upgrade': True,
-                "safebrowsing.enabled": False
-            }
-            options.add_experimental_option('prefs', prefs)
-        try:
-            with DisableLogger():
-                browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-            browser.set_driver(browser_driver)
-            if url:
-                browser.go_to(url)
-            if not url:
-                browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
-            browser.Config.implicit_wait_secs = 5
-        except Exception as ex:
-            print(f"Error while browser_activate: {str(ex)}")
-    except Exception as ex:
-        print("Error in launch_website_h = " + str(ex))
-        browser.kill_browser()
-    finally:
-        return browser_driver
 
 def clear_screen():
     try:
@@ -346,38 +294,55 @@ def exe_code(path):
   os.system(cmd)
   return False
 
-def browser_linux(profile="Default"):
-    browser_driver = ""
-    import subprocess
-    subprocess.Popen(['google-chrome --remote-debugging-port=9222'], shell=True,
-             stdin=None, stdout=None, stderr=None, close_fds=True)
-    time.sleep(10)
+def _welcome_to_clointfusion():
+    from pyfiglet import Figlet
+    version = "(Version: 1.1.1)"
+    import random
     
-    options = Options()
-    options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-    
-    with DisableLogger():
-        browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
+    messages_list = ['Where would I be without a friend like you?', 'I appreciate what you did.', 'Thank you for thinking of me.', 'Thank you for your time today.', 'I am so thankful for what you did here', 'I really appreciate your help. Thank you.', "You know, if you're reading this, you're in the top 1% of smart people.", 'We know the world is full of choices. Yet you picked us, Thank you very much.', 'Thank you. We hope your experience was excellent and we can’t wait to see you again soon.', 'We hope you are happy with our tool, if not we are just an e-mail away at clointfusion@cloint.com. We will be pleased to hear from you.', 'ClointFusion would like to thank excellent users like you for your support. We couldn’t do it without you!', 'Thank you for your business, your trust, and your confidence. It is our pleasure to work with you.', 'We take pride in your business with us. Thank you!', 'It has been our pleasure to serve you, and we hope we see you again soon.', 'We value your trust and confidence in us and sincerely appreciate you!', 'Your satisfaction is our greatest concern!', 'Your confidence in us is greatly appreciated!', 'We are excited to serve you first!', 'Thank you for keeping us informed about how best to serve your needs. Together, we can make this history.', 'Our brand innovation wouldn’t have been possible if you didn’t give us feedback about our services.', 'Thank you so much for playing a pivotal role in our growth. We’ll make sure we continue to put your needs first as our company expands and improves.', 'We are exceedingly pleased to find people we can always count on. Thank you for being one of our loyal and trusted clients.', ]
+    message = random.choice(messages_list)
     
-    browser.set_driver(browser_driver)
-    return browser_driver
-    
-if os_name == linux_os:
-    try:
-        uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
-        text = Text("Welcome to DOST,")
-        text.stylize("bold magenta")
-        text.append(" you drag and drop, we do the rest. Happy Automation!")
-        console.print(text)
-        web_driver = browser_linux(profile="Default")
+    print()
+    f = Figlet(font='small', width=150)
+    console.print(f.renderText("ClointFusion Community Edition"))
+    print(message + "\n")
 
-        browser.set_driver(web_driver)
+def browser_linux(profile = "Default"):
+    with console.status(f"Launching DOST client with Profile : {profile}...\n"):
         clear_screen()
-        browser.go_to(f"{website}/cf_id/{uuid}")
+        _welcome_to_clointfusion()
+        browser_driver = ""
+        from subprocess import DEVNULL, STDOUT, Popen
+        
+        Popen([f'google-chrome --profile-directory="{profile}" --remote-debugging-port=9222'], shell=True,
+                stdin=None, stdout=DEVNULL, stderr=STDOUT, close_fds=True)
+        time.sleep(5)
+        
+        options = Options()
+        options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+        
+        with DisableLogger():
+            browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-    except Exception as ex:
-        print(f"Error in UUID: {str(ex)}")
+        return browser_driver
+
+try:
+    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
+    text = Text("Welcome to DOST,")
+    text.stylize("bold magenta")
+    text.append(" you drag and drop, we do the rest. Happy Automation!")
+    console.print(text)
+    profile = "Default"
+    print(sys.argv)
+    if len(sys.argv) > 1:
+        profile = sys.argv[1]
+    web_driver = browser_linux(profile)
+
+    browser.set_driver(web_driver)
+    browser.go_to(f"{website}/cf_id/{uuid}")
+except Exception as ex:
+    print(f"Error in UUID: {str(ex)}")
 
 try:
     with console.status("DOST client running...\n") as status:
@@ -418,7 +383,7 @@ try:
                 print("Error in DOST_Client.pyw="+str(ex))
                 break
 except Exception as ex:
-    print(f"Error in DOST_Client: {str(ex)}")    
+    print(f"Error in DOST_Client: {str(ex)}")
     
     """
     import os
@@ -427,6 +392,6 @@ except Exception as ex:
         rsh.write(code)
     os.system(f"chmod +x {path_py}")
     
-    print(f"Please run the following command to start DOST Client: \npython{python_version} dost.py\n")
+    print(f'Please run the following command to start DOST Client: \npython{python_version} dost.py\nWant to use a different profile, use\npython{python_version} dost.py "Person 1"\n')
     
 
