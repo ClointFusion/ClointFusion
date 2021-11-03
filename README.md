@@ -142,9 +142,23 @@ Below is the speed up version of self-test.
 - Build BOT in minutes.
 - No prior Programming knowledge needed.
 
-### Usage of DOST
+### Launch DOST client
+
+> #### Windows
 
 Open your favorite terminal and type `dost`. That's it!
+
+- Want to change the chrome profile ?
+
+    - Use `dost -p "Profile 1"`
+
+> #### Ubuntu
+In Ubuntu, type `sudo dost` and then type `python3 dost.py`
+
+- Want to change the chrome profile ?
+
+    - Use`python3 dost.py "Profile 1"`
+
 
 <img src="https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true" height="400">
 
