@@ -6115,7 +6115,7 @@ if os_name != mac_os:
             _ask_user_semi_automatic_mode()
             enable_semi_automatic_mode = False # By DEFAULT
         else:
-            os.system("exit")
+            sys.exit()
     
 
     # ########################
