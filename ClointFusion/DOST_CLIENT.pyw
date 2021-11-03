@@ -392,6 +392,6 @@ except Exception as ex:
         rsh.write(code)
     os.system(f"chmod +x {path_py}")
     
-    print(f'Please run the following command to start DOST Client: \npython{python_version} dost.py\nWant to use a different profile, use\npython{python_version} dost.py "Person 1"')
+    print(f'Please run the following command to start DOST Client: \npython{python_version} dost.py\nWant to use a different profile, use\npython{python_version} dost.py "Person 1"\n')
     
 
