@@ -349,7 +349,7 @@ def exe_code(path):
 def browser_linux(profile="Default"):
     browser_driver = ""
     import subprocess
-    subprocess.Popen(['google-chrome --profile-directory="Defualt" --remote-debugging-port=9222'], shell=True,
+    subprocess.Popen(['google-chrome --remote-debugging-port=9222'], shell=True,
              stdin=None, stdout=None, stderr=None, close_fds=True)
     time.sleep(10)
     
