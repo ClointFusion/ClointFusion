@@ -5612,7 +5612,7 @@ def cli_auto_liker():
             os.system(cmd)
         else:
             print("Auto Liker option is only available on Windows. We regret the inconvenience.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             
@@ -5632,7 +5632,7 @@ def cli_colab_launcher():
             os.system(cmd)
         else:
             print("Colab Launcher option is only available on Windows. We regret the inconvenience.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             
@@ -5657,7 +5657,7 @@ def cli_dost():
             os.system(cmd)
         else:
             print("DOST option not available on macOS. We regret the inconvenience.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5678,7 +5678,7 @@ def cli_bol():
             # cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/Bol.pyw"'
             # os.system(cmd)
             print("BOL option is only available on Windows. We regret the inconvenience.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
             
         
@@ -5695,7 +5695,7 @@ def cli_whm():
             os.system(cmd)
         else:
             print("Tray option is only available on Windows. We regret the inconvenience.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
             
             # # Commands for linux
@@ -5727,7 +5727,7 @@ def cli_send_whatsapp_msg(excel_path):
             os.system(cmd)
         else:
             print("WhatsApp bot is only available on Windows. We regret the inconvenience.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5873,7 +5873,7 @@ def cli_bre_whm():
             print("Error in cli_bre_whm="+str(ex))
     else:
         print("Work Hour Monitor currently only available on Windows PC.")
-        print("Please contribute to make this feature available on all systems.")
+        print(f"Please contribute to make this feature available on {os_name.upper()} system.")
         print(random.choice(contribution_messages))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -5911,7 +5911,7 @@ def cli_cf_py():
             os.system(f'python{python_version} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
         except:
             print("This command is not available on macOS.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             
@@ -5926,7 +5926,7 @@ def cli_cf_tour():
             _perform_self_test(True)
         except:
             print("This command is not available on macOS.")
-            print("Please contribute to make this feature available on all systems.")
+            print(f"Please contribute to make this feature available on {os_name.upper()} system.")
             print(random.choice(contribution_messages))
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             
