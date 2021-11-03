@@ -153,7 +153,7 @@ Open your favorite terminal and type `dost`. That's it!
     - Use `dost -p "Profile 1"`
 
 > #### Ubuntu
-In Ubuntu, type `sudo dost` and then type `python3 dost.py`
+Open your favorite terminal and type `sudo dost` and then type `python3 dost.py`.
 
 - Want to change the chrome profile ?
 
