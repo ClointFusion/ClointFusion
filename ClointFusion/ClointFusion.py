@@ -5400,6 +5400,8 @@ def clointfusion_self_test(tour=False):
     console_window = ""
     if os_name == windows_os:
         console_window = window_get_active_window()
+        if "command" in console_window:
+            console_window = "command"
     try:
     
 # Layout and data

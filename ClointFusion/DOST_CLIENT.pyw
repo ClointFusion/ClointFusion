@@ -167,8 +167,10 @@ if os_name == windows_os:
         text.stylize("bold magenta")
         text.append(" you drag and drop, we do the rest. Happy Automation!")
         console.print(text)
-
-        web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, clear_previous_instances=True)
+        profile = "Default"
+        if len(sys.argv) > 1:
+            profile = sys.argv[1]
+        web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, profile=profile, clear_previous_instances=True)
         browser.set_driver(web_driver)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -225,23 +227,12 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import helium as browser
 from rich.text import Text
-from rich import print
 from rich.console import Console
-import requests, os, subprocess, platform, time, sys, traceback
+import requests, os, subprocess, time, traceback,  sys
 from rich import pretty
 import pyinspect as pi
 
-windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
-os_name = str(platform.system()).lower()
-
-if os_name == windows_os:
-    clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
-elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
+clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
@@ -260,68 +251,6 @@ class DisableLogger():
        logging.disable(logging.CRITICAL)
     def __exit__(self, exit_type, exit_value, exit_traceback):
        logging.disable(logging.NOTSET)
-
-def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
-                     clear_previous_instances=False, profile="Default"):
-    try:
-        browser_driver = ""
-    # To clear previous instances of chrome
-        if clear_previous_instances:
-            if os_name == windows_os:
-                try:
-                    subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-                except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
-            elif os_name == mac_os:
-                try:
-                    subprocess.call('pkill "Google Chrome"', shell=True)
-                except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
-            elif os_name == linux_os:
-                try:
-                    subprocess.call('sudo pkill -9 chrome', shell=True)
-                except Exception as ex:
-                    print(f"Error while closing previous chrome instances. {ex}")
-            time.sleep(15)
-
-        options = Options()
-        options.add_argument("--start-maximized")
-        options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
-        if incognito:
-            options.add_argument("--incognito")
-        if not dummy_browser:
-            if os_name == windows_os:
-                options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-            elif os_name == mac_os:
-                options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
-            elif os_name == linux_os:
-                options.add_argument("user-data-dir=/home/{}/.config/google-chrome".format(os.getlogin()))
-            options.add_argument(f"profile-directory={profile}")
-        #  Set the download path
-        if files_download_path != '':
-            prefs = {
-                'download.default_directory': files_download_path,
-                "download.prompt_for_download": False,
-                'download.directory_upgrade': True,
-                "safebrowsing.enabled": False
-            }
-            options.add_experimental_option('prefs', prefs)
-        try:
-            with DisableLogger():
-                browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-            browser.set_driver(browser_driver)
-            if url:
-                browser.go_to(url)
-            if not url:
-                browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
-            browser.Config.implicit_wait_secs = 5
-        except Exception as ex:
-            print(f"Error while browser_activate: {str(ex)}")
-    except Exception as ex:
-        print("Error in launch_website_h = " + str(ex))
-        browser.kill_browser()
-    finally:
-        return browser_driver
 
 def clear_screen():
     try:
@@ -346,38 +275,44 @@ def exe_code(path):
   os.system(cmd)
   return False
 
-def browser_linux(profile="Default"):
-    browser_driver = ""
-    import subprocess
-    subprocess.Popen(['google-chrome --remote-debugging-port=9222'], shell=True,
-             stdin=None, stdout=None, stderr=None, close_fds=True)
-    time.sleep(10)
-    
-    options = Options()
-    options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-    
-    with DisableLogger():
-        browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+def browser_linux(profile = "Default"):
+    with console.status(f"Launching DOST client with Profile : {profile}...\n"):
+        browser_driver = ""
+        from subprocess import DEVNULL, STDOUT, Popen
+        
 
-    
-    browser.set_driver(browser_driver)
-    return browser_driver
-    
-if os_name == linux_os:
-    try:
-        uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
-        text = Text("Welcome to DOST,")
-        text.stylize("bold magenta")
-        text.append(" you drag and drop, we do the rest. Happy Automation!")
-        console.print(text)
-        web_driver = browser_linux(profile="Default")
+        print(f"Using profile: {profile}")
+        
+        Popen([f'google-chrome --profile-directory="{profile}" --remote-debugging-port=9222'], shell=True,
+                stdin=None, stdout=DEVNULL, stderr=STDOUT, close_fds=True)
+        time.sleep(5)
+        
+        options = Options()
+        options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+        
+        with DisableLogger():
+            browser_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-        browser.set_driver(web_driver)
-        clear_screen()
-        browser.go_to(f"{website}/cf_id/{uuid}")
+        return browser_driver
 
-    except Exception as ex:
-        print(f"Error in UUID: {str(ex)}")
+try:
+    uuid = str(subprocess.check_output('sudo dmidecode -s system-uuid', shell=True),'utf-8').split('\n')[0].strip()
+    text = Text("Welcome to DOST,")
+    text.stylize("bold magenta")
+    text.append(" you drag and drop, we do the rest. Happy Automation!")
+    console.print(text)
+    profile = "Default"
+    print(sys.argv)
+    if len(sys.argv) > 1:
+        profile = sys.argv[1]
+    web_driver = browser_linux(profile)
+
+    browser.set_driver(web_driver)
+    clear_screen()
+    browser.go_to(f"{website}/cf_id/{uuid}")
+
+except Exception as ex:
+    print(f"Error in UUID: {str(ex)}")
 
 try:
     with console.status("DOST client running...\n") as status:
@@ -394,10 +329,10 @@ try:
                     browser.wait_until(browser.Text("Running Program..").exists)
                     if browser.Text("Running Program...").exists:
                         browser.wait_until(lambda: not browser.Text("Running Program..").exists())
-                        status.update("Running your bot...\n")
+                        status.update("\nRunning your bot...\n")
                         while run_program(website):
                             continue
-                        status.update("DOST client running...\n")
+                        status.update("\nDOST client running...\n")
                         found = False
             except TimeoutException:
                 found = False
@@ -418,7 +353,7 @@ try:
                 print("Error in DOST_Client.pyw="+str(ex))
                 break
 except Exception as ex:
-    print(f"Error in DOST_Client: {str(ex)}")    
+    print(f"Error in DOST_Client: {str(ex)}")
     
     """
     import os
@@ -427,6 +362,6 @@ except Exception as ex:
         rsh.write(code)
     os.system(f"chmod +x {path_py}")
     
-    print(f"Please run the following command to start DOST Client: \npython{python_version} dost.py\n")
+    print(f'Please run the following command to start DOST Client: \npython{python_version} dost.py\nWant to use a different profile, use\npython{python_version} dost.py "Person 1"')
     
 
