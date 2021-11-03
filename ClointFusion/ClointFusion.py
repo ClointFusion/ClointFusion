@@ -5611,7 +5611,7 @@ def cli_auto_liker():
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\cf_auto_liker.py"'
             os.system(cmd)
         else:
-            print("Auto Liker option is only available on windows. We regret the inconvience.")
+            print("Auto Liker option is only available on Windows. We regret the inconvenience.")
             print("Please contribute to make this feature available on all systems.")
             print(random.choice(contribution_messages))
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5631,7 +5631,7 @@ def cli_colab_launcher():
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Colab_Launcher.py"' 
             os.system(cmd)
         else:
-            print("Colab Launcher option is only available on windows. We regret the inconvience.")
+            print("Colab Launcher option is only available on Windows. We regret the inconvenience.")
             print("Please contribute to make this feature available on all systems.")
             print(random.choice(contribution_messages))
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5656,7 +5656,7 @@ def cli_dost():
             cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
             os.system(cmd)
         else:
-            print("DOST option not available on macOS. We regret the inconvience.")
+            print("DOST option not available on macOS. We regret the inconvenience.")
             print("Please contribute to make this feature available on all systems.")
             print(random.choice(contribution_messages))
     except Exception as ex:
@@ -5677,7 +5677,7 @@ def cli_bol():
             # # Commands for linux
             # cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/Bol.pyw"'
             # os.system(cmd)
-            print("BOL option is only available on windows. We regret the inconvience.")
+            print("BOL option is only available on Windows. We regret the inconvenience.")
             print("Please contribute to make this feature available on all systems.")
             print(random.choice(contribution_messages))
             
@@ -5694,7 +5694,7 @@ def cli_whm():
             cmd = f'{pythonw_exe_path} "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
             os.system(cmd)
         else:
-            print("Tray option is only available on windows. We regret the inconvience.")
+            print("Tray option is only available on Windows. We regret the inconvenience.")
             print("Please contribute to make this feature available on all systems.")
             print(random.choice(contribution_messages))
             
@@ -5726,7 +5726,7 @@ def cli_send_whatsapp_msg(excel_path):
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
             os.system(cmd)
         else:
-            print("WhatsApp bot is only available on windows. We regret the inconvience.")
+            print("WhatsApp bot is only available on Windows. We regret the inconvenience.")
             print("Please contribute to make this feature available on all systems.")
             print(random.choice(contribution_messages))
     except Exception as ex:
