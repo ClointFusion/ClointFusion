@@ -129,7 +129,6 @@ if os_name == windows_os:
         cmd = python_exe_path + site_packages_path  + "/Scripts/pywin32_postinstall.py -install"
         os.system(cmd)
         import win32gui
-
 elif os_name == linux_os:
     engine = pyttsx3.init('espeak')
     voices = engine.getProperty('voices')
@@ -137,6 +136,11 @@ elif os_name == linux_os:
     engine.setProperty('voice', voices[voice_int].id)
     r = sr.Recognizer()
     energy_threshold = [3000]
+else:
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    voice = random.choice(voices)# Randomly decide male/female voice
+    engine.setProperty('voice', voice.id)
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
@@ -168,6 +172,7 @@ ai_screenshot = ""
 ai_processes = []
 helium_service_launched=False
 
+contribution_messages = ["We appreciate your contribution to a better tomorrow.", "Today's def (Python) creates tomorrow's software. Please contribute.", "A bug fix a day, keeps the Exceptions away. I'd be honored to have you as a contributor.", "Contributors are the true givers of the modern age. Please make a contribution.", "Money can merely buy a server; contributors are the true wealth creators.", "Contributors are the backbone of Open Source Software. Please keep contributing."]
 
 
 # 3. All function definitions
@@ -4079,6 +4084,7 @@ def call_social_media():
         webbrowser.open_new_tab("https://www.linkedin.com/showcase/clointfusion_official")
     except Exception as ex:
         print("Error in call_social_media = " + str(ex))
+
     try:
         webbrowser.open_new_tab("https://www.reddit.com/user/Cloint-Fusion")
     except Exception as ex:
@@ -5584,7 +5590,15 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 def cli_speed_test():
     """CLI for testing internet bandwidth using speedtest.net"""
     try:
-        print(os.system("speedtest-cli"))
+        if os_name != mac_os:
+            print(os.system("speedtest-cli"))
+        else:
+            try:
+                print(os.system("speedtest-cli"))
+            except:
+                print("This feature is curently not supported on macOS. Please contribute to make the tomorrow better.")
+                print(random.choice(contribution_messages))
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_speed_test="+str(ex))
@@ -5597,7 +5611,11 @@ def cli_auto_liker():
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\cf_auto_liker.py"'
             os.system(cmd)
         else:
-            print("Auto Liker option is only available on windows. We regret the inconvience.")
+            print("Auto Liker option is only available on Windows. We regret the inconvenience.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            
             
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5613,7 +5631,11 @@ def cli_colab_launcher():
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Colab_Launcher.py"' 
             os.system(cmd)
         else:
-            print("Colab Launcher option is only available on windows. We regret the inconvience.")
+            print("Colab Launcher option is only available on Windows. We regret the inconvenience.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            
 
     except Exception as ex:
         # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5629,12 +5651,14 @@ def cli_dost():
         if os_name == windows_os:
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
             os.system(cmd)
+        elif os_name == linux_os:
+            # Commands for linux
+            cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
+            os.system(cmd)
         else:
-            # # Commands for linux
-            # cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
-            # os.system(cmd)
-            print("DOST option is only available on windows. We regret the inconvience.")
-
+            print("DOST option not available on macOS. We regret the inconvenience.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in cli_dost "+str(ex))
@@ -5650,10 +5674,13 @@ def cli_bol():
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\Bol.pyw"'
             os.system(cmd)
         else:
-            # Commands for linux
-            cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/Bol.pyw"'
-            os.system(cmd)
-            # print("BOL option is only available on windows. We regret the inconvience.")
+            # # Commands for linux
+            # cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/Bol.pyw"'
+            # os.system(cmd)
+            print("BOL option is only available on Windows. We regret the inconvenience.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
+            
         
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -5667,7 +5694,10 @@ def cli_whm():
             cmd = f'{pythonw_exe_path} "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
             os.system(cmd)
         else:
-            print("Tray option is only available on windows. We regret the inconvience.")
+            print("Tray option is only available on Windows. We regret the inconvenience.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
+            
             # # Commands for linux
             # cmd = f'chmod +x "{site_packages_path}\ClointFusion\BRE_WHM.pyw"'
             # os.system(cmd)
@@ -5696,7 +5726,9 @@ def cli_send_whatsapp_msg(excel_path):
             cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
             os.system(cmd)
         else:
-            print("WhatsApp bot is only available on windows. We regret the inconvience.")
+            print("WhatsApp bot is only available on Windows. We regret the inconvenience.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in send_whatsapp_msg", str(ex))
@@ -5704,141 +5736,145 @@ def cli_send_whatsapp_msg(excel_path):
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_bre_whm():
     """ClointFusion CLI for BRE and WHM"""
-    try:
-        from datetime import date
-        from rich.table import Table
-        from pivottablejs import pivot_ui
-        
-        style = "bold white on blue"
-        console.print("Your Work Hour Report for TODAY ({}):".format(datetime.datetime.now().strftime('%dth %B,%Y %I:%M:%S %p %A')),style=style,justify='center')
-
+    if os_name == windows_os:
         try:
-            if os_name == windows_os:
-                import ctypes
-                lib = ctypes.windll.kernel32
-                t = lib.GetTickCount64()
-                t = int(str(t)[:-3])
-                mins, sec = divmod(t, 60)
-                hour, mins = divmod(mins, 60)
-                days, hour = divmod(hour, 24)
-                console.print('_' * 20,justify='center')  # Underscore
-                console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')            
+            from datetime import date
+            from rich.table import Table
+            from pivottablejs import pivot_ui
             
+            style = "bold white on blue"
+            console.print("Your Work Hour Report for TODAY ({}):".format(datetime.datetime.now().strftime('%dth %B,%Y %I:%M:%S %p %A')),style=style,justify='center')
+
+            try:
+                if os_name == windows_os:
+                    import ctypes
+                    lib = ctypes.windll.kernel32
+                    t = lib.GetTickCount64()
+                    t = int(str(t)[:-3])
+                    mins, sec = divmod(t, 60)
+                    hour, mins = divmod(mins, 60)
+                    days, hour = divmod(hour, 24)
+                    console.print('_' * 20,justify='center')  # Underscore
+                    console.print(f"System Uptime: {days} days, {hour:02} Hours, {mins:02} Minutes, {sec:02} Seconds",justify='center')            
+                
+            except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                print("Error in click cli_bre_whm = " + str(ex))
+
+            
+            event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
+                TIME_STAMP TEXT NOT NULL,
+                Event_Name TEXT NULL,
+                X TEXT NULL,
+                Y TEXT NULL,
+                KEY TEXT NULL,
+                Button_Name TEXT NULL,
+                Click_Count TEXT NULL,
+                Window_Name TEXT NULL,
+                Mouse_RGB TEXT NULL,
+                SNIP_File_Path TEXT NULL
+                ); """
+
+            cursr.execute(event_table)
+            connct.commit()
+
+            cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
+            connct.commit()
+
+            #Print this week's report
+            week_day=datetime.datetime.now().isocalendar()[2]
+            start_date=datetime.datetime.now() - datetime.timedelta(days=week_day)
+            
+            dates = []
+
+            dates=[str((start_date + datetime.timedelta(days=i)).date().strftime("%dth %b, %A")) for i in range(7)]
+            dates_df=[str((start_date + datetime.timedelta(days=i)).date().strftime("%Y-%m-%d")) for i in range(7)]
+
+            df_mc_lst = []
+            df_kp_lst = []
+            min_max_sum_lst = []
+            value_cnt = []
+
+            for dt in dates_df:
+                df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
+                df_mc_lst.append(df['CNT'].values[0])
+
+            for dt in dates_df:
+                df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
+                df_kp_lst.append(df['CNT'].values[0])
+
+            for dt in dates_df:
+                df = pd.read_sql('Select MIN(TIME_STAMP) as log_in, MAX(TIME_STAMP) as log_out from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)
+                try:
+                    log_in_tm = datetime.datetime.strptime(str(df['log_in'].values[0]),"%Y-%m-%d %H:%M:%S")
+                    log_in_tm = datetime.datetime.strftime(log_in_tm,"%H:%M:%S %p")
+                    
+                    log_out_tm = datetime.datetime.strptime(str(df['log_out'].values[0]),"%Y-%m-%d %H:%M:%S")
+                    log_out_tm = datetime.datetime.strftime(log_out_tm,"%H:%M:%S %p")
+                    min_max_sum_lst.append(str(log_in_tm) + "," + str(log_out_tm))
+                except:
+                    min_max_sum_lst.append("No Data, No Data")
+
+            for dt in dates_df:
+                df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
+                            
+                if len(df.Window_Name.value_counts()) > 0:
+                    value_cnt.append(str(df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'))
+                else:
+                    value_cnt.append("No Data")
+                
+            console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
+            table = Table(title="This Week's Work Report",show_lines=True)
+
+            table.add_column("Date", justify="center", style="bold cyan", width=8)
+            table.add_column("Highlights",justify="center",style="bold magenta",width=20)
+            table.add_column("Details",justify="left",style="bold yellow")
+            
+            for i in reversed(range(7)):
+                table.add_row(dates[i],"In=" + str(min_max_sum_lst[i]).split(",")[0] + "\nClicks="+str(df_mc_lst[i]) + "\nKey Stokes=" + str(df_kp_lst[i]) + "\nOut=" + str(min_max_sum_lst[i]).split(",")[1],value_cnt[i])
+
+            console.print(table,justify='center')
+
+            # Charts       
+            df = pd.read_sql("SELECT DISTINCT(DATE(TIME_STAMP)),TIME_STAMP, Event_Name,Window_Name as 'Software/Program' from CFEVENTS group by Window_Name order by TIME_STAMP ASC",connct)
+
+            delay_lst = []
+            for ind in df.index:
+                try:
+                    current_line_time_stamp = df['TIME_STAMP'][ind]
+                    next_line_time_stamp = df['TIME_STAMP'][ind + 1]
+
+                    delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
+                    delay = int(delay.total_seconds())
+                
+                    delay = str(datetime.timedelta(seconds=delay))
+                    delay_lst.append(delay)
+                except Exception:
+                    # delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
+                    delay_lst.append("No Data")
+
+            df["Time Spent"] = delay_lst
+            df.drop('TIME_STAMP', axis=1, inplace=True)
+            df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
+
+            print()
+            yes_no = console.input("Would you like to see [bold red]detailed report (Y/N) [/] ?")
+            if yes_no in ["Yes", "y", "Y","yes"]:
+                    pivot_ui(df,rows=["(DATE(TIME_STAMP))"], cols=['Time Spent','Software/Program','Event_Name'])
+                    webbrowser.open_new_tab('pivottablejs.html')
+
+            console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
+            table = Table(title="Last Week's Work Report",show_lines=True)
+            console.print("All data is being stored locally on your own Computer and is in your Control.",style=style,justify='center',crop=False)
+            print()
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-            print("Error in click cli_bre_whm = " + str(ex))
-
-        
-        event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
-            TIME_STAMP TEXT NOT NULL,
-            Event_Name TEXT NULL,
-            X TEXT NULL,
-            Y TEXT NULL,
-            KEY TEXT NULL,
-            Button_Name TEXT NULL,
-            Click_Count TEXT NULL,
-            Window_Name TEXT NULL,
-            Mouse_RGB TEXT NULL,
-            SNIP_File_Path TEXT NULL
-            ); """
-
-        cursr.execute(event_table)
-        connct.commit()
-
-        cursr.execute('Update CFEVENTS set Window_Name="Desktop" where Window_Name = ""')
-        connct.commit()
-
-        #Print this week's report
-        week_day=datetime.datetime.now().isocalendar()[2]
-        start_date=datetime.datetime.now() - datetime.timedelta(days=week_day)
-        
-        dates = []
-
-        dates=[str((start_date + datetime.timedelta(days=i)).date().strftime("%dth %b, %A")) for i in range(7)]
-        dates_df=[str((start_date + datetime.timedelta(days=i)).date().strftime("%Y-%m-%d")) for i in range(7)]
-
-        df_mc_lst = []
-        df_kp_lst = []
-        min_max_sum_lst = []
-        value_cnt = []
-
-        for dt in dates_df:
-            df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Mouse Click"'.format(dt),connct)
-            df_mc_lst.append(df['CNT'].values[0])
-
-        for dt in dates_df:
-            df = pd.read_sql('Select COUNT(Event_Name) as CNT from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}") AND Event_Name = "Key Press"'.format(dt),connct)
-            df_kp_lst.append(df['CNT'].values[0])
-
-        for dt in dates_df:
-            df = pd.read_sql('Select MIN(TIME_STAMP) as log_in, MAX(TIME_STAMP) as log_out from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)
-            try:
-                log_in_tm = datetime.datetime.strptime(str(df['log_in'].values[0]),"%Y-%m-%d %H:%M:%S")
-                log_in_tm = datetime.datetime.strftime(log_in_tm,"%H:%M:%S %p")
-                
-                log_out_tm = datetime.datetime.strptime(str(df['log_out'].values[0]),"%Y-%m-%d %H:%M:%S")
-                log_out_tm = datetime.datetime.strftime(log_out_tm,"%H:%M:%S %p")
-                min_max_sum_lst.append(str(log_in_tm) + "," + str(log_out_tm))
-            except:
-                min_max_sum_lst.append("No Data, No Data")
-
-        for dt in dates_df:
-            df = pd.read_sql('Select Window_Name from CFEVENTS where DATE(datetime(TIME_STAMP)) = date("{}")'.format(dt),connct)       
-                        
-            if len(df.Window_Name.value_counts()) > 0:
-                value_cnt.append(str(df['Window_Name'].value_counts(ascending=False,dropna=True,normalize=True).mul(100).round(1).astype(str) + '%'))
-            else:
-                value_cnt.append("No Data")
-            
-        console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
-        table = Table(title="This Week's Work Report",show_lines=True)
-
-        table.add_column("Date", justify="center", style="bold cyan", width=8)
-        table.add_column("Highlights",justify="center",style="bold magenta",width=20)
-        table.add_column("Details",justify="left",style="bold yellow")
-        
-        for i in reversed(range(7)):
-            table.add_row(dates[i],"In=" + str(min_max_sum_lst[i]).split(",")[0] + "\nClicks="+str(df_mc_lst[i]) + "\nKey Stokes=" + str(df_kp_lst[i]) + "\nOut=" + str(min_max_sum_lst[i]).split(",")[1],value_cnt[i])
-
-        console.print(table,justify='center')
-
-        # Charts       
-        df = pd.read_sql("SELECT DISTINCT(DATE(TIME_STAMP)),TIME_STAMP, Event_Name,Window_Name as 'Software/Program' from CFEVENTS group by Window_Name order by TIME_STAMP ASC",connct)
-
-        delay_lst = []
-        for ind in df.index:
-            try:
-                current_line_time_stamp = df['TIME_STAMP'][ind]
-                next_line_time_stamp = df['TIME_STAMP'][ind + 1]
-
-                delay = parser.parse(next_line_time_stamp) - parser.parse(current_line_time_stamp)
-                delay = int(delay.total_seconds())
-            
-                delay = str(datetime.timedelta(seconds=delay))
-                delay_lst.append(delay)
-            except Exception:
-                # delay = parser.parse(str(datetime.datetime.now().strftime("%H:%M:%S"))) - parser.parse(current_line_time_stamp)
-                delay_lst.append("No Data")
-
-        df["Time Spent"] = delay_lst
-        df.drop('TIME_STAMP', axis=1, inplace=True)
-        df=df[~df['Time Spent'].isin (["0:00:00"])] # str(datetime.datetime.strptime('01:00', '%H:%M'))]
-
-        print()
-        yes_no = console.input("Would you like to see [bold red]detailed report (Y/N) [/] ?")
-        if yes_no in ["Yes", "y", "Y","yes"]:
-                pivot_ui(df,rows=["(DATE(TIME_STAMP))"], cols=['Time Spent','Software/Program','Event_Name'])
-                webbrowser.open_new_tab('pivottablejs.html')
-
-        console.print('―' * 20,justify='center')  # U+2015, Horizontal Bar
-        table = Table(title="Last Week's Work Report",show_lines=True)
-        console.print("All data is being stored locally on your own Computer and is in your Control.",style=style,justify='center',crop=False)
-        print()
-
-    except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-        print("You may need to restart your computer !")
-        print("Error in cli_bre_whm="+str(ex))
+            print("You may need to restart your computer !")
+            print("Error in cli_bre_whm="+str(ex))
+    else:
+        print("Work Hour Monitor currently only available on Windows PC.")
+        print("Please contribute to make this feature available on all systems.")
+        print(random.choice(contribution_messages))
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('--message', '-m', multiple=True,help="ClointFusion Command Line Interface's basic command")
@@ -5850,7 +5886,12 @@ def cli_cf(message):
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_call_sm():
     """Opens all our Social Media in Google Chrome"""
-    call_social_media()
+    try:
+        call_social_media()
+    except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in cli_call_sm="+str(ex))
+        
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_cf_py():
@@ -5863,14 +5904,32 @@ def cli_cf_py():
     
     if os_name == windows_os:
         os.system(f'{python_exe_path} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
-    else:
+    elif os_name == linux_os:
         os.system(f'sudo python{python_version} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
+    else:
+        try:
+            os.system(f'python{python_version} -i -c "import ClointFusion as cf; print(\'Try some of our functions | cf.{ch_function_1}() | or | cf.{ch_function_2}() | or | cf.{ch_function_3}() |\')"')
+        except:
+            print("This command is not available on macOS.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 def cli_cf_tour():
     """CLI for the guided tour."""
-    
-    _perform_self_test(True)
+    if os_name != mac_os:
+        _perform_self_test(True)
+    else:
+        try:
+            _perform_self_test(True)
+        except:
+            print("This command is not available on macOS.")
+            print("Please contribute to make this feature available on all systems.")
+            print(random.choice(contribution_messages))
+            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+            
    
 # --------- CLI Commands Ends ---------
 
@@ -6028,36 +6087,47 @@ def cli_cf_test():
 # All new functions to be added before this line
 # ########################
 # ClointFusion's DEFAULT SERVICES
-if os_name == windows_os:
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-elif os_name == linux_os:
-    db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
-else:
-    pass
-
-try:
-    connct = sqlite3.connect(db_file_path,check_same_thread=False)
-    cursr = connct.cursor()
-except Exception as ex:
-    print("Error in connecting to DB="+str(ex))
-
-
-data = cursr.execute("SELECT updating from CF_VALUES")
-for row in data:
-    updating =  row[0]
-    if updating == "False":
-
-        _welcome_to_clointfusion()
-
-        _init_log_file()
-        update_log_excel_file(bot_name +'- BOT initiated')
-        _ask_user_semi_automatic_mode()
-        enable_semi_automatic_mode = False # By DEFAULT
+if os_name != mac_os:
+    if os_name == windows_os:
+        db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    elif os_name == linux_os:
+        db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
     else:
-        os.system("exit")
+        pass
 
-# ########################
+    try:
+        connct = sqlite3.connect(db_file_path,check_same_thread=False)
+        cursr = connct.cursor()
+    except Exception as ex:
+        print("Error in connecting to DB="+str(ex))
 
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+    data = cursr.execute("SELECT updating from CF_VALUES")
+
+    for row in data:
+        updating =  row[0]
+        if updating == "False":
+
+            _welcome_to_clointfusion()
+
+            _init_log_file()
+            update_log_excel_file(bot_name +'- BOT initiated')
+            _ask_user_semi_automatic_mode()
+            enable_semi_automatic_mode = False # By DEFAULT
+        else:
+            sys.exit()
+    
+
+    # ########################
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+else:
+    _welcome_to_clointfusion()
+    try:
+        print_with_magic_color("We do not yet support macOS completely. Feel free to have a look and contribute to making us stronger.")
+        print_with_magic_color(random.choice(contribution_messages))
+    except:
+        print("We do not yet support macOS completely. Feel free to have a look and contribute to making us stronger.")
+        print(random.choice(contribution_messages))
