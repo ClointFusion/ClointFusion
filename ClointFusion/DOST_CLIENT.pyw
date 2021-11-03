@@ -53,6 +53,24 @@ def _get_site_packages_path():
         site_packages_path = site.getsitepackages()[0]
     return str(site_packages_path)
 
+def _welcome_to_clointfusion():
+    global user_name
+    """
+    Internal Function to display welcome message & push a notification to ClointFusion Slack
+    """
+    from pyfiglet import Figlet
+    version = "(Version: 1.1.1)"
+    import random
+
+
+    messages_list = ['Where would I be without a friend like you?', 'I appreciate what you did.', 'Thank you for thinking of me.', 'Thank you for your time today.', 'I am so thankful for what you did here', 'I really appreciate your help. Thank you.', "You know, if you're reading this, you're in the top 1% of smart people.", 'We know the world is full of choices. Yet you picked us, Thank you very much.', 'Thank you. We hope your experience was excellent and we can’t wait to see you again soon.', 'We hope you are happy with our tool, if not we are just an e-mail away at clointfusion@cloint.com. We will be pleased to hear from you.', 'ClointFusion would like to thank excellent users like you for your support. We couldn’t do it without you!', 'Thank you for your business, your trust, and your confidence. It is our pleasure to work with you.', 'We take pride in your business with us. Thank you!', 'It has been our pleasure to serve you, and we hope we see you again soon.', 'We value your trust and confidence in us and sincerely appreciate you!', 'Your satisfaction is our greatest concern!', 'Your confidence in us is greatly appreciated!', 'We are excited to serve you first!', 'Thank you for keeping us informed about how best to serve your needs. Together, we can make this history.', 'Our brand innovation wouldn’t have been possible if you didn’t give us feedback about our services.', 'Thank you so much for playing a pivotal role in our growth. We’ll make sure we continue to put your needs first as our company expands and improves.', 'We are exceedingly pleased to find people we can always count on. Thank you for being one of our loyal and trusted clients.', ]
+    message = random.choice(messages_list)
+    
+    print()
+    f = Figlet(font='small', width=150)
+    console.print(f.renderText("ClointFusion Community Edition"))
+    print(message + "\n")
+
 site_packages_path = _get_site_packages_path()
 
 python_version = str(sys.version_info.major)
@@ -92,9 +110,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
-        if os_name == linux_os:
-            options.add_argument('--no-sandbox')
-            options.add_argument('--disable-dev-shm-usage')
         if incognito:
             options.add_argument("--incognito")
         if not dummy_browser:
@@ -162,16 +177,20 @@ def exe_code(path):
 if os_name == windows_os:
 
     try:
-        uuid = selft.get_uuid()
-        text = Text("Welcome to DOST,")
-        text.stylize("bold magenta")
-        text.append(" you drag and drop, we do the rest. Happy Automation!")
-        console.print(text)
         profile = "Default"
         if len(sys.argv) > 1:
-            profile = sys.argv[1]
-        web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, profile=profile, clear_previous_instances=True)
-        browser.set_driver(web_driver)
+            profile = "".join([character for character in sys.argv[1] if character.isalnum() or character == ' '])
+        clear_screen()
+        _welcome_to_clointfusion()
+        with console.status(f"Launching DOST client with Profile : {profile} .\n") as status:
+            uuid = selft.get_uuid()
+            text = Text("Welcome to DOST,")
+            text.stylize("bold magenta")
+            text.append(" you drag and drop, we do the rest. Happy Automation!\n\n")
+            console.print(text)
+            
+            web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, profile=profile, clear_previous_instances=True)
+            browser.set_driver(web_driver)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in UUID: {str(ex)}")
@@ -191,6 +210,7 @@ if os_name == windows_os:
                         browser.wait_until(browser.Text("Running Program..").exists)
                         if browser.Text("Running Program...").exists:
                             browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+                            
                             status.update("Running your bot...\n")
                             while run_program(website):
                                 continue
@@ -199,13 +219,10 @@ if os_name == windows_os:
                 except TimeoutException:
                     found = False
                 except WebDriverException:
-                    print("Thank you for utilizing DOST. I hope you have a good time with it.")
                     browser.kill_browser()
-                    start = False
                     break
                 except IndexError:
                     browser.kill_browser()
-                    start = False
                     break
                 except RuntimeError:
                     print("Please close all the Google Chrome browser windows, and try again.")
@@ -215,6 +232,8 @@ if os_name == windows_os:
                     selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                     print("Error in DOST_Client.pyw="+str(ex))
                     break
+        print("Thank you for utilizing DOST. I hope you have a good time with it.\n")
+            
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in DOST_Client: {str(ex)}")
@@ -275,13 +294,26 @@ def exe_code(path):
   os.system(cmd)
   return False
 
+def _welcome_to_clointfusion():
+    from pyfiglet import Figlet
+    version = "(Version: 1.1.1)"
+    import random
+    
+
+    messages_list = ['Where would I be without a friend like you?', 'I appreciate what you did.', 'Thank you for thinking of me.', 'Thank you for your time today.', 'I am so thankful for what you did here', 'I really appreciate your help. Thank you.', "You know, if you're reading this, you're in the top 1% of smart people.", 'We know the world is full of choices. Yet you picked us, Thank you very much.', 'Thank you. We hope your experience was excellent and we can’t wait to see you again soon.', 'We hope you are happy with our tool, if not we are just an e-mail away at clointfusion@cloint.com. We will be pleased to hear from you.', 'ClointFusion would like to thank excellent users like you for your support. We couldn’t do it without you!', 'Thank you for your business, your trust, and your confidence. It is our pleasure to work with you.', 'We take pride in your business with us. Thank you!', 'It has been our pleasure to serve you, and we hope we see you again soon.', 'We value your trust and confidence in us and sincerely appreciate you!', 'Your satisfaction is our greatest concern!', 'Your confidence in us is greatly appreciated!', 'We are excited to serve you first!', 'Thank you for keeping us informed about how best to serve your needs. Together, we can make this history.', 'Our brand innovation wouldn’t have been possible if you didn’t give us feedback about our services.', 'Thank you so much for playing a pivotal role in our growth. We’ll make sure we continue to put your needs first as our company expands and improves.', 'We are exceedingly pleased to find people we can always count on. Thank you for being one of our loyal and trusted clients.', ]
+    message = random.choice(messages_list)
+    
+    print()
+    f = Figlet(font='small', width=150)
+    console.print(f.renderText("ClointFusion Community Edition"))
+    print(message + "\n")
+
 def browser_linux(profile = "Default"):
     with console.status(f"Launching DOST client with Profile : {profile}...\n"):
+        clear_screen()
+        _welcome_to_clointfusion()
         browser_driver = ""
         from subprocess import DEVNULL, STDOUT, Popen
-        
-
-        print(f"Using profile: {profile}")
         
         Popen([f'google-chrome --profile-directory="{profile}" --remote-debugging-port=9222'], shell=True,
                 stdin=None, stdout=DEVNULL, stderr=STDOUT, close_fds=True)
@@ -308,9 +340,7 @@ try:
     web_driver = browser_linux(profile)
 
     browser.set_driver(web_driver)
-    clear_screen()
     browser.go_to(f"{website}/cf_id/{uuid}")
-
 except Exception as ex:
     print(f"Error in UUID: {str(ex)}")
 
@@ -329,10 +359,10 @@ try:
                     browser.wait_until(browser.Text("Running Program..").exists)
                     if browser.Text("Running Program...").exists:
                         browser.wait_until(lambda: not browser.Text("Running Program..").exists())
-                        status.update("\nRunning your bot...\n")
+                        status.update("Running your bot...\n")
                         while run_program(website):
                             continue
-                        status.update("\nDOST client running...\n")
+                        status.update("DOST client running...\n")
                         found = False
             except TimeoutException:
                 found = False
