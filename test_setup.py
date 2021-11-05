@@ -15,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='1.2.4', # Test Versrion is more than Official Version
+    version='1.2.5', # Test Versrion is more than Official Version
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -76,3 +76,4 @@ setup(
 # Tested Version
 # 1.2.1
 # 1.2.4
+# 1.2.5
