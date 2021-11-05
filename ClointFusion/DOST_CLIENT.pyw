@@ -122,7 +122,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True,
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             browser.Config.implicit_wait_secs = 5
         except Exception as ex:
-            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
         print("Error in launch_website_h = " + str(ex))
@@ -188,9 +187,9 @@ if os_name == windows_os:
                                 script = False
                             found = run_btn[0]
                     if found:
-                        browser.wait_until(browser.Text("Running Program..").exists)
-                        if browser.Text("Running Program...").exists:
-                            browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+                        browser.wait_until(browser.Text("Running BOT in your terminal, Please wait..").exists)
+                        if browser.Text("Running BOT in your terminal, Please wait..").exists:
+                            browser.wait_until(lambda: not browser.Text("Running BOT in your terminal, Please wait..").exists())
                             
                             status.update("Running your bot...\n")
                             while run_program(website):
@@ -360,8 +359,8 @@ try:
                             script = False
                         found = run_btn[0]
                 if found:
-                    browser.wait_until(browser.Text("Running Program..").exists)
-                    if browser.Text("Running Program...").exists:
+                    browser.wait_until(browser.Text("Running BOT in your terminal, Please wait..").exists)
+                    if browser.Text("Running BOT in your terminal, Please wait..").exists:
                         browser.wait_until(lambda: not browser.Text("Running Program..").exists())
                         status.update("Running your bot...\n")
                         while run_program(website):
