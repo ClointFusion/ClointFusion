@@ -148,6 +148,8 @@ Below is the speed up version of self-test.
 
 Open your favorite terminal and type `dost`. That's it!
 
+Make sure you close all your Google Chrome windows before starting.
+
 - Want to change the chrome profile ?
 
     - Use `dost -p "Profile 1"`
