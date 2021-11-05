@@ -361,10 +361,10 @@ try:
                     browser.wait_until(browser.Text("Running BOT in your terminal, Please wait..").exists)
                     if browser.Text("Running BOT in your terminal, Please wait..").exists:
                         browser.wait_until(lambda: not browser.Text("Running BOT in your terminal, Please wait..").exists())
-                        status.update("Running your bot...\n")
+                        status.update("Running your bot...")
                         while run_program(website):
                             continue
-                        status.update("DOST client running...\n")
+                        status.update("DOST client running...")
                         found = False
             except TimeoutException:
                 found = False
