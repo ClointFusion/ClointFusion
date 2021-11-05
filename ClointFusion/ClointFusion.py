@@ -327,7 +327,14 @@ def ON_semi_automatic_mode():
 # Function in use, Dont Delete
 def _perform_self_test(tour=False):
     try:
-        clointfusion_self_test(tour)
+        data = cursr.execute("SELECT updating from CF_VALUES")
+
+        for row in data:
+            updating =  row[0]
+            if updating == "False":
+                clointfusion_self_test(tour)
+            else:
+                sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in Self Test="+str(ex))
