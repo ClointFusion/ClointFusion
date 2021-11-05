@@ -236,7 +236,6 @@ if os_name == windows_os:
                     print("Error in DOST_Client.pyw="+str(ex)+ ex)
                     break
         print("Thank you for utilizing DOST. I hope you have a good time with it.\nDo you have any suggestions ? Love to hear them, please drop a mail at ClointFusion@cloint.com.\n")
-    
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in DOST_Client: {str(ex)}")
