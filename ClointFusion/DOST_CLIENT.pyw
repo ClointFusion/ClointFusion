@@ -360,7 +360,7 @@ try:
                 if found:
                     browser.wait_until(browser.Text("Running BOT in your terminal, Please wait..").exists)
                     if browser.Text("Running BOT in your terminal, Please wait..").exists:
-                        browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+                        browser.wait_until(lambda: not browser.Text("Running BOT in your terminal, Please wait..").exists())
                         status.update("Running your bot...\n")
                         while run_program(website):
                             continue
