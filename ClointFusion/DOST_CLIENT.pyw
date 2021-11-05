@@ -122,7 +122,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True,
                 browser.go_to("https://sites.google.com/view/clointfusion-hackathon")
             browser.Config.implicit_wait_secs = 5
         except Exception as ex:
-            selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
         print("Error in launch_website_h = " + str(ex))
@@ -141,20 +140,20 @@ def clear_screen():
         pass
 
 def run_program(website):
-  code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
-  try:
-    with open(temp_code, 'w') as fp:
-        fp.write(code + "\n" + r"print('\n')")
-    status = exe_code(temp_code)
-  except:
-    pass
-  return status
+    code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
+    try:
+        with open(temp_code, 'w') as fp:
+            fp.write(code + "\n" + r"print('\n')")
+        status = exe_code(temp_code)
+    except:
+        pass
+    return status
 
 def exe_code(path):
-  clear_screen()
-  cmd = f'python "{path}"'
-  os.system(cmd)
-  return False
+    clear_screen()
+    cmd = f'python "{path}"'
+    os.system(cmd)
+    return False
 
 if os_name == windows_os:
 
@@ -188,14 +187,14 @@ if os_name == windows_os:
                                 script = False
                             found = run_btn[0]
                     if found:
-                        browser.wait_until(browser.Text("Running Program..").exists)
-                        if browser.Text("Running Program...").exists:
-                            browser.wait_until(lambda: not browser.Text("Running Program..").exists())
+                        browser.wait_until(browser.Text("Running BOT in your terminal, Please wait..").exists)
+                        if browser.Text("Running BOT in your terminal, Please wait..").exists:
+                            browser.wait_until(lambda: not browser.Text("Running BOT in your terminal, Please wait..").exists())
                             
-                            status.update("Running your bot...\n")
+                            status.update("Running your bot...")
                             while run_program(website):
                                 continue
-                            status.update("DOST client running...\n")
+                            status.update("DOST client running...")
                             found = False
                 except TimeoutException:
                     found = False
@@ -227,7 +226,7 @@ if os_name == windows_os:
                         found = False
                         clear_screen()
                         _welcome_to_clointfusion()
-                        status.update("DOST client running...\n")
+                        status.update("DOST client running...")
                     except Exception as ex:
                         browser.kill_browser()
                         print("Please restart the DOST client, after closing all the Google Chrome windows.")
@@ -237,7 +236,6 @@ if os_name == windows_os:
                     print("Error in DOST_Client.pyw="+str(ex)+ ex)
                     break
         print("Thank you for utilizing DOST. I hope you have a good time with it.\nDo you have any suggestions ? Love to hear them, please drop a mail at ClointFusion@cloint.com.\n")
-    
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in DOST_Client: {str(ex)}")
@@ -360,13 +358,13 @@ try:
                             script = False
                         found = run_btn[0]
                 if found:
-                    browser.wait_until(browser.Text("Running Program..").exists)
-                    if browser.Text("Running Program...").exists:
-                        browser.wait_until(lambda: not browser.Text("Running Program..").exists())
-                        status.update("Running your bot...\n")
+                    browser.wait_until(browser.Text("Running BOT in your terminal, Please wait..").exists)
+                    if browser.Text("Running BOT in your terminal, Please wait..").exists:
+                        browser.wait_until(lambda: not browser.Text("Running BOT in your terminal, Please wait..").exists())
+                        status.update("Running your bot...")
                         while run_program(website):
                             continue
-                        status.update("DOST client running...\n")
+                        status.update("DOST client running...")
                         found = False
             except TimeoutException:
                 found = False
