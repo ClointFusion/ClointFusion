@@ -332,6 +332,7 @@ def _perform_self_test(tour=False):
         for row in data:
             updating =  row[0]
             if updating == "False":
+                _welcome_to_clointfusion()
                 clointfusion_self_test(tour)
             else:
                 sys.exit()
