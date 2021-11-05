@@ -1,4 +1,4 @@
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.common.exceptions import InvalidArgumentException, TimeoutException, WebDriverException
 import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -80,45 +80,28 @@ class DisableLogger():
     def __exit__(self, exit_type, exit_value, exit_traceback):
        logging.disable(logging.NOTSET)
 
-def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
+def browser_activate(url="", files_download_path='', dummy_browser=True,
                      clear_previous_instances=False, profile="Default"):
     """ This function is used to activate the browser.  """
     try:
         browser_driver = ""
     # To clear previous instances of chrome
         if clear_previous_instances:
-            if os_name == windows_os:
-                try:
-                    subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-                except Exception as ex:
-                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                    print(f"Error while closing previous chrome instances. {ex}")
-            elif os_name == mac_os:
-                try:
-                    subprocess.call('pkill "Google Chrome"', shell=True)
-                except Exception as ex:
-                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                    print(f"Error while closing previous chrome instances. {ex}")
-            elif os_name == linux_os:
-                try:
-                    subprocess.call('sudo pkill -9 chrome', shell=True)
-                except Exception as ex:
-                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                    print(f"Error while closing previous chrome instances. {ex}")
+            try:
+                subprocess.call('TASKKILL /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            except Exception as ex:
+                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                print(f"Error while closing previous chrome instances. {ex}")
             time.sleep(15)
 
         options = Options()
         options.add_argument("--start-maximized")
         options.add_experimental_option('excludeSwitches', ['enable-logging','enable-automation'])
-        if incognito:
-            options.add_argument("--incognito")
+        # options.add_experimental_option("detach", True)
+
         if not dummy_browser:
             if os_name == windows_os:
                 options.add_argument("user-data-dir=C:\\Users\\{}\\AppData\\Local\\Google\\Chrome\\User Data".format(os.getlogin()))
-            elif os_name == mac_os:
-                options.add_argument("user-data-dir=/Users/{}/Library/Application/Support/Google/Chrome/User Data".format(os.getlogin()))
-            elif os_name == linux_os:
-                options.add_argument("user-data-dir=/home/{}/.config/google-chrome".format(os.getlogin()))
             options.add_argument(f"profile-directory={profile}")
         #  Set the download path
         if files_download_path != '':
@@ -142,7 +125,6 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, incogni
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_website_h = " + str(ex))
         browser.kill_browser()
     finally:
@@ -188,7 +170,6 @@ if os_name == windows_os:
             text.stylize("bold magenta")
             text.append(" you drag and drop, we do the rest. Happy Automation!\n\n")
             console.print(text)
-            
             web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, profile=profile, clear_previous_instances=True)
             browser.set_driver(web_driver)
     except Exception as ex:
@@ -228,12 +209,35 @@ if os_name == windows_os:
                     print("Please close all the Google Chrome browser windows, and try again.")
                     browser.kill_browser()
                     break
+                except InvalidArgumentException:
+                    status.update("Another Chrome Windows is already in use.")
+                    time.sleep(5)
+                except AttributeError:
+                    clear_screen()
+                    status.update("Another Chrome Windows is already in use.")
+                    time.sleep(3)
+                    status.update("All Google Chrome browser windows, should be before launching DOST.\n")
+                    time.sleep(3)
+                    status.update("Please wait, while I close them and try again.\n")
+                    try:
+                        subprocess.call('TASKKILL /F /IM chrome.exe', stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+                        time.sleep(5)
+                        web_driver = browser_activate(url=f"{website}/cf_id/{uuid}", dummy_browser=False, profile=profile, clear_previous_instances=False)
+                        browser.set_driver(web_driver)
+                        found = False
+                        clear_screen()
+                        _welcome_to_clointfusion()
+                        status.update("DOST client running...\n")
+                    except Exception as ex:
+                        browser.kill_browser()
+                        print("Please restart the DOST client, after closing all the Google Chrome windows.")
+                        break
                 except Exception as ex:
-                    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                    print("Error in DOST_Client.pyw="+str(ex))
+                    # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                    print("Error in DOST_Client.pyw="+str(ex)+ ex)
                     break
-        print("Thank you for utilizing DOST. I hope you have a good time with it.\n")
-            
+        print("Thank you for utilizing DOST. I hope you have a good time with it.\nDo you have any suggestions ? Love to hear them, please drop a mail at ClointFusion@cloint.com.\n")
+    
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Error in DOST_Client: {str(ex)}")
@@ -382,6 +386,8 @@ try:
             except Exception as ex:
                 print("Error in DOST_Client.pyw="+str(ex))
                 break
+        print("Thank you for utilizing DOST. I hope you have a good time with it.\nDo you have any suggestions ? Love to hear them, please drop a mail at ClointFusion@cloint.com.\n")
+        
 except Exception as ex:
     print(f"Error in DOST_Client: {str(ex)}")
     

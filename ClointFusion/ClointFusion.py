@@ -327,7 +327,15 @@ def ON_semi_automatic_mode():
 # Function in use, Dont Delete
 def _perform_self_test(tour=False):
     try:
-        clointfusion_self_test(tour)
+        data = cursr.execute("SELECT updating from CF_VALUES")
+
+        for row in data:
+            updating =  row[0]
+            if updating == "False":
+                _welcome_to_clointfusion()
+                clointfusion_self_test(tour)
+            else:
+                sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in Self Test="+str(ex))
@@ -1684,6 +1692,10 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
             if not User_Visible_Text_Element and element:
                 browser.rightclick(element)
             status = True
+    except LookupError:
+        print("Element not found. Please check the given input.")
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_mouse_click_h = " + str(ex))
