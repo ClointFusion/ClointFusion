@@ -140,20 +140,20 @@ def clear_screen():
         pass
 
 def run_program(website):
-  code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
-  try:
-    with open(temp_code, 'w') as fp:
-        fp.write(code + "\n" + r"print('\n')")
-    status = exe_code(temp_code)
-  except:
-    pass
-  return status
+    code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
+    try:
+        with open(temp_code, 'w') as fp:
+            fp.write(code + "\n" + r"print('\n')")
+        status = exe_code(temp_code)
+    except:
+        pass
+    return status
 
 def exe_code(path):
-  clear_screen()
-  cmd = f'python "{path}"'
-  os.system(cmd)
-  return False
+    clear_screen()
+    cmd = f'python "{path}"'
+    os.system(cmd)
+    return False
 
 if os_name == windows_os:
 
@@ -191,10 +191,10 @@ if os_name == windows_os:
                         if browser.Text("Running BOT in your terminal, Please wait..").exists:
                             browser.wait_until(lambda: not browser.Text("Running BOT in your terminal, Please wait..").exists())
                             
-                            status.update("Running your bot...\n")
+                            status.update("Running your bot...")
                             while run_program(website):
                                 continue
-                            status.update("DOST client running...\n")
+                            status.update("DOST client running...")
                             found = False
                 except TimeoutException:
                     found = False
@@ -226,7 +226,7 @@ if os_name == windows_os:
                         found = False
                         clear_screen()
                         _welcome_to_clointfusion()
-                        status.update("DOST client running...\n")
+                        status.update("DOST client running...")
                     except Exception as ex:
                         browser.kill_browser()
                         print("Please restart the DOST client, after closing all the Google Chrome windows.")
