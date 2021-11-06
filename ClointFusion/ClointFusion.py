@@ -153,8 +153,9 @@ sg.theme('Dark') # for PySimpleGUI FRONT END
 
 try:
     from ClointFusion import selft
-except:
-    import selft
+except Exception as e:
+    print("Please re-install ClointFusion.")
+    sys.exit()
 
 # 2. All global variables
 
@@ -229,6 +230,8 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
         reset = attr('reset')    
         print (reset)
     except UnicodeEncodeError:
+        pass
+    except TypeError:
         pass
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -369,7 +372,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.1.1)"
+    version = "(Version: 1.1.2)"
 
     hour = datetime.datetime.now().hour
     
@@ -845,6 +848,10 @@ def gui_get_excel_sheet_header_from_user(msgForUser=""):
             oldFilePath, oldSheet , oldHeader = str(existing_value).split(",")
             return oldFilePath, oldSheet , int(oldHeader)
             
+    except TypeError:
+        print("Please check the input values, and try again.")
+        text_to_speech("Please check the input values, and try again.", show=False)
+        
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in gui_get_excel_sheet_header_from_user="+str(ex))
@@ -1616,9 +1623,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
-    except AttributeError:
-        print("Another Chrome Window is already in use. Please close all the chrome windows and try again. If you want to open your custom profile. Else make dummy_profile = True")
-        text_to_speech("Another Chrome Window is already in use. Please close all the chrome windows and try again. If you want to open your custom profile. . Else make dummy_profile = True", show=False)
+    except InvalidArgumentException:
+        print("Another Chrome Window is already in use. If you want to open your custom profile, please close all the chrome windows and try again.  Else make dummy_profile = True")
+        text_to_speech("Another Chrome Window is already in use. If you want to open your custom profile, please close all the chrome windows and try again.  Else make dummy_profile = True", show=False)
         browser.kill_browser()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -1701,6 +1708,9 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+    except IndexError:
+        print("Please check the input values, and try again.")
+        text_to_speech("Please check the input values, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_write_h = " + str(ex))
@@ -2097,6 +2107,9 @@ def folder_create(strFolderPath=""):
         if not os.path.exists(strFolderPath):
             os.makedirs(strFolderPath, exist_ok=True)
 
+    except OSError:
+        print("Invalid Folder path, Please check the input and try again.")
+        text_to_speech("Invalid Folder path, Please check the input and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create="+str(ex))
@@ -2549,6 +2562,9 @@ def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_row_column_count="+str(ex))
@@ -2607,6 +2623,9 @@ def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, 
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in copy_range_from_excel_sheet="+str(ex))
@@ -2664,6 +2683,9 @@ def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', sta
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_copy_paste_range_from_to_sheet="+str(ex))
@@ -2697,6 +2719,9 @@ def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_split_by_column="+str(ex))
@@ -2756,6 +2781,9 @@ def excel_split_the_file_on_row_count(excel_path="", sheet_name = 'Sheet1', rowS
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_split_the_file_on_row_count="+str(ex))
@@ -2795,6 +2823,9 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_merge_all_files="+str(ex))
@@ -2831,6 +2862,9 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_drop_columns="+str(ex))
@@ -2885,6 +2919,9 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_sort_columns="+str(ex))        
@@ -2910,6 +2947,9 @@ def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_clear_sheet="+str(ex))
@@ -2942,6 +2982,9 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_set_single_cell="+str(ex))
@@ -2970,6 +3013,9 @@ def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_single_cell="+str(ex))
@@ -3009,6 +3055,9 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_remove_duplicates="+str(ex))
@@ -3061,6 +3110,9 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_vlook_up="+str(ex))
@@ -3107,6 +3159,9 @@ def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as e:
         exception_msg = f"Error in excel_change_corrupt_xls_to_xlsx : {str(e)}"
         return exception_msg
@@ -3129,6 +3184,9 @@ def excel_convert_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as e:
         errMsg = f"Error in converting file to xlsx format : {str(e)}"
         return errMsg
@@ -3158,6 +3216,9 @@ def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21"
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except:
         exc_workbook.Close()
         excel_instance.Quit()
@@ -3200,6 +3261,9 @@ def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',c
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         errMsg = f"Error in excel_split_on_user_defined_conditions: {str(ex)}"
@@ -3248,6 +3312,9 @@ def excel_convert_to_image(excel_file_path=""):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_convert_to_image="+str(ex))
@@ -3296,6 +3363,15 @@ def excel_create_excel_file_in_given_folder(fullPathToTheFolder="",excelFileName
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
+    except TypeError:
+        print("Invalid Argument or input. Please check the inputs, and try again.")
+        text_to_speech("Invalid Argument or input. Please check the inputs, and try again.", show=False)
+    except OSError:
+        print("Invalid Argument or input. Please check the inputs, and try again.")
+        text_to_speech("Invalid Argument or input. Please check the inputs, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_create_excel_file_in_given_folder="+str(ex))
@@ -3329,6 +3405,9 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_if_value_exists="+str(ex))
@@ -3366,6 +3445,9 @@ def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_create_file="+str(ex))
@@ -3389,6 +3471,9 @@ def excel_to_colored_html(formatted_excel_path=""):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_to_colored_html="+str(ex))
@@ -3415,6 +3500,9 @@ def excel_get_all_sheet_names(excelFilePath=""):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_all_sheet_names="+str(ex))
@@ -3436,6 +3524,9 @@ def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_all_header_columns="+str(ex))
@@ -3470,6 +3561,9 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0,view_excel=Fa
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_describe_data="+str(ex))
@@ -3570,6 +3664,9 @@ def excel_sub_routines():
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_sub_routines="+str(ex))
@@ -3609,6 +3706,9 @@ def convert_csv_to_excel(csv_path="",sep=""):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in convert_csv_to_excel="+str(ex))
@@ -3626,6 +3726,9 @@ def isNaN(value):
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except:
         return False
 
@@ -3709,6 +3812,9 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startco
     except PermissionError:
         print("Please close the excel file, and try again.")
         text_to_speech("Please close the excel file, and try again.", show=False)
+    except op.utils.exceptions.InvalidFileException:
+        print("We currently support only : xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.")
+        text_to_speech("we currently support only : .xlsx,.xlsm,.xltx,.xltm files. Please try again with one of those file formats.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in append_df_to_excel="+str(ex))
@@ -3925,6 +4031,9 @@ def scrape_save_contents_to_notepad(folderPathToSaveTheNotepad="",switch_to_wind
 
         clipboard_data = ''
         return "Saved the contents at " + str(notepad_file_path)
+    except FileNotFoundError:
+        print("Please check the filepath, and try again.")
+        text_to_speech("Please check the filepath, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in scrape_save_contents_to_notepad = "+str(ex))
@@ -6056,10 +6165,10 @@ def cli_send_whatsapp_msg(excel_path):
                 # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
                 # os.system(cmd)
             else:
-                text_to_speech("File not found. Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message", show=False)
-                print("File not found. Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message")
-                print("Or you can simply drag the file into the terminal.")
-
+                print("File not found. You can simply drag the file into the terminal.")
+                text_to_speech("File not found. You can simply drag the file into the terminal.", show=False)
+                print("or Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message")
+                text_to_speech("or Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message", show=False)
         else:
             print("WhatsApp bot is only available on Windows. We regret the inconvenience.")
             print(f"Please contribute to make this feature available on {os_name.upper()} system.")
