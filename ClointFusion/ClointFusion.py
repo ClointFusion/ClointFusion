@@ -230,6 +230,8 @@ def print_with_magic_color(strMsg:str="",magic:bool=False)->None:
         print (reset)
     except UnicodeEncodeError:
         pass
+    except TypeError:
+        pass
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in print_with_magic_color="+str(ex))
