@@ -48,6 +48,7 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import InvalidArgumentException, TimeoutException, WebDriverException, NoSuchWindowException
 from tabloo import show
 from colored import fg, attr
 import click
@@ -68,10 +69,12 @@ python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
 pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
 python_version = str(sys.version_info.major)
 
-if os.getlogin() in python_exe_path:
-    python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
-if os.getlogin() in pythonw_exe_path:
-    pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+# if os.getlogin() in python_exe_path:
+#     python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+#     python_exe_path = python_exe_path.replace(f'\\{os.getlogin()}\\', f'"\\{os.getlogin()}\\"')
+    
+# if os.getlogin() in pythonw_exe_path:
+#     pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
 
 if os_name == windows_os:
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
@@ -319,6 +322,25 @@ def ON_semi_automatic_mode():
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in ON_semi_automatic_mode="+str(ex))
+
+def text_to_speech(audio, show=True, rate=170):
+    """
+    Text to Speech using Google's Generic API
+    Rate is the speed of speech. Default is 150
+    Actual default : 200
+    """
+    global engine
+    if type(audio) is list:
+        if show:
+            print(' '.join(audio))
+    else:
+        if show:
+            print(str(audio))
+    if os_name == linux_os:
+        rate -= 10
+    engine.setProperty('rate', rate)
+    engine.say(audio)   
+    engine.runAndWait()
 
 # ---------  Methods Ends ---------
 
@@ -1594,6 +1616,10 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         except Exception as ex:
             selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
             print(f"Error while browser_activate: {str(ex)}")
+    except AttributeError:
+        print("Another Chrome Window is already in use. Please close all the chrome windows and try again. If you want to open your custom profile. Else make dummy_profile = True")
+        text_to_speech("Another Chrome Window is already in use. Please close all the chrome windows and try again. If you want to open your custom profile. . Else make dummy_profile = True", show=False)
+        browser.kill_browser()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_website_h = " + str(ex))
@@ -1620,6 +1646,18 @@ def browser_navigate_h(url=""):
             status = browser_activate(url=url.lower())
         browser.go_to(url.lower())
         status = True
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_navigate_h = " + str(ex))
@@ -1648,6 +1686,21 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
         if Value and not User_Visible_Text_Element:
             browser.write(Value)
             status = True
+    except LookupError:
+        print("Element not found. Please check the given input.")
+        text_to_speech("Element not found. Please check the given input.", show=False)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_write_h = " + str(ex))
@@ -1692,10 +1745,21 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
             if not User_Visible_Text_Element and element:
                 browser.rightclick(element)
             status = True
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
     except LookupError:
         print("Element not found. Please check the given input.")
+        text_to_speech("Element not found. Please check the given input.", show=False)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except AttributeError:
         print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_mouse_click_h = " + str(ex))
@@ -1725,8 +1789,21 @@ def browser_locate_element_h(selector="", get_text=False, multiple_elements=Fals
             if get_text:
                 return browser.find_all(browser.S(selector).web_element.text)
             return browser.find_all(browser.S(selector))
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
     except LookupError:
-        print("Unable to find the element.")
+        print("Element not found. Please check the given input.")
+        text_to_speech("Element not found. Please check the given input.", show=False)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_locate_element_h = " + str(ex))
@@ -1754,6 +1831,21 @@ def browser_wait_until_h(text="", element="t"):
         elif element.lower() == "b":
             browser.wait_until(browser.Button(text).exists, 10) # button
         status = True
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+    except LookupError:
+        print("Element not found. Please check the given input.")
+        text_to_speech("Element not found. Please check the given input.", show=False)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_wait_until_h = " + str(ex))
@@ -1770,6 +1862,12 @@ def browser_refresh_page_h():
     try:
         browser.refresh()
         status = True
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_refresh_page_h = " + str(ex))
@@ -1786,6 +1884,15 @@ def browser_hit_enter_h():
     try:
         browser.press(browser.ENTER)
         status = True
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
@@ -1833,6 +1940,18 @@ def browser_key_press_h(key_1="", key_2=""):
                 key_1 = browser_keys[hot_keys.index(key_1.lower())]
             press(key_1 + key_2)
         status = True
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
@@ -1856,6 +1975,21 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
                 'Visible Text/element to perform mouse hover on it ')
         browser.hover(User_Visible_Text_Element)
         status = True
+    except TimeoutException:
+        print("Element not found. Please check the given input or change browser_set_waiting_time().")
+        text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+    except LookupError:
+        print("Element not found. Please check the given input.")
+        text_to_speech("Element not found. Please check the given input.", show=False)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as e:
         print('Error in browser_mouse_hover_h = ', str(e))
     finally:
@@ -1870,6 +2004,15 @@ def browser_set_waiting_time(time=10):
     """
     try:
         browser.Config.implicit_wait_secs = int(time)
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_set_waiting_time = " + str(ex))
@@ -1884,6 +2027,12 @@ def browser_quit_h():
     try:
         browser.kill_browser()
         status = True
+    except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_quit_h = " + str(ex))
@@ -2394,6 +2543,12 @@ def excel_get_row_column_count(excel_path="", sheet_name="Sheet1", header=0):
         row, col = df.shape
         row = row + 1
         return row, col
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_row_column_count="+str(ex))
@@ -2446,6 +2601,12 @@ def excel_copy_range_from_sheet(excel_path="", sheet_name='Sheet1', startCol=0, 
             rangeSelected.append(rowSelected)
     
         return rangeSelected
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in copy_range_from_excel_sheet="+str(ex))
@@ -2497,6 +2658,12 @@ def excel_copy_paste_range_from_to_sheet(excel_path="", sheet_name='Sheet1', sta
             countRow += 1
         to_wb.save(excel_path)
         return countRow-1
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_copy_paste_range_from_to_sheet="+str(ex))
@@ -2524,6 +2691,12 @@ def excel_split_by_column(excel_path="",sheet_name='Sheet1',header=0,columnName=
 
         # message_toast("Excel splitting done", file_folder_path=file_path)
             
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_split_by_column="+str(ex))
@@ -2577,6 +2750,12 @@ def excel_split_the_file_on_row_count(excel_path="", sheet_name = 'Sheet1', rowS
             
             i = i + 1
         return True
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_split_the_file_on_row_count="+str(ex))
@@ -2611,7 +2790,11 @@ def excel_merge_all_files(input_folder_path="",output_folder_path=""):
         
         return True
     except ValueError:
-        print("Please check the inputs, and try again.")
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_merge_all_files="+str(ex))
@@ -2642,6 +2825,12 @@ def excel_drop_columns(excel_path="", sheet_name='Sheet1', header=0, columnsToBe
         with pd.ExcelWriter(excel_path) as writer: # pylint: disable=abstract-class-instantiated
             df.to_excel(writer, sheet_name=sheet_name,index=False) 
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_drop_columns="+str(ex))
@@ -2690,6 +2879,12 @@ def excel_sort_columns(excel_path="",sheet_name='Sheet1',header=0,firstColumnToB
         writer.save()
         
         return True
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_sort_columns="+str(ex))        
@@ -2709,6 +2904,12 @@ def excel_clear_sheet(excel_path="",sheet_name="Sheet1", header=0):
         with pd.ExcelWriter(excel_path) as writer: # pylint: disable=abstract-class-instantiated
             df.to_excel(writer,sheet_name=sheet_name, index=False)
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_clear_sheet="+str(ex))
@@ -2735,6 +2936,12 @@ def excel_set_single_cell(excel_path="", sheet_name="Sheet1", header=0, columnNa
         
         return True
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_set_single_cell="+str(ex))
@@ -2757,6 +2964,12 @@ def excel_get_single_cell(excel_path="",sheet_name="Sheet1",header=0, columnName
         df = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,usecols={columnName[0]},engine='openpyxl')
         cellValue = df.at[cellNumber,columnName[0]]
         return cellValue
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_single_cell="+str(ex))
@@ -2790,6 +3003,12 @@ def excel_remove_duplicates(excel_path="",sheet_name="Sheet1", header=0, columnN
             count = df1.shape[0]
 
         return count
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_remove_duplicates="+str(ex))
@@ -2836,6 +3055,12 @@ def excel_vlook_up(filepath_1="", sheet_name_1 = 'Sheet1', header_1 = 0, filepat
             
         return True
     
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_vlook_up="+str(ex))
@@ -2876,6 +3101,12 @@ def excel_change_corrupt_xls_to_xlsx(xls_file ='',xlsx_file = '', xls_sheet_name
             x2x = XLS2XLSX(xls_file)
             x2x.to_xlsx(xlsx_file)
         return True   
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as e:
         exception_msg = f"Error in excel_change_corrupt_xls_to_xlsx : {str(e)}"
         return exception_msg
@@ -2892,6 +3123,12 @@ def excel_convert_xls_to_xlsx(xls_file_path='',xlsx_file_path=''):
             x2x = XLS2XLSX(xls_file_path)
             x2x.to_xlsx(xlsx_file_path)
         return True
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as e:
         errMsg = f"Error in converting file to xlsx format : {str(e)}"
         return errMsg
@@ -2915,6 +3152,12 @@ def excel_apply_format_as_table(excel_file_path,table_style="TableStyleMedium21"
         excel_instance.ActiveSheet.ListObjects.Add().TableStyle = table_style
         exc_workbook.Close(SaveChanges=1)
         excel_instance.Quit()
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except:
         exc_workbook.Close()
         excel_instance.Quit()
@@ -2951,6 +3194,12 @@ def excel_split_on_user_defined_conditions(excel_file_path,sheet_name='Sheet1',c
                 df_new = df.loc[df[column_name] == condition_str]
                 excel_newfile_path = output_dir + "\\" + column_name + '-'+condition_str   + '.xlsx'
                 df_new.to_excel(excel_newfile_path, index=False)
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         errMsg = f"Error in excel_split_on_user_defined_conditions: {str(ex)}"
@@ -2993,6 +3242,12 @@ def excel_convert_to_image(excel_file_path=""):
             return image_path
         else:
             print("This feature is available only on Windows OS")
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_convert_to_image="+str(ex))
@@ -3035,6 +3290,12 @@ def excel_create_excel_file_in_given_folder(fullPathToTheFolder="",excelFileName
         wb.save(filename = excel_path)
         
         return True
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_create_excel_file_in_given_folder="+str(ex))
@@ -3062,6 +3323,12 @@ def excel_if_value_exists(excel_path="",sheet_name='Sheet1',header=0,usecols="",
             df = ''
             return False
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_if_value_exists="+str(ex))
@@ -3093,6 +3360,12 @@ def excel_create_file(fullPathToTheFile="",fileName="",sheet_name="Sheet1"):
         wb.save(filename = fileName)
         
         return True
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_create_file="+str(ex))
@@ -3110,6 +3383,12 @@ def excel_to_colored_html(formatted_excel_path=""):
         formatted_html_path = str(formatted_excel_path).replace(".xlsx",".html")
         xlsx2html(formatted_excel_path, formatted_html_path)
         return formatted_html_path
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_to_colored_html="+str(ex))
@@ -3130,6 +3409,12 @@ def excel_get_all_sheet_names(excelFilePath=""):
 
         wb = load_workbook(excelFilePath)
         return wb.sheetnames
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_all_sheet_names="+str(ex))
@@ -3145,6 +3430,12 @@ def excel_get_all_header_columns(excel_path="",sheet_name="Sheet1",header=0):
 
         col_lst = pd.read_excel(excel_path,sheet_name=sheet_name,header=header,nrows=1,dtype=str,engine='openpyxl').columns.tolist()
         return col_lst
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_get_all_header_columns="+str(ex))
@@ -3173,6 +3464,12 @@ def excel_describe_data(excel_path="",sheet_name='Sheet1',header=0,view_excel=Fa
         #    return df.describe(include='all')
         return df.describe()
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_describe_data="+str(ex))
@@ -3267,6 +3564,12 @@ def excel_sub_routines():
         else:
             print("This feature is available only on Windows OS")
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in excel_sub_routines="+str(ex))
@@ -3300,6 +3603,12 @@ def convert_csv_to_excel(csv_path="",sep=""):
 
         # message_toast("CSV to excel conversion done", file_folder_path=excel_file_path)
 
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in convert_csv_to_excel="+str(ex))
@@ -3311,82 +3620,98 @@ def isNaN(value):
     try:
         import math
         return math.isnan(float(value))
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
     except:
         return False
 
 def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None, startcol=None,
     truncate_sheet=False, resizeColumns=True, na_rep = 'NA', **to_excel_kwargs):
     
-    from string import ascii_uppercase
-    from openpyxl.utils import get_column_letter
-    
-    # ignore [engine] parameter if it was passed
-    if 'engine' in to_excel_kwargs:
-        to_excel_kwargs.pop('engine')
-
     try:
-        f = open(filename)
-        # Do something with the file
-    except IOError:
-        # print("File not accessible")
-        wb = Workbook()
-        ws = wb.active
-        ws.title = sheet_name
-        wb.save(filename)
+        from string import ascii_uppercase
+        from openpyxl.utils import get_column_letter
+        
+        # ignore [engine] parameter if it was passed
+        if 'engine' in to_excel_kwargs:
+            to_excel_kwargs.pop('engine')
 
-    writer = pd.ExcelWriter(filename, engine='openpyxl', mode='a')
+        try:
+            f = open(filename)
+            # Do something with the file
+        except IOError:
+            # print("File not accessible")
+            wb = Workbook()
+            ws = wb.active
+            ws.title = sheet_name
+            wb.save(filename)
 
-    try:
-        # try to open an existing workbook
-        writer.book = load_workbook(filename)
+        writer = pd.ExcelWriter(filename, engine='openpyxl', mode='a')
 
-        # get the last row in the existing Excel sheet
-        # if it was not specified explicitly
-        if startrow is None and sheet_name in writer.book.sheetnames:
-            startrow = writer.book[sheet_name].max_row
+        try:
+            # try to open an existing workbook
+            writer.book = load_workbook(filename)
 
-        # truncate sheet
-        if truncate_sheet and sheet_name in writer.book.sheetnames:
-            # index of [sheet_name] sheet
-            idx = writer.book.sheetnames.index(sheet_name)
-            # remove [sheet_name]
-            writer.book.remove(writer.book.worksheets[idx])
-            # create an empty sheet [sheet_name] using old index
-            writer.book.create_sheet(sheet_name, idx)
+            # get the last row in the existing Excel sheet
+            # if it was not specified explicitly
+            if startrow is None and sheet_name in writer.book.sheetnames:
+                startrow = writer.book[sheet_name].max_row
 
-        # copy existing sheets
-        writer.sheets = {ws.title:ws for ws in writer.book.worksheets}
-    except FileNotFoundError:
-        # file does not exist yet, we will create it
-        pass
+            # truncate sheet
+            if truncate_sheet and sheet_name in writer.book.sheetnames:
+                # index of [sheet_name] sheet
+                idx = writer.book.sheetnames.index(sheet_name)
+                # remove [sheet_name]
+                writer.book.remove(writer.book.worksheets[idx])
+                # create an empty sheet [sheet_name] using old index
+                writer.book.create_sheet(sheet_name, idx)
 
-    if startrow is None:
-        # startrow = -1
-        startrow = 0
+            # copy existing sheets
+            writer.sheets = {ws.title:ws for ws in writer.book.worksheets}
+        except FileNotFoundError:
+            # file does not exist yet, we will create it
+            pass
 
-    if startcol is None:
-        startcol = 0
+        if startrow is None:
+            # startrow = -1
+            startrow = 0
 
-    # write out the new sheet
-    df.to_excel(writer, sheet_name, startrow=startrow, startcol=startcol, na_rep=na_rep, **to_excel_kwargs)
+        if startcol is None:
+            startcol = 0
 
-    if resizeColumns:
+        # write out the new sheet
+        df.to_excel(writer, sheet_name, startrow=startrow, startcol=startcol, na_rep=na_rep, **to_excel_kwargs)
 
-        ws = writer.book[sheet_name]
+        if resizeColumns:
 
-        def auto_format_cell_width(ws):
-            for letter in range(1,ws.max_column):
-                maximum_value = 0
-                for cell in ws[get_column_letter(letter)]:
-                    val_to_check = len(str(cell.value))
-                    if val_to_check > maximum_value:
-                        maximum_value = val_to_check
-                ws.column_dimensions[get_column_letter(letter)].width = maximum_value + 2
+            ws = writer.book[sheet_name]
 
-        auto_format_cell_width(ws)
+            def auto_format_cell_width(ws):
+                for letter in range(1,ws.max_column):
+                    maximum_value = 0
+                    for cell in ws[get_column_letter(letter)]:
+                        val_to_check = len(str(cell.value))
+                        if val_to_check > maximum_value:
+                            maximum_value = val_to_check
+                    ws.column_dimensions[get_column_letter(letter)].width = maximum_value + 2
 
-    # save the workbook
-    writer.save()
+            auto_format_cell_width(ws)
+
+        # save the workbook
+        writer.save()
+    except ValueError:
+        print("Input is not supported, could not convert string to float. Please check the inputs, and try again.")
+        text_to_speech("Input is not supported, could not convert string to float. Please check the inputs, and try again.", show=False)
+    except PermissionError:
+        print("Please close the excel file, and try again.")
+        text_to_speech("Please close the excel file, and try again.", show=False)
+    except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in append_df_to_excel="+str(ex))
 
 # ---------  Excel Functions Ends --------- 
 
@@ -3973,25 +4298,6 @@ def clear_screen():
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in clear_screen = " + str(ex))
-
-def text_to_speech(audio, show=True, rate=170):
-    """
-    Text to Speech using Google's Generic API
-    Rate is the speed of speech. Default is 150
-    Actual default : 200
-    """
-    global engine
-    if type(audio) is list:
-        if show:
-            print(' '.join(audio))
-    else:
-        if show:
-            print(str(audio))
-    if os_name == linux_os:
-        rate -= 10
-    engine.setProperty('rate', rate)
-    engine.say(audio)   
-    engine.runAndWait()
 
 def speech_to_text():
     """
@@ -5666,11 +5972,13 @@ def cli_dost(profile):
         
         if os_name == windows_os:
             if profile:
-                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
-                os.system(cmd)
+                subprocess.Popen([{python_exe_path}, "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw", profile])
+                # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
+                # os.system(cmd)
             else:
-                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
-                os.system(cmd)
+                subprocess.Popen([{python_exe_path}, "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"])
+                # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
+                # os.system(cmd)
         elif os_name == linux_os:
             # Commands for linux
             cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
@@ -5743,8 +6051,15 @@ def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
         if os_name == windows_os:
-            cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
-            os.system(cmd)
+            if os.path(excel_path).exists():
+                subprocess.Popen([{python_exe_path}, "{site_packages_path}\ClointFusion\WA_BOT.pyw", excel_path])
+                # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
+                # os.system(cmd)
+            else:
+                text_to_speech("File not found. Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message", show=False)
+                print("File not found. Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message")
+                print("Or you can simply drag the file into the terminal.")
+
         else:
             print("WhatsApp bot is only available on Windows. We regret the inconvenience.")
             print(f"Please contribute to make this feature available on {os_name.upper()} system.")
