@@ -7,7 +7,10 @@ import helium as browser
 from rich.text import Text
 from rich import print
 from rich.console import Console
-from ClointFusion import selft
+try:
+    from ClointFusion import selft
+except:
+    import selft
 import requests, os, subprocess, platform, time, sys, traceback
 from rich import pretty
 import pyinspect as pi

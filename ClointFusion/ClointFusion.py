@@ -69,12 +69,11 @@ python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
 pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
 python_version = str(sys.version_info.major)
 
-# if os.getlogin() in python_exe_path:
-#     python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
-#     python_exe_path = python_exe_path.replace(f'\\{os.getlogin()}\\', f'"\\{os.getlogin()}\\"')
+if os.getlogin() in python_exe_path:
+    python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
     
-# if os.getlogin() in pythonw_exe_path:
-#     pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+if os.getlogin() in pythonw_exe_path:
+    pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
 
 if os_name == windows_os:
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
@@ -154,8 +153,9 @@ sg.theme('Dark') # for PySimpleGUI FRONT END
 try:
     from ClointFusion import selft
 except Exception as e:
-    print("Please re-install ClointFusion.")
-    sys.exit()
+    import selft
+    # print("Please re-install ClointFusion.")
+    # sys.exit()
 
 # 2. All global variables
 
@@ -352,7 +352,7 @@ def text_to_speech(audio, show=True, rate=170):
 # Function in use, Dont Delete
 def _perform_self_test(tour=False):
     try:
-        data = cursr.execute("SELECT updating from CF_VALUES")
+        data = cursr.execute("SELECT updating from CF_IMP_VALUES")
 
         for row in data:
             updating =  row[0]
@@ -1627,6 +1627,9 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         print("Another Chrome Window is already in use. If you want to open your custom profile, please close all the chrome windows and try again.  Else make dummy_profile = True")
         text_to_speech("Another Chrome Window is already in use. If you want to open your custom profile, please close all the chrome windows and try again.  Else make dummy_profile = True", show=False)
         browser.kill_browser()
+    except WebDriverException:
+        print("Chrome instance not found. Try again using browser_activate()")
+        text_to_speech("Chrome instance not found. Try again using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_website_h = " + str(ex))
@@ -1665,6 +1668,9 @@ def browser_navigate_h(url=""):
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_navigate_h = " + str(ex))
@@ -1697,6 +1703,9 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
         print("Element not found. Please check the given input.")
         text_to_speech("Element not found. Please check the given input.", show=False)
     except WebDriverException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except NoSuchWindowException:
@@ -1770,6 +1779,9 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_mouse_click_h = " + str(ex))
@@ -1814,6 +1826,9 @@ def browser_locate_element_h(selector="", get_text=False, multiple_elements=Fals
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_locate_element_h = " + str(ex))
@@ -1856,6 +1871,9 @@ def browser_wait_until_h(text="", element="t"):
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_wait_until_h = " + str(ex))
@@ -1876,6 +1894,9 @@ def browser_refresh_page_h():
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
@@ -1903,6 +1924,9 @@ def browser_hit_enter_h():
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
@@ -1962,6 +1986,9 @@ def browser_key_press_h(key_1="", key_2=""):
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
@@ -2000,6 +2027,9 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as e:
         print('Error in browser_mouse_hover_h = ', str(e))
     finally:
@@ -2023,6 +2053,9 @@ def browser_set_waiting_time(time=10):
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+    except RuntimeError:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_set_waiting_time = " + str(ex))
@@ -2041,6 +2074,9 @@ def browser_quit_h():
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except NoSuchWindowException:
+        print("Chrome instance not found. Please restart the Bot using browser_activate()")
+        text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+    except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
     except Exception as ex:
@@ -4997,7 +5033,7 @@ def clointfusion_self_test_cases(temp_current_working_dir, start_time, console_w
             try:
                 driver = selft.gf(os_hn_ip, time_taken, file_contents)
 
-                cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'True' where ID = 1")
+                cursr.execute("UPDATE CF_IMP_VALUES set SELF_TEST = 'True' where ID = 1")
                 connct.commit()
                 clear_screen()
                 time.sleep(5)
@@ -5739,7 +5775,7 @@ def clointfusion_self_demo_tour(temp_current_working_dir, start_time, console_wi
                 
                 try:
                     driver = selft.gf(os_hn_ip, time_taken, file_contents)
-                    cursr.execute("UPDATE CF_VALUES set SELF_TEST = 'True' where ID = 1")
+                    cursr.execute("UPDATE CF_IMP_VALUES set SELF_TEST = 'True' where ID = 1")
                     connct.commit()
                     clear_screen()
                     time.sleep(5)
@@ -6081,13 +6117,16 @@ def cli_dost(profile):
         
         if os_name == windows_os:
             if profile:
-                subprocess.Popen([{python_exe_path}, "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw", profile])
-                # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
-                # os.system(cmd)
+                cursr.execute("UPDATE CF_IMP_VALUES set DOST_PROFILE = ? where ID = 1", (profile))
+                connct.commit()
+                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
+                os.system(cmd)
             else:
-                subprocess.Popen([{python_exe_path}, "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"])
-                # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw"'
-                # os.system(cmd)
+                data = cursr.execute("SELECT dost_profile from CF_IMP_VALUES")
+                for row in data:
+                    profile =  row[0]
+                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
+                os.system(cmd)
         elif os_name == linux_os:
             # Commands for linux
             cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'
@@ -6160,15 +6199,15 @@ def cli_send_whatsapp_msg(excel_path):
     """Sends WhatsApp Message using CF's Helium"""
     try:
         if os_name == windows_os:
-            if os.path(excel_path).exists():
-                subprocess.Popen([{python_exe_path}, "{site_packages_path}\ClointFusion\WA_BOT.pyw", excel_path])
-                # cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
-                # os.system(cmd)
+            
+            if os.path.isfile(Path(excel_path)):  # Check if file exists 
+                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\WA_BOT.pyw" "{excel_path}"'
+                os.system(cmd)
             else:
                 print("File not found. You can simply drag the file into the terminal.")
                 text_to_speech("File not found. You can simply drag the file into the terminal.", show=False)
                 print("or Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message")
-                text_to_speech("or Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message", show=False)
+                text_to_speech("or Please provide valid Absolute Path of excel file having 3 columns as header: Mobile Number, Name, Message", show=False)            
         else:
             print("WhatsApp bot is only available on Windows. We regret the inconvenience.")
             print(f"Please contribute to make this feature available on {os_name.upper()} system.")
@@ -6546,7 +6585,7 @@ if os_name != mac_os:
         print("Error in connecting to DB="+str(ex))
 
 
-    data = cursr.execute("SELECT updating from CF_VALUES")
+    data = cursr.execute("SELECT updating from CF_IMP_VALUES")
 
     for row in data:
         updating =  row[0]
