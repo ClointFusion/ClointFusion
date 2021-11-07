@@ -559,12 +559,12 @@ except Exception as ex:
     print("Error in connecting to DB="+str(ex))
 
 
-data = cursr.execute("SELECT bol from CF_VALUES where ID = 1")
+data = cursr.execute("SELECT bol from CF_IMP_VALUES where ID = 1")
 for row in data:
    run =  row[0]
 
 welcome(run)
-cursr.execute("UPDATE CF_VALUES set bol = bol+1 where ID = 1")
+cursr.execute("UPDATE CF_IMP_VALUES set bol = bol+1 where ID = 1")
 connct.commit()
 
 bol_main()
