@@ -1627,9 +1627,11 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         print("Another Chrome Window is already in use. If you want to open your custom profile, please close all the chrome windows and try again.  Else make dummy_profile = True")
         text_to_speech("Another Chrome Window is already in use. If you want to open your custom profile, please close all the chrome windows and try again.  Else make dummy_profile = True", show=False)
         browser.kill_browser()
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Try again using browser_activate()")
         text_to_speech("Chrome instance not found. Try again using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_website_h = " + str(ex))
@@ -1659,18 +1661,23 @@ def browser_navigate_h(url=""):
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_navigate_h = " + str(ex))
@@ -1702,24 +1709,31 @@ def browser_write_h(Value="", User_Visible_Text_Element=""):
     except LookupError:
         print("Element not found. Please check the given input.")
         text_to_speech("Element not found. Please check the given input.", show=False)
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except IndexError:
         print("Please check the input values, and try again.")
         text_to_speech("Please check the input values, and try again.", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_write_h = " + str(ex))
@@ -1767,21 +1781,27 @@ def browser_mouse_click_h(User_Visible_Text_Element="", element="", double_click
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except LookupError:
         print("Element not found. Please check the given input.")
         text_to_speech("Element not found. Please check the given input.", show=False)
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_mouse_click_h = " + str(ex))
@@ -1814,21 +1834,27 @@ def browser_locate_element_h(selector="", get_text=False, multiple_elements=Fals
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except LookupError:
         print("Element not found. Please check the given input.")
         text_to_speech("Element not found. Please check the given input.", show=False)
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_locate_element_h = " + str(ex))
@@ -1859,21 +1885,27 @@ def browser_wait_until_h(text="", element="t"):
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except LookupError:
         print("Element not found. Please check the given input.")
         text_to_speech("Element not found. Please check the given input.", show=False)
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()   
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_wait_until_h = " + str(ex))
@@ -1893,15 +1925,19 @@ def browser_refresh_page_h():
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_refresh_page_h = " + str(ex))
+        sys.exit()
     finally:
         return status
 
@@ -1918,15 +1954,19 @@ def browser_hit_enter_h():
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
@@ -1967,7 +2007,6 @@ def browser_key_press_h(key_1="", key_2=""):
             press(key_1)
         if key_1 and key_2:
             if key_1.lower() in hot_keys and key_2.lower() in hot_keys:
-                print("Both in hot")
                 key_1 = browser_keys[hot_keys.index(key_1.lower())]
                 key_2 = browser_keys[hot_keys.index(key_2.lower())]
             if key_1.lower() in hot_keys and key_2.lower() not in hot_keys:
@@ -1977,18 +2016,23 @@ def browser_key_press_h(key_1="", key_2=""):
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_hit_enter_h=" + str(ex))
@@ -2015,21 +2059,27 @@ def browser_mouse_hover_h(User_Visible_Text_Element=""):
     except TimeoutException:
         print("Element not found. Please check the given input or change browser_set_waiting_time().")
         text_to_speech("Element not found. Please check the given input or change browser_set_waiting_time().", show=False)
+        sys.exit()
     except LookupError:
         print("Element not found. Please check the given input.")
         text_to_speech("Element not found. Please check the given input.", show=False)
+        sys.exit()
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as e:
         print('Error in browser_mouse_hover_h = ', str(e))
     finally:
@@ -2047,15 +2097,19 @@ def browser_set_waiting_time(time=10):
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except AttributeError:
         print("Invalid Input. Please check the given input.")
         text_to_speech("Invalid Input. Please check the given input.", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_set_waiting_time = " + str(ex))
@@ -2073,12 +2127,15 @@ def browser_quit_h():
     except WebDriverException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except NoSuchWindowException:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except RuntimeError:
         print("Chrome instance not found. Please restart the Bot using browser_activate()")
         text_to_speech("Chrome instance not found. Please restart the Bot using browser_activate()", show=False)
+        sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in browser_quit_h = " + str(ex))
@@ -2363,6 +2420,9 @@ def window_activate_window(window_title=''):
             
         else:
             print("No window OPEN by name="+str(window_title))
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_activate_window="+str(ex))
@@ -2412,6 +2472,9 @@ def window_activate_and_maximize_windows(windowName=""):
             
         else:
             print("No window OPEN by name="+str(windowName))
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_activate_and_maximize="+str(ex))
@@ -2435,6 +2498,9 @@ def window_minimize_windows(windowName=""):
             time.sleep(1)
         else:
             print("No window available to minimize by name="+str(windowName))
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_minimize="+str(ex))
@@ -2458,6 +2524,9 @@ def window_close_windows(windowName=""):
             time.sleep(1)
         else:
             print("No window available to close, by name="+str(windowName))
+    except AttributeError:
+        print("Invalid Input. Please check the given input.")
+        text_to_speech("Invalid Input. Please check the given input.", show=False)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in window_close="+str(ex))

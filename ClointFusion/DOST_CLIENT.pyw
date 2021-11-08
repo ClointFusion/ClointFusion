@@ -144,10 +144,23 @@ def clear_screen():
 
 def run_program(website):
     code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
+    
     try:
+        
+        f_code = "import pyinspect as pi\nimport sys, traceback\nfrom rich import pretty\nfrom ClointFusion.ClointFusion import selft\npi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)\npretty.install()\ntry:\n"
+        for line in code.split("\n"):
+            f_code += "    " + line + "\n"
+        f_code += "except Exception as ex:\n    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))\n    print(f'Error in Running DOST Program: {str(ex)}')"
+
         with open(temp_code, 'w') as fp:
-            fp.write(code + "\n" + r"print('\n')")
+            fp.write(f_code + "\n" + r"print('\n')")
         status = exe_code(temp_code)
+    
+    # code = requests.get(f"{website}/cf_id_get/{uuid}").json()["code"]
+    # try:
+    #     with open(temp_code, 'w') as fp:
+    #         fp.write(code + "\n" + r"print('\n')")
+    #     status = exe_code(temp_code)
     except:
         pass
     return status
@@ -236,7 +249,7 @@ if os_name == windows_os:
                         break
                 except Exception as ex:
                     # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-                    print("Error in DOST_Client.pyw="+str(ex)+ ex)
+                    print("Error in DOST_Client.pyw="+str(ex))
                     break
         print("Thank you for utilizing DOST. I hope you have a good time with it.\nDo you have any suggestions ? Love to hear them, please drop a mail at ClointFusion@cloint.com.\n")
     except Exception as ex:
