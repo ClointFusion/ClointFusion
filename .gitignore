@@ -167,4 +167,5 @@ ClointFusion/setup_loader.py
 ClointFusion/selft.c
 ClointFusion/loader.c
 *.pyc
-ClointFusion/_pycache_/*.pyc
+ClointFusion/*.pyc
+ClointFusion/__pycache__/*.pyc

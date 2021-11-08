@@ -1,34 +1,32 @@
 #BOT Recommendation Engine and Work Hour Monitor
-import os,sys, time, traceback, threading, requests, sqlite3
-from dateutil import parser
-import PySimpleGUI as sg
-import pyautogui as pg
-from pathlib import Path
-import platform,socket,re,uuid,json,logging
-from pynput.mouse import Listener as MouseListener
-from pynput.keyboard import Listener as KeyboardListener
-from ClointFusion import selft
-import datetime
-import pyinspect as pi
-from rich import pretty
-
+import platform
 windows_os = "windows"
-linux_os = "linux"
-mac_os = "darwin"
 os_name = str(platform.system()).lower()
 
 if os_name == windows_os:
+    import os,sys, time, traceback, threading, requests, sqlite3
+    from dateutil import parser
+    import PySimpleGUI as sg
+    import pyautogui as pg
+    from pathlib import Path
+    import platform,socket,re,uuid,json
+    from pynput.mouse import Listener as MouseListener
+    from pynput.keyboard import Listener as KeyboardListener
+    # from ClointFusion import selft
+    import datetime
+    import pyinspect as pi
+    from rich import pretty
+    import subprocess
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-    from cf_notification import show_toast_notification_if_new_msg_is_available
-elif os_name == linux_os:
-    clointfusion_directory = r"/home/{}/ClointFusion".format(str(os.getlogin()))
-elif os_name == mac_os:
-    clointfusion_directory = r"/Users/{}/ClointFusion".format(str(os.getlogin()))
-
-config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
-img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
-cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
-cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
+    # from cf_notification import show_toast_notification_if_new_msg_is_available
+    config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
+    img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
+    cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
+    cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
+    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
+    user_uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
+else:
+    sys.exit("This program is only for Windows OS")
 
 def folder_create_text_file(textFolderPath="",txtFileName="", custom=False):
     """
@@ -55,25 +53,20 @@ def folder_create_text_file(textFolderPath="",txtFileName="", custom=False):
             file_path.touch()
         return file_path
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in folder_create_text_file="+str(ex))
-
-if os_name == windows_os:
-    db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
-else:
-    db_file_path = folder_create_text_file(config_folder_path, 'BRE_WHM.db', custom=True)
         
 try:
     connct = sqlite3.connect(db_file_path,check_same_thread=False)
     cursr = connct.cursor()
 except Exception as ex:
-    selft.crash_report(traceback.format_exception(*cf.sys.exc_info(),limit=None, chain=True))
+    # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print("Error in connecting to DB="+str(ex))     
 
 pi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)
 pretty.install()
 
-user_uuid = selft.get_uuid()
+
 last_click = ""
 COUNTER = 1
 
@@ -110,7 +103,7 @@ try:
     cursr.execute(sql_qry)
     connct.commit()
 except Exception as ex :
-    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+    # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     print(f"Exception: {ex}")
 
 event_table = """ CREATE TABLE IF NOT EXISTS CFEVENTS (
@@ -215,7 +208,7 @@ def on_release(key):
         connct.commit()
             
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in on_press="+str(ex))
 
 def on_press(key):
@@ -282,12 +275,12 @@ def on_click(x, y, button, pressed):
                 cursr.execute("Insert into CFEVENTS values(?,?,?,?,?,?,?,?,?,?)", (get_time_stamp(),"Mouse Click",str(pg.position()[0]),str(pg.position()[1]),"N/A",str(button),str(click_count),str(windw).replace("*",""),str(rgb_pixels),str(snip_save_path)))
                 connct.commit()
             except Exception as ex :
-                selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+                # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print(f"Exception CFEVENTS values : {ex}")
 
             COUNTER = COUNTER + 1
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         exc_type, exc_value, exc_traceback = sys.exc_info()
         print(exc_type)
         print(exc_value)
@@ -341,7 +334,7 @@ def launch_cf_log_generator_gui():
                 
         window.Close()
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_cf_log_generator_gui="+str(ex))
 
 # def pause():
@@ -355,7 +348,7 @@ def exit(keyboard_listener,mouse_listener):
         os._exit(0) 
         
     except Exception as ex :
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Exception exit keyboard_listener,mouse_listener : {ex}")
 
 def _getServerVersion():
@@ -366,7 +359,7 @@ def _getServerVersion():
     except Warning:
         pass
     except Exception as ex :
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Exception _getServerVersion : {ex}")
 
     return s_version
@@ -376,12 +369,10 @@ def _getCurrentVersion():
     try:
         if os_name == windows_os:
             c_version = os.popen('pip show ClointFusion | findstr "Version"').read()
-        elif os_name == linux_os:
-            c_version = os.popen('pip3 show ClointFusion | grep "Version"').read()
 
         c_version = str(c_version).split(":")[1].strip()
     except Exception as ex :
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print(f"Exception _getCurrentVersion : {ex}")
 
     return c_version
@@ -415,7 +406,7 @@ def call_colab_launcher():
         cmd = f'python "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"'
         os.system(cmd)
     except Exception as ex :
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_colab_launcher" + str(ex))
 
 def call_dost_client():
@@ -423,7 +414,7 @@ def call_dost_client():
         cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
         os.system(cmd)
     except Exception as ex :
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_dost_client" + str(ex))
 
 def call_bol():
@@ -431,7 +422,7 @@ def call_bol():
         cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_bol " + str(ex))
 
 def launch_cf_log_generator_gui_new():
@@ -470,13 +461,13 @@ def launch_cf_log_generator_gui_new():
             lambda icon, item: exit(keyboard_listener,mouse_listener)))).run()
 
     except Exception as ex:
-        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_cf_log_generator_gui_new="+str(ex))            
 
 try:
     launch_cf_log_generator_gui_new()
-    if os_name == windows_os:
-        show_toast_notification_if_new_msg_is_available()
+    # if os_name == windows_os:
+    #     show_toast_notification_if_new_msg_is_available()
 except Exception as ex:
-    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+    # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
     pg.alert(ex)    
