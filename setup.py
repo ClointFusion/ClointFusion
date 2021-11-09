@@ -24,6 +24,7 @@ setup(
     keywords='ClointFusion,RPA,Python,Automation,BOT,Software BOT,ROBOT',
     license="BSD",
     install_requires=open('requirements.txt').read().split('\n'),
+
     # py_modules=['ClointFusion'],
   classifiers=[
     'Development Status :: 4 - Beta',
@@ -53,11 +54,11 @@ setup(
             'cf_tour = ClointFusion.ClointFusion:cli_cf_tour',
         ],
     },
-  python_requires='>=3.8, <3.10',
+  python_requires='>=3.8, <=3.9',
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
-      'WhatsApp Community': 'https://chat.whatsapp.com/DkY9QKmQkTZIv1CsOVrgWW',
+      'WhatsApp Community': 'https://chat.whatsapp.com/JKr7m0avmkIFwYgMarShZG',
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
       'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
