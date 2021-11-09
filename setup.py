@@ -62,7 +62,8 @@ setup(
       'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
       'Discussion Forum': 'https://github.com/ClointFusion/ClointFusion/discussions',
-      'Source Code': 'https://github.com/ClointFusion/ClointFusion/'
+      'Source Code': 'https://github.com/ClointFusion/ClointFusion/',
+      'Medium' : 'https://medium.com/@clointfusion/bd152f4a1e0d?source=friends_link&sk=25b6051d75a8a4bb3e9a3e1a46516766'
   },
     # package_data={"ClointFusion": ["*.pyd"]},
 )
