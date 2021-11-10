@@ -45,3 +45,4 @@ pyttsx3>=2.90
 SpeechRecognition>=3.8.1
 schedule>=1.1.0
 ipython>=7.28.0
+docutils==0.17 #remove later
