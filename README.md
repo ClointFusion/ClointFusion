@@ -516,3 +516,4 @@ Write us by clicking below<br>
 
 ---
 
+Disclaimer: We collect anonymous data on installation and usage statistics in order to improve our product and provide better services.
