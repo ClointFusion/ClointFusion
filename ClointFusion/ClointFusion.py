@@ -1534,7 +1534,7 @@ def message_toast(message,website_url="", file_folder_path=""):
 
 # ---------  Browser Functions --------- 
     
-def browser_activate_chrome(url="", files_download_path='', dummy_browser=True, incognito=False,
+def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
     """Function to launch browser and start the session.
 
