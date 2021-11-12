@@ -372,7 +372,7 @@ def _welcome_to_clointfusion():
     Internal Function to display welcome message & push a notification to ClointFusion Slack
     """
     from pyfiglet import Figlet
-    version = "(Version: 1.1.2)"
+    version = "(Version: 1.1.3)"
 
     hour = datetime.datetime.now().hour
     
@@ -1534,7 +1534,7 @@ def message_toast(message,website_url="", file_folder_path=""):
 
 # ---------  Browser Functions --------- 
     
-def browser_activate_chrome(url="", files_download_path='', dummy_browser=True, incognito=False,
+def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
     """Function to launch browser and start the session.
 
@@ -1661,9 +1661,11 @@ def browser_activate_firefox(url="", dummy_browser=True, profile="Default"):
             desired = DesiredCapabilities.FIREFOX
             with DisableLogger():
                 browser_driver = Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile,options=options,desired_capabilities = desired)
+                status = True
         else:
             with DisableLogger():
-                browser_driver = Firefox(executable_path=GeckoDriverManager().install())    
+                browser_driver = Firefox(executable_path=GeckoDriverManager().install())
+                status = True
         browser.set_driver(browser_driver)
         if not url:
             browser.go_to('https://dost.clointfusion.com/')

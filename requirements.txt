@@ -46,3 +46,6 @@ SpeechRecognition>=3.8.1
 schedule>=1.1.0
 ipython>=7.28.0
 docutils==0.17 #remove later
+#SOCKET Dependencies
+python-socketio>=5.4.1
+websocket-client>=1.2.1
