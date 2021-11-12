@@ -280,7 +280,7 @@ def key_hit_enter(write_to_window=""):
 
 # ---------  Browser Functions --------- 
 
-def browser_activate_chrome(url="", files_download_path='', dummy_browser=True, incognito=False,
+def browser_activate(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
     """Function to launch Chrome browser and start the session.
 
@@ -300,7 +300,7 @@ def browser_activate_chrome(url="", files_download_path='', dummy_browser=True, 
     Returns:
         bool: Whether the function is successful or failed.
     """
-    return loader.browser_activate_chrome(url, files_download_path, dummy_browser, incognito,
+    return loader.browser_activate(url, files_download_path, dummy_browser, incognito,
                      clear_previous_instances, profile)
 
 def browser_activate_firefox(url="", dummy_browser=True, profile="Default"):
