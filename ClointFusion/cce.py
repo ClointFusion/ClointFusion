@@ -280,9 +280,9 @@ def key_hit_enter(write_to_window=""):
 
 # ---------  Browser Functions --------- 
 
-def browser_activate(url="", files_download_path='', dummy_browser=True, open_in_background=False, incognito=False,
+def browser_activate_chrome(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
-    """Function to launch browser and start the session.
+    """Function to launch Chrome browser and start the session.
 
     Args:
         url (str, optional): Website you want to visit. Defaults to "".
@@ -300,8 +300,24 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
     Returns:
         bool: Whether the function is successful or failed.
     """
-    return loader.browser_activate(url, files_download_path, dummy_browser, open_in_background, incognito,
+    return loader.browser_activate_chrome(url, files_download_path, dummy_browser, incognito,
                      clear_previous_instances, profile)
+
+def browser_activate_firefox(url="", dummy_browser=True, profile="Default"):
+    """Function to launch firefox browser and start the session.
+
+    Args:
+        url (str, optional): Website you want to visit. Defaults to "".
+        dummy_browser (bool, optional): If it is false Default profile is opened.
+        Defaults: True.
+        profile (str, optional): By default it opens the 'Default' profile.
+        Eg : Profile 1, Profile 2
+
+    Returns:
+        bool: Whether the function is successful or failed.
+    """
+    return loader.browser_activate_firefox(url, dummy_browser, profile)
+
 
 def browser_navigate_h(url=""):
     """Navigate through the url after the session is started.
