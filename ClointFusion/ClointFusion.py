@@ -1661,9 +1661,11 @@ def browser_activate_firefox(url="", dummy_browser=True, profile="Default"):
             desired = DesiredCapabilities.FIREFOX
             with DisableLogger():
                 browser_driver = Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile,options=options,desired_capabilities = desired)
+                status = True
         else:
             with DisableLogger():
-                browser_driver = Firefox(executable_path=GeckoDriverManager().install())    
+                browser_driver = Firefox(executable_path=GeckoDriverManager().install())
+                status = True
         browser.set_driver(browser_driver)
         if not url:
             browser.go_to('https://dost.clointfusion.com/')
