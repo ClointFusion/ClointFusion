@@ -71,7 +71,7 @@ python_version = str(sys.version_info.major)
 
 if os.getlogin() in python_exe_path:
     python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
-    
+
 if os.getlogin() in pythonw_exe_path:
     pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
 
@@ -1534,7 +1534,7 @@ def message_toast(message,website_url="", file_folder_path=""):
 
 # ---------  Browser Functions --------- 
     
-def browser_activate(url="", files_download_path='', dummy_browser=True, open_in_background=False, incognito=False,
+def browser_activate_chrome(url="", files_download_path='', dummy_browser=True, incognito=False,
                      clear_previous_instances=False, profile="Default"):
     """Function to launch browser and start the session.
 
@@ -1634,7 +1634,49 @@ def browser_activate(url="", files_download_path='', dummy_browser=True, open_in
         sys.exit()
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-        print("Error in launch_website_h = " + str(ex))
+        print("Error in browser_activate_chrome = " + str(ex))
+        browser.kill_browser()
+    finally:
+        return status
+
+def browser_activate_firefox(url="", dummy_browser=True, profile="Default"):
+    status = False
+    global browser_driver, helium_service_launched
+    
+    try:
+        from selenium.webdriver import FirefoxOptions, FirefoxProfile, Firefox, DesiredCapabilities
+        from webdriver_manager.firefox import GeckoDriverManager
+        
+        options = FirefoxOptions()
+        if profile == "Default":
+            if os_name == windows_os:
+                profile_name = [i for i in os.listdir("C:/Users/{}/AppData/Roaming/Mozilla/Firefox/Profiles/".format(os.getlogin())) if "default-release" in str(i)]
+            elif os_name == linux_os:
+                profile_name = [i for i in os.listdir("/home/{}/.mozilla/firefox/".format(os.getlogin())) if "default-release" in str(i)]
+        else:
+            profile_name = profile
+        if dummy_browser == False:
+            profile = FirefoxProfile('C:/Users/{}/AppData/Roaming/Mozilla/Firefox/Profiles/{}'.format(os.getlogin(),profile_name[0]))
+            profile.update_preferences()
+            desired = DesiredCapabilities.FIREFOX
+            with DisableLogger():
+                browser_driver = Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile,options=options,desired_capabilities = desired)
+        else:
+            with DisableLogger():
+                browser_driver = Firefox(executable_path=GeckoDriverManager().install())    
+        browser.set_driver(browser_driver)
+        if not url:
+            browser.go_to('https://dost.clointfusion.com/')
+        else:
+            browser.go_to(url)
+
+    except WebDriverException:
+        print("Firefox instance not found. Try again using browser_activate_firefox()")
+        text_to_speech("Firefox instance not found. Try again using browser_activate_firefox()", show=False)
+        sys.exit()
+    except Exception as ex:
+        selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
+        print("Error in browser_activate_firefox = " + str(ex))
         browser.kill_browser()
     finally:
         return status
@@ -6185,17 +6227,20 @@ def cli_dost(profile):
         print("Launching ClointFusion's Drag/Drop based BOT Builder. Thanks to contribution by Murali, Research Intern@ClointFusion : https://www.linkedin.com/in/murali-manohar-varma-220a03207 \n")
         
         if os_name == windows_os:
-            if profile:
-                cursr.execute("UPDATE CF_IMP_VALUES set DOST_PROFILE = ? where ID = 1", (profile))
-                connct.commit()
-                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
-                os.system(cmd)
-            else:
-                data = cursr.execute("SELECT dost_profile from CF_IMP_VALUES")
-                for row in data:
-                    profile =  row[0]
-                cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
-                os.system(cmd)
+            # if profile:
+            #     cursr.execute("UPDATE CF_IMP_VALUES set DOST_PROFILE = ? where ID = 1", (profile))
+            #     connct.commit()
+            #     cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
+            #     os.system(cmd)
+            # else:
+            #     data = cursr.execute("SELECT dost_profile from CF_IMP_VALUES")
+            #     for row in data:
+            #         profile =  row[0]
+            #     cmd = f'{python_exe_path} "{site_packages_path}\ClointFusion\DOST_CLIENT.pyw" "{profile}"'
+            #     os.system(cmd)
+            import webbrowser
+            webbrowser.open('https://dost.clointfusion.com/')
+
         elif os_name == linux_os:
             # Commands for linux
             cmd = f'sudo python{python_version} "{site_packages_path}/ClointFusion/DOST_CLIENT.pyw"'

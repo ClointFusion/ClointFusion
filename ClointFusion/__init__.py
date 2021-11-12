@@ -74,8 +74,9 @@ try:
 
 
         # ---------  Browser Functions | Current Count : 11
-        # from ClointFusion.cce import browser
-        from ClointFusion.cce import browser_activate
+        from ClointFusion.cce import browser
+        from ClointFusion.cce import browser_activate_chrome
+        from ClointFusion.cce import browser_activate_firefox
         from ClointFusion.cce import browser_navigate_h
         from ClointFusion.cce import browser_write_h
         from ClointFusion.cce import browser_mouse_click_h

@@ -4,7 +4,7 @@ windows_os = "windows"
 os_name = str(platform.system()).lower()
 
 if os_name == windows_os:
-    import os,sys, time, traceback, threading, requests, sqlite3
+    import os,sys, time, traceback, threading, requests, sqlite3, socketio
     from dateutil import parser
     import PySimpleGUI as sg
     import pyautogui as pg
@@ -12,19 +12,28 @@ if os_name == windows_os:
     import platform,socket,re,uuid,json
     from pynput.mouse import Listener as MouseListener
     from pynput.keyboard import Listener as KeyboardListener
-    # from ClointFusion import selft
     import datetime
     import pyinspect as pi
     from rich import pretty
     import subprocess
     clointfusion_directory = r"C:\Users\{}\ClointFusion".format(str(os.getlogin()))
-    # from cf_notification import show_toast_notification_if_new_msg_is_available
     config_folder_path = Path(os.path.join(clointfusion_directory, "Config_Files"))
     img_folder_path =  Path(os.path.join(clointfusion_directory, "Images"))
     cf_splash_png_path = Path(os.path.join(clointfusion_directory,"Logo_Icons","Splash.PNG"))
     cf_icon_cdt_file_path = os.path.join(clointfusion_directory,"Logo_Icons","Cloint-ICON-CDT.ico")
     db_file_path = r'{}\BRE_WHM.db'.format(str(config_folder_path))
     user_uuid = str(subprocess.check_output('wmic csproduct get uuid'), 'utf-8').split('\n')[1].strip()
+    
+    python_exe_path = os.path.join(os.path.dirname(sys.executable), "python.exe")
+    pythonw_exe_path = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
+    python_version = str(sys.version_info.major)
+
+    if os.getlogin() in python_exe_path:
+        python_exe_path = python_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+        
+    if os.getlogin() in pythonw_exe_path:
+        pythonw_exe_path = pythonw_exe_path.replace(os.getlogin(), f'"{os.getlogin()}"')
+    
 else:
     sys.exit("This program is only for Windows OS")
 
@@ -337,10 +346,6 @@ def launch_cf_log_generator_gui():
         # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_cf_log_generator_gui="+str(ex))
 
-# def pause():
-#     # pg.alert("RR")
-#     print("PAUSED")
-
 def exit(keyboard_listener,mouse_listener):
     try:
         keyboard_listener.stop()
@@ -403,7 +408,7 @@ def _get_site_packages_path():
 
 def call_colab_launcher():
     try:
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"'
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Colab_Launcher.py"'
         os.system(cmd)
     except Exception as ex :
         # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
@@ -411,19 +416,41 @@ def call_colab_launcher():
 
 def call_dost_client():
     try:
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\DOST_CLIENT.pyw"'
-        os.system(cmd)
+        import webbrowser
+        webbrowser.open('https://dost.clointfusion.com/')
+
     except Exception as ex :
         # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_dost_client" + str(ex))
 
 def call_bol():
     try:
-        cmd = f'python "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
+        cmd = f'{python_exe_path} "{_get_site_packages_path()}\ClointFusion\Bol.pyw"'
         os.system(cmd)
     except Exception as ex:
         # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in call_bol " + str(ex))
+
+def clear_screen():
+    """
+    Clears Python Interpreter Terminal Window Screen
+    """
+    try:
+        command = 'cls' if os.name in ('nt', 'dos') else 'clear'
+        os.system(command)
+    except:
+        pass
+
+def exe_code(path):
+    cmd = f'{python_exe_path} "{path}"'
+    os.system(cmd)
+
+def open_socket(sio):
+    sio.connect('http://dost.clointfusion.com:3000')
+    task = sio.start_background_task(sio.wait)
+
+def close_socket(sio):
+    sio.disconnect()
 
 def launch_cf_log_generator_gui_new():
     try:
@@ -451,8 +478,8 @@ def launch_cf_log_generator_gui_new():
             'Bol (Talk)',
             lambda icon, item: call_bol()),
         item(
-            'Dost Client',
-            lambda icon, item: call_dost_client()),           
+            'DOST',
+            lambda icon, item: call_dost_client()),   
         item(
             'Work Report',
             lambda icon, item: icon.notify("Hi, This is your work hour monitor powered by ClointFusion. Just open a command prompt and type 'cf_work' to view the report")),
@@ -464,10 +491,47 @@ def launch_cf_log_generator_gui_new():
         # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in launch_cf_log_generator_gui_new="+str(ex))            
 
+sio = socketio.Client()
+
+@sio.event
+def connect():
+    sio.emit('dost-client', {'cf_id': user_uuid, 'status': 'true'})
+    print('connection established')
+
+@sio.event
+def verify(data):
+    if data['cf_id'] == user_uuid:
+        sio.emit('dost-client', {'cf_id': user_uuid, 'status': 'true'})
+
+@sio.event
+def trigger_cf(data):
+    if data['cf_id'] == user_uuid:
+        os.system('cf')
+
+@sio.event
+def disconnect():
+    print('disconnected from server')
+
+@sio.on(user_uuid)
+def run_code(data):
+    code = data['code']
+    temp_code = clointfusion_directory + "\Config_Files\dost_code.py"
+
+    try:
+        f_code = "import pyinspect as pi\nimport sys, time, traceback\nfrom rich import pretty\nfrom ClointFusion.ClointFusion import selft\nimport ClointFusion as cf\npi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)\npretty.install()\ntry:\n"
+        for line in code.split("\n"):
+            f_code += "    " + line + "\n"
+        f_code += "    print('Closing in 5 secs')\n    time.sleep(5)\nexcept Exception as ex:\n    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))\n    error = f'Error in Running DOST Program: {str(ex)}'\n    print(error)\n    cf.message_pop_up(strMsg=error,delay=20)"
+
+        with open(temp_code, 'w') as fp:
+            fp.write(f_code + "\n" + r"print('\n')")
+        exe_code(temp_code)
+    except:
+        pass
+
+
 try:
+    open_socket(sio)
     launch_cf_log_generator_gui_new()
-    # if os_name == windows_os:
-    #     show_toast_notification_if_new_msg_is_available()
 except Exception as ex:
-    # selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
-    pg.alert(ex)    
+    pg.alert(ex)
