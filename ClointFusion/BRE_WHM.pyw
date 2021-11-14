@@ -4,6 +4,7 @@ windows_os = "windows"
 os_name = str(platform.system()).lower()
 
 if os_name == windows_os:
+    socket_connected = False
     import os,sys, time, traceback, threading, requests, sqlite3, socketio
     from dateutil import parser
     import PySimpleGUI as sg
@@ -229,6 +230,8 @@ def on_click(x, y, button, pressed):
     click_count = 1
 
     try:
+        if not socket_connected:
+            open_socket(sio)
         if pressed:
             pass   
         if not pressed:
@@ -446,8 +449,15 @@ def exe_code(path):
     os.system(cmd)
 
 def open_socket(sio):
-    sio.connect('http://dost.clointfusion.com:3000')
-    task = sio.start_background_task(sio.wait)
+    global socket_connected
+    try:
+        sio.connect('http://dost.clointfusion.com:3000')
+        socket_connected = True
+        task = sio.start_background_task(sio.wait)
+    except socketio.exceptions.ConnectionError:
+        socket_connected = False
+    except Exception as ex:
+        print("Error in open_socket " + str(ex))
 
 def close_socket(sio):
     sio.disconnect()
