@@ -154,7 +154,6 @@ desktop.ini
 Dockerfile_Win
 *.xlsx
 *.txt
-*.exe
 *.db
 *.html
 
