@@ -44,7 +44,7 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 ## Windows :
 
-> ### Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://media.githubusercontent.com/media/ClointFusion/ClointFusion/master/Installers/ClointFusion%20Community%20Edition.exe' target="_blank">Windows EXE</a>
+> ### Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe' target="_blank">Windows EXE</a>
 # OR
 
 * ClointFusion is compatible with both Windows 10 and Windows 11.
@@ -148,14 +148,10 @@ Below is the speed up version of self-test.
 ### Launch DOST client
 
 > #### Windows
+Open your favorite browser and go to `https://dost.clointfusion.com` and start building bots.
 
-Open your favorite terminal and type `dost`. That's it!
+Note : Make sure ClointFusion Tray is present or open terminal and type `cf_tray` to activate ClointFusion Tray menu.
 
-Make sure you close all your Google Chrome windows before starting.
-
-- Want to change the chrome profile ?
-
-    - Use `dost -p "Profile 1"`
 
 > #### Ubuntu
 Open your favorite terminal and type `sudo dost` and then type `python3 dost.py`.
