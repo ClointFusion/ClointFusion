@@ -43,6 +43,10 @@ ClointFusion is now supported on Windows / Ubuntu / macOS* !
 Windows :
 ---------
 
+Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe' target="_blank">Windows EXE</a>
+
+OR
+
 -  ClointFusion is compatible with both Windows 10 and Windows 11.
 -  Installing on a Windows PC is a breeze.
 -  Make certain that Python 3.8 or Python 3.9 is installed.
@@ -162,13 +166,10 @@ Using DOST, even a common man can create a BOT in minutes.
 Windows
 """""""
 
-Open your favorite terminal and type ``dost``. That's it!
+Open your favorite browser and go to `https://dost.clointfusion.com` and start building bots.
 
-Make sure you close all your Google Chrome windows before starting.
+Note : Make sure ClointFusion Tray is present or open terminal and type `cf_tray` to activate ClointFusion Tray menu.
 
--  Want to change the chrome profile ?
-
-   -  Use ``dost -p "Profile 1"``
 
 Ubuntu
 """"""

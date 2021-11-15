@@ -168,3 +168,4 @@ ClointFusion/loader.c
 *.pyc
 ClointFusion/*.pyc
 ClointFusion/__pycache__/*.pyc
+chromedriver.exe
