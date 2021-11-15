@@ -27,7 +27,7 @@ setup(
 
     # py_modules=['ClointFusion'],
   classifiers=[
-    'Development Status :: 4 - Beta',
+    'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
     'Intended Audience :: Developers',      
     'Topic :: Software Development :: Build Tools',
@@ -62,8 +62,7 @@ setup(
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
       'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
-      'Discussion Forum': 'https://github.com/ClointFusion/ClointFusion/discussions',
-      'Source Code': 'https://github.com/ClointFusion/ClointFusion/',
+      'Windows EXE': 'https://media.githubusercontent.com/media/ClointFusion/ClointFusion/master/Installers/ClointFusion%20Community%20Edition.exe',
       'Medium' : 'https://medium.com/@clointfusion/bd152f4a1e0d?source=friends_link&sk=25b6051d75a8a4bb3e9a3e1a46516766'
   },
     # package_data={"ClointFusion": ["*.pyd"]},

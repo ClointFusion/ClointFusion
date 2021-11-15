@@ -44,6 +44,9 @@ ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Pyt
 
 ## Windows :
 
+> ### Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://media.githubusercontent.com/media/ClointFusion/ClointFusion/master/Installers/ClointFusion%20Community%20Edition.exe' target="_blank">Windows EXE</a>
+# OR
+
 * ClointFusion is compatible with both Windows 10 and Windows 11.
 * Installing on a Windows PC is a breeze.
 * Make certain that Python 3.8 or Python 3.9 is installed.
