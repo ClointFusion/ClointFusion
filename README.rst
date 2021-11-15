@@ -43,7 +43,7 @@ ClointFusion is now supported on Windows / Ubuntu / macOS* !
 Windows :
 ---------
 
-Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe' target="_blank">Windows EXE</a>
+Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion_Community_Edition.exe' target="_blank">Windows EXE</a>
 
 OR
 
