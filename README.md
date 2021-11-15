@@ -148,14 +148,10 @@ Below is the speed up version of self-test.
 ### Launch DOST client
 
 > #### Windows
+Open your favorite browser and go to `https://dost.clointfusion.com` and start building bots.
 
-Open your favorite terminal and type `dost`. That's it!
+Note : Make sure ClointFusion Tray is present or open terminal and type `cf_tray` to activate ClointFusion Tray menu.
 
-Make sure you close all your Google Chrome windows before starting.
-
-- Want to change the chrome profile ?
-
-    - Use `dost -p "Profile 1"`
 
 > #### Ubuntu
 Open your favorite terminal and type `sudo dost` and then type `python3 dost.py`.
