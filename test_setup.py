@@ -15,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='1.4.0',
+    version='1.4.2',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -54,7 +54,7 @@ setup(
             'cf_tour = ClointFusion.ClointFusion:cli_cf_tour',
         ],
     },
-  python_requires='>=3.8, <=3.9',
+  python_requires='>=3.8.5, <=3.9.8',
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
@@ -62,7 +62,7 @@ setup(
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
       'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
-      'Windows EXE': 'https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe',
+      'Windows EXE': 'https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion_Community_Edition.exe',
       'Medium' : 'https://medium.com/@clointfusion/bd152f4a1e0d?source=friends_link&sk=25b6051d75a8a4bb3e9a3e1a46516766'
   },
     # package_data={"ClointFusion": ["*.pyd"]},
@@ -95,3 +95,5 @@ setup(
 # 1.3.8
 # 1.3.9
 # 1.4.0
+# 1.4.1
+# 1.4.2

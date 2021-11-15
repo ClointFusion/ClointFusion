@@ -54,7 +54,7 @@ setup(
             'cf_tour = ClointFusion.ClointFusion:cli_cf_tour',
         ],
     },
-  python_requires='>=3.8, <=3.9',
+  python_requires='>=3.8.5, <=3.9.8',
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
