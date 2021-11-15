@@ -62,7 +62,7 @@ setup(
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
       'Discord': 'https://discord.com/invite/tsMBN4PXKH',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
-      'Windows EXE': 'https://media.githubusercontent.com/media/ClointFusion/ClointFusion/master/Installers/ClointFusion%20Community%20Edition.exe',
+      'Windows EXE': 'https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe',
       'Medium' : 'https://medium.com/@clointfusion/bd152f4a1e0d?source=friends_link&sk=25b6051d75a8a4bb3e9a3e1a46516766'
   },
     # package_data={"ClointFusion": ["*.pyd"]},
