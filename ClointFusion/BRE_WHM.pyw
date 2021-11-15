@@ -230,8 +230,6 @@ def on_click(x, y, button, pressed):
     click_count = 1
 
     try:
-        if not socket_connected:
-            open_socket(sio)
         if pressed:
             pass   
         if not pressed:
@@ -246,7 +244,10 @@ def on_click(x, y, button, pressed):
             last_click = str(button) + "#" + str(datetime.datetime.now())
 
             try:
-                windw = str(get_active_window()) 
+                windw = str(get_active_window())
+                if "firefox" in windw.lower() or "chrome" in windw.lower() or "google" in windw.lower() or "opera" in windw.lower() or "safari" in windw.lower():
+                    if not socket_connected:
+                        open_socket(sio)
             except:
                 windw = "unknown"
 
