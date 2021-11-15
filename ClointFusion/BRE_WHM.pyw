@@ -230,8 +230,6 @@ def on_click(x, y, button, pressed):
     click_count = 1
 
     try:
-        if not socket_connected:
-            open_socket(sio)
         if pressed:
             pass   
         if not pressed:
@@ -246,7 +244,10 @@ def on_click(x, y, button, pressed):
             last_click = str(button) + "#" + str(datetime.datetime.now())
 
             try:
-                windw = str(get_active_window()) 
+                windw = str(get_active_window())
+                if "firefox" in windw.lower() or "chrome" in windw.lower() or "google" in windw.lower() or "opera" in windw.lower() or "safari" in windw.lower():
+                    if not socket_connected:
+                        open_socket(sio)
             except:
                 windw = "unknown"
 
@@ -531,7 +532,7 @@ def run_code(data):
         f_code = "import pyinspect as pi\nimport sys, time, traceback\nfrom rich import pretty\nfrom ClointFusion.ClointFusion import selft\nimport ClointFusion as cf\npi.install_traceback(hide_locals=True,relevant_only=True,enable_prompt=True)\npretty.install()\ntry:\n"
         for line in code.split("\n"):
             f_code += "    " + line + "\n"
-        f_code += "    print('Closing in 5 secs')\n    time.sleep(5)\nexcept Exception as ex:\n    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))\n    error = f'Error in Running DOST Program: {str(ex)}'\n    print(error)\n    cf.message_pop_up(strMsg=error,delay=20)"
+        f_code += "    print('Closing in 10 secs')\n    time.sleep(10)\nexcept Exception as ex:\n    selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))\n    error = f'Error in Running DOST Program: {str(ex)}'\n    print(error)\n    cf.message_pop_up(strMsg=error,delay=20)"
 
         with open(temp_code, 'w') as fp:
             fp.write(f_code + "\n" + r"print('\n')")
