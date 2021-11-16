@@ -5,13 +5,13 @@ Welcome to ClointFusion , Made in India with ❤️
 -----------------------------------------------
 
 Description
------------
+^^^^^^^^^^^
 
 Cloint India Pvt. Ltd - Python functions for Robotic Process Automation
 shortly ``RPA``.
 
 What is ClointFusion?
-=====================
+^^^^^^^^^^^^^^^^^^^^^
 
 ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion
 is a Python-based RPA platform for developing Software BOTs. Using AI,
@@ -28,7 +28,7 @@ contributors| |GitHub last commit|
 Follow|
 
 Release Notes
--------------
+^^^^^^^^^^^^^
 
   `Click here for Release Notes <https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt>`_
  
@@ -36,7 +36,7 @@ Release Notes
 --------------
 
 Installation
-============
+------------
 
 ClointFusion is now supported on Windows / Ubuntu / macOS* !
 
@@ -71,12 +71,11 @@ Ubuntu :
        sudo pip3 install ClointFusion
 
 Importing
-=========
+----------
 
 *ClointFusion can be accessed using one of two methods.*
 
 Windows :
----------
 
 
 -  **Terminal : Opens a Python interpreter with "import ClointFusion as cf " pre-loaded**
@@ -102,7 +101,6 @@ Windows :
        python cf_bot.py
 
 Ubuntu :
---------
 
 -  **Terminal : Opens a Python interpreter with the "import ClointFusion as cf" pre-loaded and the required sudo privileges.**
    
@@ -182,6 +180,10 @@ Ubuntu
 
    -  Use\ ``python3 dost.py "Profile 1"``
 
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true
+
 **Build BOT with DOST :** `DOST
 Website <https://dost.clointfusion.com/>`__
 
@@ -199,6 +201,10 @@ Open your favorite terminal and type ``bol`` or ``sudo bol`` for ubuntu
 users. Within a moment, a personalized Virtual Assistant will be at your
 service.
 
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true
+
 *Note: bol is currently in development stage. More functionalities
 are yet to be added.*
 
@@ -215,6 +221,10 @@ you do in your PC and displays a detailed work report.
 
 Open your favorite terminal and type ``cf_work``. A detailed work report
 will be displayed.
+
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_CF_WORK.gif?raw=true
 
 ***Note: All the information that is being collected by ``WORK`` is
 stored in a securely maintained database in your system.***
@@ -270,6 +280,10 @@ function.***
 | cf.gui_get_folder_path_from_user()                   | msgForUser="the folder : "                                                             |  Generic function to accept folder path from user using GUI. Returns the folder path value in string format.                                                                 |
 +------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true
+
 
 4 functions on Mouse Operations:
 --------------------------------
@@ -287,7 +301,9 @@ function.***
 | cf.mouse\_search\_snip\_return\_coordinates\_x\_y()   | img=" ", wait=180                                        | Searches the given image on the screen and returns its center of X Y co-ordinates.                                                                                           |
 +-------------------------------------------------------+----------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true
 
 6 functions on Window Operations (works only in Windows OS):
 ------------------------------------------------------------
@@ -309,7 +325,9 @@ function.***
 | cf.launch\_any\_exe\_bat\_application()          | pathOfExeFile=" "     | Launches any exe or batch file or excel file etc.     |
 +--------------------------------------------------+-----------------------+-------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true
 
 5 functions on Window Objects (works only in Windows OS):
 ---------------------------------------------------------
@@ -329,7 +347,9 @@ function.***
 | cf.win\_obj\_get\_text()           | main\_dlg, title=" ", auto\_id=" ", control\_type=" ", value = False          | Read text from windows object element.                             |
 +------------------------------------+-------------------------------------------------------------------------------+--------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Windows_Object_Operation.gif?raw=true
 
 8 functions on Folder Operations:
 ---------------------------------
@@ -355,7 +375,9 @@ function.***
 | cf.file\_get\_json\_details()                | path\_of\_json\_file='', section=''                            | Returns all the details of the given section in a dictionary                                                                |
 +----------------------------------------------+----------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true
 
 28 functions on Excel Operations:
 ---------------------------------
@@ -421,7 +443,9 @@ function.***
 | cf.excel\_to\_colored\_html()                        | formatted\_excel\_path=" "                                                                                                                                                                                                               | Converts given Excel to HTML preserving the Excel format and saves in same folder as .html                                                 |
 +------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true
 
 3 functions on Keyboard Operations:
 -----------------------------------
@@ -437,7 +461,9 @@ function.***
 | cf.key\_write\_enter()   | text\_to\_write=" ", write\_to\_window=" ", delay\_after\_typing=1, key="e"   | Writes/Types the given text and press enter (by default) or tab key.   |
 +--------------------------+-------------------------------------------------------------------------------+------------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true
 
 5 functions on Screen-scraping Operations:
 ------------------------------------------
@@ -456,7 +482,9 @@ function.***
 | cf.find\_text\_on\_screen()                           | searchText=" ", delay=0.1, occurance=1, isSearchToBeCleared=False   | Clears previous search and finds the provided text on screen.                                                                                                                 |
 +-------------------------------------------------------+---------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true
 
 11 functions on Browser Operations:
 -----------------------------------
@@ -488,7 +516,9 @@ function.***
 | cf.browser\_mouse\_hover\_h()      | User\_Visible\_Text\_Element=" "                                                                                                                           | Performs a Mouse Hover over the Given User Visible Text Element   |
 +------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true
 
 4 functions on Alert Messages:
 ------------------------------
@@ -506,7 +536,6 @@ function.***
 | cf.message\_toast()                  | message,website\_url=" ", file\_folder\_path=" "                      | Function for displaying Windows 10 Toast Notifications. Pass website URL OR file / folder path that needs to be opened when user clicks on the toast notification.   |
 +--------------------------------------+-----------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
---------------
 
 3 functions on String Operations:
 ---------------------------------
@@ -522,7 +551,10 @@ function.***
 | cf.string\_extract\_only\_numbers()        | inputString=" "       | Returns only numbers from given input string     |
 +--------------------------------------------+-----------------------+--------------------------------------------------+
 
---------------
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true
+
 
 Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
 ----------------------------------------------------------------------------------------------
@@ -561,8 +593,10 @@ Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up)
 | cf.create\_batch\_file()                  | application\_exe\_pyw\_file\_path=" "                                                              | Creates .bat file for the given application / exe or even .pyw BOT developed by you. This is required in Task Scheduler.                                                                               |
 +-------------------------------------------+----------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-.. :: html
+.. only:: html
 
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true
+    
 ClointFusion's function works in different modes:
 =================================================
 
@@ -595,12 +629,20 @@ ClointFusion's Semi Automatic Mode
 | 
 | 
 
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true
+
+
 BOTS made out of ClointFusion
 =============================
 
 Outlook Email BOT implemented using ClointFusion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true
 
 
 We love your contribution
@@ -641,13 +683,7 @@ Credits
 ReadMe File Maintainer
 ======================
 
-
-
-
-
 fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: https://www.linkedin.com/in/fharook-shaik-7a757b181/
-
-    
 
 Need help in Building BOTS?
 ---------------------------
@@ -668,4 +704,3 @@ Write us at ClointFusion@cloint.com
 .. |Twitter URL| image:: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion
 .. |YouTube Channel Subscribers| image:: https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social
 .. |Twitter Follow| image:: https://img.shields.io/twitter/follow/ClointFusion?style=social
-    
