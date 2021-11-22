@@ -713,15 +713,3 @@ fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: https:/
 .. |YouTube Channel Subscribers| image:: https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social
 .. |Twitter Follow| image:: https://img.shields.io/twitter/follow/ClointFusion?style=social
 
-
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
