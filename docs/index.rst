@@ -1,24 +1,23 @@
+.. ClointFusion documentation master file, created by
+   sphinx-quickstart on Mon Nov 22 13:09:24 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+==============================
+ClointFusion Community Edition
+==============================
+
 .. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Cloint-LOGO-New.png
 
 
-Welcome to ClointFusion , Made in India with ❤️
------------------------------------------------
+*Welcome to ClointFusion , Made in India with* ❤️
 
-Description
-^^^^^^^^^^^
+**About ClointFusion**
 
-Cloint India Pvt. Ltd - Python functions for Robotic Process Automation
-shortly ``RPA``.
-
-What is ClointFusion?
-^^^^^^^^^^^^^^^^^^^^^
-
-ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion
-is a Python-based RPA platform for developing Software BOTs. Using AI,
+ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Python-based RPA platform for developing Software BOTs. Using AI,
 we're working on Common Man's RPA.
 
-Check out Project Status
-^^^^^^^^^^^^^^^^^^^^^^^^
+**Project Status**
 
 |PyPI| |PyPI - License| |PyPI - Status| |ClointFusion| |PyPI -
 Downloads| |Libraries.io SourceRank| |PyPI - Format| |GitHub
@@ -27,37 +26,31 @@ contributors| |GitHub last commit|
 |GitHub Repo stars| |Twitter URL| |YouTube Channel Subscribers| |Twitter
 Follow|
 
-Release Notes
-^^^^^^^^^^^^^
+=======================
+Installing ClointFusion
+=======================
 
-  `Click here for Release Notes <https://github.com/ClointFusion/ClointFusion/blob/master/Release_Notes.txt>`_
- 
 
---------------
+**Windows OS:**
 
-Installation
-------------
 
-ClointFusion is now supported on Windows / Ubuntu / macOS* !
-
-Windows :
----------
+*Using EXE:*
 
 Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe' target="_blank">Windows EXE</a>
 
-OR
+*Manually (without EXE):*
 
 -  ClointFusion is compatible with both Windows 10 and Windows 11.
 -  Installing on a Windows PC is a breeze.
 -  Make certain that Python 3.8 or Python 3.9 is installed.
--  Then, from the command prompt, execute the following command.
+-  Then from the command prompt, execute the following command.
 
    ::
 
        pip install -U ClointFusion
 
-Ubuntu :
---------
+**Ubuntu OS :**
+
 
 -  Clointfusion requires sudo rights to install on Ubuntu.
 -  Additional Linux packages must be installed before Clointfusion can
@@ -70,13 +63,14 @@ Ubuntu :
        sudo apt-get install python3-tk python3-dev
        sudo pip3 install ClointFusion
 
-Importing
-----------
+==================
+Using ClointFusion
+==================
 
-*ClointFusion can be accessed using one of two methods.*
 
-Windows :
+**Windows** 
 
+*ClointFusion can be accessed using one of two methods:*
 
 -  **Terminal : Opens a Python interpreter with "import ClointFusion as cf " pre-loaded**
 
@@ -100,7 +94,9 @@ Windows :
 
        python cf_bot.py
 
-Ubuntu :
+**Ubuntu :**
+
+*ClointFusion can be accessed using one of two methods:*
 
 -  **Terminal : Opens a Python interpreter with the "import ClointFusion as cf" pre-loaded and the required sudo privileges.**
    
@@ -124,10 +120,12 @@ Ubuntu :
 
        sudo python3 cf_bot.py
 
-Features
-========
+=======
+Add-ons
+=======
 
-    *ClointFusion's Voice-Guided, Fully Automated Self-Test.*
+
+*1) ClointFusion's Voice-Guided, Fully Automated Self-Test:*
 
 
 When you import ClointFusion for the first time, or upgrade to a new
@@ -140,18 +138,106 @@ the self-test, you will receive an email with a self-test report.
 Below is the speed up version of self-test.
 
 
-
 `Click here to watch the Self-Test in
 Action. <https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4>`__
 
-*    **DOST : Your friend in automation || Build RPA Bots without Code**
+*2) ClointFusion's function works in different modes:*
 
+
+ClointFusion's Semi Automatic Mode
+
+
+1. If you pass all the required parameters, function works silently. So,
+   this is expert (Non-GUI) mode. This mode gives you more control over
+   the function's parameters.
+2. If you do not pass any parameter, GUI would pop-up asking you the
+   required parameters. Next time, when you run the BOT, based upon your
+   configuration, which you get to choose at the beginning of BOT run:
+
+   -  If ``Semi-Automatic mode`` is OFF, GUI would pop-up again, showing
+      you the previous entries, allowing you to modify the parameters.
+   -  If ``Semi-Automatic mode`` in ON, BOT works silently taking your
+      previous GUI entries.
+   -  Toggle ``Semi-Automatic mode`` by using the following command
+
+   ::
+
+       cf.ON_semi_automatic_mode   # To turn ON semi automatic mode
+       cf.OFF_semi_automatic_mode  # To turn OFF semi automatic mode
+
+3. GUI Mode is for beginners. Anytime, if you are not getting how to use
+   the function, just call an empty function (without parameters) and
+   GUI would pop-up asking you for required parameters.
+
+
+
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true
+
+
+*3) BOL : Your automation voice based assistant*
+
+
+``BOL`` is voice based automation assistant designed to execute BOTs
+build out of ClointFusion without any human computer interaction.
+
+Usage of BOL:
+
+Open your favorite terminal and type ``bol`` or ``sudo bol`` for ubuntu
+users. Within a moment, a personalized Virtual Assistant will be at your
+service.
+
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true
+
+*Note: bol is currently in development stage. More functionalities
+are yet to be added.*
+
+*4) WORK - The Work Hour Monitor*
+
+
+``WORK`` is an intelligent application that detects each and every work
+you do in your PC and displays a detailed work report.
+
+
+Usage of WORK:
+
+
+Open your favorite terminal and type ``cf_work``. A detailed work report
+will be displayed.
+
+.. only:: html
+
+   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_CF_WORK.gif?raw=true
+
+***Note: All the information that is being collected by ``WORK`` is
+stored in a securely maintained database in your system.***
+
+*5) WhatsApp Bot - Send bulk WhatsApp messages*
+
+ClointFusion's "WhatsApp Bot" is an automated utility tool that allows
+you to send many customized messages to your contacts at once.
+
+Usage of WhatsApp Bot:
+
+Open your favorite terminal and type ``cf_wm``, and give path of the
+excel, or ``cf_wm -e excel_path.xlsx``
+
+`Click here to watch the WhatsApp Bot in
+Action. <https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4>`__
+
+=======================================
+DOST: Build Build RPA Bots WITHOUT Code
+=======================================
+
+**DOST : Your friend in Automation**
 
 ``DOST`` is an interactive Blockly based ``no-code`` BOT Builder
 platform built and optimized for ClointFusion-based BOT building. We
 feel that automation is important for people other than programmers.
 Using DOST, even a common man can create a BOT in minutes.
-
 
 **Advantages of DOST**
 
@@ -159,19 +245,18 @@ Using DOST, even a common man can create a BOT in minutes.
 -  Build BOT in minutes.
 -  No prior Programming knowledge needed.
 
-**Launch DOST client**
-^^^^^^^^^^^^^^^^^^^^^^
+**Launch DOST client:**
 
-Windows
-"""""""
+**Windows**
+
 
 Open your favorite browser and go to `https://dost.clointfusion.com` and start building bots.
 
 Note : Make sure ClointFusion Tray is present or open terminal and type `cf_tray` to activate ClointFusion Tray menu.
 
 
-Ubuntu
-""""""
+**Ubuntu**
+
 
     Open your favorite terminal and type ``sudo dost`` and then type
     ``python3 dost.py``.
@@ -187,70 +272,12 @@ Ubuntu
 **Build BOT with DOST :** `DOST
 Website <https://dost.clointfusion.com/>`__
 
-BOL : Your automation voice based assistant
-*******************************************
 
-
-``BOL`` is voice based automation assistant designed to execute BOTs
-build out of ClointFusion without any human computer interaction.
-
-Usage of BOL
-~~~~~~~~~~~~
-
-Open your favorite terminal and type ``bol`` or ``sudo bol`` for ubuntu
-users. Within a moment, a personalized Virtual Assistant will be at your
-service.
-
-.. only:: html
-
-   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_BOL_GIF.gif?raw=true
-
-*Note: bol is currently in development stage. More functionalities
-are yet to be added.*
-
-WORK - The Work Hour Monitor
-""""""""""""""""""""""""""""
-
-
-``WORK`` is an intelligent application that detects each and every work
-you do in your PC and displays a detailed work report.
-
-
-**Usage of WORK**
-
-
-Open your favorite terminal and type ``cf_work``. A detailed work report
-will be displayed.
-
-.. only:: html
-
-   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_CF_WORK.gif?raw=true
-
-***Note: All the information that is being collected by ``WORK`` is
-stored in a securely maintained database in your system.***
-
-WhatsApp Bot - Send bulk WhatsApp messages
-------------------------------------------
-
-
-ClointFusion's "WhatsApp Bot" is an automated utility tool that allows
-you to send many customized messages to your contacts at once.
-
-Usage of WhatsApp Bot:
-
-
-Open your favorite terminal and type ``cf_wm``, and give path of the
-excel, or ``cf_wm -e excel_path.xlsx``
-
-`Click here to watch the WhatsApp Bot in
-Action. <https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4>`__
-
-
+======================
 ClointFusion in Action
-^^^^^^^^^^^^^^^^^^^^^^
+======================
 
-Now access more than 100 functions (hit ctrl+space in your IDE)
----------------------------------------------------------------
+Now access more than 100 functions (hit ctrl+space in your IDE):
 
 ***TIP: You can find and inspect all of ClointFusion's functions using
 only one function i.e., ``find()``. Just pass the partial name of the
@@ -262,8 +289,10 @@ function.***
 
     cf.find("gui")
 
-6 gui functions, to take any input from user:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+********************************************
+6 gui functions, to take any input from user
+********************************************
+
 
 +------------------------------------------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                             | Accepted Parameters                                                                    | Description                                                                                                                                                                  |
@@ -286,8 +315,10 @@ function.***
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true
 
 
-4 functions on Mouse Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*******************************
+4 functions on Mouse Operations
+*******************************
+
 
 
 +-------------------------------------------------------+----------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -306,8 +337,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true
 
-6 functions on Window Operations (works only in Windows OS):
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+***********************************************************
+6 functions on Window Operations (works only in Windows OS)
+***********************************************************
 
 
 +--------------------------------------------------+-----------------------+-------------------------------------------------------+
@@ -330,8 +362,9 @@ function.***
 
    .. figure:: 'https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true'
 
-5 functions on Window Objects (works only in Windows OS):
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+********************************************************
+5 functions on Window Objects (works only in Windows OS)
+********************************************************
 
 
 +------------------------------------+-------------------------------------------------------------------------------+--------------------------------------------------------------------+
@@ -352,8 +385,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Windows_Object_Operation.gif?raw=true
 
-8 functions on Folder Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+********************************
+8 functions on Folder Operations
+********************************
 
 
 +----------------------------------------------+----------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+
@@ -380,8 +414,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true
 
-28 functions on Excel Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+********************************
+28 functions on Excel Operations
+********************************
   
 
 +------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
@@ -448,8 +483,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true
 
-3 functions on Keyboard Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**********************************
+3 functions on Keyboard Operations
+**********************************
 
 
 +--------------------------+-------------------------------------------------------------------------------+------------------------------------------------------------------------+
@@ -466,8 +502,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true
 
-5 functions on Screen-scraping Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*****************************************
+5 functions on Screen-scraping Operations
+*****************************************
 
 +-------------------------------------------------------+---------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                              | Accepted Parameters                                                 | Description                                                                                                                                                                   |
@@ -487,8 +524,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true
 
-11 functions on Browser Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**********************************
+11 functions on Browser Operations
+**********************************
 
 
 +------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------+
@@ -521,8 +559,9 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true
 
-4 functions on Alert Messages:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*****************************
+4 functions on Alert Messages
+*****************************
    
 
 +--------------------------------------+-----------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -538,8 +577,9 @@ function.***
 +--------------------------------------+-----------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
-3 functions on String Operations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+********************************
+3 functions on String Operations
+********************************
 
 
 +--------------------------------------------+-----------------------+--------------------------------------------------+
@@ -557,8 +597,9 @@ function.***
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true
 
 
-Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up) messages etc:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+***********************
+Miscellaneous functions 
+***********************
 
 +-------------------------------------------+----------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Function                                  | Accepted Parameters                                                                                | Description                                                                                                                                                                                            |
@@ -598,61 +639,35 @@ Loads of miscellaneous functions related to emoji, capture photo, flash (pop-up)
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true
     
-ClointFusion's function works in different modes:
-=================================================
 
-ClointFusion's Semi Automatic Mode
-----------------------------------
-
-
-1. If you pass all the required parameters, function works silently. So,
-   this is expert (Non-GUI) mode. This mode gives you more control over
-   the function's parameters.
-2. If you do not pass any parameter, GUI would pop-up asking you the
-   required parameters. Next time, when you run the BOT, based upon your
-   configuration, which you get to choose at the beginning of BOT run:
-
-   -  If ``Semi-Automatic mode`` is OFF, GUI would pop-up again, showing
-      you the previous entries, allowing you to modify the parameters.
-   -  If ``Semi-Automatic mode`` in ON, BOT works silently taking your
-      previous GUI entries.
-   -  Toggle ``Semi-Automatic mode`` by using the following command
-
-   ::
-
-       cf.ON_semi_automatic_mode   # To turn ON semi automatic mode
-       cf.OFF_semi_automatic_mode  # To turn OFF semi automatic mode
-
-3. GUI Mode is for beginners. Anytime, if you are not getting how to use
-   the function, just call an empty function (without parameters) and
-   GUI would pop-up asking you for required parameters.
-
-|
-.. only:: html
-
-   .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true
-
-
+=============================
 BOTS made out of ClointFusion
 =============================
 
-Outlook Email BOT implemented using ClointFusion
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) Outlook Email BOT implemented using ClointFusion
 
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true
 
 
-We love your contribution
-=========================
+2) Others
+   
+
+**Date ❤️ with ClointFusion**
+
+This an initiative for fast track entry into our growing workforce. For
+more details, please visit: `Date with
+ClointFusion <https://lnkd.in/gh_r9YB>`__
+
+*We love your contribution*
 
 Contribute to us by giving a star, writing articles on ``ClointFusion``,
 giving comments, reporting bugs, bug fixes, feature enhancements, adding
 documentation, and many other ways.
 
-Invitation to our Monthly Branded Hackathon
--------------------------------------------
+*Invitation to our Monthly Branded Hackathon*
 
 We also invite everyone to take part in our monthly branded event, the
 ``ClointFusion Hackathon``, and stand a chance to work with us.
@@ -660,15 +675,16 @@ We also invite everyone to take part in our monthly branded event, the
 Checkout our Hackathon Website for more details here: `ClointFusion
 Hackathon <https://sites.google.com/view/clointfusion-hackathon>`__
 
-Date ❤️ with ClointFusion
--------------------------
 
-This an initiative for fast track entry into our growing workforce. For
-more details, please visit: `Date with
-ClointFusion <https://lnkd.in/gh_r9YB>`__
+===========================
+Need help in Building BOTS?
+===========================
 
+Write us with your requirments at ClointFusion@cloint.com
+
+================
 Acknowledgements
-----------------
+================
 
 We sincerely thanks to all it's dependent packages for the great
 contribution, which made ``ClointFusion`` possible!
@@ -676,18 +692,11 @@ contribution, which made ``ClointFusion`` possible!
 Please find all the dependencies
 `here <https://openbase.com/python/ClointFusion/dependencies>`__
 
-Credits
--------
+Credits:
 
-ReadMe File Maintainer
-======================
+*ReadMe File Maintainer*
 
 fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: https://www.linkedin.com/in/fharook-shaik-7a757b181/
-
-Need help in Building BOTS?
----------------------------
-
-Write us at ClointFusion@cloint.com
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version
@@ -703,3 +712,16 @@ Write us at ClointFusion@cloint.com
 .. |Twitter URL| image:: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FClointFusion
 .. |YouTube Channel Subscribers| image:: https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social
 .. |Twitter Follow| image:: https://img.shields.io/twitter/follow/ClointFusion?style=social
+
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
