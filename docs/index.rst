@@ -39,7 +39,12 @@ Installing ClointFusion
 
 *Using EXE:*
 
-Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: `Windows EXE <https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe>`_
+Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: |Windows_EXE_Link|
+
+.. |Windows_EXE_Link| raw:: html
+
+   <a href="https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe" target="_blank">Windows EXE</a>
+
 
 *Manually (without EXE)*
 
@@ -146,9 +151,11 @@ the self-test, you will receive an email with a self-test report.
 
 *Below is the speed up version of self-test:*
 
+|ST_Link|
 
-`Click here to watch the Self-Test in
-Action. <https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4>`__
+.. |ST_Link| raw:: html
+
+   <a href="https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4" target="_blank">Click here to watch the Self-Test in Action</a>
 
 ***********************************
 Function works in 3 different modes
@@ -239,8 +246,11 @@ Usage of WhatsApp Bot:
 Open your favorite terminal and type ``cf_wm``, and give path of the
 excel, or ``cf_wm -e excel_path.xlsx``
 
-`Click here to watch the WhatsApp Bot in
-Action. <https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4>`__
+|WAB_Link|
+
+.. |WAB_Link| raw:: html
+
+   <a href="https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4" target="_blank">Click here to watch the WhatsApp Bot in Action</a>
 
 =================================
 DOST: Build RPA Bots WITHOUT Code
@@ -266,6 +276,13 @@ Using DOST, even a kid can build a BOT in minutes!
 
 
 Open your favorite browser and go to `https://dost.clointfusion.com` and start building bots.
+
+|https://dost.clointfusion.com|
+
+.. |https://dost.clointfusion.com| raw:: html
+
+   <a href="https://dost.clointfusion.com" target="_blank">https://dost.clointfusion.com</a>
+
 
 Note : Make sure ClointFusion Tray is present or open terminal and type `cf_tray` to activate ClointFusion Tray menu.
 
@@ -299,7 +316,12 @@ To connect Google Colabs to your local-runtime and run all the functions of Cloi
     colab
 
 
-`Test Drive on Google Colab <https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb>`_
+|Colab_Link|
+
+.. |Colab_Link| raw:: html
+
+   <a href="https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb" target="_blank">Test Drive on Google Colab</a>
+
 
 ========================
 QuickStart : Cheat Sheet
@@ -346,7 +368,12 @@ function.***
 .. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-GUI.png
 
 
-`GUI Functions | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyDLB1R34hFK8h2vxNLF0uYZ>`_
+|GF_Link|
+
+.. |GF_Link| raw:: html
+
+   <a href="https://www.youtube.com/playlist?list=PL-KguBw2qRyDLB1R34hFK8h2vxNLF0uYZ" target="_blank">GUI Functions | YouTube Video with Source Code</a>
+
 
 *******************************
 4 functions on Mouse Operations
@@ -371,7 +398,12 @@ function.***
 
 .. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-MOUSE.png
 
-`Mouse Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyAAmlQ_9wU0wFmAx7iByddi>`_
+
+|MO_Link|
+
+.. |MO_Link| raw:: html
+
+   <a href="https://www.youtube.com/playlist?list=PL-KguBw2qRyAAmlQ_9wU0wFmAx7iByddi" target="_blank">Mouse Operations | YouTube Video with Source Code</a>
 
 ***********************************************************
 6 functions on Window Operations (works only in Windows OS)
@@ -399,7 +431,12 @@ function.***
    .. figure:: 'https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window%20Operations.gif?raw=true'
 
 
-`Window Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyCE0vSe_-s6dO6j125axmZ5>`_
+|WO_Link|
+
+.. |WO_Link| raw:: html
+
+   <a href="https://www.youtube.com/playlist?list=PL-KguBw2qRyCE0vSe_-s6dO6j125axmZ5" target="_blank">Window Operations | YouTube Video with Source Code</a>
+
 
 ********************************************************
 5 functions on Window Objects (works only in Windows OS)
@@ -453,7 +490,13 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true
 
-`Folder Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyDiW2uyGfWuunrgSaDvs1x7>`_
+
+|FO_Link|
+
+.. |FO_Link| raw:: html
+
+   <a href="https://www.youtube.com/playlist?list=PL-KguBw2qRyDiW2uyGfWuunrgSaDvs1x7" target="_blank">Folder Operations | YouTube Video with Source Code</a>
+
 
 ********************************
 28 functions on Excel Operations
@@ -525,7 +568,11 @@ function.***
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true
 
 
-`Excel Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyCUPXw48DWNeBCf2jPhGP5B>`_
+|EO_Link|
+
+.. |EO_Link| raw:: html
+
+   <a href="https://www.youtube.com/playlist?list=PL-KguBw2qRyCUPXw48DWNeBCf2jPhGP5B" target="_blank">Excel Operations | YouTube Video with Source Code</a>
 
 
 **********************************
@@ -549,7 +596,13 @@ function.***
 
 .. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-KEYBOARD.png      
 
-`Keyboard Operations | YouTube Video with Source Code <https://www.youtube.com/watch?v=osqNc8Dt8-Y&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=2>`_
+
+|KO_Link|
+
+.. |KO_Link| raw:: html
+
+   <a href="https://www.youtube.com/watch?v=osqNc8Dt8-Y&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=2" target="_blank">Keyboard Operations | YouTube Video with Source Code</a>
+
 
 *****************************************
 5 functions on Screen-scraping Operations
@@ -573,7 +626,13 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true
 
-`Screen-scraping | YouTube Video with Source Code <https://www.youtube.com/watch?v=klMpH12iyfI&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=4>`_
+
+|SS_Link|
+
+.. |SS_Link| raw:: html
+
+   <a href="https://www.youtube.com/watch?v=klMpH12iyfI&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=4" target="_blank">Screen-scraping | YouTube Video with Source Code</a>
+
 
 **********************************
 11 functions on Browser Operations
@@ -610,7 +669,13 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true
 
-`Browser Operations | YouTube Video with Source Code <https://www.youtube.com/watch?v=jpKVG09OGE4&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=4>`_
+
+|BO_Link|
+
+.. |BO_Link| raw:: html
+
+   <a href="https://www.youtube.com/watch?v=jpKVG09OGE4&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=4" target="_blank">Browser Operations | YouTube Video with Source Code</a>
+
 
 *****************************
 4 functions on Alert Messages
@@ -649,7 +714,13 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true
 
-`String Operations | YouTube Video with Source Code <https://www.youtube.com/watch?v=1J38nLlSFaI&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=3>`_
+
+|STO_Link|
+
+.. |STO_Link| raw:: html
+
+   <a href="https://www.youtube.com/watch?v=1J38nLlSFaI&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=3" target="_blank">String Operations | YouTube Video with Source Code</a>
+
 
 ***********************
 Miscellaneous functions 
@@ -722,12 +793,22 @@ BOTS made out of ClointFusion
    
 *Gmail BOT using ClointFusion Functions*
 
-`Gmail BOT Source Code <https://drive.google.com/file/d/1pjvidc6XcF9TtKuanIH4rnX2Jebo85-s/view>`_
+|GB_Link|
+
+.. |GB_Link| raw:: html
+
+   <a href="https://drive.google.com/file/d/1pjvidc6XcF9TtKuanIH4rnX2Jebo85-s/view" target="_blank">Gmail BOT Source Code</a>
+
+
 
 **Date ❤️ with ClointFusion**
 
 This an initiative for fast track entry into our growing workforce. For
-more details, please visit: `YouTube Video | Date with ClointFusion <https://www.youtube.com/watch?v=dFj26GJYCfM&list=PL-KguBw2qRyBe99RHw_foWb_UhN8ScK2d&index=2>`__
+more details, please visit: |DY_Link|
+
+.. |DY_Link| raw:: html
+
+   <a href="https://www.youtube.com/watch?v=dFj26GJYCfM&list=PL-KguBw2qRyBe99RHw_foWb_UhN8ScK2d&index=2" target="_blank">YouTube Video | Date with ClointFusion</a>
 
 
 *We love your contribution*
@@ -741,8 +822,11 @@ documentation, and many other ways.
 We also invite everyone to take part in our monthly branded event, the
 ``ClointFusion Hackathon``, and stand a chance to work with us.
 
-Checkout our Hackathon Website for more details here: `ClointFusion
-Hackathon <https://sites.google.com/view/clointfusion-hackathon>`__
+Checkout our Hackathon Website for more details here: |CFH_Link|
+
+.. |CFH_Link| raw:: html
+
+   <a href="https://sites.google.com/view/clointfusion-hackathon" target="_blank">ClointFusion Hackathon</a>
 
 
 ===========================
@@ -758,13 +842,23 @@ Acknowledgements
 We sincerely thanks to all it's dependent packages for the great
 contribution, which made ``ClointFusion`` possible!
 
-Please find all the dependencies `here <https://openbase.com/python/ClointFusion/dependencies>`__
+Please find all the dependencies |Depen_Link|
+
+.. |Depen_Link| raw:: html
+
+   <a href="https://openbase.com/python/ClointFusion/dependencies" target="_blank">Please find all the dependencies</a>
 
 Credits:
 
 *ReadMe File Maintainer*
 
-fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: https://www.linkedin.com/in/fharook-shaik-7a757b181/
+fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: 
+
+|Link_Link|
+
+.. |Link_Link| raw:: html
+
+   <a href="https://www.linkedin.com/in/fharook-shaik-7a757b181/" target="_blank">https://www.linkedin.com/in/fharook-shaik-7a757b181/</a>
 
 ======================
 Careers | Work with Us
@@ -774,7 +868,7 @@ Interested in joining full-time | part-time | virtual internships, |click here|
 
 .. |click here| raw:: html
 
-   <a href="https://sites.google.com/view/clointfusion-hackathon/work-with-us">please click here</a>
+   <a href="https://sites.google.com/view/clointfusion-hackathon/work-with-us" target="_blank">please click here</a>
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version
