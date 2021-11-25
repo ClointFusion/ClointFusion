@@ -428,7 +428,7 @@ function.***
 
 .. only:: html
 
-   .. figure:: 'https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Functions%20Light%20GIFs/Window%20Operations.gif'
+   .. figure:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Functions%20Light%20GIFs/Window%20Operations.gif
 
 
 |WO_Link|
