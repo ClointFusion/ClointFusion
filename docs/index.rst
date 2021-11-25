@@ -43,7 +43,7 @@ Windows users can download |Windows_EXE_Link| pre-loaded with Python 3.9 and Clo
 
 .. |Windows_EXE_Link| raw:: html
 
-   <a href="https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe" target="_blank">Windows EXE</a>
+   <a href="https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion_Community_Edition.exe" target="_blank">Windows EXE</a>
 
 
 *Manually (without EXE)*
