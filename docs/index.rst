@@ -39,7 +39,7 @@ Installing ClointFusion
 
 *Using EXE:*
 
-Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: |Windows_EXE_Link|
+Windows users can download |Windows_EXE_Link| pre-loaded with Python 3.9 and ClointFusion package: 
 
 .. |Windows_EXE_Link| raw:: html
 
@@ -428,7 +428,7 @@ function.***
 
 .. only:: html
 
-   .. figure:: 'https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window%20Operations.gif?raw=true'
+   .. figure:: 'https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Functions%20Light%20GIFs/Window%20Operations.gif'
 
 
 |WO_Link|
@@ -772,12 +772,12 @@ Miscellaneous functions
 BOTS made out of ClointFusion
 =============================
 
-*Outlook Email BOT implemented using ClointFusion Blocks*
-
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true
 
+
+*Outlook Email BOT implemented using ClointFusion Blocks*
 
 .. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-OUTLOOK.png      
 
@@ -791,14 +791,11 @@ BOTS made out of ClointFusion
 
 .. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-MOUSE-3.png      
    
-*Gmail BOT using ClointFusion Functions*
-
-|GB_Link|
+*Gmail BOT using ClointFusion Functions* : |GB_Link|
 
 .. |GB_Link| raw:: html
 
    <a href="https://drive.google.com/file/d/1pjvidc6XcF9TtKuanIH4rnX2Jebo85-s/view" target="_blank">Gmail BOT Source Code</a>
-
 
 
 **Date ❤️ with ClointFusion**
@@ -811,13 +808,13 @@ more details, please visit: |DY_Link|
    <a href="https://www.youtube.com/watch?v=dFj26GJYCfM&list=PL-KguBw2qRyBe99RHw_foWb_UhN8ScK2d&index=2" target="_blank">YouTube Video | Date with ClointFusion</a>
 
 
-*We love your contribution*
+**We love your contribution**
 
 Contribute to us by giving a star, writing articles on ``ClointFusion``,
 giving comments, reporting bugs, bug fixes, feature enhancements, adding
 documentation, and many other ways.
 
-*Invitation to our Monthly Branded Hackathon*
+**Invitation to our Monthly Branded Hackathon**
 
 We also invite everyone to take part in our monthly branded event, the
 ``ClointFusion Hackathon``, and stand a chance to work with us.
@@ -885,3 +882,6 @@ Interested in joining full-time | part-time | virtual internships, |click here|
 .. |YouTube Channel Subscribers| image:: https://img.shields.io/youtube/channel/subscribers/UCIygBtp1y_XEnC71znWEW2w?style=social
 .. |Twitter Follow| image:: https://img.shields.io/twitter/follow/ClointFusion?style=social
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
