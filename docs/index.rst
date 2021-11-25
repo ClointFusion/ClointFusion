@@ -17,6 +17,9 @@ ClointFusion Community Edition
 ClointFusion is an Indian firm based in Vadodara, Gujarat. ClointFusion is a Python-based RPA platform for developing Software BOTs. Using AI,
 we're working on Common Man's RPA.
 
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-GUI.png
+
+
 **Project Status**
 
 |PyPI| |PyPI - License| |PyPI - Status| |ClointFusion| |PyPI -
@@ -31,14 +34,14 @@ Installing ClointFusion
 =======================
 
 
-**Windows OS:**
+**Windows OS**
 
 
 *Using EXE:*
 
-Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: <a href='https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe' target="_blank">Windows EXE</a>
+Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion package: `Windows EXE <https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe>`_
 
-*Manually (without EXE):*
+*Manually (without EXE)*
 
 -  ClointFusion is compatible with both Windows 10 and Windows 11.
 -  Installing on a Windows PC is a breeze.
@@ -49,7 +52,7 @@ Windows users can download EXE pre-loaded with Python 3.9 and ClointFusion packa
 
        pip install -U ClointFusion
 
-**Ubuntu OS :**
+**Ubuntu OS**
 
 
 -  Clointfusion requires sudo rights to install on Ubuntu.
@@ -78,6 +81,12 @@ Using ClointFusion
    ::
 
        cf_py
+
+
+.. only:: html
+
+   .. figure:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/Functions%20Light%20GIFs/cf_py.gif
+      
 
 -  **Code Editor or IDE : Import ClointFusion first, and then run the file in Python.**
 
@@ -120,9 +129,9 @@ Using ClointFusion
 
        sudo python3 cf_bot.py
 
-=======
-Add-ons
-=======
+======================
+ClointFusion | Add-ons
+======================
 
 
 *1) ClointFusion's Voice-Guided, Fully Automated Self-Test:*
@@ -135,7 +144,7 @@ computer while also confirming ClointFusion's compatibility with your
 PC's settings and configurations. Once you have successfully completed
 the self-test, you will receive an email with a self-test report.
 
-Below is the speed up version of self-test.
+*Below is the speed up version of self-test:*
 
 
 `Click here to watch the Self-Test in
@@ -144,7 +153,7 @@ Action. <https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a
 *2) ClointFusion's function works in different modes:*
 
 
-ClointFusion's Semi Automatic Mode
+**ClointFusion's Semi Automatic Mode**
 
 
 1. If you pass all the required parameters, function works silently. So,
@@ -195,7 +204,7 @@ service.
 *Note: bol is currently in development stage. More functionalities
 are yet to be added.*
 
-*4) WORK - The Work Hour Monitor*
+*4) WORK - Your Work Hour Monitor*
 
 
 ``WORK`` is an intelligent application that detects each and every work
@@ -212,8 +221,8 @@ will be displayed.
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_CF_WORK.gif?raw=true
 
-***Note: All the information that is being collected by ``WORK`` is
-stored in a securely maintained database in your system.***
+***Note: All the information that is being shown in ``work`` is
+stored in a securely maintained database in your system***
 
 *5) WhatsApp Bot - Send bulk WhatsApp messages*
 
@@ -228,16 +237,17 @@ excel, or ``cf_wm -e excel_path.xlsx``
 `Click here to watch the WhatsApp Bot in
 Action. <https://user-images.githubusercontent.com/67296473/139722199-37036526-2b1c-4120-a12d-bde3df2eb0d7.mp4>`__
 
-=======================================
-DOST: Build Build RPA Bots WITHOUT Code
-=======================================
+=================================
+DOST: Build RPA Bots WITHOUT Code
+=================================
 
 **DOST : Your friend in Automation**
 
-``DOST`` is an interactive Blockly based ``no-code`` BOT Builder
+``dost`` is an interactive Blockly based ``no-code`` BOT Builder
 platform built and optimized for ClointFusion-based BOT building. We
-feel that automation is important for people other than programmers.
-Using DOST, even a common man can create a BOT in minutes.
+feel that automation is important for common man than programmer alone.
+Using DOST, even a you can build a BOT in minutes!
+
 
 **Advantages of DOST**
 
@@ -269,15 +279,28 @@ Note : Make sure ClointFusion Tray is present or open terminal and type `cf_tray
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/VERSION%201.1.0/CLI_DOST_GIF.gif?raw=true
 
-**Build BOT with DOST :** `DOST
-Website <https://dost.clointfusion.com/>`__
+**Build BOT with DOST :** `DOST Website <https://dost.clointfusion.com/>`__
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-Hello%20World.png
+
+==========================
+Test Drive in Google Colab
+==========================
+
+To connect Google Colabs to your local-runtime and run all the functions of CloinFusion in Google Colaboratory, just type on your command prompt:
+
+::
+
+    colab
 
 
-======================
-ClointFusion in Action
-======================
+`Test Drive on Google Colab <https://colab.research.google.com/github/ClointFusion/ClointFusion/blob/master/ClointFusion_Labs.ipynb>`_
 
-Now access more than 100 functions (hit ctrl+space in your IDE):
+========================
+QuickStart : Cheat Sheet
+========================
+
+Now access more than 100 functions (hit ctrl+space in your favorite IDE):
 
 ***TIP: You can find and inspect all of ClointFusion's functions using
 only one function i.e., ``find()``. Just pass the partial name of the
@@ -315,10 +338,14 @@ function.***
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/gui_function.gif?raw=true
 
 
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-GUI.png
+
+
+`GUI Functions | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyDLB1R34hFK8h2vxNLF0uYZ>`_
+
 *******************************
 4 functions on Mouse Operations
 *******************************
-
 
 
 +-------------------------------------------------------+----------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -336,6 +363,10 @@ function.***
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Mouse_Operations.gif?raw=true
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-MOUSE.png
+
+`Mouse Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyAAmlQ_9wU0wFmAx7iByddi>`_
 
 ***********************************************************
 6 functions on Window Operations (works only in Windows OS)
@@ -361,6 +392,9 @@ function.***
 .. only:: html
 
    .. figure:: 'https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true'
+
+
+`Window Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyCE0vSe_-s6dO6j125axmZ5>`_
 
 ********************************************************
 5 functions on Window Objects (works only in Windows OS)
@@ -413,6 +447,8 @@ function.***
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Folder_Operations.gif?raw=true
+
+`Folder Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyDiW2uyGfWuunrgSaDvs1x7>`_
 
 ********************************
 28 functions on Excel Operations
@@ -483,6 +519,10 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Excel_Operations.gif?raw=true
 
+
+`Excel Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyCUPXw48DWNeBCf2jPhGP5B>`_
+
+
 **********************************
 3 functions on Keyboard Operations
 **********************************
@@ -501,6 +541,10 @@ function.***
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/KB_Operations.gif?raw=true
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-KEYBOARD.png      
+
+`Keyboard Operations | YouTube Video with Source Code <https://www.youtube.com/watch?v=osqNc8Dt8-Y&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=2>`_
 
 *****************************************
 5 functions on Screen-scraping Operations
@@ -523,6 +567,8 @@ function.***
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Screen_Scraping.gif?raw=true
+
+`Screen-scraping | YouTube Video with Source Code <https://www.youtube.com/watch?v=klMpH12iyfI&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=4>`_
 
 **********************************
 11 functions on Browser Operations
@@ -558,6 +604,8 @@ function.***
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/browser_functions.gif?raw=true
+
+`Browser Operations | YouTube Video with Source Code <https://www.youtube.com/watch?v=jpKVG09OGE4&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=4>`_
 
 *****************************
 4 functions on Alert Messages
@@ -596,6 +644,7 @@ function.***
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/String_Operations.gif?raw=true
 
+`String Operations | YouTube Video with Source Code <https://www.youtube.com/watch?v=1J38nLlSFaI&list=PL-KguBw2qRyDyUEWw9TuKbB914kOj0P8q&index=3>`_
 
 ***********************
 Miscellaneous functions 
@@ -640,26 +689,41 @@ Miscellaneous functions
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/miscallaneous.gif?raw=true
     
 
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-TTS%26STT.png 
+
+
 =============================
 BOTS made out of ClointFusion
 =============================
 
-
-1) Outlook Email BOT implemented using ClointFusion
+*Outlook Email BOT implemented using ClointFusion Blocks*
 
 .. only:: html
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Gmail_and_Outlook_BOT.gif?raw=true
 
 
-2) Others
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-OUTLOOK.png      
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-OUTLOOK-2.png  
+
+*Automate painting using ClointFusion*
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-PAINT.png   
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-MOUSE-2.png      
+
+.. image:: https://raw.githubusercontent.com/ClointFusion/Image_ICONS_GIFs/main/DOST%20Blocks/Block-MOUSE-3.png      
    
+*Gmail BOT using ClointFusion Functions*
+
+`Gmail BOT Source Code <https://drive.google.com/file/d/1pjvidc6XcF9TtKuanIH4rnX2Jebo85-s/view>`_
 
 **Date ❤️ with ClointFusion**
 
 This an initiative for fast track entry into our growing workforce. For
-more details, please visit: `Date with
-ClointFusion <https://lnkd.in/gh_r9YB>`__
+more details, please visit: `YouTube Video | Date with ClointFusion <https://www.youtube.com/watch?v=dFj26GJYCfM&list=PL-KguBw2qRyBe99RHw_foWb_UhN8ScK2d&index=2>`__
+
 
 *We love your contribution*
 
@@ -689,14 +753,19 @@ Acknowledgements
 We sincerely thanks to all it's dependent packages for the great
 contribution, which made ``ClointFusion`` possible!
 
-Please find all the dependencies
-`here <https://openbase.com/python/ClointFusion/dependencies>`__
+Please find all the dependencies `here <https://openbase.com/python/ClointFusion/dependencies>`__
 
 Credits:
 
 *ReadMe File Maintainer*
 
 fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: https://www.linkedin.com/in/fharook-shaik-7a757b181/
+
+======================
+Careers | Work with Us
+======================
+
+Interested in joining full-time | part-time | virtual internships, `please click here <https://sites.google.com/view/clointfusion-hackathon/work-with-us>`_
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version

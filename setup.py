@@ -68,7 +68,7 @@ setup(
     # package_data={"ClointFusion": ["*.pyd"]},
 )
 
-# python -m pip install --upgrade pip setuptools wheel
+# python -m pip install --upgrade pip setuptools wheel build
 # python setup.py build bdist_wheel --universal rotate --match=*.exe*,*.egg*,*.tar.gz*,*.whl* --keep=1
 
 # twine upload dist/* --verbose
