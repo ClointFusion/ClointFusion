@@ -133,9 +133,9 @@ Using ClointFusion
 ClointFusion | Add-ons
 ======================
 
-
-*1) ClointFusion's Voice-Guided, Fully Automated Self-Test:*
-
+***************************************
+Voice-Guided, Fully Automated Self-Test
+***************************************
 
 When you import ClointFusion for the first time, or upgrade to a new
 version, you'll be prompted with the "ClointFusion's Automated Self-Test"
@@ -150,8 +150,9 @@ the self-test, you will receive an email with a self-test report.
 `Click here to watch the Self-Test in
 Action. <https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a3f5-4ca9-9ea9-23216e571e3e.mp4>`__
 
-*2) ClointFusion's function works in different modes:*
-
+***********************************
+Function works in 3 different modes
+***********************************
 
 **ClointFusion's Semi Automatic Mode**
 
@@ -184,9 +185,9 @@ Action. <https://user-images.githubusercontent.com/67296473/139620682-d63f6ee6-a
 
    .. figure:: https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Auto_Semi_Auto.gif?raw=true
 
-
-*3) BOL : Your automation voice based assistant*
-
+*******************************************
+Bol : Your automation voice based assistant
+*******************************************
 
 ``BOL`` is voice based automation assistant designed to execute BOTs
 build out of ClointFusion without any human computer interaction.
@@ -204,8 +205,9 @@ service.
 *Note: bol is currently in development stage. More functionalities
 are yet to be added.*
 
-*4) WORK - Your Work Hour Monitor*
-
+*****************************
+Work - Your Work Hour Monitor
+*****************************
 
 ``WORK`` is an intelligent application that detects each and every work
 you do in your PC and displays a detailed work report.
@@ -224,7 +226,10 @@ will be displayed.
 ***Note: All the information that is being shown in ``work`` is
 stored in a securely maintained database in your system***
 
-*5) WhatsApp Bot - Send bulk WhatsApp messages*
+******************************************
+WhatsApp Bot - Send bulk WhatsApp messages
+******************************************
+
 
 ClointFusion's "WhatsApp Bot" is an automated utility tool that allows
 you to send many customized messages to your contacts at once.
@@ -246,7 +251,7 @@ DOST: Build RPA Bots WITHOUT Code
 ``dost`` is an interactive Blockly based ``no-code`` BOT Builder
 platform built and optimized for ClointFusion-based BOT building. We
 feel that automation is important for common man than programmer alone.
-Using DOST, even a you can build a BOT in minutes!
+Using DOST, even a kid can build a BOT in minutes!
 
 
 **Advantages of DOST**
@@ -391,7 +396,7 @@ function.***
 
 .. only:: html
 
-   .. figure:: 'https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window Operations.gif?raw=true'
+   .. figure:: 'https://github.com/ClointFusion/Image_ICONS_GIFs/blob/main/Functions%20Light%20GIFs/Window%20Operations.gif?raw=true'
 
 
 `Window Operations | YouTube Video with Source Code <https://www.youtube.com/playlist?list=PL-KguBw2qRyCE0vSe_-s6dO6j125axmZ5>`_
@@ -765,7 +770,11 @@ fharookshaik, Intern @ ClointFusion. Incase of any queries reach him on: https:/
 Careers | Work with Us
 ======================
 
-Interested in joining full-time | part-time | virtual internships, `please click here <https://sites.google.com/view/clointfusion-hackathon/work-with-us>`_
+Interested in joining full-time | part-time | virtual internships, |click here|
+
+.. |click here| raw:: html
+
+   <a href="https://sites.google.com/view/clointfusion-hackathon/work-with-us">please click here</a>
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/ClointFusion?label=PyPI%20Version
