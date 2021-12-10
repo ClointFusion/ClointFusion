@@ -21,7 +21,7 @@ setup(
     long_description_content_type="text/markdown",
     url='https://github.com/ClointFusion/ClointFusion',
     setup_requires=["wheel",'numpy',"setuptools"],
-    keywords='ClointFusion,RPA,Python,Automation,BOT,Software BOT,ROBOT',
+    keywords='ClointFusion,RPA,Python,Automation,BOT,Software BOT,ROBOT,Dost',
     license="BSD",
     install_requires=open('requirements.txt').read().split('\n'),
 
@@ -54,7 +54,7 @@ setup(
             'cf_tour = ClointFusion.ClointFusion:cli_cf_tour',
         ],
     },
-  python_requires='>=3.8, <=3.9',
+  python_requires='>=3.8.5, <=3.9.8',
 
   project_urls={  # Optional
       'Date ❤️ with ClointFusion': 'https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion',
@@ -62,7 +62,7 @@ setup(
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
       'Documentation': 'https://clointfusion.readthedocs.io',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
-      'Windows EXE': 'https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe',
+      'Windows EXE': 'https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion_Community_Edition.exe',
       'Medium' : 'https://medium.com/@clointfusion/bd152f4a1e0d?source=friends_link&sk=25b6051d75a8a4bb3e9a3e1a46516766'
   },
     # package_data={"ClointFusion": ["*.pyd"]},
