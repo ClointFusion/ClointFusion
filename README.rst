@@ -78,6 +78,7 @@ Importing
 Windows :
 ---------
 
+
 -  **Terminal : Opens a Python interpreter with "import ClointFusion as cf " pre-loaded**
 
 

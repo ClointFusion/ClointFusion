@@ -1269,7 +1269,7 @@ def mouse_search_snip_return_coordinates_x_y(img="", wait=180):
 
         if pos:
             x,y = pos.left + int(pos.width / 2), pos.top + int(pos.height / 2)
-        status = (x,y)
+            status = (x,y)
     except Exception as ex:
         selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
         print("Error in mouse_search_snip_return_coordinates_x_y="+str(ex))
