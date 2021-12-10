@@ -15,7 +15,7 @@ setup(
     packages=find_packages(), 
     include_package_data=True,
     zip_safe=False,
-    version='1.4.2',
+    version='1.4.3',
     description="Python based Automation (RPA) Platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -97,3 +97,4 @@ setup(
 # 1.4.0
 # 1.4.1
 # 1.4.2
+# 1.4.3
