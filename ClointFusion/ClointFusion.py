@@ -769,7 +769,7 @@ def gui_get_dropdownlist_values_from_user(msgForUser="",dropdown_list=[],multi_s
                 selft.crash_report(traceback.format_exception(*sys.exc_info(),limit=None, chain=True))
                 print("Error in gui_get_dropdownlist_values_from_user="+str(ex))
         else:
-        print('gui_get_dropdownlist_values_from_user - List is empty')
+            print('gui_get_dropdownlist_values_from_user - List is empty')
     except ValueError:
         print("Please check the input values, and try again.")
         text_to_speech("Please check the input values, and try again.", show=False)
