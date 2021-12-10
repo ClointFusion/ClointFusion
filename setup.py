@@ -57,10 +57,10 @@ setup(
   python_requires='>=3.8, <=3.9',
 
   project_urls={  # Optional
-      'Date ❤️ with ClointFusion': 'https://lnkd.in/gh_r9YB',
+      'Date ❤️ with ClointFusion': 'https://sites.google.com/view/clointfusion-hackathon/date-with-clointfusion',
       'WhatsApp Community': 'https://chat.whatsapp.com/JKr7m0avmkIFwYgMarShZG',
       'Hackathon Website': 'https://tinyurl.com/ClointFusion',
-      'Discord': 'https://discord.com/invite/tsMBN4PXKH',
+      'Documentation': 'https://clointfusion.readthedocs.io',
       'Bug Reports': 'https://github.com/ClointFusion/ClointFusion/issues',
       'Windows EXE': 'https://github.com/ClointFusion/ClointFusion/releases/download/v1.0.0/ClointFusion.Community.Edition.exe',
       'Medium' : 'https://medium.com/@clointfusion/bd152f4a1e0d?source=friends_link&sk=25b6051d75a8a4bb3e9a3e1a46516766'
