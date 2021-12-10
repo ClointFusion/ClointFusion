@@ -169,3 +169,4 @@ ClointFusion/loader.c
 ClointFusion/*.pyc
 ClointFusion/__pycache__/*.pyc
 chromedriver.exe
+ClointFusion/my_gov_data.py
